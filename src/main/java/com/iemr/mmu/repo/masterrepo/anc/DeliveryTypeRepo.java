@@ -1,0 +1,16 @@
+package com.iemr.mmu.repo.masterrepo.anc;
+
+import java.util.ArrayList;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.iemr.mmu.data.masterdata.anc.DeliveryType;
+
+@Repository
+public interface DeliveryTypeRepo extends CrudRepository<DeliveryType, Short>{
+	
+	@Query("select deliveryTypeID, deliveryType from DeliveryType where deleted = false order by deliveryType")
+	public ArrayList<Object[]> getDeliveryTypes();
+}

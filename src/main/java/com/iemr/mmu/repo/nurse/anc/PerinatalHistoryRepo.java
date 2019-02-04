@@ -1,0 +1,55 @@
+package com.iemr.mmu.repo.nurse.anc;
+
+import java.util.ArrayList;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.iemr.mmu.data.anc.PerinatalHistory;
+
+public interface PerinatalHistoryRepo extends CrudRepository<PerinatalHistory, Long>{
+
+	@Query("select Date(createdDate), placeOfDelivery, otherPlaceOfDelivery, typeOfDelivery, complicationAtBirth, otherComplicationAtBirth, gestation, birthWeight_kg "
+			+ "from PerinatalHistory a where a.beneficiaryRegID = :beneficiaryRegID AND (placeOfDelivery is not null OR "
+			+ "typeOfDelivery is not null OR complicationAtBirth is not null)"
+			+ "AND deleted = false ORDER BY createdDate DESC ")
+	public ArrayList<Object[]> getBenPerinatalDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
+	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, deliveryPlaceID, placeOfDelivery, otherPlaceOfDelivery, deliveryTypeID, "
+			+ "typeOfDelivery, complicationAtBirthID, complicationAtBirth, otherComplicationAtBirth, gestation, birthWeight_kg, visitCode "
+			+ "from PerinatalHistory a where a.beneficiaryRegID = :beneficiaryRegID and a.visitCode = :visitCode AND deleted = false")
+	public ArrayList<Object[]> getBenPerinatalDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
+	
+	@Query("SELECT processed from PerinatalHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false")
+	public String getPerinatalHistoryStatus(@Param("benRegID") Long benRegID,
+			@Param("visitCode") Long visitCode);
+	
+	@Transactional
+	@Modifying
+	@Query("update PerinatalHistory set deliveryPlaceID=:deliveryPlaceID, placeOfDelivery=:placeOfDelivery, "
+			+ "otherPlaceOfDelivery=:otherPlaceOfDelivery, deliveryTypeID=:deliveryTypeID,"
+			+ " typeOfDelivery=:typeOfDelivery, complicationAtBirthID=:complicationAtBirthID, complicationAtBirth=:complicationAtBirth, "
+			+ "otherComplicationAtBirth=:otherComplicationAtBirth, gestation=:gestation, birthWeight_kg=:birthWeight_kg, "
+			+ "  modifiedBy=:modifiedBy, processed=:processed where "
+			+ "beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode")
+	public int updatePerinatalDetails(
+			@Param("deliveryPlaceID") Short deliveryPlaceID,
+			@Param("placeOfDelivery") String placeOfDelivery,
+			@Param("otherPlaceOfDelivery") String otherPlaceOfDelivery,
+			@Param("deliveryTypeID") Short deliveryTypeID,
+			@Param("typeOfDelivery") String typeOfDelivery,
+			@Param("complicationAtBirthID") Short complicationAtBirthID,
+			@Param("complicationAtBirth") String complicationAtBirth,
+			@Param("otherComplicationAtBirth") String otherComplicationAtBirth,
+			@Param("gestation") String gestation,
+			@Param("birthWeight_kg") Double birthWeight_kg,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("processed") String processed,
+			@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
+	
+}

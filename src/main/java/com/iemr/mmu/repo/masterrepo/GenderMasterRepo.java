@@ -1,0 +1,15 @@
+package com.iemr.mmu.repo.masterrepo;
+
+import java.util.ArrayList;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
+
+@Repository
+public interface GenderMasterRepo extends CrudRepository<GenderMaster, Short> {
+	@Query("select genderID, genderName from GenderMaster where deleted = false order by genderName ")
+	public ArrayList<Object[]> getGenderMaster();
+}
