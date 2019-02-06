@@ -68,7 +68,7 @@ public class CancerScreeningCreateController {
 						response.setResponse("Data saved and MAMMOGRAM order created successfully");
 					else
 						response.setError(9999,
-								"Data saved successfully but 'error in mammogram order creation';please contact administrator");
+								"Data saved successfully but 'error in MAMMOGRAM order creation';please contact administrator");
 				} else {
 					response.setError(5000, "Unable to save data");
 				}

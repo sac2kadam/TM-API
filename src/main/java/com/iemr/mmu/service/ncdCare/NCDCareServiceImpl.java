@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.ncdCare;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -53,6 +55,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 	private NCDCareDoctorServiceImpl ncdCareDoctorServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
@@ -83,8 +87,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveNCDCareNurseData(JsonObject requestOBJ) throws Exception {
+	public Long saveNCDCareNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long saveSuccessFlag = null;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -107,19 +112,15 @@ public class NCDCareServiceImpl implements NCDCareService {
 			Long vitalSaveSuccessFlag = null;
 			Integer i = null;
 
-			// temporary object for ben flow part. for getting visit reason and
-			// category and ben reg id
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			// if (requestOBJ.has("benFlowID")) {
-			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			// }
 
 			// Above if block code replaced by below line
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
+				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
@@ -129,7 +130,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
-				// Error in visit details saving or it is null
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0) && (i != null)) {
@@ -140,20 +141,27 @@ public class NCDCareServiceImpl implements NCDCareService {
 				 */
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID, benVisitCode, nurseUtilityClass.getVanID());
+						benFlowID, benVisitCode, nurseUtilityClass.getVanID(), tcRequestOBJ);
+			} else {
+				throw new RuntimeException("Error occurred while saving data");
 			}
 		} else {
-			// Can't create BenVisitID
+			throw new Exception("Invalid input");
 		}
 		return saveSuccessFlag;
 	}
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID, Long benVisitCode, Integer vanID) {
+			Long benVisitID, Long benFlowID, Long benVisitCode, Integer vanID,
+			TeleconsultationRequestOBJ tcRequestOBJ) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
+
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
 
 		if (!investigationDataCheck.isJsonNull() && !investigationDataCheck.get("laboratoryList").isJsonNull()
 				&& investigationDataCheck.getAsJsonArray("laboratoryList").size() > 0) {
@@ -169,10 +177,17 @@ public class NCDCareServiceImpl implements NCDCareService {
 			labIteration = (short) 0;
 		}
 
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getAllocationDate() != null) {
+			specialistFlag = (short) 1;
+			tcDate = tcRequestOBJ.getAllocationDate();
+			tcSpecialistUserID = tcRequestOBJ.getUserID();
+		} else
+			specialistFlag = (short) 0;
+
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode, vanID);
+				benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return rs;
 	}

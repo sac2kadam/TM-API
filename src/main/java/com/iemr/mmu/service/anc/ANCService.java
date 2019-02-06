@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 
 public interface ANCService {
 
-	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception;
+	public Long saveANCNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
 
-	//int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
+	// int UpdateANCVisitDetails(JsonObject jsnOBJ) throws Exception;
 
 	String getBenVisitDetailsFrmNurseANC(Long benRegID, Long visitCode);
 

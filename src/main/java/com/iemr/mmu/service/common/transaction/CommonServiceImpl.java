@@ -9,16 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
+import com.iemr.mmu.data.tele_consultation.TCRequestModel;
+import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
+import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
 import com.iemr.mmu.service.quickConsultation.QuickConsultationServiceImpl;
+import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -34,6 +41,12 @@ public class CommonServiceImpl implements CommonService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CSNurseServiceImpl cSNurseServiceImpl;
 	private CSServiceImpl csServiceImpl;
+	@Autowired
+	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	@Autowired
+	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+	@Autowired
+	private ProviderServiceMappingRepo providerServiceMappingRepo;
 
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
@@ -314,14 +327,81 @@ public class CommonServiceImpl implements CommonService {
 	 */
 	public String getBenPreviousVisitDataForCaseRecord(String comingRequest) throws IEMRException {
 		CommonUtilityClass obj = InputMapper.gson().fromJson(comingRequest, CommonUtilityClass.class);
-		//List<Short> flagList = new ArrayList<>();
+		// List<Short> flagList = new ArrayList<>();
 		// flagList.add((short) 9);
 		// flagList.add((short) 3);
-
-		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID());
+		List<Integer> psmIDList = providerServiceMappingRepo.getProviderServiceMapIdForServiceID((short) 4);
+		psmIDList.add(0);
+		ArrayList<Object[]> resultList = beneficiaryFlowStatusRepo.getBenPreviousHistory(obj.getBeneficiaryRegID(),
+				psmIDList);
 
 		return new Gson().toJson(BeneficiaryFlowStatus.getBeneficiaryPastVisitHistory(resultList));
 	}
 
 	// end of Fetch beneficiary previous visit details for case-record
+
+	/***
+	 * 
+	 * @param requestOBJ
+	 * @param commonUtilityClass
+	 * @param Authorization
+	 * @return
+	 * @throws Exception
+	 * @date 05-02-2019
+	 */
+	// create Teleconsultation request. Common for all module
+	public TeleconsultationRequestOBJ createTcRequest(JsonObject requestOBJ, CommonUtilityClass commonUtilityClass,
+			String Authorization) throws Exception {
+
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		Integer tcRequestStatusFlag = null;
+		TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
+
+		if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+				&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+				&& requestOBJ.get("tcRequest") != null) {
+			tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"), TeleconsultationRequestOBJ.class);
+
+			// create TC request
+			if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
+					&& tcRequestOBJ.getAllocationDate() != null) {
+
+				tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+						tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+
+				// tc request model
+				TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+				tRequestModel.setUserID(tcRequestOBJ.getUserID());
+				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+				tRequestModel
+						.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+
+				// tc speciaist slot booking model
+				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+				tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+				tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+				tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+				tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+				tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+				tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+
+				int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+						Authorization);
+				if (j > 0) {
+					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
+					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0) {
+
+					} else {
+						throw new RuntimeException("Error while creating TC request.");
+					}
+				} else
+					throw new RuntimeException("Error while booking slot.");
+
+			}
+		}
+
+		return tcRequestOBJ;
+	}
+
+	// end
 }

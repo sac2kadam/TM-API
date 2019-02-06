@@ -2858,6 +2858,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(obj);
 	}
 
+	// nurse worklist TC schedule (current-date) new ... 05-02-2019
+	public String getNurseWorkListTcCurrentDate(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo
+				.getNurseWorklistCurrentDate(providerServiceMapId);
+
+		return new Gson().toJson(obj);
+	}
+
+	// nurse worklist TC schedule (future-date) new ... 05-02-2019
+	public String getNurseWorkListTcFutureDate(Integer providerServiceMapId) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo
+				.getNurseWorklistFutureDate(providerServiceMapId);
+
+		return new Gson().toJson(obj);
+	}
+
 	// New Lab worklist.... 26-03-2018
 	public String getLabWorkListNew(Integer providerServiceMapId) {
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId);
@@ -3424,7 +3440,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		returnOBJ.put("bpList", bpList);
 		returnOBJ.put("bgList", bgList);
 
-		
 		return returnOBJ;
 	}
 }

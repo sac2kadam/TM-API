@@ -20,7 +20,7 @@ public interface QuickConsultationService {
 
 	public Long saveBeneficiaryExternalLabTestOrderDetails(JsonObject externalLabTestOrderDetail);
 
-	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception;
+	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ, String Authorization) throws Exception;
 
 	public Integer quickConsultDoctorDataInsert(JsonObject quickConsultDoctorOBJ, String Authorization)
 			throws Exception;

@@ -41,6 +41,7 @@ import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -64,6 +65,8 @@ public class CSServiceImpl implements CSService {
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -115,6 +118,7 @@ public class CSServiceImpl implements CSService {
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveCancerScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long nurseDataSuccessFlag = null;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
@@ -171,6 +175,9 @@ public class CSServiceImpl implements CSService {
 					docVisitReq = requestOBJ.get("sendToDoctorWorklist").getAsBoolean();
 				}
 
+				// create TC request
+				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
+
 				// call method to save history data
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID, benVisitCode);
 				// call method to save Examination data
@@ -192,26 +199,34 @@ public class CSServiceImpl implements CSService {
 					 * We have to write new code to update ben status flow new logic
 					 */
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
-							isReferedToMammogram, docVisitReq, benVisitCode, nurseUtilityClass.getVanID());
+							isReferedToMammogram, docVisitReq, benVisitCode, nurseUtilityClass.getVanID(),
+							tcRequestOBJ);
 
 				}
 
 			} else {
-				// Error in visit details saving or it is null
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
 
+		} else {
+			throw new Exception("Invalid input");
 		}
 		return nurseDataSuccessFlag;
 	}
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq, Long benVisitCode, Integer vanID) {
+			Long benFlowID, Boolean isReferedToMammogram, Boolean docVisitReq, Long benVisitCode, Integer vanID,
+			TeleconsultationRequestOBJ tcRequestOBJ) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 		short radiologistFlag = (short) 0;
 		short oncologistFlag = (short) 0;
+
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
 
 		if (isReferedToMammogram != null) {
 			if (isReferedToMammogram == true)
@@ -224,10 +239,17 @@ public class CSServiceImpl implements CSService {
 		else
 			oncologistFlag = (short) 1;
 
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getAllocationDate() != null) {
+			specialistFlag = (short) 1;
+			tcDate = tcRequestOBJ.getAllocationDate();
+			tcSpecialistUserID = tcRequestOBJ.getUserID();
+		} else
+			specialistFlag = (short) 0;
+
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, radiologistFlag,
-				oncologistFlag, benVisitCode, vanID);
+				oncologistFlag, benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return i;
 	}

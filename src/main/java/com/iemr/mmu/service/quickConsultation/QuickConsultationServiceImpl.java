@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.quickConsultation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
@@ -55,6 +57,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	// private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
@@ -226,8 +230,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ) throws Exception {
+	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ, String Authorization) throws Exception {
 		Integer returnOBJ = 0;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
 
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsnOBJ, CommonUtilityClass.class);
@@ -250,6 +255,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
+
+				tcRequestOBJ = commonServiceImpl.createTcRequest(jsnOBJ, nurseUtilityClass, Authorization);
+
 				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),
 						BenAnthropometryDetail.class);
 				benAnthropometryDetail.setBenVisitID(benVisitID);
@@ -274,29 +282,35 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 					 */
 
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
-							benVisitCode, nurseUtilityClass.getVanID());
+							benVisitCode, nurseUtilityClass.getVanID(), tcRequestOBJ);
 
 				} else {
-
+					throw new RuntimeException("Error occurred while saving data");
 				}
 			} else {
-				// Error in beneficiary visit creation...
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
+		} else {
+			throw new Exception("Invalid input");
 		}
 		return returnOBJ;
 	}
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(BeneficiaryVisitDetail benVisitDetailsOBJ, Long benVisitID,
-			Long benFlowID, Long benVisitCode, Integer vanID) {
+			Long benFlowID, Long benVisitCode, Integer vanID, TeleconsultationRequestOBJ tcRequestOBJ) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
+
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitID, benVisitDetailsOBJ.getVisitReason(),
 				benVisitDetailsOBJ.getVisitCategory(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode, vanID);
+				benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return i;
 	}

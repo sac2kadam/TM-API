@@ -3,13 +3,10 @@ package com.iemr.mmu.ncdCare;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Matchers;
 
-import com.google.gson.JsonObject;
 import com.iemr.mmu.controller.ncdCare.NCDCareCreateController;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 
@@ -27,7 +24,7 @@ public class TestNCDCareController {
 		doctorObjPve = "{ \"findings\":{ \"beneficiaryRegID\":\"7866\", \"benVisitID\":\"1040\", \"providerServiceMapID\":\"1320\", \"clinicalObservation\":\"Content here, content here\", \"otherSymptoms\":\"Content here, content here\", \"significantFindings\":\"Content here, content here\", \"complaints\":[ { \"chiefComplaint\":\"Abdominal Bloating\", \"chiefComplaintID\":1, \"duration\":\"23\", \"unitOfDuration\":\"Hours\", \"description\":\"content here, content here\" } ], \"createdBy\":\"888\" }, \"diagnosis\":{ \"ncdCareConditionID\":null, \"ncdCareCondition\":null, \"ncdCareTypeID\":null, \"ncdCareType\":null, \"ncdComplication\":\"Content here, content here\", \"beneficiaryRegID\":\"7866\", \"benVisitID\":\"1040\", \"providerServiceMapID\":\"1320\", \"createdBy\":\"888\" }, \"investigation\":{ \"externalInvestigation\":\"Content here, content here\", \"beneficiaryRegID\":\"7866\", \"benVisitID\":\"1040\", \"providerServiceMapID\":\"1320\", \"createdBy\":\"888\", \"laboratoryList\":[ { \"testID\":2, \"testName\":\"Blood Glucose Measurement\", \"isRadiologyImaging\":false }, { \"testID\":12, \"testName\":\"Blood grouping and Rh typing \", \"isRadiologyImaging\":false }, { \"testID\":17, \"testName\":\"BUN, Creatinine, Uric acid\", \"isRadiologyImaging\":false }, { \"testID\":29, \"testName\":\"CT Brain\", \"isRadiologyImaging\":true }, { \"testID\":30, \"testName\":\"CT Whole Spine \", \"isRadiologyImaging\":true }, { \"testID\":33, \"testName\":\"Flouroscopy- Urethrogram \", \"isRadiologyImaging\":true } ] }, \"prescription\":{ \"prescribedDrugs\":[ { \"specialInstruction\":\"After Food\", \"genericDrugName\":\"Ciprofloxacin Hcl Eye /Ear Drops IP 0.3% w/v in 5 ml\", \"dose\":\"Days \", \"frequency\":\"Thrice Daily (TID)\", \"drugForm\":\"Tablet\", \"drugDuration\":\"21\", \"qih\":3 } ], \"beneficiaryRegID\":\"7866\", \"benVisitID\":\"1040\", \"providerServiceMapID\":\"1320\", \"createdBy\":\"888\" }, \"refer\":{ \"referredToInstituteID\":null, \"refrredToAdditionalServiceList\":[ 3, 1, 5 ], \"beneficiaryRegID\":\"7866\", \"benVisitID\":\"1040\", \"providerServiceMapID\":\"1320\", \"createdBy\":\"888\" } }";
 
 		try {
-			when(ncdCareServiceImplMock.saveNCDCareNurseData(Matchers.any(JsonObject.class))).thenReturn(1L);
+			// when(ncdCareServiceImplMock.saveNCDCareNurseData(Matchers.any(JsonObject.class))).thenReturn(1L);
 			// when(ncdCareServiceImplMock.saveDoctorData(Matchers.any(JsonObject.class))).thenReturn(1L);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -38,7 +35,8 @@ public class TestNCDCareController {
 	@Test
 	public void saveNCDCareNurseDataPveTest() {
 
-		String response = createController.saveBenNCDCareNurseData(nurseObjPve);
+		// String response = createController.saveBenNCDCareNurseData(nurseObjPve);
+		String response = null;
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"NCD Care Nurse Entered Details stored successfully.\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));

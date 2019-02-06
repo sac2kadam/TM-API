@@ -92,7 +92,7 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "create TC request for beneficiary whose visit is created", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "create TC request for beneficiary whose visit is created from worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/create/benTCRequestWithVisitCode" }, method = { RequestMethod.POST })
 	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();

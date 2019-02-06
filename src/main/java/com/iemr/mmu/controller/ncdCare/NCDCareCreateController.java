@@ -46,7 +46,8 @@ public class NCDCareCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save NCD Care nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenNCDCareNurseData(@RequestBody String requestObj) {
+	public String saveBenNCDCareNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for NCD Care nurse data saving :" + requestObj);
@@ -57,7 +58,7 @@ public class NCDCareCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ);
+				Long ncdCareRes = ncdCareServiceImpl.saveNCDCareNurseData(jsnOBJ, Authorization);
 				if (null != ncdCareRes && ncdCareRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

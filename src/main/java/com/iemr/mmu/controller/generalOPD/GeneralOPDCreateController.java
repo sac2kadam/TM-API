@@ -46,7 +46,8 @@ public class GeneralOPDCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save General OPD nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenGenOPDNurseData(@RequestBody String requestObj) {
+	public String saveBenGenOPDNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for GeneralOPD nurse data saving :" + requestObj);
@@ -57,7 +58,7 @@ public class GeneralOPDCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ);
+				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ, Authorization);
 				if (null != genOPDRes && genOPDRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

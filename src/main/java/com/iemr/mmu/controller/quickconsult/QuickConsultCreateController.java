@@ -52,7 +52,8 @@ public class QuickConsultCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save quick consult nurse data (QC)..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj) {
+	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		logger.info("Quick consult nurse data save request : " + requestObj);
 		try {
@@ -62,7 +63,7 @@ public class QuickConsultCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ);
+				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ, Authorization);
 				if (r == 1) {
 					response.setResponse("Data saved successfully");
 				} else {

@@ -94,8 +94,13 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							benVisitCode, nurseUtilityClass.getVanID());
 
 					result = 1;
+				}else {
+					throw new RuntimeException("Error occurred while saving data");
 				}
-			}
+			}else
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
+		}else {
+			throw new Exception("Invalid input");
 		}
 		return result;
 	}
@@ -106,14 +111,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		short docFlag = (short) 0;
 		short labIteration = (short) 0;
 
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
+
 		if (isScreeningDone != null && isScreeningDone == true)
 			nurseFlag = (short) 9;
 		else
 			nurseFlag = (short) 100;
 
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID, benRegID, benVisitID,
-				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode,
-				vanID);
+				visitReason, visitCategory, nurseFlag, docFlag, labIteration, (short) 0, (short) 0, benVisitCode, vanID,
+				specialistFlag, tcDate, tcSpecialistUserID);
 
 		return rs;
 	}

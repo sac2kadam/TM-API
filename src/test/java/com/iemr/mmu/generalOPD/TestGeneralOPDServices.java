@@ -136,7 +136,8 @@ public class TestGeneralOPDServices {
 
 		Long response = null;
 		try {
-			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJPve);
+//			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJPve);
+			response = null;
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -151,7 +152,7 @@ public class TestGeneralOPDServices {
 
 		Long response = null;
 		try {
-			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJNve);
+			//response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJNve);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

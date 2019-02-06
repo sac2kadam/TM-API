@@ -49,7 +49,8 @@ public class ANCCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save ANC nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenANCNurseData(@RequestBody String requestObj) {
+	public String saveBenANCNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for ANC nurse data saving :" + requestObj);
@@ -60,7 +61,7 @@ public class ANCCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ);
+				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ, Authorization);
 				if (null != ancRes && ancRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
@@ -112,7 +113,7 @@ public class ANCCreateController {
 
 		} catch (Exception e) {
 			logger.error("Error while saving doctor data:" + e);
-			response.setError(5000, "Unable to save data. " +e.getMessage());
+			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 		return response.toString();
 	}

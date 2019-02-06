@@ -2,9 +2,8 @@ package com.iemr.mmu.service.ncdCare;
 
 import com.google.gson.JsonObject;
 
-public interface NCDCareService
-{
+public interface NCDCareService {
 
-	Long saveNCDCareNurseData(JsonObject requestOBJ) throws Exception;
+	Long saveNCDCareNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
 
 }

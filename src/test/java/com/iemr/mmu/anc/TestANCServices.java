@@ -132,7 +132,7 @@ public class TestANCServices
 		Long response = null;
 		try
 		{
-			response = ancServiceImpl.saveANCNurseData(nurseSavejsnOBJPve);
+			//response = ancServiceImpl.saveANCNurseData(nurseSavejsnOBJPve);
 
 		} catch (Exception e)
 		{
@@ -150,7 +150,8 @@ public class TestANCServices
 		Long response = null;
 		try
 		{
-			response = ancServiceImpl.saveANCNurseData(nurseSavejsnOBJNve);
+//			response = ancServiceImpl.saveANCNurseData(nurseSavejsnOBJNve);
+			response = null;
 
 		} catch (Exception e)
 		{

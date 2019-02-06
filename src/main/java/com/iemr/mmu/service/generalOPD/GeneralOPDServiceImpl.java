@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.generalOPD;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -69,6 +71,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -103,11 +107,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/// --------------- start of saving nurse data ------------------------
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveNurseData(JsonObject requestOBJ) throws Exception {
+	public Long saveNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long historySaveSuccessFlag = null;
 		Long vitalSaveSuccessFlag = null;
 		Long examtnSaveSuccessFlag = null;
 		Long saveSuccessFlag = null;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -124,19 +129,15 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
 			}
 
-			// temporary object for ben flow part. for getting visit reason and
-			// category and ben reg id
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			// if (requestOBJ.has("benFlowID")) {
-			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			// }
-
 			// Above if block code replaced by below line
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
+				// create tc request
+				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
 				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
 					historySaveSuccessFlag = saveBenGeneralOPDHistoryDetails(
@@ -151,11 +152,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
-
-				// int i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
-				// Beneficiary Visit ID not generated.
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
 
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
@@ -169,26 +167,39 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				 */
 
 				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
-						nurseUtilityClass.getVanID());
+						nurseUtilityClass.getVanID(), tcRequestOBJ);
 
+			} else {
+				throw new RuntimeException("Error occurred while saving data");
 			}
 		} else {
-			// Can't create benVisitID.
+			throw new Exception("Invalid input");
 		}
 		return saveSuccessFlag;
 	}
 
 	// method for updating ben flow status flag for nurse
 	private int updateBenStatusFlagAfterNurseSaveSuccess(JsonObject tmpOBJ, Long benVisitID, Long benFlowID,
-			Long benVisitCode, Integer vanID) {
+			Long benVisitCode, Integer vanID, TeleconsultationRequestOBJ tcRequestOBJ) {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
+
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getAllocationDate() != null) {
+			specialistFlag = (short) 1;
+			tcDate = tcRequestOBJ.getAllocationDate();
+			tcSpecialistUserID = tcRequestOBJ.getUserID();
+		} else
+			specialistFlag = (short) 0;
+
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode, vanID);
+				benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return i;
 	}

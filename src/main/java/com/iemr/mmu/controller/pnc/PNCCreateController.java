@@ -45,7 +45,8 @@ public class PNCCreateController {
 	@CrossOrigin
 	@ApiOperation(value = "Save PNC nurse data..", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenPNCNurseData(@RequestBody String requestObj) {
+	public String saveBenPNCNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
 			logger.info("Request object for PNC nurse data saving :" + requestObj);
@@ -56,7 +57,7 @@ public class PNCCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ);
+				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ, Authorization);
 				if (null != ancRes && ancRes > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

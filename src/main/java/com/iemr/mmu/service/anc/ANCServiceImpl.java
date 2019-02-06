@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.anc;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,6 +51,7 @@ import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -66,6 +68,8 @@ public class ANCServiceImpl implements ANCService {
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+	@Autowired
+	private CommonServiceImpl commonServiceImpl;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -104,10 +108,11 @@ public class ANCServiceImpl implements ANCService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveANCNurseData(JsonObject requestOBJ) throws Exception {
+	public Long saveANCNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		// String vr = "";
 		// String vc = "";
 		Long saveSuccessFlag = null;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -128,22 +133,19 @@ public class ANCServiceImpl implements ANCService {
 			Long historySaveSuccessFlag = null;
 			Long vitalSaveSuccessFlag = null;
 			Long examtnSaveSuccessFlag = null;
-			Integer i = null;
 
 			// code moved from inner code
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
 
 			// Getting benflowID for ben status update
 			Long benFlowID = null;
-			// if (requestOBJ.has("benFlowID")) {
-			// benFlowID = requestOBJ.get("benFlowID").getAsLong();
-			// }
 
 			// Above if block code replaced by below line
 			benFlowID = nurseUtilityClass.getBenFlowID();
 
 			if (benVisitID != null && benVisitID > 0) {
-
+				// create tc request
+				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save ANC data
 				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID,
 						benVisitCode);
@@ -156,24 +158,13 @@ public class ANCServiceImpl implements ANCService {
 				// call method to save Examination data
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID, benVisitCode);
-
-				// Code moved above if statement
-				// JsonObject tmpOBJ =
-				// requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");
-				// JsonObject tmpOBJ1 =
-				// tmpOBJ.get("visitDetails").getAsJsonObject();
-
-				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
-				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
-				// Error in visit details saving or it is null
+				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
 			if ((null != ancSaveSuccessFlag && ancSaveSuccessFlag > 0)
 					&& (null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
 					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
-				// removed on 07-06-2018 not using this logic anymore
-				// && (i != null)
 
 				saveSuccessFlag = ancSaveSuccessFlag;
 
@@ -183,22 +174,27 @@ public class ANCServiceImpl implements ANCService {
 
 				int J = updateBenFlowNurseAfterNurseActivityANC(
 						requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("investigation"), tmpOBJ, benVisitID,
-						benFlowID, benVisitCode, nurseUtilityClass.getVanID());
+						benFlowID, benVisitCode, nurseUtilityClass.getVanID(), tcRequestOBJ);
 
 				// End of update ben status flow new logic
 
+			} else {
+				throw new RuntimeException("Error occurred while saving data");
 			}
 		} else {
-			// Can't create BenVisitID
+			throw new Exception("Invalid input");
 		}
 		return saveSuccessFlag;
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,
-			Long benVisitID, Long benFlowID, Long visitCode, Integer vanID) {
+			Long benVisitID, Long benFlowID, Long visitCode, Integer vanID, TeleconsultationRequestOBJ tcRequestOBJ) {
 		short nurseFlag;
 		short docFlag;
 		short labIteration;
+		short specialistFlag = (short) 0;
+		Timestamp tcDate = null;
+		Integer tcSpecialistUserID = null;
 
 		if (!investigationDataCheck.isJsonNull() && !investigationDataCheck.get("laboratoryList").isJsonNull()
 				&& investigationDataCheck.getAsJsonArray("laboratoryList").size() > 0) {
@@ -214,10 +210,17 @@ public class ANCServiceImpl implements ANCService {
 			labIteration = (short) 0;
 		}
 
+		if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getAllocationDate() != null) {
+			specialistFlag = (short) 1;
+			tcDate = tcRequestOBJ.getAllocationDate();
+			tcSpecialistUserID = tcRequestOBJ.getUserID();
+		} else
+			specialistFlag = (short) 0;
+
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				visitCode, vanID);
+				visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return rs;
 	}
@@ -235,47 +238,53 @@ public class ANCServiceImpl implements ANCService {
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
-			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
+			// TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
-
-			if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-					&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
-					&& requestOBJ.get("tcRequest") != null) {
-				tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-						TeleconsultationRequestOBJ.class);
-
-				// create TC request
-				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
-						&& tcRequestOBJ.getAllocationDate() != null) {
-
-					tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-							tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-
-					// tc request model
-					TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
-					tRequestModel.setUserID(tcRequestOBJ.getUserID());
-					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-					tRequestModel
-							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
-
-					// tc speciaist slot booking model
-					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-					tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
-					tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
-					tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
-					tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
-					tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-					tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-
-					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-							Authorization);
-					if (j > 0)
-						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
-					else
-						throw new RuntimeException("Error while booking slot.");
-
-				}
-			}
+			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
+			// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+			// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
+			// requestOBJ.has("tcRequest")
+			// && requestOBJ.get("tcRequest") != null) {
+			// tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
+			// TeleconsultationRequestOBJ.class);
+			//
+			// // create TC request
+			// if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null &&
+			// tcRequestOBJ.getUserID() > 0
+			// && tcRequestOBJ.getAllocationDate() != null) {
+			//
+			// tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
+			// tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
+			//
+			// // tc request model
+			// TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ,
+			// TCRequestModel.class);
+			// tRequestModel.setUserID(tcRequestOBJ.getUserID());
+			// tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
+			// tRequestModel
+			// .setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(),
+			// tcRequestOBJ.getToTime()));
+			//
+			// // tc speciaist slot booking model
+			// tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
+			// tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
+			// tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
+			// tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
+			// tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
+			// tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
+			// tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
+			//
+			// int j =
+			// commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
+			// Authorization);
+			// if (j > 0)
+			// tcRequestStatusFlag =
+			// teleConsultationServiceImpl.createTCRequest(tRequestModel);
+			// else
+			// throw new RuntimeException("Error while booking slot.");
+			//
+			// }
+			// }
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -383,7 +392,9 @@ public class ANCServiceImpl implements ANCService {
 			} else {
 				throw new RuntimeException();
 			}
-		} else {
+		} else
+
+		{
 			// request OBJ is null.
 		}
 		return saveSuccessFlag;

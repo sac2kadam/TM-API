@@ -153,6 +153,46 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// nurse worklist TC schedule (current-date) new
+	@CrossOrigin()
+	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}" }, method = { RequestMethod.GET })
+	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getNurseWorkListTcCurrentDate(providerServiceMapID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting nurse worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(5000, "Error while getting nurse worklist");
+		}
+		return response.toString();
+	}
+
+	// nurse worklist TC schedule (future-date) new
+	@CrossOrigin()
+	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}" }, method = { RequestMethod.GET })
+	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getNurseWorkListTcFutureDate(providerServiceMapID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting nurse worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(5000, "Error while getting nurse worklist");
+		}
+		return response.toString();
+	}
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Doctor Entered Previous significant Findings", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getDoctorPreviousSignificantFindings" }, method = { RequestMethod.POST })

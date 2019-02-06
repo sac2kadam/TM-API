@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.iemr.mmu</groupId>
-	<artifactId>MMU-API-v2.0</artifactId>
+	<artifactId>tmapi-v1.0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>MMU-API-v2.0</name>
-	<description>Piramal MMUs phase 2</description>
+	<name>tmapi-v1.0</name>
+	<description>Piramal TM</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -243,7 +243,7 @@
 
 
 	<build>
-		<finalName>mmuapi-v1.0</finalName>
+		<finalName>tmapi-v1.0</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

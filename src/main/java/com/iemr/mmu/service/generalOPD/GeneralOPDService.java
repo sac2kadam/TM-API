@@ -7,7 +7,7 @@ import com.iemr.mmu.data.nurse.CommonUtilityClass;
 
 public interface GeneralOPDService {
 
-	Long saveNurseData(JsonObject requestOBJ) throws Exception;
+	Long saveNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
 
 	Map<String, Long> saveBenVisitDetails(JsonObject visitDetailsOBJ, CommonUtilityClass nurseUtilityClass)
 			throws Exception;
