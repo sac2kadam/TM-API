@@ -127,6 +127,9 @@ public class ANCServiceImpl implements ANCService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
+				
+				nurseUtilityClass.setVisitCode(benVisitCode);
+				nurseUtilityClass.setBenVisitID(benVisitID);
 			}
 
 			Long ancSaveSuccessFlag = null;

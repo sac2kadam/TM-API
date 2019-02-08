@@ -127,6 +127,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
+				
+				nurseUtilityClass.setVisitCode(benVisitCode);
+				nurseUtilityClass.setBenVisitID(benVisitID);
 			}
 
 			JsonObject tmpOBJ = requestOBJ.getAsJsonObject("visitDetails").getAsJsonObject("visitDetails");

@@ -371,6 +371,12 @@ public class CommonServiceImpl implements CommonService {
 
 				// tc request model
 				TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ, TCRequestModel.class);
+
+				tRequestModel.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
+				tRequestModel.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
+				tRequestModel.setVisitCode(commonUtilityClass.getVisitCode());
+				tRequestModel.setBenVisitID(commonUtilityClass.getBenVisitID());
+
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
 				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
 				tRequestModel
