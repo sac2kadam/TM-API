@@ -105,6 +105,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
+				
+				nurseUtilityClass.setVisitCode(benVisitCode);
+				nurseUtilityClass.setBenVisitID(benVisitID);
 			}
 
 			// check if visit details data saved successfully

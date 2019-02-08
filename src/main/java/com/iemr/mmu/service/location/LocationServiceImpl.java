@@ -14,6 +14,7 @@ import com.iemr.mmu.data.location.DistrictBranchMapping;
 import com.iemr.mmu.data.location.Districts;
 import com.iemr.mmu.data.location.States;
 import com.iemr.mmu.data.location.V_GetLocDetailsFromSPidAndPSMid;
+import com.iemr.mmu.data.location.V_getVanLocDetails;
 import com.iemr.mmu.data.location.ZoneMaster;
 import com.iemr.mmu.data.login.MasterServicePoint;
 import com.iemr.mmu.data.login.ParkingPlace;
@@ -25,6 +26,7 @@ import com.iemr.mmu.repo.location.ParkingPlaceMasterRepo;
 import com.iemr.mmu.repo.location.ServicePointMasterRepo;
 import com.iemr.mmu.repo.location.StateMasterRepo;
 import com.iemr.mmu.repo.location.V_GetLocDetailsFromSPidAndPSMidRepo;
+import com.iemr.mmu.repo.location.V_getVanLocDetailsRepo;
 import com.iemr.mmu.repo.location.V_get_prkngplc_dist_zone_state_from_spidRepo;
 import com.iemr.mmu.repo.location.ZoneMasterRepo;
 import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
@@ -42,6 +44,9 @@ public class LocationServiceImpl implements LocationService {
 	private ServicePointVillageMappingRepo servicePointVillageMappingRepo;
 	private DistrictBranchMasterRepo districtBranchMasterRepo;
 	private V_get_prkngplc_dist_zone_state_from_spidRepo v_get_prkngplc_dist_zone_state_from_spidRepo;
+	@Autowired
+	private V_getVanLocDetailsRepo v_getVanLocDetailsRepo;
+	
 
 	@Autowired
 	public void setV_get_prkngplc_dist_zone_state_from_spidRepo(
@@ -217,10 +222,15 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	// new, 11-10-2018
-	public String getLocDetailsNew(Integer spID, Integer spPSMID) {
+	public String getLocDetailsNew(Integer vanID, Integer spPSMID) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		// other location details
-		ArrayList<Object[]> objList = v_get_prkngplc_dist_zone_state_from_spidRepo.getDefaultLocDetails(spID, spPSMID);
+		// ArrayList<Object[]> objList =
+		// v_get_prkngplc_dist_zone_state_from_spidRepo.getDefaultLocDetails(spID,
+		// spPSMID);
+
+		// other location details, changed for TM
+		ArrayList<Object[]> resultSet = v_getVanLocDetailsRepo.getVanDetails(vanID);
 
 		// state master
 		ArrayList<States> stateList = new ArrayList<>();
@@ -231,24 +241,9 @@ public class LocationServiceImpl implements LocationService {
 				stateList.add(states);
 			}
 		}
-		// village masters from service point
-		// List<Object[]> servicePointVillageList =
-		// servicePointVillageMappingRepo.getServicePointVillages(spID);
-		//
-		// ArrayList<ServicePointVillageMapping> villageList = new
-		// ArrayList<ServicePointVillageMapping>();
-		// if (servicePointVillageList.size() > 0) {
-		// ServicePointVillageMapping VillageMap;
-		// for (Object[] obj : servicePointVillageList) {
-		// VillageMap = new ServicePointVillageMapping((Integer) obj[0], (String)
-		// obj[1]);
-		// villageList.add(VillageMap);
-		// }
-		// }
 
-		resMap.put("otherLoc", getDefaultLocDetails(objList));
+		resMap.put("otherLoc", getDefaultLocDetails(resultSet));
 		resMap.put("stateMaster", stateList);
-		// resMap.put("villageMaster", villageList);
 
 		return new Gson().toJson(resMap);
 	}
@@ -258,12 +253,12 @@ public class LocationServiceImpl implements LocationService {
 		Map<String, Object> distMap = new HashMap<>();
 		ArrayList<Map<String, Object>> distLit = new ArrayList<>();
 		if (objList != null && objList.size() > 0) {
-			returnObj.put("stateID", objList.get(0)[6]);
-			returnObj.put("stateName", objList.get(0)[7]);
-			returnObj.put("zoneID", objList.get(0)[4]);
-			returnObj.put("zoneName", objList.get(0)[5]);
-			returnObj.put("parkingPlaceID", objList.get(0)[0]);
-			returnObj.put("parkingPlaceName", objList.get(0)[1]);
+			returnObj.put("stateID", objList.get(0)[0]);
+			// returnObj.put("stateName", objList.get(0)[7]);
+			// returnObj.put("zoneID", objList.get(0)[4]);
+			// returnObj.put("zoneName", objList.get(0)[5]);
+			returnObj.put("parkingPlaceID", objList.get(0)[1]);
+			// returnObj.put("parkingPlaceName", objList.get(0)[1]);
 			for (Object[] objArr : objList) {
 				distMap = new HashMap<>();
 				distMap.put("districtID", objArr[2]);
@@ -277,4 +272,29 @@ public class LocationServiceImpl implements LocationService {
 		return returnObj;
 
 	}
+	// private Map<String, Object> getDefaultLocDetails(ArrayList<Object[]> objList)
+	// {
+	// Map<String, Object> returnObj = new HashMap<>();
+	// Map<String, Object> distMap = new HashMap<>();
+	// ArrayList<Map<String, Object>> distLit = new ArrayList<>();
+	// if (objList != null && objList.size() > 0) {
+	// returnObj.put("stateID", objList.get(0)[6]);
+	// returnObj.put("stateName", objList.get(0)[7]);
+	// returnObj.put("zoneID", objList.get(0)[4]);
+	// returnObj.put("zoneName", objList.get(0)[5]);
+	// returnObj.put("parkingPlaceID", objList.get(0)[0]);
+	// returnObj.put("parkingPlaceName", objList.get(0)[1]);
+	// for (Object[] objArr : objList) {
+	// distMap = new HashMap<>();
+	// distMap.put("districtID", objArr[2]);
+	// distMap.put("districtName", objArr[3]);
+	//
+	// distLit.add(distMap);
+	// }
+	//
+	// returnObj.put("districtList", distLit);
+	// }
+	// return returnObj;
+	//
+	// }
 }

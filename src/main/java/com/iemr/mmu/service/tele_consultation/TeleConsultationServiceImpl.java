@@ -85,9 +85,10 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				if (j > 0)
 					resultFlag = 1;
 				else
-					throw new RuntimeException("Beneficiary arrival status update failed");
+					throw new RuntimeException(
+							"Beneficiary arrival status update failed.There is no active Tele-consultation session");
 			} else
-				throw new RuntimeException("Beneficiary arrival status update failed");
+				throw new RuntimeException("Beneficiary arrival status update failed.There is no active Tele-consultation session for this visit");
 		} else {
 			throw new RuntimeException("Invalid request");
 		}
@@ -124,7 +125,7 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 			if (i > 0 && j > 0 && k > 0)
 				resultFlag = 1;
 			else
-				throw new RuntimeException("Teleconsultation cancel request failed");
+				throw new RuntimeException("Teleconsultation cancel request failed.There is no active Tele-consultation session for this visit");
 
 		} else
 			throw new RuntimeException("Invalid request");

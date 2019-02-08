@@ -256,6 +256,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 
 			if (benVisitID != null && benVisitID > 0) {
 
+				nurseUtilityClass.setVisitCode(benVisitCode);
+				nurseUtilityClass.setBenVisitID(benVisitID);
+
 				tcRequestOBJ = commonServiceImpl.createTcRequest(jsnOBJ, nurseUtilityClass, Authorization);
 
 				BenAnthropometryDetail benAnthropometryDetail = InputMapper.gson().fromJson(jsnOBJ.get("vitalsDetails"),

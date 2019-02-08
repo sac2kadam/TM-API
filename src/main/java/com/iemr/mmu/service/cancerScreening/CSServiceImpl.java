@@ -136,6 +136,9 @@ public class CSServiceImpl implements CSService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
+				
+				nurseUtilityClass.setVisitCode(benVisitCode);
+				nurseUtilityClass.setBenVisitID(benVisitID);
 			}
 
 			// Getting benflowID for ben status update
