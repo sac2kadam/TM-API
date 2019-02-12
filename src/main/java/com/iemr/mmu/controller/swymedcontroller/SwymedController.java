@@ -74,5 +74,32 @@ public class SwymedController {
 
 	}
 	
+	@CrossOrigin()
+	@RequestMapping(value =  "/callvan/{fromuserID}/{vanID}" ,headers = "Authorization", method = { RequestMethod.GET }, produces = { "application/json" })
+	public String callvan(@PathVariable("fromuserID")Long fromuserID,@PathVariable("vanID")Integer vanID) {
+		
+		OutputResponse response = new OutputResponse();
+
+		try {
+		     
+
+			
+			String createdData=swymedService.callVan(fromuserID, vanID);
+			
+			
+			response.setResponse(createdData.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+
+		}
+		/**
+		 * sending the response...
+		 */
+		return response.toString();
+
+	}
+	
 	
 }
