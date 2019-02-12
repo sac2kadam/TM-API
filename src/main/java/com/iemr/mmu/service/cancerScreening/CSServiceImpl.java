@@ -136,7 +136,7 @@ public class CSServiceImpl implements CSService {
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
 				benVisitID = visitIdAndCodeMap.get("visitID");
 				benVisitCode = visitIdAndCodeMap.get("visitCode");
-				
+
 				nurseUtilityClass.setVisitCode(benVisitCode);
 				nurseUtilityClass.setBenVisitID(benVisitID);
 			}
@@ -780,9 +780,16 @@ public class CSServiceImpl implements CSService {
 				tmpBeneficiaryID = commonUtilityClass.getBeneficiaryID();
 				tmpBenVisitID = commonUtilityClass.getBenVisitID();
 
-				short docFlag = (short) 9;
+				short docFlag = (short) 1;
 				short pharmaFalg = (short) 0;
 				short oncologistFlag = (short) 1;
+
+				if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
+						&& commonUtilityClass.getIsSpecialist() == true) {
+					tcSpecialistFlag = (short) 9;
+				} else {
+					docFlag = (short) 9;
+				}
 
 				if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
 						&& tcRequestOBJ.getAllocationDate() != null) {
@@ -792,9 +799,16 @@ public class CSServiceImpl implements CSService {
 
 				}
 
-				int l = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-						tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
-						tcUserID, tcDate);
+				if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
+						&& commonUtilityClass.getIsSpecialist() == true) {
+					int l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
+							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
+							tcSpecialistFlag);
+				} else {
+					int l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
+							tcUserID, tcDate);
+				}
 
 				docDataSuccessFlag = diagnosisSuccessFlag;
 			}

@@ -613,7 +613,7 @@ public class CommonDoctorServiceImpl {
 	public int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
 			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) {
 		short pharmaFalg;
-		short docFlag;
+		short docFlag = (short) 1;
 		short tcSpecialistFlag = (short) 0;
 		int tcUserID = 0;
 		Timestamp tcDate = null;
@@ -623,12 +623,24 @@ public class CommonDoctorServiceImpl {
 		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
 		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
-		// checking if test is prescribed
-		if (isTestPrescribed) {
-			docFlag = (short) 2;
+		// check if TC specialist or doctor
+		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
+				&& commonUtilityClass.getIsSpecialist() == true) {
+			// checking if test is prescribed
+			if (isTestPrescribed) {
+				tcSpecialistFlag = (short) 2;
+			} else {
+				tcSpecialistFlag = (short) 9;
+			}
 		} else {
-			docFlag = (short) 9;
+			// checking if test is prescribed
+			if (isTestPrescribed) {
+				docFlag = (short) 2;
+			} else {
+				docFlag = (short) 9;
+			}
 		}
+
 		// checking if medicine is prescribed
 		if (isMedicinePrescribed) {
 			pharmaFalg = (short) 1;
@@ -644,8 +656,18 @@ public class CommonDoctorServiceImpl {
 
 		}
 
-		int i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
-				tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate);
+		int i = 0;
+
+		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
+				&& commonUtilityClass.getIsSpecialist() == true)
+			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
+					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
+					tcSpecialistFlag);
+		else
+			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
+					tcDate);
+
 		return i;
 	}
 

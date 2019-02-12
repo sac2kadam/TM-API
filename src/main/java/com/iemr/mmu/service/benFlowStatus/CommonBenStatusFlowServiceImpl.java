@@ -212,6 +212,18 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		return i;
 	}
 
+	public int updateBenFlowAfterDocDataFromSpecialist(Long benFlowID, Long benRegID, Long benID, Long benVisitID,
+			short docFlag, short pharmaFlag, short oncologistFlag, short tcSpecialistFlag) {
+		int i = 0;
+		try {
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivitySpecialist(benFlowID, benRegID, benID,
+					docFlag, pharmaFlag, oncologistFlag, tcSpecialistFlag);
+		} catch (Exception e) {
+			logger.error("Error in ben flow creation = " + e);
+		}
+		return i;
+	}
+
 	public int updateBenFlowAfterDocDataUpdate(Long benFlowID, Long benRegID, Long benID, Long benVisitID,
 			short docFlag, short pharmaFlag, short oncologistFlag, short tcSpecialistFlag, int tcUserID,
 			Timestamp tcDate) throws Exception {
