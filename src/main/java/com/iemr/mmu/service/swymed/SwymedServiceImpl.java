@@ -94,7 +94,7 @@ public class SwymedServiceImpl implements SwymedService {
 
 		data.append(swymed_dnsname);
 		data.append("?l=");
-		data.append(user.getUsername());
+		data.append(user.getSwymedEmailID());
 		data.append("&p=");
 		data.append(user.getSwymedPassword());
 		data.append("&d=");
