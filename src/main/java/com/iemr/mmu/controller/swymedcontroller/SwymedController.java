@@ -19,20 +19,18 @@ public class SwymedController {
 
 	@Autowired
 	private SwymedService swymedService;
-	
+
 	@CrossOrigin()
-	@RequestMapping(value =  "/login/{userID}" ,headers = "Authorization", method = { RequestMethod.GET }, produces = { "application/json" })
-	public String login(@PathVariable("userID")Long userID) {
-		
+	@RequestMapping(value = "/login/{userID}", headers = "Authorization", method = { RequestMethod.GET }, produces = {
+			"application/json" })
+	public String login(@PathVariable("userID") Long userID) {
+
 		OutputResponse response = new OutputResponse();
 
 		try {
-		     
 
-			
-			String createdData=swymedService.login(userID);
-			
-			
+			String createdData = swymedService.login(userID);
+
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
@@ -46,20 +44,18 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
-	@RequestMapping(value =  "/call/{fromuserID}/{touserID}" ,headers = "Authorization", method = { RequestMethod.GET }, produces = { "application/json" })
-	public String call(@PathVariable("fromuserID")Long fromuserID,@PathVariable("touserID")Long touserID) {
-		
+	@RequestMapping(value = "/call/{fromuserID}/{touserID}", headers = "Authorization", method = {
+			RequestMethod.GET }, produces = { "application/json" })
+	public String call(@PathVariable("fromuserID") Long fromuserID, @PathVariable("touserID") Long touserID) {
+
 		OutputResponse response = new OutputResponse();
 
 		try {
-		     
 
-			
-			String createdData=swymedService.callUser(fromuserID, touserID);
-			
-			
+			String createdData = swymedService.callUser(fromuserID, touserID);
+
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
@@ -73,20 +69,18 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
-	@RequestMapping(value =  "/callvan/{fromuserID}/{vanID}" ,headers = "Authorization", method = { RequestMethod.GET }, produces = { "application/json" })
-	public String callvan(@PathVariable("fromuserID")Long fromuserID,@PathVariable("vanID")Integer vanID) {
-		
+	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}", headers = "Authorization", method = {
+			RequestMethod.GET }, produces = { "application/json" })
+	public String callvan(@PathVariable("fromuserID") Long fromuserID, @PathVariable("vanID") Integer vanID) {
+
 		OutputResponse response = new OutputResponse();
 
 		try {
-		     
 
-			
-			String createdData=swymedService.callVan(fromuserID, vanID);
-			
-			
+			String createdData = swymedService.callVan(fromuserID, vanID);
+
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
@@ -100,6 +94,5 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
-	
+
 }

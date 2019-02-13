@@ -36,10 +36,10 @@ public class MasterVan {
 	@Expose
 	@Column(name = "FacilityID")
 	private Integer facilityID;
-	
+
 	@Expose
 	@Column(name = "SwymedEmailID")
-	private Integer swymedEmailID;
+	private String swymedEmailID;
 
 	@ManyToOne
 	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)
@@ -123,11 +123,11 @@ public class MasterVan {
 		this.userParkingplaceMapping = userParkingplaceMapping;
 	}
 
-	public Integer getSwymedEmailID() {
+	public String getSwymedEmailID() {
 		return swymedEmailID;
 	}
 
-	public void setSwymedEmailID(Integer swymedEmailID) {
+	public void setSwymedEmailID(String swymedEmailID) {
 		this.swymedEmailID = swymedEmailID;
 	}
 

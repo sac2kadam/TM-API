@@ -3,7 +3,6 @@ package com.iemr.mmu.service.swymed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.swymed.UserSwymed;
 import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.swymed.UserRepo;
@@ -81,12 +80,13 @@ public class SwymedServiceImpl implements SwymedService {
 		// TODO Auto-generated method stubUserSwymed user =
 		// userSwymedRepo.findOneMap(fromuserid);
 		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
-		MasterVan van = masterVanRepo.findOne(vanid);
+		String vanSwymesEmail = masterVanRepo.getSpokeEmail(vanid);
+		// MasterVan van = masterVanRepo.findOne(vanid);
 
 		if (user == null) {
 			throw new SwymedException("User doesnt have access to Swymed");
 		}
-		if (van == null || van.getSwymedEmailID()==null) {
+		if (vanSwymesEmail == null) {
 			throw new SwymedException("Callee  couldnt be found. Please call manually");
 		}
 
@@ -100,7 +100,7 @@ public class SwymedServiceImpl implements SwymedService {
 		data.append("&d=");
 		data.append(user.getSwymedDomain());
 		data.append("&e=");
-		data.append(van.getSwymedEmailID());
+		data.append(vanSwymesEmail);
 
 		return data.toString();
 	}

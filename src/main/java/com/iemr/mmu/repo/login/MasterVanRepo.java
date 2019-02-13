@@ -17,4 +17,7 @@ public interface MasterVanRepo extends CrudRepository<MasterVan, Integer> {
 
 	@Query("Select mv.facilityID from MasterVan mv WHERE mv.vanID = :vanID ")
 	public Integer getFacilityID(@Param("vanID") Integer vanID);
+
+	@Query("Select mv.swymedEmailID from MasterVan mv WHERE mv.vanID = :vanID ")
+	public String getSpokeEmail(@Param("vanID") Integer vanID);
 }
