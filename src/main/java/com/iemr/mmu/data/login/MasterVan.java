@@ -36,6 +36,10 @@ public class MasterVan {
 	@Expose
 	@Column(name = "FacilityID")
 	private Integer facilityID;
+	
+	@Expose
+	@Column(name = "SwymedEmailID")
+	private Integer swymedEmailID;
 
 	@ManyToOne
 	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)
@@ -117,6 +121,14 @@ public class MasterVan {
 
 	public void setUserParkingplaceMapping(UserParkingplaceMapping userParkingplaceMapping) {
 		this.userParkingplaceMapping = userParkingplaceMapping;
+	}
+
+	public Integer getSwymedEmailID() {
+		return swymedEmailID;
+	}
+
+	public void setSwymedEmailID(Integer swymedEmailID) {
+		this.swymedEmailID = swymedEmailID;
 	}
 
 }

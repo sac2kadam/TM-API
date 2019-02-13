@@ -3,8 +3,9 @@ package com.iemr.mmu.service.swymed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iemr.mmu.data.swymed.M_UserTemp;
+import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.swymed.UserSwymed;
+import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.swymed.UserRepo;
 import com.iemr.mmu.repo.swymed.UserSwymedRepo;
 import com.iemr.mmu.utils.config.ConfigProperties;
@@ -18,11 +19,12 @@ public class SwymedServiceImpl implements SwymedService {
 
 	@Autowired
 	private UserRepo userRepo;
-	
+
 	@Autowired
 	private UserSwymedRepo userSwymedRepo;
-	
-	
+
+	@Autowired
+	private MasterVanRepo masterVanRepo;
 
 	@Override
 	public String login(Long userid) throws SwymedException {
@@ -32,12 +34,12 @@ public class SwymedServiceImpl implements SwymedService {
 		if (user == null) {
 			throw new SwymedException("User doesnt have access to Swymed");
 		}
-//
+		//
 		StringBuilder data = new StringBuilder();
 
 		data.append(swymed_dnsname);
 		data.append("?l=");
-		data.append(user.getUsername());
+		data.append(user.getSwymedEmailID());
 		data.append("&p=");
 		data.append(user.getSwymedPassword());
 		data.append("&d=");
@@ -52,10 +54,39 @@ public class SwymedServiceImpl implements SwymedService {
 		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
 		UserSwymed touser = userSwymedRepo.findOneMap(touserid);
 
-		if (user == null ) {
+		if (user == null) {
 			throw new SwymedException("User doesnt have access to Swymed");
 		}
-		if (touser == null ) {
+		if (touser == null) {
+			throw new SwymedException("Callee  couldnt be found. Please call manually");
+		}
+
+		StringBuilder data = new StringBuilder();
+
+		data.append(swymed_dnsname);
+		data.append("?l=");
+		data.append(user.getSwymedEmailID());
+		data.append("&p=");
+		data.append(user.getSwymedPassword());
+		data.append("&d=");
+		data.append(user.getSwymedDomain());
+		data.append("&e=");
+		data.append(touser.getSwymedEmailID());
+
+		return data.toString();
+	}
+
+	@Override
+	public String callVan(Long fromuserid, Integer vanid) throws SwymedException {
+		// TODO Auto-generated method stubUserSwymed user =
+		// userSwymedRepo.findOneMap(fromuserid);
+		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
+		MasterVan van = masterVanRepo.findOne(vanid);
+
+		if (user == null) {
+			throw new SwymedException("User doesnt have access to Swymed");
+		}
+		if (van == null || van.getSwymedEmailID()==null) {
 			throw new SwymedException("Callee  couldnt be found. Please call manually");
 		}
 
@@ -69,15 +100,9 @@ public class SwymedServiceImpl implements SwymedService {
 		data.append("&d=");
 		data.append(user.getSwymedDomain());
 		data.append("&e=");
-		data.append(touser.getSwymedEmailID());
+		data.append(van.getSwymedEmailID());
 
 		return data.toString();
-	}
-
-	@Override
-	public String callVan(Long fromuserid, Long vanid) throws SwymedException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
