@@ -94,5 +94,30 @@ public class SwymedController {
 		return response.toString();
 
 	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/logout", headers = "Authorization", method = {
+			RequestMethod.GET }, produces = { "application/json" })
+	public String logout() {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+
+			String createdData = swymedService.logout();
+
+			response.setResponse(createdData.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+
+		}
+		/**
+		 * sending the response...
+		 */
+		return response.toString();
+
+	}
 
 }

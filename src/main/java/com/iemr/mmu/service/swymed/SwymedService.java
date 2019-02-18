@@ -10,4 +10,6 @@ public interface SwymedService {
 
 	String callVan(Long fromuserid, Integer vanid) throws SwymedException;
 
+	String logout();
+
 }
