@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import com.iemr.mmu.utils.IEMRApplBeans;
 
@@ -22,6 +23,11 @@ public class Application {
 	@Bean
 	public IEMRApplBeans instantiateBeans() {
 		return new IEMRApplBeans();
+	}
+
+	@Bean
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
 	}
 
 }

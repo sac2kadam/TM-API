@@ -92,7 +92,7 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "create TC request for beneficiary whose visit is created from worklist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "create TC request from worklist whose visit is created", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/create/benTCRequestWithVisitCode" }, method = { RequestMethod.POST })
 	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -147,4 +147,16 @@ public class TeleConsultationController {
 		}
 		return response.toString();
 	}
+
+	// // temp api
+	// @ApiOperation(value = "", consumes = "application/json", produces =
+	// "application/json")
+	// @RequestMapping(value = "/sendSMS", method = RequestMethod.GET)
+	//
+	// public String sendSMS(@RequestHeader(value = "Authorization") String
+	// Authorization) {
+	// String s = teleConsultationServiceImpl.sendSMS("schedule", "",
+	// Authorization);
+	// return null;
+	// }
 }

@@ -31,6 +31,9 @@ public class TCRequestModel {
 	@Column(name = "UserID")
 	private Integer userID;
 	@Expose
+	@Column(name = "SpecializationID")
+	private Integer specializationID;
+	@Expose
 	@Column(name = "RequestDate")
 	private Timestamp requestDate;
 	@Expose
@@ -72,6 +75,9 @@ public class TCRequestModel {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+	@Expose
+	@Column(name = "IsReferredByDoctor")
+	private Boolean isReferredByDoctor;
 
 	public Long gettMRequestID() {
 		return tMRequestID;
@@ -223,6 +229,22 @@ public class TCRequestModel {
 
 	public void setLastModDate(Timestamp lastModDate) {
 		this.lastModDate = lastModDate;
+	}
+
+	public Integer getSpecializationID() {
+		return specializationID;
+	}
+
+	public void setSpecializationID(Integer specializationID) {
+		this.specializationID = specializationID;
+	}
+
+	public Boolean getIsReferredByDoctor() {
+		return isReferredByDoctor;
+	}
+
+	public void setIsReferredByDoctor(Boolean isReferredByDoctor) {
+		this.isReferredByDoctor = isReferredByDoctor;
 	}
 
 }
