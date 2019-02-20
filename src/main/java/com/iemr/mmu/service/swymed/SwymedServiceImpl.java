@@ -105,4 +105,14 @@ public class SwymedServiceImpl implements SwymedService {
 		return data.toString();
 	}
 
+	@Override
+	public String logout() {
+		// TODO Auto-generated method stub
+
+		StringBuilder data = new StringBuilder();
+		data.append(swymed_dnsname);
+		data.append("?logout");
+		return data.toString();
+	}
+
 }
