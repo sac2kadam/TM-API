@@ -9,6 +9,10 @@ public class TeleconsultationRequestOBJ {
 	private String toTime;
 	private Integer specializationID;
 
+	private Long tmRequestID;
+
+	private Boolean walkIn;
+
 	public Integer getUserID() {
 		return userID;
 	}
@@ -48,5 +52,22 @@ public class TeleconsultationRequestOBJ {
 	public void setSpecializationID(Integer specializationID) {
 		this.specializationID = specializationID;
 	}
+
+	public Long getTmRequestID() {
+		return tmRequestID;
+	}
+
+	public void setTmRequestID(Long tmRequestID) {
+		this.tmRequestID = tmRequestID;
+	}
+
+	public Boolean getWalkIn() {
+		return walkIn;
+	}
+
+	public void setWalkIn(Boolean walkIn) {
+		this.walkIn = walkIn;
+	}
+	
 
 }

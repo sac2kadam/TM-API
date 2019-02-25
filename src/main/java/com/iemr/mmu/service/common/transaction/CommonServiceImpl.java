@@ -143,6 +143,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 4);
+
 		return caseSheetData.toString();
 	}
 
@@ -161,6 +163,8 @@ public class CommonServiceImpl implements CommonService {
 				new Gson().toJson(cSNurseServiceImpl.getCancerExaminationImageAnnotationCasesheet(
 						benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode())));
 
+		caseSheetData.put("serviceID", 4);
+
 		return caseSheetData.toString();
 	}
 
@@ -175,6 +179,8 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 4);
 
 		return caseSheetData.toString();
 	}
@@ -191,6 +197,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 4);
+
 		return caseSheetData.toString();
 	}
 
@@ -206,6 +214,8 @@ public class CommonServiceImpl implements CommonService {
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
 
+		caseSheetData.put("serviceID", 4);
+
 		return caseSheetData.toString();
 	}
 
@@ -220,6 +230,8 @@ public class CommonServiceImpl implements CommonService {
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 4);
 
 		return caseSheetData.toString();
 	}
@@ -354,11 +366,14 @@ public class CommonServiceImpl implements CommonService {
 			String Authorization) throws Exception {
 
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
-		Integer tcRequestStatusFlag = null;
+		Long tcRequestStatusFlag = null;
 		TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;
-
-		if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-				&& commonUtilityClass.getServiceID() == 4 && requestOBJ != null && requestOBJ.has("tcRequest")
+		//
+		// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
+		// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
+		// requestOBJ.has("tcRequest")
+		// && requestOBJ.get("tcRequest") != null) {
+		if (commonUtilityClass != null && requestOBJ != null && requestOBJ.has("tcRequest")
 				&& requestOBJ.get("tcRequest") != null) {
 			tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"), TeleconsultationRequestOBJ.class);
 
@@ -378,9 +393,11 @@ public class CommonServiceImpl implements CommonService {
 				tRequestModel.setBenVisitID(commonUtilityClass.getBenVisitID());
 
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
+				tRequestModel.setSpecializationID(tcRequestOBJ.getSpecializationID());
 				tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
 				tRequestModel
 						.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+				tRequestModel.setVanID(commonUtilityClass.getVanID());
 
 				// tc speciaist slot booking model
 				tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
@@ -396,7 +413,7 @@ public class CommonServiceImpl implements CommonService {
 				if (j > 0) {
 					tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
 					if (tcRequestStatusFlag != null && tcRequestStatusFlag > 0) {
-
+						tcRequestOBJ.setTmRequestID(tcRequestStatusFlag);
 					} else {
 						throw new RuntimeException("Error while creating TC request.");
 					}

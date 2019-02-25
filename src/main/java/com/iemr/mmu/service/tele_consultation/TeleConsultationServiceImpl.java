@@ -33,8 +33,7 @@ import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
-import com.iemr.mmu.service.anc.Utility;
-import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
+import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
@@ -49,14 +48,16 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	@Autowired
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	@Autowired
-	private CommonDoctorServiceImpl commonDoctorServiceImpl;
+	private CommonServiceImpl commonServiceImpl;
+	@Autowired
+	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
 
-	public int createTCRequest(TCRequestModel tCRequestModel) {
+	public Long createTCRequest(TCRequestModel tCRequestModel) {
 		TCRequestModel tCRequestModelRS = tCRequestModelRepo.save(tCRequestModel);
 		if (tCRequestModelRS != null && tCRequestModelRS.gettMRequestID() > 0)
-			return 1;
+			return tCRequestModelRS.gettMRequestID();
 		else
-			return 0;
+			return Long.valueOf(0);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -88,7 +89,8 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 					throw new RuntimeException(
 							"Beneficiary arrival status update failed.There is no active Tele-consultation session");
 			} else
-				throw new RuntimeException("Beneficiary arrival status update failed.There is no active Tele-consultation session for this visit");
+				throw new RuntimeException(
+						"Beneficiary arrival status update failed.There is no active Tele-consultation session for this visit");
 		} else {
 			throw new RuntimeException("Invalid request");
 		}
@@ -110,6 +112,12 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				&& !requestJson.get("visitCode").isJsonNull() && !requestJson.get("modifiedBy").isJsonNull()
 				&& !requestJson.get("userID").isJsonNull()) {
 
+			TCRequestModel tCRequestModelRS = tCRequestModelRepo.getSpecializationID(
+					requestJson.get("benRegID").getAsLong(), requestJson.get("visitCode").getAsLong(),
+					requestJson.get("userID").getAsInt());
+
+			Timestamp tcDate = tCRequestModelRS.getRequestDate();
+
 			int i = cancelSlotForTCCancel(requestJson.get("userID").getAsInt(), requestJson.get("benRegID").getAsLong(),
 					requestJson.get("visitCode").getAsLong(), Authorization);
 
@@ -118,14 +126,19 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 					requestJson.get("visitCode").getAsLong(), requestJson.get("modifiedBy").getAsString(),
 					requestJson.get("userID").getAsInt());
 
-			int k = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
+			int k = tCRequestModelRepo.updateBeneficiaryStatusCancel(requestJson.get("benRegID").getAsLong(),
 					requestJson.get("visitCode").getAsLong(), "C", requestJson.get("modifiedBy").getAsString(),
 					requestJson.get("userID").getAsInt(), true);
 
-			if (i > 0 && j > 0 && k > 0)
+			if (i > 0 && j > 0 && k > 0) {
 				resultFlag = 1;
-			else
-				throw new RuntimeException("Teleconsultation cancel request failed.There is no active Tele-consultation session for this visit");
+
+				int l = sMSGatewayServiceImpl.smsSenderGateway("cancel", requestJson.get("benRegID").getAsLong(),
+						tCRequestModelRS.getSpecializationID(), null, null, requestJson.get("modifiedBy").getAsString(),
+						null, tcDate != null ? String.valueOf(tcDate) : "DD-MM-YYYY", Authorization);
+			} else
+				throw new RuntimeException(
+						"Teleconsultation cancel request failed.There is no active Tele-consultation session for this visit");
 
 		} else
 			throw new RuntimeException("Invalid request");
@@ -243,57 +256,34 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	@Transactional(rollbackFor = Exception.class)
 	public int createTCRequestFromWorkList(JsonObject tcRequestOBJ, String Authorization) throws Exception {
 		int returnOBJ = 0;
-		int tcRequestStatusFlag = 0;
 
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(tcRequestOBJ, CommonUtilityClass.class);
-		TeleconsultationRequestOBJ tcRequest = InputMapper.gson().fromJson(tcRequestOBJ.get("tcRequest"),
-				TeleconsultationRequestOBJ.class);
+		TeleconsultationRequestOBJ tcRequest = null;
 
-		if (tcRequest != null && tcRequest.getUserID() != null && tcRequest.getUserID() > 0
-				&& tcRequest.getAllocationDate() != null && tcRequest.getFromTime() != null) {
-			tcRequest.setAllocationDate(Utility.combineDateAndTimeToDateTime(tcRequest.getAllocationDate().toString(),
-					tcRequest.getFromTime()));
-
+		tcRequest = commonServiceImpl.createTcRequest(tcRequestOBJ, commonUtilityClass, Authorization);
+		if (tcRequest != null && tcRequest.getUserID() != null && tcRequest.getAllocationDate() != null) {
+			returnOBJ = 1;
 			TCRequestModel tRequestModel = InputMapper.gson().fromJson(tcRequestOBJ, TCRequestModel.class);
 			tRequestModel.setUserID(tcRequest.getUserID());
 			tRequestModel.setRequestDate(tcRequest.getAllocationDate());
 
-			tRequestModel.setDuration_minute(Utility.timeDiff(tcRequest.getFromTime(), tcRequest.getToTime()));
-
-			// book slot if available
-			TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-			tcSpecialistSlotBookingRequestOBJ.setDate(tcRequest.getAllocationDate());
-			tcSpecialistSlotBookingRequestOBJ.setUserID(tcRequest.getUserID());
-			tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequest.getFromTime());
-			tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequest.getToTime());
-			tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-			tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-
-			int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-					Authorization);
-			if (j > 0) {
-				// create tc request
-				tcRequestStatusFlag = createTCRequest(tRequestModel);
-
-				if (tcRequestStatusFlag > 0) {
-					int i = beneficiaryFlowStatusRepo.updateFlagAfterTcRequestCreatedFromWorklist(
-							commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
-							commonUtilityClass.getVisitCode(), tRequestModel.getUserID(),
-							tRequestModel.getRequestDate());
-					if (i > 0) {
-						returnOBJ = 1;
-					} else {
-						throw new RuntimeException(
-								"ERROR while updating beneficiary status for Teleconsultation request.");
-					}
-				} else {
-					throw new RuntimeException("Error while creating Teleconsultation request.");
+			int i = beneficiaryFlowStatusRepo.updateFlagAfterTcRequestCreatedFromWorklist(
+					commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
+					commonUtilityClass.getVisitCode(), tRequestModel.getUserID(), tRequestModel.getRequestDate());
+			if (i > 0) {
+				if (tcRequest != null && tcRequest.getWalkIn() == false) {
+					int l = sMSGatewayServiceImpl.smsSenderGateway("schedule", commonUtilityClass.getBeneficiaryRegID(),
+							tcRequest.getSpecializationID(), null, null, commonUtilityClass.getCreatedBy(),
+							tcRequest.getAllocationDate() != null ? String.valueOf(tcRequest.getAllocationDate())
+									: "DD-MM-YYYY",
+							null, Authorization);
 				}
-			} else {
-				throw new RuntimeException("Error while Booking slot.");
-			}
+				returnOBJ = 1;
+			} else
+				throw new RuntimeException(
+						"Error while updating beneficiary flow status. Kindly contact your administrator");
 		} else {
-			throw new RuntimeException("Invalid request.");
+			throw new RuntimeException("Error while creating TC request. Kindly contact your administrator");
 		}
 		return returnOBJ;
 	}
@@ -308,4 +298,5 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				userID, t);
 		return new Gson().toJson(tcList);
 	}
+
 }

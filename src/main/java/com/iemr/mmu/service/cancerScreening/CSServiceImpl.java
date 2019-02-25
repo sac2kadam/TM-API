@@ -42,6 +42,7 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
+import com.iemr.mmu.service.tele_consultation.SMSGatewayServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
@@ -107,6 +108,9 @@ public class CSServiceImpl implements CSService {
 	public void setCsOncologistServiceImpl(CSOncologistServiceImpl csOncologistServiceImpl) {
 		this.csOncologistServiceImpl = csOncologistServiceImpl;
 	}
+
+	@Autowired
+	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
 
 	// ----------Save/Create (Nurse)--------------------------------------
 
@@ -204,6 +208,22 @@ public class CSServiceImpl implements CSService {
 					int j = updateBenStatusFlagAfterNurseSaveSuccess(benVisitDetailsOBJ, benVisitID, benFlowID,
 							isReferedToMammogram, docVisitReq, benVisitCode, nurseUtilityClass.getVanID(),
 							tcRequestOBJ);
+
+					if (j > 0)
+						nurseDataSuccessFlag = examinationSuccessFlag;
+					else
+						throw new RuntimeException(
+								"Error occurred while saving data. Beneficiary status update failed");
+
+					if (j > 0 && tcRequestOBJ != null && tcRequestOBJ.getWalkIn() == false) {
+						int k = sMSGatewayServiceImpl.smsSenderGateway("schedule",
+								nurseUtilityClass.getBeneficiaryRegID(), tcRequestOBJ.getSpecializationID(),
+								tcRequestOBJ.getTmRequestID(), null, nurseUtilityClass.getCreatedBy(),
+								tcRequestOBJ.getAllocationDate() != null
+										? String.valueOf(tcRequestOBJ.getAllocationDate())
+										: "",
+								null, Authorization);
+					}
 
 				}
 
@@ -711,7 +731,7 @@ public class CSServiceImpl implements CSService {
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long docDataSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		Long tcRequestStatusFlag = null;
 
 		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 
@@ -739,9 +759,11 @@ public class CSServiceImpl implements CSService {
 							TCRequestModel.class);
 
 					tRequestModel.setUserID(tcRequestOBJ.getUserID());
+					tRequestModel.setSpecializationID(tcRequestOBJ.getSpecializationID());
 					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
 					tRequestModel
 							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+					tRequestModel.setVanID(commonUtilityClass.getVanID());
 
 					// tc speciaist slot booking model
 					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
@@ -756,9 +778,10 @@ public class CSServiceImpl implements CSService {
 					int j = commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
 							Authorization);
 
-					if (j > 0)
+					if (j > 0) {
 						tcRequestStatusFlag = teleConsultationServiceImpl.createTCRequest(tRequestModel);
-					else
+						tcRequestOBJ.setTmRequestID(tcRequestStatusFlag);
+					} else
 						throw new RuntimeException("Error while booking slot.");
 				}
 			}
@@ -799,18 +822,34 @@ public class CSServiceImpl implements CSService {
 
 				}
 
+				int l1 = 0;
+				int l2 = 0;
+
 				if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
 						&& commonUtilityClass.getIsSpecialist() == true) {
-					int l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
+					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
 							tcSpecialistFlag);
 				} else {
-					int l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
+					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
 							tcUserID, tcDate);
 				}
 
-				docDataSuccessFlag = diagnosisSuccessFlag;
+				if (l1 > 0 || l2 > 0)
+					docDataSuccessFlag = diagnosisSuccessFlag;
+				else
+					throw new RuntimeException("Error occurred while saving data. Beneficiary status update failed");
+
+				if (docDataSuccessFlag > 0 && tcRequestOBJ != null && tcRequestOBJ.getWalkIn() == false) {
+					int k = sMSGatewayServiceImpl.smsSenderGateway("schedule", commonUtilityClass.getBeneficiaryRegID(),
+							tcRequestOBJ.getSpecializationID(), tcRequestOBJ.getTmRequestID(), null,
+							commonUtilityClass.getCreatedBy(),
+							tcRequestOBJ.getAllocationDate() != null ? String.valueOf(tcRequestOBJ.getAllocationDate())
+									: "",
+							null, Authorization);
+				}
+
 			}
 		} else {
 			// NO input available..
