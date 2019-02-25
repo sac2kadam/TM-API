@@ -58,6 +58,9 @@ public class TCRequestModel {
 	@Column(name = "ProviderServiceMapID")
 	private Integer providerServiceMapID;
 	@Expose
+	@Column(name = "VanID")
+	private Integer vanID;
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 	@Expose
@@ -245,6 +248,14 @@ public class TCRequestModel {
 
 	public void setIsReferredByDoctor(Boolean isReferredByDoctor) {
 		this.isReferredByDoctor = isReferredByDoctor;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
 	}
 
 }

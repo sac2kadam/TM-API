@@ -763,6 +763,7 @@ public class CSServiceImpl implements CSService {
 					tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
 					tRequestModel
 							.setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(), tcRequestOBJ.getToTime()));
+					tRequestModel.setVanID(commonUtilityClass.getVanID());
 
 					// tc speciaist slot booking model
 					tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();

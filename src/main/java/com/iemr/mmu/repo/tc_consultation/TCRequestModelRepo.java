@@ -17,7 +17,7 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	@Transactional
 	@Modifying
 	@Query(" UPDATE TCRequestModel t SET t.status = :statusFlag, t.modifiedBy = :modifiedBy, "
-			+ " t.deleted = :deleted, t.beneficiaryArrivalTime = now() "
+			+ " t.deleted = :deleted, t.beneficiaryArrivalTime = IFNULL(t.beneficiaryArrivalTime, now()) "
 			+ " WHERE t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode "
 			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
 	public int updateBeneficiaryStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
