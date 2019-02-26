@@ -44,7 +44,7 @@ import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
-import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
+import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.snomedct.SnomedServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
@@ -69,13 +69,14 @@ public class CommonDoctorServiceImpl {
 	private BenReferDetailsRepo benReferDetailsRepo;
 	private LabTestOrderDetailRepo labTestOrderDetailRepo;
 	private PrescribedDrugDetailRepo prescribedDrugDetailRepo;
-	private PrescriptionDetailRepo prescriptionDetailRepo;
 
 	private SnomedServiceImpl snomedServiceImpl;
 
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	@Autowired
+	private TCRequestModelRepo tCRequestModelRepo;
 
 	@Autowired
 	public void setSnomedServiceImpl(SnomedServiceImpl snomedServiceImpl) {
@@ -90,11 +91,6 @@ public class CommonDoctorServiceImpl {
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
-	}
-
-	@Autowired
-	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
-		this.prescriptionDetailRepo = prescriptionDetailRepo;
 	}
 
 	@Autowired
@@ -659,11 +655,15 @@ public class CommonDoctorServiceImpl {
 		int i = 0;
 
 		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
-				&& commonUtilityClass.getIsSpecialist() == true)
+				&& commonUtilityClass.getIsSpecialist() == true) {
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
 					tcSpecialistFlag);
-		else
+			if (tcSpecialistFlag == 9) {
+				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
+						commonUtilityClass.getVisitCode(), "D");
+			}
+		} else
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
 					tcDate);
@@ -710,6 +710,12 @@ public class CommonDoctorServiceImpl {
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateTCSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
 					tcSpecialistFlag, tcUserID, tcDate);
+
+			if (tcSpecialistFlag == 9) {
+				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
+						commonUtilityClass.getVisitCode(), "D");
+			}
+
 		} else {
 
 			if (isTestPrescribed)

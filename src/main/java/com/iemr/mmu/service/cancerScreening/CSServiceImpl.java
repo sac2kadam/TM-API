@@ -37,6 +37,7 @@ import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
+import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
 import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -68,6 +69,8 @@ public class CSServiceImpl implements CSService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private CommonServiceImpl commonServiceImpl;
+	@Autowired
+	private TCRequestModelRepo tCRequestModelRepo;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -830,6 +833,11 @@ public class CSServiceImpl implements CSService {
 					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
 							tcSpecialistFlag);
+
+					if (tcSpecialistFlag == 9) {
+						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
+								commonUtilityClass.getBeneficiaryRegID(), commonUtilityClass.getVisitCode(), "D");
+					}
 				} else {
 					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
@@ -1259,9 +1267,12 @@ public class CSServiceImpl implements CSService {
 					int i = beneficiaryFlowStatusRepo.updateBenFlowAfterTCSpcialistDoneForCanceScreening(
 							commonUtilityClass.getBenFlowID(), commonUtilityClass.getBeneficiaryRegID(),
 							commonUtilityClass.getVisitCode());
-					if (i > 0)
+					if (i > 0) {
 						updateSuccessFlag = 1;
-					else
+						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
+								commonUtilityClass.getBeneficiaryRegID(), commonUtilityClass.getVisitCode(), "D");
+
+					} else
 						throw new RuntimeException("Error while updating beneficiary flow status.");
 				} else
 					throw new RuntimeException("Error while saving data.");
