@@ -15,6 +15,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
 @RestController
 @RequestMapping(value = "/swymed", headers = "Authorization")
 public class SwymedController {
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
