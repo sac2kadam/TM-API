@@ -15,6 +15,9 @@ public interface BenChiefComplaintReportRepo extends CrudRepository<BenChiefComp
 
 	@Query(value = "call db_reporting.SP_ChiefComplaintReport(:startDate, :toDate,:ppID)", nativeQuery = true)
 	List<Object[]> getcmreport(@Param("startDate")Date fromDate,@Param("toDate") Date toDate,@Param("ppID") Integer parkingPlaceID);
+	
+	@Query(value = "call db_reporting.SP_Consultation(:startDate, :toDate,:ppID)", nativeQuery = true)
+	List<Object[]> getConsultationReport(@Param("startDate")Date fromDate,@Param("toDate") Date toDate,@Param("ppID") Integer parkingPlaceID);
 
 
 	

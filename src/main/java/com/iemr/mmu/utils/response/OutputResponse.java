@@ -27,6 +27,7 @@ public class OutputResponse {
 	public static final int ENVIRONMENT_EXCEPTION = 5006;
 	public static final int PARSE_EXCEPTION = 5007;
 	public static final int SWYMED_EXCEPTION = 5010;
+	public static final int TM_EXCEPTION = 5010;
 
 	@Expose
 	private int statusCode = GENERIC_FAILURE;
@@ -72,6 +73,11 @@ public class OutputResponse {
 		case "SwymedException":
 			this.statusCode = SWYMED_EXCEPTION;
 			status = "Swymed integration error";
+			errorMessage = thrown.getMessage();
+			break;
+		case "TMException":
+			this.statusCode = TM_EXCEPTION;
+			status = "Invalid input";
 			errorMessage = thrown.getMessage();
 			break;
 		case "JSONException":

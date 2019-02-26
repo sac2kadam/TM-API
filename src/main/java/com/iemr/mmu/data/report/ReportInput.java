@@ -5,6 +5,10 @@ import java.sql.Date;
 
 public class ReportInput {
 
+	private Integer userID;
+	
+	private Integer providerServiceMapID;
+	
 	private Integer vanID;
 	
 	private Integer parkingPlaceID;
@@ -43,6 +47,22 @@ public class ReportInput {
 
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
+	}
+
+	public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
 	}
 	
 	

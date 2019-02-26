@@ -1,5 +1,6 @@
 package com.iemr.mmu.controller.report;
 
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iemr.mmu.data.report.ConsultationReport;
 import com.iemr.mmu.data.report.ReportInput;
 import com.iemr.mmu.data.report.SpokeReport;
 import com.iemr.mmu.service.report.CRMReportService;
@@ -35,6 +37,32 @@ public class CRMReportController {
 		try {
 
 			Set<SpokeReport> report= cRMReportService.getChiefcomplaintreport(input);
+			
+			response.setResponse(report.toString());
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+
+		}
+		/**
+		 * sending the response...
+		 */
+		return response.toString();
+
+	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/ConsultationReport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
+			"application/json" })
+	public String getConsultationReport(@RequestBody ReportInput input) {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+
+			List<ConsultationReport> report= cRMReportService.getConsultationReport(input);
 			
 			response.setResponse(report.toString());
 			
