@@ -34,7 +34,7 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 			@Param("userID") Integer userID, @Param("deleted") Boolean deleted);
 
 	@Query(" SELECT t from TCRequestModel t WHERE t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode "
-			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('A', 'O') ")
+			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('A', 'O', 'D') ")
 	public ArrayList<TCRequestModel> checkBenTcStatus(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode, @Param("userID") Integer userID);
 
@@ -60,5 +60,12 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
 	public TCRequestModel getSpecializationID(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("userID") Integer userID);
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE TCRequestModel t SET t.status = :status WHERE t.beneficiaryRegID = :benRegID "
+			+ " AND t.visitCode = :visitCode AND t.deleted is false ")
+	public int updateStatusIfConsultationCompleted(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
+			@Param("status") String status);
 
 }

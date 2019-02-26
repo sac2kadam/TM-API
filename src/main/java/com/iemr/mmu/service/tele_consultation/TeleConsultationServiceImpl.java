@@ -74,6 +74,13 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				&& !requestJson.get("visitCode").isJsonNull() && !requestJson.get("status").isJsonNull()
 				&& !requestJson.get("modifiedBy").isJsonNull() && !requestJson.get("userID").isJsonNull()) {
 
+			String statusStr;
+			Boolean status = requestJson.get("status").getAsBoolean();
+			if (status)
+				statusStr = "A";
+			else
+				statusStr = "N";
+
 			int i = beneficiaryFlowStatusRepo.updateBeneficiaryArrivalStatus(requestJson.get("benflowID").getAsLong(),
 					requestJson.get("benRegID").getAsLong(), requestJson.get("visitCode").getAsLong(),
 					requestJson.get("status").getAsBoolean(), requestJson.get("modifiedBy").getAsString(),
@@ -81,8 +88,8 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 
 			if (i > 0) {
 				int j = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
-						requestJson.get("visitCode").getAsLong(), "A", requestJson.get("modifiedBy").getAsString(),
-						requestJson.get("userID").getAsInt(), false);
+						requestJson.get("visitCode").getAsLong(), statusStr,
+						requestJson.get("modifiedBy").getAsString(), requestJson.get("userID").getAsInt(), false);
 				if (j > 0)
 					resultFlag = 1;
 				else
