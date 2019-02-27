@@ -148,15 +148,32 @@ public class TeleConsultationController {
 		return response.toString();
 	}
 
-	// // temp api
-	// @ApiOperation(value = "", consumes = "application/json", produces =
-	// "application/json")
-	// @RequestMapping(value = "/sendSMS", method = RequestMethod.GET)
-	//
-	// public String sendSMS(@RequestHeader(value = "Authorization") String
-	// Authorization) {
-	// String s = teleConsultationServiceImpl.sendSMS("schedule", "",
-	// Authorization);
-	// return null;
-	// }
+	@CrossOrigin
+	@ApiOperation(value = "update first consultation start time", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/startconsultation" }, method = { RequestMethod.POST })
+	public String startconsultation(@RequestBody String requestOBJ) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (requestOBJ != null) {
+				JsonObject jsnOBJ = new JsonObject();
+				JsonParser jsnParser = new JsonParser();
+				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
+				jsnOBJ = jsnElmnt.getAsJsonObject();
+
+				Integer s = teleConsultationServiceImpl.startconsultation(
+						jsnOBJ.get("benRegID").getAsLong(), jsnOBJ.get("visitCode").getAsLong());
+				if (s != null)
+					response.setResponse(s.toString());
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid");
+				response.setError(5000,
+						"Invalid request, either ProviderServiceMapID or UserID or RequestDate is invalid");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in TC requestList" + e);
+			response.setError(5000, "Error while getting TC requestList");
+		}
+		return response.toString();
+	}
 }

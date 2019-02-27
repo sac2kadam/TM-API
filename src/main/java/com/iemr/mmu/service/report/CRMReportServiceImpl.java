@@ -1,9 +1,12 @@
 package com.iemr.mmu.service.report;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,11 +14,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iemr.mmu.data.login.UserParkingplaceMapping;
 import com.iemr.mmu.data.report.ChiefComplaintReport;
 import com.iemr.mmu.data.report.ConsultationReport;
 import com.iemr.mmu.data.report.ReportInput;
 import com.iemr.mmu.data.report.SpokeReport;
+import com.iemr.mmu.data.report.TMDailyReport;
 import com.iemr.mmu.repo.login.UserParkingplaceMappingRepo;
 import com.iemr.mmu.repo.report.BenChiefComplaintReportRepo;
 import com.iemr.mmu.utils.exception.TMException;
@@ -28,12 +33,14 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	@Autowired
 	private UserParkingplaceMappingRepo userParkingplaceMappingRepo;
+	
+	ObjectMapper mapper = new ObjectMapper();
 
 	Integer getParkingplaceID(Integer userid, Integer providerServiceMapId) throws TMException {
 		UserParkingplaceMapping usermap = userParkingplaceMappingRepo
 				.findOneByUserIDAndProviderServiceMapIdAndDeleted(userid, providerServiceMapId, 0);
-		
-		if(usermap==null || usermap.getParkingPlaceID()==null){
+
+		if (usermap == null || usermap.getParkingPlaceID() == null) {
 			throw new TMException("User Not mapped to any Parking Place");
 		}
 		return usermap.getParkingPlaceID();
@@ -67,21 +74,21 @@ public class CRMReportServiceImpl implements CRMReportService {
 		report.setConsultedTime((Timestamp) obj[17]);
 		if (report.getConsultedTime() != null && report.getArrivalTime() != null) {
 			Long waitingtime = report.getConsultedTime().getTime() - report.getArrivalTime().getTime();
-			Long totalmin=waitingtime/(1000*60);
-			if(totalmin<0){
-				totalmin=0L;
+			Long totalmin = waitingtime / (1000 * 60);
+			if (totalmin < 0) {
+				totalmin = 0L;
 			}
-			Long min=totalmin%60;
-			Long hour=totalmin/60;
-			StringBuilder st=new StringBuilder();
-			if(hour>1){
+			Long min = totalmin % 60;
+			Long hour = totalmin / 60;
+			StringBuilder st = new StringBuilder();
+			if (hour > 1) {
 				st.append(hour);
 				st.append(" hrs");
-			}else if(hour==1){
+			} else if (hour == 1) {
 				st.append(hour);
 				st.append(" hr");
 			}
-			if(min>0){
+			if (min > 0) {
 				st.append(min);
 				st.append(" mins");
 			}
@@ -101,12 +108,32 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	}
 
+	static SpokeReport getSpokeReportObj1(Object[] obj) {
+		SpokeReport spoke = new SpokeReport();
+		spoke.setVanID((Integer) obj[0]);
+		spoke.setVanName((String) obj[1]);
+
+		return spoke;
+
+	}
+	
+	static TMDailyReport getTMDailyReportObj(Object[] obj) {
+		TMDailyReport report = new TMDailyReport();
+		report.setSpokeName((String) obj[1]);
+		report.setCurrentConsultations( obj[2]==null?new BigInteger("0"):(BigInteger) obj[2]);
+		report.setRevisitConsultations(obj[3]==null?new BigInteger("0"):(BigInteger) obj[3]);
+		report.setCumulativeConsultationsForMonth(obj[4]==null?new BigInteger("0"):(BigInteger) obj[4]);
+		report.setCumulativeRevisitConsultationsForMonth(obj[5]==null?new BigInteger("0"):(BigInteger) obj[5]);
+
+		return report;
+
+	}
+
 	@Override
 	public Set<SpokeReport> getChiefcomplaintreport(ReportInput input) throws TMException {
 		// TODO Auto-generated method stub
-		Integer ppid=getParkingplaceID(input.getUserID(),input.getProviderServiceMapID());
-		List<Object[]> result = benChiefComplaintReportRepo.getcmreport(input.getFromDate(), input.getToDate(),
-				ppid);
+		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
+		List<Object[]> result = benChiefComplaintReportRepo.getcmreport(input.getFromDate(), input.getToDate(), ppid);
 
 		HashMap<SpokeReport, List<ChiefComplaintReport>> hashmap = new HashMap();
 
@@ -132,7 +159,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	@Override
 	public List<ConsultationReport> getConsultationReport(ReportInput input) throws TMException {
-		Integer ppid=getParkingplaceID(input.getUserID(),input.getProviderServiceMapID());
+		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
 		List<Object[]> objarr = benChiefComplaintReportRepo.getConsultationReport(input.getFromDate(),
 				input.getToDate(), ppid);
 		List<ConsultationReport> report = new ArrayList<>();
@@ -141,6 +168,119 @@ public class CRMReportServiceImpl implements CRMReportService {
 		}
 
 		return report;
+	}
+
+	@Override
+	public String getTotalConsultationReport(ReportInput input) throws TMException {
+		// TODO Auto-generated method stub
+		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
+		List<Object[]> objarr = benChiefComplaintReportRepo.getTotalConsultationReport(input.getFromDate(),
+				input.getToDate(), ppid);
+
+		LinkedHashMap<String, String> header = new LinkedHashMap<>();
+		Date inputfromdate = input.getFromDate();
+		Date inputtodate = input.getToDate();
+		header.put("Spoke", "0");
+		while (inputfromdate.compareTo(inputtodate) <= 0) {
+			// System.out.println(inputfromdate);
+
+			header.put(new SimpleDateFormat("MMM-yy").format(inputfromdate), "0");
+			inputfromdate.setMonth(inputfromdate.getMonth() + 1);
+		}
+
+		LinkedHashMap<SpokeReport, LinkedHashMap<String, String>> report = new LinkedHashMap<>();
+		for (Object[] obj : objarr) {
+			SpokeReport spoke = getSpokeReportObj1(obj);
+			LinkedHashMap<String, String> listcc = new LinkedHashMap();
+			if (report.containsKey(spoke)) {
+				listcc = report.get(spoke);
+			} else {
+				listcc = new LinkedHashMap<>(header);
+				listcc.put("Spoke", spoke.getVanName());
+			}
+			listcc.put((String) obj[2], ((BigInteger) obj[3]).toString());
+			report.put(spoke, listcc);
+
+		}
+		List<LinkedHashMap<String, String>> output = new ArrayList<>();
+//		JSONArray arr = new JSONArray();
+		
+
+		for (Map.Entry<SpokeReport, LinkedHashMap<String, String>> reportitr : report.entrySet()) {
+			output.add(reportitr.getValue());
+		}
+		String output1="";
+		try {
+			output1=mapper.writeValueAsString(output);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output1;
+	}
+	
+	@Override
+	public String getMonthlyReport(ReportInput input) throws TMException {
+		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
+		List<Object[]> objarr = benChiefComplaintReportRepo.getMonthlyReport(input.getFromDate(),
+				input.getToDate(), ppid);
+		
+		LinkedHashMap<String, String> header = new LinkedHashMap<>();
+		Date inputfromdate = input.getFromDate();
+		Date inputtodate = input.getToDate();
+		header.put("Indicator", "0");
+		while (inputfromdate.compareTo(inputtodate) <= 0) {
+			// System.out.println(inputfromdate);
+
+			header.put(new SimpleDateFormat("MMM-yy").format(inputfromdate), "0");
+			inputfromdate.setMonth(inputfromdate.getMonth() + 1);
+		}
+		LinkedHashMap<String, LinkedHashMap<String, String>> report = new LinkedHashMap<>();
+		for (Object[] obj : objarr) {
+			String indicator = (String) obj[0];
+			if(indicator==null){
+				continue;
+			}
+			LinkedHashMap<String, String> listcc = new LinkedHashMap();
+			if (report.containsKey(indicator)) {
+				listcc = report.get(indicator);
+			} else {
+				listcc = new LinkedHashMap<>(header);
+				listcc.put("Indicator", indicator);
+			}
+			listcc.put((String) obj[1], ((BigInteger) obj[2]).toString());
+			report.put(indicator, listcc);
+
+		}
+		List<LinkedHashMap<String, String>> output = new ArrayList<>();
+//		JSONArray arr = new JSONArray();
+		
+	
+		for (Map.Entry<String, LinkedHashMap<String, String>> reportitr : report.entrySet()) {
+			output.add(reportitr.getValue());
+		}
+		String output1="";
+		try {
+			output1=mapper.writeValueAsString(output);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output1;
+	}
+
+	@Override
+	public List<TMDailyReport> getDailyReport(ReportInput input) throws TMException {
+		// TODO Auto-generated method stub
+		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
+		List<Object[]> objarr = benChiefComplaintReportRepo.getDailyReport(input.getFromDate(), ppid);
+		
+		List<TMDailyReport> tmdailyreport=new ArrayList<>();
+		for(Object[] obj:objarr){
+			tmdailyreport.add(getTMDailyReportObj(obj));
+		}
+		
+		
+		
+		return tmdailyreport;
 	}
 
 }

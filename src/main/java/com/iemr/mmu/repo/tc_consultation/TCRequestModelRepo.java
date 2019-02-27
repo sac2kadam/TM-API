@@ -68,4 +68,11 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	public int updateStatusIfConsultationCompleted(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("status") String status);
 
+	@Transactional
+	@Modifying
+	@Query("UPDATE TCRequestModel t SET t.consultation_FirstStart = IFNULL(t.consultation_FirstStart, now())"
+			+ " WHERE t.beneficiaryRegID = :benRegID "
+			+ " AND t.visitCode = :visitCode AND t.deleted is false ")
+	public Integer updateStartConsultationTime(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+
 }

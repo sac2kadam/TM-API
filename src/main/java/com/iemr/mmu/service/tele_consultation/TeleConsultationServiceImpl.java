@@ -306,4 +306,9 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 		return new Gson().toJson(tcList);
 	}
 
+	public Integer startconsultation(Long benRegID, Long visitCode) {
+		// TODO Auto-generated method stub
+		return tCRequestModelRepo.updateStartConsultationTime(benRegID, visitCode);
+	}
+
 }

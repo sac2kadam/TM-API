@@ -67,8 +67,12 @@ public class SpokeReport {
 		SpokeReport spoke = (SpokeReport) obj;
 
 		// comparing the state of argument with
-		// the state of 'this' Object.
-		return (spoke.vanName.equals(this.vanName) && spoke.vanID == this.vanID);
+//		// the state of 'this' Object.
+//		System.out.println(this);
+//		System.out.println(spoke);
+//		System.out.println(spoke.vanName.equals(this.vanName) );
+//		System.out.println(spoke.vanID.equals(this.vanID));
+		return (spoke.vanName.equals(this.vanName) && spoke.vanID.equals(this.vanID));
 	}
 
 
