@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Transient;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import com.iemr.mmu.utils.mapper.OutputMapper;
 
 public class ConsultationReport {
 
@@ -33,20 +33,32 @@ public class ConsultationReport {
 	private String waitingTime;
 
 	@Transient
-	private OutputMapper outputMapper = new OutputMapper();
+	private static GsonBuilder builder;
 
 	@Override
 	public String toString() {
-		return outputMapper.gson().toJson(this);
+		if (builder == null) {
+			builder = new GsonBuilder();
+			builder.setDateFormat("dd-MM-yyyy h:mm a ");
+			builder.excludeFieldsWithoutExposeAnnotation();
+			builder.serializeNulls();
+		}
+		return builder.create().toJson(this);
+	}
+	
+	
+
+	public static GsonBuilder getBuilder() {
+		return builder;
 	}
 
-	public OutputMapper getOutputMapper() {
-		return outputMapper;
+
+
+	public static void setBuilder(GsonBuilder builder) {
+		ConsultationReport.builder = builder;
 	}
 
-	public void setOutputMapper(OutputMapper outputMapper) {
-		this.outputMapper = outputMapper;
-	}
+
 
 	public String getBeneficiaryRegID() {
 		return beneficiaryRegID;
