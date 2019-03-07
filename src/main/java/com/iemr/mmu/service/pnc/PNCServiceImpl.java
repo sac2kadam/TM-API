@@ -163,14 +163,14 @@ public class PNCServiceImpl implements PNCService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
 
-				i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				//i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
 			if ((null != historySaveSuccessFlag && historySaveSuccessFlag > 0)
 					&& (null != pncSaveSuccessFlag && pncSaveSuccessFlag > 0)
 					&& (null != vitalSaveSuccessFlag && vitalSaveSuccessFlag > 0)
-					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0) && (i != null)) {
+					&& (null != examtnSaveSuccessFlag && examtnSaveSuccessFlag > 0)) {
 
 				/**
 				 * We have to write new code to update ben status flow new logic
