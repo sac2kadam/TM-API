@@ -33,7 +33,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	@Autowired
 	private UserParkingplaceMappingRepo userParkingplaceMappingRepo;
-	
+
 	ObjectMapper mapper = new ObjectMapper();
 
 	Integer getParkingplaceID(Integer userid, Integer providerServiceMapId) throws TMException {
@@ -59,6 +59,40 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	}
 
+	public static String calculateTime(Timestamp consultedTime,Timestamp arrivalTime){
+		if (consultedTime != null && arrivalTime != null) {
+			Long waitingtime = consultedTime.getTime() - arrivalTime.getTime();
+			Long totalsec = waitingtime / (1000);
+			Long totalmin = totalsec / 60;
+			if (totalmin < 0) {
+				totalmin = 0L;
+			}
+			Long sec = totalsec % 60;
+			Long min = totalmin % 60;
+			Long hour = totalmin / 60;
+			StringBuilder st = new StringBuilder();
+			if (hour > 1) {
+				st.append(hour);
+				st.append(" hrs");
+			} else if (hour == 1) {
+				st.append(hour);
+				st.append(" hr");
+			}
+			if (min > 0) {
+				st.append(min);
+				st.append(" min");
+			}
+			if (hour == 0 && min == 0 && sec >0) {
+				st.append(sec);
+				st.append(" sec");
+			}
+			if(sec<0 || hour<0 || min<0){
+				st.append("No Waiting");
+			}
+			return st.toString();
+		}
+		return null;
+	}
 	static ConsultationReport getConsultationReportObj(Object[] obj) {
 		ConsultationReport report = new ConsultationReport();
 		report.setBeneficiaryRegID(obj[2].toString());
@@ -72,28 +106,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 		}
 		report.setArrivalTime((Timestamp) obj[16]);
 		report.setConsultedTime((Timestamp) obj[17]);
-		if (report.getConsultedTime() != null && report.getArrivalTime() != null) {
-			Long waitingtime = report.getConsultedTime().getTime() - report.getArrivalTime().getTime();
-			Long totalmin = waitingtime / (1000 * 60);
-			if (totalmin < 0) {
-				totalmin = 0L;
-			}
-			Long min = totalmin % 60;
-			Long hour = totalmin / 60;
-			StringBuilder st = new StringBuilder();
-			if (hour > 1) {
-				st.append(hour);
-				st.append(" hrs");
-			} else if (hour == 1) {
-				st.append(hour);
-				st.append(" hr");
-			}
-			if (min > 0) {
-				st.append(min);
-				st.append(" mins");
-			}
-			report.setWaitingTime(st.toString());
-		}
+		report.setWaitingTime(calculateTime(report.getConsultedTime(),report.getArrivalTime()));
 
 		return report;
 
@@ -116,14 +129,14 @@ public class CRMReportServiceImpl implements CRMReportService {
 		return spoke;
 
 	}
-	
+
 	static TMDailyReport getTMDailyReportObj(Object[] obj) {
 		TMDailyReport report = new TMDailyReport();
 		report.setSpokeName((String) obj[1]);
-		report.setCurrentConsultations( obj[2]==null?new BigInteger("0"):(BigInteger) obj[2]);
-		report.setRevisitConsultations(obj[3]==null?new BigInteger("0"):(BigInteger) obj[3]);
-		report.setCumulativeConsultationsForMonth(obj[4]==null?new BigInteger("0"):(BigInteger) obj[4]);
-		report.setCumulativeRevisitConsultationsForMonth(obj[5]==null?new BigInteger("0"):(BigInteger) obj[5]);
+		report.setCurrentConsultations(obj[2] == null ? new BigInteger("0") : (BigInteger) obj[2]);
+		report.setRevisitConsultations(obj[3] == null ? new BigInteger("0") : (BigInteger) obj[3]);
+		report.setCumulativeConsultationsForMonth(obj[4] == null ? new BigInteger("0") : (BigInteger) obj[4]);
+		report.setCumulativeRevisitConsultationsForMonth(obj[5] == null ? new BigInteger("0") : (BigInteger) obj[5]);
 
 		return report;
 
@@ -203,27 +216,26 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 		}
 		List<LinkedHashMap<String, String>> output = new ArrayList<>();
-//		JSONArray arr = new JSONArray();
-		
+		// JSONArray arr = new JSONArray();
 
 		for (Map.Entry<SpokeReport, LinkedHashMap<String, String>> reportitr : report.entrySet()) {
 			output.add(reportitr.getValue());
 		}
-		String output1="";
+		String output1 = "";
 		try {
-			output1=mapper.writeValueAsString(output);
+			output1 = mapper.writeValueAsString(output);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return output1;
 	}
-	
+
 	@Override
 	public String getMonthlyReport(ReportInput input) throws TMException {
 		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
-		List<Object[]> objarr = benChiefComplaintReportRepo.getMonthlyReport(input.getFromDate(),
-				input.getToDate(), ppid);
-		
+		List<Object[]> objarr = benChiefComplaintReportRepo.getMonthlyReport(input.getFromDate(), input.getToDate(),
+				ppid);
+
 		LinkedHashMap<String, String> header = new LinkedHashMap<>();
 		Date inputfromdate = input.getFromDate();
 		Date inputtodate = input.getToDate();
@@ -237,7 +249,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 		LinkedHashMap<String, LinkedHashMap<String, String>> report = new LinkedHashMap<>();
 		for (Object[] obj : objarr) {
 			String indicator = (String) obj[0];
-			if(indicator==null){
+			if (indicator == null) {
 				continue;
 			}
 			LinkedHashMap<String, String> listcc = new LinkedHashMap();
@@ -252,15 +264,14 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 		}
 		List<LinkedHashMap<String, String>> output = new ArrayList<>();
-//		JSONArray arr = new JSONArray();
-		
-	
+		// JSONArray arr = new JSONArray();
+
 		for (Map.Entry<String, LinkedHashMap<String, String>> reportitr : report.entrySet()) {
 			output.add(reportitr.getValue());
 		}
-		String output1="";
+		String output1 = "";
 		try {
-			output1=mapper.writeValueAsString(output);
+			output1 = mapper.writeValueAsString(output);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,14 +283,12 @@ public class CRMReportServiceImpl implements CRMReportService {
 		// TODO Auto-generated method stub
 		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
 		List<Object[]> objarr = benChiefComplaintReportRepo.getDailyReport(input.getFromDate(), ppid);
-		
-		List<TMDailyReport> tmdailyreport=new ArrayList<>();
-		for(Object[] obj:objarr){
+
+		List<TMDailyReport> tmdailyreport = new ArrayList<>();
+		for (Object[] obj : objarr) {
 			tmdailyreport.add(getTMDailyReportObj(obj));
 		}
-		
-		
-		
+
 		return tmdailyreport;
 	}
 
