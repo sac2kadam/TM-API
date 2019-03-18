@@ -21,6 +21,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			+ " ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getBenPrescription(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
+	public ArrayList<PrescriptionDetail> findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long visitCode);
+
 	@Query(" SELECT prescriptionID, beneficiaryRegID, benVisitID, providerServiceMapID, diagnosisProvided, instruction, "
 			+ " visitCode FROM PrescriptionDetail ba "
 			+ " WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode "
@@ -45,8 +47,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			+ " modifiedBy=:modifiedBy, processed=:processed, "
 			+ " diagnosisProvided_SCTCode =:diagnosisProvided_SCTCode, "
 			+ " diagnosisProvided_SCTTerm =:diagnosisProvided_SCTTerm "
-			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID "
-			+ " AND prescriptionID=:prescriptionID")
+			+ " where prescriptionID=:prescriptionID AND visitCode=:visitCode "
+			+ " AND beneficiaryRegID=:beneficiaryRegID ")
 	public int updatePrescription(@Param("diagnosisProvided") String diagnosisProvided,
 			@Param("instruction") String instruction, @Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed, @Param("beneficiaryRegID") Long beneficiaryRegID,

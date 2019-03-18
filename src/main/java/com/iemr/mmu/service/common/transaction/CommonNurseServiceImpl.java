@@ -52,6 +52,7 @@ import com.iemr.mmu.data.quickConsultation.LabTestOrderDetail;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
@@ -2473,23 +2474,50 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescriptionDetail.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
-		}
-		prescriptionDetail.setPrescriptionID(null);
+		// String[] snomedCTArr =
+		// commonDoctorServiceImpl.getSnomedCTcode(prescriptionDetail.getDiagnosisProvided());
+		// if (snomedCTArr != null && snomedCTArr.length > 1) {
+		// prescriptionDetail.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
+		// prescriptionDetail.setDiagnosisProvided_SCTTerm(snomedCTArr[1]);
+		// }
+		// prescriptionDetail.setPrescriptionID(null);
 		return saveBenPrescription(prescriptionDetail);
 	}
 
 	public Long saveBenPrescription(PrescriptionDetail prescription) {
 		Long r = null;
 		prescription.setPrescriptionID(null);
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
+
+		if (prescription != null && prescription.getProvisionalDiagnosisList() != null
+				&& prescription.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj : prescription.getProvisionalDiagnosisList()) {
+				if (obj.getTerm() != null) {
+					if (pointer == prescription.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj.getTerm());
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj.getTerm()).append("  ||  ");
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
+			prescription.setDiagnosisProvided(pdTerm.toString());
+			prescription.setDiagnosisProvided_SCTCode(pdConceptID.toString());
+			// prescription.setDiagnosisProvided_SCTTerm(pdTerm.toString());
+
 		}
+
 		PrescriptionDetail prescriptionRS = prescriptionDetailRepo.save(prescription);
 		if (prescriptionRS != null && prescriptionRS.getPrescriptionID() > 0) {
 			r = prescriptionRS.getPrescriptionID();
@@ -2499,10 +2527,37 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	public int updatePrescription(PrescriptionDetail prescription) {
 		int i = 0;
-		String[] snomedCTArr = commonDoctorServiceImpl.getSnomedCTcode(prescription.getDiagnosisProvided());
-		if (snomedCTArr != null && snomedCTArr.length > 1) {
-			prescription.setDiagnosisProvided_SCTCode(snomedCTArr[0]);
-			prescription.setDiagnosisProvided_SCTTerm(snomedCTArr[0]);
+
+		// SnomedCT new code
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
+
+		if (prescription != null && prescription.getProvisionalDiagnosisList() != null
+				&& prescription.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj : prescription.getProvisionalDiagnosisList()) {
+				if (obj.getTerm() != null) {
+					if (pointer == prescription.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj.getTerm());
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj.getTerm()).append("  ||  ");
+						if (obj.getConceptID() != null)
+							pdConceptID.append(obj.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+
+				}
+				pointer++;
+			}
+			prescription.setDiagnosisProvided(pdTerm.toString());
+			prescription.setDiagnosisProvided_SCTCode(pdConceptID.toString());
+			// prescription.setDiagnosisProvided_SCTTerm(pdTerm.toString());
+
 		}
 
 		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),

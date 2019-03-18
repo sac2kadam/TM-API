@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.pnc;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.pnc.PNCDiagnosis;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.nurse.pnc.PNCDiagnosisRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -41,20 +43,68 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		PNCDiagnosis pncDiagnosis = InputMapper.gson().fromJson(obj, PNCDiagnosis.class);
 		pncDiagnosis.setPrescriptionID(prescriptionID);
 
-		// getting snomedCT code for provisional diagnosis
-		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
-		// getting snomedCT code for confirmatory diagnosis
-		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getConfirmatoryDiagnosis());
+		// provisional diagnosis
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
 
-		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
-			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);
-			pncDiagnosis.setProvisionalDiagnosisSCTTerm(snomedCTArrPD[1]);
+		if (pncDiagnosis != null && pncDiagnosis.getProvisionalDiagnosisList() != null
+				&& pncDiagnosis.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj1 : pncDiagnosis.getProvisionalDiagnosisList()) {
+				if (obj1.getTerm() != null) {
+					if (pointer == pncDiagnosis.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj1.getTerm());
+						if (obj1.getConceptID() != null)
+							pdConceptID.append(obj1.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj1.getTerm()).append("  ||  ");
+						if (obj1.getConceptID() != null)
+							pdConceptID.append(obj1.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
 
 		}
-		if (snomedCTArrCD != null && snomedCTArrCD.length > 1) {
-			pncDiagnosis.setConfirmatoryDiagnosisSCTCode(snomedCTArrCD[0]);
-			pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(snomedCTArrCD[1]);
+		pncDiagnosis.setProvisionalDiagnosis(pdTerm.toString());
+		pncDiagnosis.setProvisionalDiagnosisSCTCode(pdConceptID.toString());
+		// pncDiagnosis.setProvisionalDiagnosisSCTTerm(pdTerm.toString());
+
+		// confirmatory diagnosis
+		StringBuilder cdTerm = new StringBuilder();
+		StringBuilder cdConceptID = new StringBuilder();
+
+		if (pncDiagnosis != null && pncDiagnosis.getConfirmatoryDiagnosisList() != null
+				&& pncDiagnosis.getConfirmatoryDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj1 : pncDiagnosis.getConfirmatoryDiagnosisList()) {
+				if (obj1.getTerm() != null) {
+					if (pointer == pncDiagnosis.getConfirmatoryDiagnosisList().size()) {
+						cdTerm.append(obj1.getTerm());
+						if (obj1.getConceptID() != null)
+							cdConceptID.append(obj1.getConceptID());
+						else
+							cdConceptID.append("N/A");
+					} else {
+						cdTerm.append(obj1.getTerm()).append("  ||  ");
+						if (obj1.getConceptID() != null)
+							cdConceptID.append(obj1.getConceptID()).append("  ||  ");
+						else
+							cdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
+
 		}
+
+		pncDiagnosis.setConfirmatoryDiagnosis(cdTerm.toString());
+		pncDiagnosis.setConfirmatoryDiagnosisSCTCode(cdConceptID.toString());
+		// pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(cdTerm.toString());
 
 		PNCDiagnosis res = pncDiagnosisRepo.save(pncDiagnosis);
 		if (null != res && res.getID() > 0) {
@@ -66,30 +116,145 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 	public String getPNCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
 		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
 				visitCode);
-		ArrayList<Object[]> resList = pncDiagnosisRepo.getPNCDiagnosisDetails(beneficiaryRegID, visitCode);
-		PNCDiagnosis pncDiagnosisDetails = PNCDiagnosis.getPNCDiagnosisDetails(resList);
-		if (externalInvestigation != null)
-			pncDiagnosisDetails.setExternalInvestigation(externalInvestigation);
+
+		PNCDiagnosis pncDiagnosisDetails;
+		SCTDescription sctOBJ;
+		ArrayList<SCTDescription> sctOBJList;
+
+		ArrayList<PNCDiagnosis> pncDignosisList = pncDiagnosisRepo.findByBeneficiaryRegIDAndVisitCode(beneficiaryRegID,
+				visitCode);
+
+		if (pncDignosisList != null && pncDignosisList.size() > 0) {
+			pncDiagnosisDetails = pncDignosisList.get(0);
+			if (externalInvestigation != null)
+				pncDiagnosisDetails.setExternalInvestigation(externalInvestigation);
+
+			if (pncDiagnosisDetails != null && pncDiagnosisDetails.getProvisionalDiagnosis() != null
+					&& pncDiagnosisDetails.getProvisionalDiagnosisSCTCode() != null) {
+
+				sctOBJList = new ArrayList<>();
+				String[] conceptIDArr = pncDiagnosisDetails.getProvisionalDiagnosisSCTCode()
+						.split(Pattern.quote("  ||  "));
+				String[] termArr = pncDiagnosisDetails.getProvisionalDiagnosis().split(Pattern.quote("  ||  "));
+
+				// StringBuilder pd = new StringBuilder();
+				int pointer = 0;
+
+				for (String s : termArr) {
+					// if (termArr.length == (pointer + 1))
+					// pd.append(s);
+					// else
+					// pd.append(s).append(" || ");
+					sctOBJ = new SCTDescription();
+					sctOBJ.setConceptID(conceptIDArr[pointer]);
+					sctOBJ.setTerm(s);
+					sctOBJList.add(sctOBJ);
+
+					pointer++;
+				}
+				pncDiagnosisDetails.setProvisionalDiagnosisList(sctOBJList);
+				// pncDiagnosisDetails.setProvisionalDiagnosis(pd.toString());
+			}
+
+			if (pncDiagnosisDetails != null && pncDiagnosisDetails.getConfirmatoryDiagnosis() != null
+					&& pncDiagnosisDetails.getConfirmatoryDiagnosisSCTCode() != null) {
+
+				sctOBJList = new ArrayList<>();
+				String[] conceptIDArr = pncDiagnosisDetails.getConfirmatoryDiagnosisSCTCode()
+						.split(Pattern.quote("  ||  "));
+				String[] termArr = pncDiagnosisDetails.getConfirmatoryDiagnosis().split(Pattern.quote("  ||  "));
+
+				// StringBuilder cd = new StringBuilder();
+				int pointer = 0;
+
+				for (String s : termArr) {
+					// if (termArr.length == (pointer + 1))
+					// cd.append(s);
+					// else
+					// cd.append(s).append(" || ");
+					sctOBJ = new SCTDescription();
+					sctOBJ.setConceptID(conceptIDArr[pointer]);
+					sctOBJ.setTerm(s);
+					sctOBJList.add(sctOBJ);
+
+					pointer++;
+				}
+				pncDiagnosisDetails.setConfirmatoryDiagnosisList(sctOBJList);
+				// pncDiagnosisDetails.setConfirmatoryDiagnosis(cd.toString());
+			}
+
+		} else {
+			pncDiagnosisDetails = new PNCDiagnosis();
+		}
+
 		return new Gson().toJson(pncDiagnosisDetails);
 	}
 
 	public int updateBenPNCDiagnosis(PNCDiagnosis pncDiagnosis) throws IEMRException {
 		int res = 0;
 
-		// getting snomedCT code for provisional diagnosis
-		String[] snomedCTArrPD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getProvisionalDiagnosis());
-		// getting snomedCT code for confirmatory diagnosis
-		String[] snomedCTArrCD = commonDoctorServiceImpl.getSnomedCTcode(pncDiagnosis.getConfirmatoryDiagnosis());
+		// provisional diagnosis
+		StringBuilder pdTerm = new StringBuilder();
+		StringBuilder pdConceptID = new StringBuilder();
 
-		if (snomedCTArrPD != null && snomedCTArrPD.length > 1) {
-			pncDiagnosis.setProvisionalDiagnosisSCTCode(snomedCTArrPD[0]);
-			pncDiagnosis.setProvisionalDiagnosisSCTTerm(snomedCTArrPD[1]);
+		if (pncDiagnosis != null && pncDiagnosis.getProvisionalDiagnosisList() != null
+				&& pncDiagnosis.getProvisionalDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj1 : pncDiagnosis.getProvisionalDiagnosisList()) {
+				if (obj1.getTerm() != null) {
+					if (pointer == pncDiagnosis.getProvisionalDiagnosisList().size()) {
+						pdTerm.append(obj1.getTerm());
+						if (obj1.getConceptID() != null)
+							pdConceptID.append(obj1.getConceptID());
+						else
+							pdConceptID.append("N/A");
+					} else {
+						pdTerm.append(obj1.getTerm()).append("  ||  ");
+						if (obj1.getConceptID() != null)
+							pdConceptID.append(obj1.getConceptID()).append("  ||  ");
+						else
+							pdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
 
 		}
-		if (snomedCTArrCD != null && snomedCTArrCD.length > 1) {
-			pncDiagnosis.setConfirmatoryDiagnosisSCTCode(snomedCTArrCD[0]);
-			pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(snomedCTArrCD[1]);
+		pncDiagnosis.setProvisionalDiagnosis(pdTerm.toString());
+		pncDiagnosis.setProvisionalDiagnosisSCTCode(pdConceptID.toString());
+		// pncDiagnosis.setProvisionalDiagnosisSCTTerm(pdTerm.toString());
+
+		// confirmatory diagnosis
+		StringBuilder cdTerm = new StringBuilder();
+		StringBuilder cdConceptID = new StringBuilder();
+
+		if (pncDiagnosis != null && pncDiagnosis.getConfirmatoryDiagnosisList() != null
+				&& pncDiagnosis.getConfirmatoryDiagnosisList().size() > 0) {
+			int pointer = 1;
+			for (SCTDescription obj1 : pncDiagnosis.getConfirmatoryDiagnosisList()) {
+				if (obj1.getTerm() != null) {
+					if (pointer == pncDiagnosis.getConfirmatoryDiagnosisList().size()) {
+						cdTerm.append(obj1.getTerm());
+						if (obj1.getConceptID() != null)
+							cdConceptID.append(obj1.getConceptID());
+						else
+							cdConceptID.append("N/A");
+					} else {
+						cdTerm.append(obj1.getTerm()).append("  ||  ");
+						if (obj1.getConceptID() != null)
+							cdConceptID.append(obj1.getConceptID()).append("  ||  ");
+						else
+							cdConceptID.append("N/A").append("  ||  ");
+					}
+				}
+				pointer++;
+			}
+
 		}
+
+		pncDiagnosis.setConfirmatoryDiagnosis(cdTerm.toString());
+		pncDiagnosis.setConfirmatoryDiagnosisSCTCode(cdConceptID.toString());
+		// pncDiagnosis.setConfirmatoryDiagnosisSCTTerm(cdTerm.toString());
 
 		String processed = pncDiagnosisRepo.getPNCDiagnosisStatus(pncDiagnosis.getBeneficiaryRegID(),
 				pncDiagnosis.getVisitCode(), pncDiagnosis.getPrescriptionID());
