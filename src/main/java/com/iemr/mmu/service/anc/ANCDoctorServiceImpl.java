@@ -1,6 +1,8 @@
 package com.iemr.mmu.service.anc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,25 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		ANCDiagnosis ancDiagnosis = InputMapper.gson().fromJson(obj, ANCDiagnosis.class);
 		ancDiagnosis.setPrescriptionID(prescriptionID);
 
+		StringBuilder sb = new StringBuilder();
+
+		if (ancDiagnosis != null && ancDiagnosis.getComplicationOfCurrentPregnancyList() != null
+				&& ancDiagnosis.getComplicationOfCurrentPregnancyList().size() > 0) {
+			int pointer = 0;
+			for (Map<String, String> compMap : ancDiagnosis.getComplicationOfCurrentPregnancyList()) {
+				if (compMap.containsKey("pregComplicationType") && compMap.get("pregComplicationType") != null) {
+					if ((pointer + 1) == ancDiagnosis.getComplicationOfCurrentPregnancyList().size()) {
+						sb.append(compMap.get("pregComplicationType"));
+					} else {
+						sb.append(compMap.get("pregComplicationType")).append(" , ");
+					}
+				}
+				pointer++;
+			}
+		}
+
+		ancDiagnosis.setComplicationOfCurrentPregnancy(sb.toString());
+
 		ANCDiagnosis res = ancDiagnosisRepo.save(ancDiagnosis);
 		if (null != res && res.getID() > 0) {
 			ID = res.getID();
@@ -44,8 +65,34 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
 		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
 				visitCode);
-		ArrayList<Object[]> resList = ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, visitCode);
-		ANCDiagnosis ancDiagnosisDetails = ANCDiagnosis.getANCDiagnosisDetails(resList);
+		ANCDiagnosis ancDiagnosisDetails = new ANCDiagnosis();
+		// ArrayList<Object[]> resList =
+		// ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, visitCode);
+
+		ArrayList<ANCDiagnosis> ancDiagnosisList = ancDiagnosisRepo.findByBeneficiaryRegIDAndVisitCode(beneficiaryRegID,
+				visitCode);
+
+		// ANCDiagnosis ancDiagnosisDetails =
+		// ANCDiagnosis.getANCDiagnosisDetails(resList);
+
+		if (ancDiagnosisList != null && ancDiagnosisList.size() > 0)
+			ancDiagnosisDetails = ancDiagnosisList.get(0);
+
+		ArrayList<Map<String, String>> pregCompList = new ArrayList<>();
+		Map<String, String> pregCompMap;
+		if (ancDiagnosisDetails.getComplicationOfCurrentPregnancy() != null) {
+			String[] currPregCompArr = ancDiagnosisDetails.getComplicationOfCurrentPregnancy().split(" , ");
+			for (String s : currPregCompArr) {
+				pregCompMap = new HashMap<>();
+				pregCompMap.put("pregComplicationType", s);
+				pregCompList.add(pregCompMap);
+			}
+		}
+
+		ancDiagnosisDetails.setComplicationOfCurrentPregnancy(ancDiagnosisDetails.getComplicationOfCurrentPregnancy()
+				+ " , Other-complications : " + ancDiagnosisDetails.getOtherCurrPregComplication());
+		ancDiagnosisDetails.setComplicationOfCurrentPregnancyList(pregCompList);
+
 		if (externalInvestigation != null)
 			ancDiagnosisDetails.setExternalInvestigation(externalInvestigation);
 		return new Gson().toJson(ancDiagnosisDetails);
@@ -60,12 +107,32 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 		}
 		ancDiagnosis.setProcessed(processed);
 
+		StringBuilder sb = new StringBuilder();
+
+		if (ancDiagnosis != null && ancDiagnosis.getComplicationOfCurrentPregnancyList() != null
+				&& ancDiagnosis.getComplicationOfCurrentPregnancyList().size() > 0) {
+			int pointer = 0;
+			for (Map<String, String> compMap : ancDiagnosis.getComplicationOfCurrentPregnancyList()) {
+				if (compMap.containsKey("pregComplicationType") && compMap.get("pregComplicationType") != null) {
+					if ((pointer + 1) == ancDiagnosis.getComplicationOfCurrentPregnancyList().size()) {
+						sb.append(compMap.get("pregComplicationType"));
+					} else {
+						sb.append(compMap.get("pregComplicationType")).append(" , ");
+					}
+				}
+				pointer++;
+			}
+		}
+
+		ancDiagnosis.setComplicationOfCurrentPregnancy(sb.toString());
+
 		if (processed != null) {
 			int i = ancDiagnosisRepo.updateANCDiagnosis(ancDiagnosis.getHighRiskStatus(),
 					ancDiagnosis.getHighRiskCondition(), ancDiagnosis.getComplicationOfCurrentPregnancy(),
 					ancDiagnosis.getIsMaternalDeath(), ancDiagnosis.getPlaceOfDeath(), ancDiagnosis.getDateOfDeath(),
 					ancDiagnosis.getCauseOfDeath(), ancDiagnosis.getCreatedBy(), ancDiagnosis.getProcessed(),
-					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getVisitCode());
+					ancDiagnosis.getBeneficiaryRegID(), ancDiagnosis.getVisitCode(),
+					ancDiagnosis.getOtherCurrPregComplication());
 			if (i > 0) {
 				res = 1;
 			}

@@ -3,6 +3,7 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -126,6 +127,14 @@ public class ANCDiagnosis {
 	@Transient
 	@Expose
 	private String externalInvestigation;
+
+	@Transient
+	@Expose
+	private ArrayList<Map<String, String>> complicationOfCurrentPregnancyList;
+
+	@Expose
+	@Column(name = "OtherCompCurPreg ")
+	private String otherCurrPregComplication;
 
 	public String getExternalInvestigation() {
 		return externalInvestigation;
@@ -327,6 +336,9 @@ public class ANCDiagnosis {
 		this.prescriptionID = prescriptionID;
 	}
 
+	public ANCDiagnosis() {
+	}
+
 	public ANCDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			Long prescriptionID, String highRiskStatus, String highRiskCondition, String complicationOfCurrentPregnancy,
 			Boolean isMaternalDeath, String placeOfDeath, Date dateOfDeath, String causeOfDeath, Long visitCode,
@@ -374,6 +386,23 @@ public class ANCDiagnosis {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public ArrayList<Map<String, String>> getComplicationOfCurrentPregnancyList() {
+		return complicationOfCurrentPregnancyList;
+	}
+
+	public void setComplicationOfCurrentPregnancyList(
+			ArrayList<Map<String, String>> complicationOfCurrentPregnancyList) {
+		this.complicationOfCurrentPregnancyList = complicationOfCurrentPregnancyList;
+	}
+
+	public String getOtherCurrPregComplication() {
+		return otherCurrPregComplication;
+	}
+
+	public void setOtherCurrPregComplication(String otherCurrPregComplication) {
+		this.otherCurrPregComplication = otherCurrPregComplication;
 	}
 
 }

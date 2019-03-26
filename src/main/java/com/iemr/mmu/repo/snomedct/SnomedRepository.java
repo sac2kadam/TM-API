@@ -19,7 +19,7 @@ public interface SnomedRepository extends JpaRepository<SCTDescription, Long> {
 			+ " FROM SCTDescription s WHERE s.term =:term and s.active = '1'")
 	public List<Object[]> findSnomedCTRecordFromTerm(@Param("term") String term);
 
-	@Query("SELECT DISTINCT s FROM SCTDescription s WHERE s.term like :term% and s.active = '1' ")
+	@Query("SELECT DISTINCT s FROM SCTDescription s WHERE s.term LIKE :term% AND s.active = '1' ")
 	public Page<SCTDescription> findSnomedCTRecordList(@Param("term") String term, Pageable pageable);
 
 }

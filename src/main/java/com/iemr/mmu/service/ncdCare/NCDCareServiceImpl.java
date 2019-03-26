@@ -132,7 +132,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
 
-			//	i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
@@ -695,51 +696,6 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
 
-			// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-			// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
-			// requestOBJ.has("tcRequest")
-			// && requestOBJ.get("tcRequest") != null) {
-			// tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-			// TeleconsultationRequestOBJ.class);
-			//
-			// // create TC request
-			// if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null &&
-			// tcRequestOBJ.getUserID() > 0
-			// && tcRequestOBJ.getAllocationDate() != null) {
-			//
-			// tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-			// tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-			//
-			// // tc request model
-			// TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ,
-			// TCRequestModel.class);
-			// tRequestModel.setUserID(tcRequestOBJ.getUserID());
-			// tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-			// tRequestModel
-			// .setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(),
-			// tcRequestOBJ.getToTime()));
-			//
-			// // tc speciaist slot booking model
-			// tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-			// tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
-			// tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
-			// tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
-			// tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
-			// tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-			// tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-			//
-			// int j =
-			// commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-			// Authorization);
-			// if (j > 0)
-			// tcRequestStatusFlag =
-			// teleConsultationServiceImpl.createTCRequest(tRequestModel);
-			// else
-			// throw new RuntimeException("Error while booking slot.");
-			//
-			// }
-			// }
-
 			JsonArray testList = null;
 			JsonArray drugList = null;
 
@@ -1129,51 +1085,6 @@ public class NCDCareServiceImpl implements NCDCareService {
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
-
-			// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-			// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
-			// requestOBJ.has("tcRequest")
-			// && requestOBJ.get("tcRequest") != null) {
-			// tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-			// TeleconsultationRequestOBJ.class);
-			//
-			// // create TC request
-			// if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null &&
-			// tcRequestOBJ.getUserID() > 0
-			// && tcRequestOBJ.getAllocationDate() != null) {
-			//
-			// tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-			// tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-			//
-			// // tc request model
-			// TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ,
-			// TCRequestModel.class);
-			// tRequestModel.setUserID(tcRequestOBJ.getUserID());
-			// tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-			// tRequestModel
-			// .setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(),
-			// tcRequestOBJ.getToTime()));
-			//
-			// // tc speciaist slot booking model
-			// tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-			// tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
-			// tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
-			// tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
-			// tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
-			// tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-			// tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-			//
-			// int j =
-			// commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-			// Authorization);
-			// if (j > 0)
-			// tcRequestStatusFlag =
-			// teleConsultationServiceImpl.createTCRequest(tRequestModel);
-			// else
-			// throw new RuntimeException("Error while booking slot.");
-			//
-			// }
-			// }
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
