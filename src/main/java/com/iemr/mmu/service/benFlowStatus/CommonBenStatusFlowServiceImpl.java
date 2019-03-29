@@ -51,8 +51,8 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 				else
 					returnOBJ = 0;
 			} else {
-				ArrayList<Long> benFlowIDList = beneficiaryFlowStatusRepo
-						.checkBenAlreadyInNurseWorkList(obj.getBeneficiaryRegID(), obj.getProviderServiceMapID());
+				ArrayList<Long> benFlowIDList = beneficiaryFlowStatusRepo.checkBenAlreadyInNurseWorkList(
+						obj.getBeneficiaryRegID(), obj.getProviderServiceMapID(), obj.getVanID());
 				if (benFlowIDList != null && benFlowIDList.size() > 0) {
 					// update i_ben_flow table for updated beneficiary id
 					returnOBJ = 3;

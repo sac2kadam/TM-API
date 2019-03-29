@@ -3,6 +3,7 @@ package com.iemr.mmu.service.common.transaction;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -291,7 +292,13 @@ public class CommonDoctorServiceImpl {
 	}
 
 	// New doc work-list service
-	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID) {
+	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID, Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		// new Timestamp(fiveDaysAgo);
 
 		ArrayList<BeneficiaryFlowStatus> docWorkList = new ArrayList<>();
 		// MMU doc work-list
@@ -300,29 +307,39 @@ public class CommonDoctorServiceImpl {
 		}
 		// TC doc work-list
 		else if (serviceID != null && serviceID == 4) {
-			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNewTC(providerServiceMapId);
+			docWorkList = beneficiaryFlowStatusRepo.getDocWorkListNewTC(providerServiceMapId,
+					new Timestamp(sevenDaysAgo), vanID);
 		}
 
 		return new Gson().toJson(docWorkList);
 	}
 
 	// New doc work-list service (Future scheduled beneficiary for TM)
-	public String getDocWorkListNewFutureScheduledForTM(Integer providerServiceMapId, Integer serviceID) {
+	public String getDocWorkListNewFutureScheduledForTM(Integer providerServiceMapId, Integer serviceID,
+			Integer vanID) {
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> docWorkListFutureScheduled = new ArrayList<>();
 		if (serviceID != null && serviceID == 4) {
 			docWorkListFutureScheduled = beneficiaryFlowStatusRepo
-					.getDocWorkListNewFutureScheduledTC(providerServiceMapId);
+					.getDocWorkListNewFutureScheduledTC(providerServiceMapId, new Timestamp(sevenDaysAgo), vanID);
 		}
 		return new Gson().toJson(docWorkListFutureScheduled);
 	}
 
 	// New TC specialist work-list service
 	public String getTCSpecialistWorkListNewForTM(Integer providerServiceMapId, Integer userID, Integer serviceID) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> tcSpecialistWorkList = new ArrayList<>();
 		if (serviceID != null && serviceID == 4) {
-			tcSpecialistWorkList = beneficiaryFlowStatusRepo.getTCSpecialistWorkListNew(providerServiceMapId, userID);
+			tcSpecialistWorkList = beneficiaryFlowStatusRepo.getTCSpecialistWorkListNew(providerServiceMapId, userID,
+					new Timestamp(sevenDaysAgo));
 		}
 		return new Gson().toJson(tcSpecialistWorkList);
 	}
