@@ -64,6 +64,11 @@ public class CommonDoctorServiceImpl {
 	@Value("${tcSpecialistSlotBook}")
 	private String tcSpecialistSlotBook;
 
+	@Value("${docWL}")
+	private Integer docWL;
+	@Value("${tcSpeclistWL}")
+	private Integer tcSpeclistWL;
+
 	private BenClinicalObservationsRepo benClinicalObservationsRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private DocWorkListRepo docWorkListRepo;
@@ -295,7 +300,10 @@ public class CommonDoctorServiceImpl {
 	public String getDocWorkListNew(Integer providerServiceMapId, Integer serviceID, Integer vanID) {
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (docWL != null && docWL > 0 && docWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -docWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		// new Timestamp(fiveDaysAgo);
@@ -318,14 +326,14 @@ public class CommonDoctorServiceImpl {
 	public String getDocWorkListNewFutureScheduledForTM(Integer providerServiceMapId, Integer serviceID,
 			Integer vanID) {
 
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
-		long sevenDaysAgo = cal.getTimeInMillis();
+		// Calendar cal = Calendar.getInstance();
+		// cal.add(Calendar.DAY_OF_YEAR, -7);
+		// long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> docWorkListFutureScheduled = new ArrayList<>();
 		if (serviceID != null && serviceID == 4) {
 			docWorkListFutureScheduled = beneficiaryFlowStatusRepo
-					.getDocWorkListNewFutureScheduledTC(providerServiceMapId, new Timestamp(sevenDaysAgo), vanID);
+					.getDocWorkListNewFutureScheduledTC(providerServiceMapId, vanID);
 		}
 		return new Gson().toJson(docWorkListFutureScheduled);
 	}
@@ -333,7 +341,10 @@ public class CommonDoctorServiceImpl {
 	// New TC specialist work-list service
 	public String getTCSpecialistWorkListNewForTM(Integer providerServiceMapId, Integer userID, Integer serviceID) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (tcSpeclistWL != null && tcSpeclistWL > 0 && tcSpeclistWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -tcSpeclistWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> tcSpecialistWorkList = new ArrayList<>();

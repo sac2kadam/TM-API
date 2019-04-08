@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -90,7 +92,20 @@ import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:myApp.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+
+	@Value("${nurseTCWL}")
+	private Integer nurseTCWL;
+	@Value("${pharmaWL}")
+	private Integer pharmaWL;
+	@Value("${labWL}")
+	private Integer labWL;
+	@Value("${radioWL}")
+	private Integer radioWL;
+	@Value("${oncoWL}")
+	private Integer oncoWL;
+
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private BenMedHistoryRepo benMedHistoryRepo;
@@ -2918,7 +2933,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	// nurse worklist TC schedule (current-date) new ... 05-02-2019
 	public String getNurseWorkListTcCurrentDate(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (nurseTCWL != null && nurseTCWL > 0 && nurseTCWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -nurseTCWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo
@@ -2938,7 +2956,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	// New Lab worklist.... 26-03-2018
 	public String getLabWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (labWL != null && labWL > 0 && labWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -labWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getLabWorklistNew(providerServiceMapId,
@@ -2950,7 +2971,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	// New radiologist worklist.... 26-03-2018
 	public String getRadiologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (radioWL != null && radioWL > 0 && radioWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -radioWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getRadiologistWorkListNew(providerServiceMapId,
@@ -2963,7 +2987,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public String getOncologistWorkListNew(Integer providerServiceMapId, Integer vanID) {
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (oncoWL != null && oncoWL > 0 && oncoWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -oncoWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getOncologistWorkListNew(providerServiceMapId,
@@ -2976,7 +3003,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public String getPharmaWorkListNew(Integer providerServiceMapId, Integer vanID) {
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -7);
+		if (pharmaWL != null && pharmaWL > 0 && pharmaWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -pharmaWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
 		long sevenDaysAgo = cal.getTimeInMillis();
 
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getPharmaWorkListNew(providerServiceMapId,

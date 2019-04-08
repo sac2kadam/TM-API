@@ -92,13 +92,11 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	// TC doc work-list, future scheduled 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t "
 			+ " WHERE t.specialist_flag = 1 AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
-			+ " AND t.vanID = :vanID  AND t.benVisitDate >= Date(:fromDate) "
-			+ " AND DATE(t.tCRequestDate) > curdate() "
+			+ " AND t.vanID = :vanID AND DATE(t.tCRequestDate) > curdate() "
 			+ " AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
 			+ " ORDER BY t.tCRequestDate ")
 	public ArrayList<BeneficiaryFlowStatus> getDocWorkListNewFutureScheduledTC(
-			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("fromDate") Timestamp fromDate,
-			@Param("vanID") Integer vanID);
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
 
 	// TC Specialist work-list, 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t WHERE Date(t.benVisitDate) >= DATE(:fromDate) "
