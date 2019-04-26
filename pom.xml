@@ -33,6 +33,8 @@
 		<source-properties>src/main/environment/common_${environment}.properties</source-properties>
 		<hostname-dev>10.208.122.38</hostname-dev>
 		<port-dev>9990</port-dev>
+		<username>admin</username>
+		<password>ad@min123</password>
 		<hostname-uat>deviemr.piramalswasthya.org</hostname-uat>
 		<port-uat>9990</port-uat>
 		<server-id>wildfly-${environment}</server-id>
