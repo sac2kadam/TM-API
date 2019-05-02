@@ -61,6 +61,7 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 				case "swagger-ui.html":
 				case "ui":
 				case "swagger-resources":
+				case "version":
 				case "api-docs":
 
 					break;

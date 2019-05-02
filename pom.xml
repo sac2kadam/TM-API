@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -31,8 +30,11 @@
 		<environment>dev</environment>
 		<target-properties>target/classes/application.properties</target-properties>
 		<source-properties>src/main/environment/common_${environment}.properties</source-properties>
+		<hostname-test>10.208.122.32</hostname-test>
+		<port-test>9990</port-test>
 		<hostname-dev>10.208.122.38</hostname-dev>
 		<port-dev>9990</port-dev>
+
 		<hostname-uat>deviemr.piramalswasthya.org</hostname-uat>
 		<port-uat>9990</port-uat>
 		<server-id>wildfly-${environment}</server-id>
@@ -246,6 +248,37 @@
 		<finalName>tmapi-v1.0</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.4</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<prefix>git</prefix>
+					<verbose>false</verbose>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<format>json</format>
+					<gitDescribe>
+						<skip>false</skip>
+						<always>false</always>
+						<dirty>-dirty</dirty>
+					</gitDescribe>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
@@ -269,6 +302,26 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>1.2.1.Final</version>
+				<configuration>
+					<id>${server-id}</id>
+					<hostname>$${server-hostname}</hostname>
+					<port>$${server-port}</port>
+					<username>admin</username>
+					<password>ad@min123</password>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -306,24 +359,7 @@
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>1.2.1.Final</version>
-				<configuration>
-					<id>${server-id}</id>
-					<hostname>$${server-hostname}</hostname>
-					<port>$${server-port}</port>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 		</plugins>
 	</build>
 	<dependencyManagement>
