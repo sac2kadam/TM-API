@@ -56,31 +56,31 @@ public class SnomedController {
 		return output.toString();
 	}
 
-	// @CrossOrigin
-	// @ApiOperation(value = "retrives SnomedCT Records", consumes =
-	// "application/json", produces = "application/json")
-	// @RequestMapping(value = "/getSnomedCTRecords", method = RequestMethod.POST,
-	// headers = "Authorization")
-	// public String getSnomedCTRecords(@ApiParam(value = "{\"term\":\"String\"}")
-	// @RequestBody String request) {
-	// OutputResponse output = new OutputResponse();
-	// try {
-	//
-	// SCTDescription sctdescription = InputMapper.gson().fromJson(request,
-	// SCTDescription.class);
-	//
-	// logger.info("getSnomedCTRecord request " + sctdescription.toString());
-	//
-	// List<SCTDescription> sctdescriptions =
-	// snomedService.findSnomedCTRecordFromTerm(sctdescription.getTerm());
-	//
-	// output.setResponse(sctdescriptions.toString());
-	// logger.info("ggetSnomedCTRecord response: " + output);
-	// } catch (Exception e) {
-	// logger.error("ggetSnomedCTRecord failed with error " + e.getMessage(), e);
-	// output.setError(e);
-	// }
-	// return output.toString();
-	// }
+	@CrossOrigin
+	@ApiOperation(value = "retrives SnomedCT Record list (Entire term case insensitive)", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/getSnomedCTRecordList", method = RequestMethod.POST, headers = "Authorization")
+	public String getSnomedCTRecordList(@ApiParam(value = "{\"term\":\"String\"}") @RequestBody String request) {
+		OutputResponse output = new OutputResponse();
+		try {
+
+			SCTDescription sctdescription = InputMapper.gson().fromJson(request, SCTDescription.class);
+
+			logger.info("getSnomedCTRecord request " + sctdescription.toString());
+
+			
+			String sctList = snomedService.findSnomedCTRecordList(sctdescription);
+
+			if (sctList != null)
+				output.setResponse(sctList);
+			else
+				output.setResponse("No Records Found");
+
+			logger.info("ggetSnomedCTRecord response: " + output);
+		} catch (Exception e) {
+			logger.error("ggetSnomedCTRecord failed with error " + e.getMessage(), e);
+			output.setError(e);
+		}
+		return output.toString();
+	}
 
 }

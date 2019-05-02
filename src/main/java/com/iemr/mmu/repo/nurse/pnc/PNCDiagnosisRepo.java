@@ -24,6 +24,8 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long> {
 	public ArrayList<Object[]> getPNCDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
+	ArrayList<PNCDiagnosis> findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long visitCode);
+
 	@Query("SELECT processed from PNCDiagnosis where beneficiaryRegID=:benRegID AND visitCode = :visitCode "
 			+ " AND prescriptionID =:prescriptionID ")
 	public String getPNCDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,

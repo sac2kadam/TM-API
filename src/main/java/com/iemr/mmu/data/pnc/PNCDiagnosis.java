@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 
 @Entity
 @Table(name = "t_pncdiagnosis")
@@ -137,6 +138,14 @@ public class PNCDiagnosis {
 	@Transient
 	@Expose
 	private String externalInvestigation;
+
+	@Expose
+	@Transient
+	private ArrayList<SCTDescription> provisionalDiagnosisList;
+
+	@Expose
+	@Transient
+	private ArrayList<SCTDescription> confirmatoryDiagnosisList;
 
 	public String getProvisionalDiagnosisSCTCode() {
 		return provisionalDiagnosisSCTCode;
@@ -370,6 +379,9 @@ public class PNCDiagnosis {
 		this.reservedForChange = reservedForChange;
 	}
 
+	public PNCDiagnosis() {
+	}
+
 	public PNCDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String provisionalDiagnosis, String confirmatoryDiagnosis, Boolean isMaternalDeath, String placeOfDeath,
 			Date dateOfDeath, String causeOfDeath, Long visitCode, String externalInvestigation) {
@@ -398,6 +410,30 @@ public class PNCDiagnosis {
 
 		}
 		return cOBJ;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public ArrayList<SCTDescription> getProvisionalDiagnosisList() {
+		return provisionalDiagnosisList;
+	}
+
+	public void setProvisionalDiagnosisList(ArrayList<SCTDescription> provisionalDiagnosisList) {
+		this.provisionalDiagnosisList = provisionalDiagnosisList;
+	}
+
+	public ArrayList<SCTDescription> getConfirmatoryDiagnosisList() {
+		return confirmatoryDiagnosisList;
+	}
+
+	public void setConfirmatoryDiagnosisList(ArrayList<SCTDescription> confirmatoryDiagnosisList) {
+		this.confirmatoryDiagnosisList = confirmatoryDiagnosisList;
 	}
 
 }

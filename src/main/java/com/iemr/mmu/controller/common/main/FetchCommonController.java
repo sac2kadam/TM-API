@@ -66,13 +66,14 @@ public class FetchCommonController {
 	// doc worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}" }, method = { RequestMethod.GET })
+	@RequestMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
-			@PathVariable("serviceID") Integer serviceID) {
+			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (providerServiceMapID != null && serviceID != null) {
-				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID);
+				String s = commonDoctorServiceImpl.getDocWorkListNew(providerServiceMapID, serviceID, vanID);
 				if (s != null)
 					response.setResponse(s);
 			} else {
@@ -91,16 +92,17 @@ public class FetchCommonController {
 	// doc worklist new (TM future scheduled beneficiary)
 	@CrossOrigin()
 	@ApiOperation(value = "provides doctor worklist future scheduled for TM", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}" }, method = {
-			RequestMethod.GET })
+	@RequestMapping(value = {
+			"/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+					RequestMethod.GET })
 	public String getDocWorkListNewFutureScheduledForTM(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
-			@PathVariable("serviceID") Integer serviceID) {
+			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (providerServiceMapID != null && serviceID != null) {
 				String s = commonDoctorServiceImpl.getDocWorkListNewFutureScheduledForTM(providerServiceMapID,
-						serviceID);
+						serviceID, vanID);
 				if (s != null)
 					response.setResponse(s);
 			} else {
@@ -136,11 +138,13 @@ public class FetchCommonController {
 	// nurse worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getNurseWorkListNew(providerServiceMapID);
+			String s = commonNurseServiceImpl.getNurseWorkListNew(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -156,11 +160,13 @@ public class FetchCommonController {
 	// nurse worklist TC schedule (current-date) new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getNurseWorkListTcCurrentDate(providerServiceMapID);
+			String s = commonNurseServiceImpl.getNurseWorkListTcCurrentDate(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -176,11 +182,13 @@ public class FetchCommonController {
 	// nurse worklist TC schedule (future-date) new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Nurse worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getNurseWorkListTcFutureDate(providerServiceMapID);
+			String s = commonNurseServiceImpl.getNurseWorkListTcFutureDate(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -222,11 +230,13 @@ public class FetchCommonController {
 	// Get Lab technician worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get Lab technician worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getLabWorklistNew/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID);
+			String s = commonNurseServiceImpl.getLabWorkListNew(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -242,11 +252,13 @@ public class FetchCommonController {
 	// Get radiologist worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get radiologist worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getRadiologistWorkListNew(providerServiceMapID);
+			String s = commonNurseServiceImpl.getRadiologistWorkListNew(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -262,11 +274,13 @@ public class FetchCommonController {
 	// Get oncologist worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get oncologist worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getOncologistWorkListNew(providerServiceMapID);
+			String s = commonNurseServiceImpl.getOncologistWorkListNew(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else
@@ -282,11 +296,13 @@ public class FetchCommonController {
 	// Get pharma worklist new
 	@CrossOrigin()
 	@ApiOperation(value = "Get pharma worklist new", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}" }, method = { RequestMethod.GET })
-	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID) {
+	@RequestMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
 		try {
-			String s = commonNurseServiceImpl.getPharmaWorkListNew(providerServiceMapID);
+			String s = commonNurseServiceImpl.getPharmaWorkListNew(providerServiceMapID, vanID);
 			if (s != null)
 				response.setResponse(s);
 			else

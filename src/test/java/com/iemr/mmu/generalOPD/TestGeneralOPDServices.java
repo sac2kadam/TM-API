@@ -47,9 +47,9 @@ public class TestGeneralOPDServices {
 
 		TestCommonServices.initializeParams();
 
-		generalOPDServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
-		generalOPDServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
-		generalOPDServiceImpl.setGeneralOPDNurseServiceImpl(generalOPDNurseServiceImpl);
+		// generalOPDServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
+		// generalOPDServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
+		// generalOPDServiceImpl.setGeneralOPDNurseServiceImpl(generalOPDNurseServiceImpl);
 
 		// generalOPDNurseServiceImpl.setBenChildDevelopmentHistoryRepo(benChildDevelopmentHistoryRepoMock);
 		// generalOPDNurseServiceImpl.setChildFeedingDetailsRepo(childFeedingDetailsRepoMock);
@@ -136,7 +136,7 @@ public class TestGeneralOPDServices {
 
 		Long response = null;
 		try {
-//			response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJPve);
+			// response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJPve);
 			response = null;
 
 		} catch (Exception e) {
@@ -152,7 +152,7 @@ public class TestGeneralOPDServices {
 
 		Long response = null;
 		try {
-			//response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJNve);
+			// response = generalOPDServiceImpl.saveNurseData(TestCommonServices.jsnOBJNve);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 
 @Entity
 @Table(name = "t_prescription")
@@ -119,6 +120,10 @@ public class PrescriptionDetail {
 
 	@Transient
 	private ArrayList<PrescribedDrugDetail> prescribedDrugs;
+
+	@Expose
+	@Transient
+	private ArrayList<SCTDescription> provisionalDiagnosisList;
 
 	public String getDiagnosisProvided_SCTCode() {
 		return diagnosisProvided_SCTCode;
@@ -377,6 +382,14 @@ public class PrescriptionDetail {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public ArrayList<SCTDescription> getProvisionalDiagnosisList() {
+		return provisionalDiagnosisList;
+	}
+
+	public void setProvisionalDiagnosisList(ArrayList<SCTDescription> provisionalDiagnosisList) {
+		this.provisionalDiagnosisList = provisionalDiagnosisList;
 	}
 
 }

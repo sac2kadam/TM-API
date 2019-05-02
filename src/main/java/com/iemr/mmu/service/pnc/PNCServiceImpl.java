@@ -163,7 +163,8 @@ public class PNCServiceImpl implements PNCService {
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
 
-				//i = commonNurseServiceImpl.updateBeneficiaryStatus('N', tmpOBJ.get("beneficiaryRegID").getAsLong());
+				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
+				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
@@ -237,7 +238,7 @@ public class PNCServiceImpl implements PNCService {
 		Long diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		// Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -245,51 +246,6 @@ public class PNCServiceImpl implements PNCService {
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
-
-			// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-			// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
-			// requestOBJ.has("tcRequest")
-			// && requestOBJ.get("tcRequest") != null) {
-			// tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-			// TeleconsultationRequestOBJ.class);
-			//
-			// // create TC request
-			// if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null &&
-			// tcRequestOBJ.getUserID() > 0
-			// && tcRequestOBJ.getAllocationDate() != null) {
-			//
-			// tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-			// tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-			//
-			// // tc request model
-			// TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ,
-			// TCRequestModel.class);
-			// tRequestModel.setUserID(tcRequestOBJ.getUserID());
-			// tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-			// tRequestModel
-			// .setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(),
-			// tcRequestOBJ.getToTime()));
-			//
-			// // tc speciaist slot booking model
-			// tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-			// tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
-			// tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
-			// tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
-			// tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
-			// tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-			// tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-			//
-			// int j =
-			// commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-			// Authorization);
-			// if (j > 0)
-			// tcRequestStatusFlag =
-			// teleConsultationServiceImpl.createTCRequest(tRequestModel);
-			// else
-			// throw new RuntimeException("Error while booking slot.");
-			//
-			// }
-			// }
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
@@ -922,78 +878,6 @@ public class PNCServiceImpl implements PNCService {
 		return new Gson().toJson(examinationDetailsMap);
 	}
 
-	/*
-	 * // ------- Fetch beneficiary all past history data ------------------ public
-	 * String getPastHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPastMedicalHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all past history data ----------
-	 * 
-	 * // ------- Fetch beneficiary all Personal Tobacco history data-----------
-	 * public String getPersonalTobaccoHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPersonalTobaccoHistory(beneficiaryRegID); }
-	 * /// ------- End of Fetch beneficiary all Personal Tobacco history data------
-	 * 
-	 * // ------- Fetch beneficiary all Personal Alcohol history data -----------
-	 * public String getPersonalAlcoholHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPersonalAlcoholHistory(beneficiaryRegID); }
-	 * /// ------- End of Fetch beneficiary all Personal Alcohol history data-----
-	 * 
-	 * // ------- Fetch beneficiary all Personal Allergy history data -----------
-	 * public String getPersonalAllergyHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPersonalAllergyHistory(beneficiaryRegID); }
-	 * /// ------- End of Fetch beneficiary all Personal Allergy history data------
-	 * 
-	 * // ------- Fetch beneficiary all Medication history data ----------- public
-	 * String getMedicationHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPersonalMedicationHistory(beneficiaryRegID); }
-	 * /// ------- End of Fetch beneficiary all Medication history data --
-	 * 
-	 * // ------- Fetch beneficiary all Family history data --------------- public
-	 * String getFamilyHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Family history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Menstrual history data ----------- public
-	 * String getMenstrualHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenMenstrualHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Menstrual history data --
-	 * 
-	 * // ------- Fetch beneficiary all past obstetric history data ---------------
-	 * public String getObstetricHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPastObstetricHistory(beneficiaryRegID); }
-	 * 
-	 * /// ------- End of Fetch beneficiary all past obstetric history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Comorbid conditions history data----------
-	 * public String getComorbidHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenComorbidityHistory(beneficiaryRegID); } ///
-	 * -----End of Fetch beneficiary all Comorbid conditions history data ----
-	 * 
-	 * // ------- Fetch beneficiary all Child Vaccine history data ---------------
-	 * public String getChildVaccineHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenOptionalVaccineHistory(beneficiaryRegID); }
-	 * /// ------- End of Fetch beneficiary all Child Vaccine history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Immunization history data ---------------
-	 * public String getImmunizationHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenImmunizationHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Immunization history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Perinatal history data ---------------
-	 * public String getBenPerinatalHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenPerinatalHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Perinatal history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Feeding history data --------------- public
-	 * String getBenFeedingHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenFeedingHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Feeding history data ------
-	 * 
-	 * // ------- Fetch beneficiary all Development history data ---------------
-	 * public String getBenDevelopmentHistoryData(Long beneficiaryRegID) { return
-	 * commonNurseServiceImpl.fetchBenDevelopmentHistory(beneficiaryRegID); } ///
-	 * ------- End of Fetch beneficiary all Development history data ------
-	 */
 	/**
 	 * 
 	 * @param requestOBJ
@@ -1388,7 +1272,7 @@ public class PNCServiceImpl implements PNCService {
 		Integer diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		// Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -1396,51 +1280,6 @@ public class PNCServiceImpl implements PNCService {
 			CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
-
-			// if (commonUtilityClass != null && commonUtilityClass.getServiceID() != null
-			// && commonUtilityClass.getServiceID() == 4 && requestOBJ != null &&
-			// requestOBJ.has("tcRequest")
-			// && requestOBJ.get("tcRequest") != null) {
-			// tcRequestOBJ = InputMapper.gson().fromJson(requestOBJ.get("tcRequest"),
-			// TeleconsultationRequestOBJ.class);
-			//
-			// // create TC request
-			// if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null &&
-			// tcRequestOBJ.getUserID() > 0
-			// && tcRequestOBJ.getAllocationDate() != null) {
-			//
-			// tcRequestOBJ.setAllocationDate(Utility.combineDateAndTimeToDateTime(
-			// tcRequestOBJ.getAllocationDate().toString(), tcRequestOBJ.getFromTime()));
-			//
-			// // tc request model
-			// TCRequestModel tRequestModel = InputMapper.gson().fromJson(requestOBJ,
-			// TCRequestModel.class);
-			// tRequestModel.setUserID(tcRequestOBJ.getUserID());
-			// tRequestModel.setRequestDate(tcRequestOBJ.getAllocationDate());
-			// tRequestModel
-			// .setDuration_minute(Utility.timeDiff(tcRequestOBJ.getFromTime(),
-			// tcRequestOBJ.getToTime()));
-			//
-			// // tc speciaist slot booking model
-			// tcSpecialistSlotBookingRequestOBJ = new TcSpecialistSlotBookingRequestOBJ();
-			// tcSpecialistSlotBookingRequestOBJ.setUserID(tRequestModel.getUserID());
-			// tcSpecialistSlotBookingRequestOBJ.setDate(tRequestModel.getRequestDate());
-			// tcSpecialistSlotBookingRequestOBJ.setFromTime(tcRequestOBJ.getFromTime());
-			// tcSpecialistSlotBookingRequestOBJ.setToTime(tcRequestOBJ.getToTime());
-			// tcSpecialistSlotBookingRequestOBJ.setCreatedBy(commonUtilityClass.getCreatedBy());
-			// tcSpecialistSlotBookingRequestOBJ.setModifiedBy(commonUtilityClass.getCreatedBy());
-			//
-			// int j =
-			// commonDoctorServiceImpl.callTmForSpecialistSlotBook(tcSpecialistSlotBookingRequestOBJ,
-			// Authorization);
-			// if (j > 0)
-			// tcRequestStatusFlag =
-			// teleConsultationServiceImpl.createTCRequest(tRequestModel);
-			// else
-			// throw new RuntimeException("Error while booking slot.");
-			//
-			// }
-			// }
 
 			JsonArray testList = null;
 			JsonArray drugList = null;
