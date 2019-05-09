@@ -41,7 +41,7 @@ import com.iemr.mmu.repo.registrar.BeneficiaryImageRepo;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class RegistrarServiceMasterDataImpl implements RegistrarServiceMasterData {
 	@Value("${getBenImageFromIdentity}")
 	private String getBenImageFromIdentity;

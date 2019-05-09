@@ -21,7 +21,7 @@ import com.iemr.mmu.data.tele_consultation.SmsRequestOBJ;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class SMSGatewayServiceImpl implements SMSGatewayService {
 	@Value("${sendSMSUrl}")
 	private String sendSMSUrl;

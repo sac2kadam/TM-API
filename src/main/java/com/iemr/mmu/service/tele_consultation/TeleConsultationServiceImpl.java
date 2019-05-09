@@ -38,7 +38,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class TeleConsultationServiceImpl implements TeleConsultationService {
 	@Value("${tcSpecialistSlotCancel}")
 	private String tcSpecialistSlotCancel;

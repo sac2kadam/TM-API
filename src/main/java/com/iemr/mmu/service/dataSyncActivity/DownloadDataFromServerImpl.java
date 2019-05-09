@@ -30,7 +30,7 @@ import com.iemr.mmu.repo.syncActivity_syncLayer.TempVanRepo;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	// rest URLs from server to download master data for van

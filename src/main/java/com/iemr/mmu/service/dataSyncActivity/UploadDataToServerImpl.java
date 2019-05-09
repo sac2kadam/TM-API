@@ -36,7 +36,7 @@ import com.iemr.mmu.repo.syncActivity_syncLayer.DataSyncGroupsRepo;
  *
  */
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class UploadDataToServerImpl implements UploadDataToServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	// rest URLs from server to consume local van data and to sync to DB server

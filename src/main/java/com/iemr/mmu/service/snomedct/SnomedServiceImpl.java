@@ -17,7 +17,7 @@ import com.iemr.mmu.repo.snomedct.SnomedRepository;
 import com.iemr.mmu.utils.mapper.OutputMapper;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class SnomedServiceImpl implements SnomedService {
 
 	@Value("${snomedCTPageSize}")

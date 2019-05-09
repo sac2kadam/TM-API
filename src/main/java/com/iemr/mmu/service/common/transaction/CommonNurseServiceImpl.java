@@ -92,7 +92,7 @@ import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
 
 	@Value("${nurseTCWL}")

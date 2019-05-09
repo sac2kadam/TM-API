@@ -53,7 +53,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
  *
  */
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class RegistrarServiceImpl implements RegistrarService {
 	@Value("${registrationUrl}")
 	private String registrationUrl;

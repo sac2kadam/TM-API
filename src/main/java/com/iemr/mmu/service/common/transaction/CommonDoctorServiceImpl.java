@@ -58,7 +58,7 @@ import com.iemr.mmu.utils.mapper.OutputMapper;
  *
  */
 @Service
-@PropertySource("classpath:myApp.properties")
+@PropertySource("classpath:application.properties")
 public class CommonDoctorServiceImpl {
 
 	@Value("${tcSpecialistSlotBook}")
