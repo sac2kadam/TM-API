@@ -246,7 +246,7 @@ public class LabResultEntry {
 					returnList.add(tmpOBJ);
 
 				} else {
-				//	compDetails = new HashMap<String, Object>();
+					compDetails = new HashMap<String, Object>();
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
