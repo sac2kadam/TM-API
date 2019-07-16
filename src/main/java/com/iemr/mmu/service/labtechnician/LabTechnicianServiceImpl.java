@@ -98,6 +98,14 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureDesc", obj.getProcedureDesc());
 					procDetails.put("procedureType", "Laboratory");
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
+					
+					procDetails.put("iotProcedureName", obj.getIotProcedureName());
+					procDetails.put("procedureCode", obj.getProcedureCode());
+					procDetails.put("procedureStartAPI", obj.getProcedureStartAPI());
+					procDetails.put("procedureEndAPI", obj.getProcedureEndAPI());
+					procDetails.put("procedureStatusAPI", obj.getProcedureStatusAPI());
+					procDetails.put("isLabProcedure", obj.getIsLabProcedure());
+					procDetails.put("discoveryCode", obj.getDiscoveryCode());
 
 					System.out.println(procDetails.get("procedureID"));
 					if (procDetails.get("procedureID") instanceof Integer
@@ -117,6 +125,12 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
 						compDetails.put("isDecimal", obj.getIsDecimal());
+						
+						compDetails.put("iotComponentName", obj.getIOTComponentName());
+						compDetails.put("componentCode", obj.getComponentCode());
+						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
+						compDetails.put("componentUnit", obj.getComponentUnit());
+						
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();
@@ -140,6 +154,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
+						
+						compDetails.put("iotComponentName", obj.getIOTComponentName());
+						compDetails.put("componentCode", obj.getComponentCode());
+						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
+						compDetails.put("componentUnit", obj.getComponentUnit());
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();
@@ -170,6 +189,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
+						
+						compDetails.put("iotComponentName", obj.getIOTComponentName());
+						compDetails.put("componentCode", obj.getComponentCode());
+						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
+						compDetails.put("componentUnit", obj.getComponentUnit());
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();

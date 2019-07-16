@@ -71,6 +71,50 @@ public class V_benLabTestOrderedDetails {
 	@Column(name = "isDecimal")
 	private Boolean isDecimal;
 
+	@Expose
+	@Column(name = "IOTProcedureName")
+	private String iotProcedureName;
+
+	@Expose
+	@Column(name = "ProcedureCode")
+	private String procedureCode;
+
+	@Expose
+	@Column(name = "ProcedureStartAPI")
+	private String ProcedureStartAPI;
+
+	@Expose
+	@Column(name = "ProcedureEndAPI")
+	private String ProcedureEndAPI;
+	
+	@Expose
+	@Column(name = "ProcedureStatusAPI")
+	private String ProcedureStatusAPI;
+	
+	@Expose
+	@Column(name = "isLabProcedure")
+	private Boolean isLabProcedure;
+	
+	@Expose
+	@Column(name = "DiscoveryCode")
+	private String DiscoveryCode;
+	
+	@Expose
+	@Column(name = "IOTComponentName")
+	private String IOTComponentName;
+	
+	@Expose
+	@Column(name = "ComponentCode")
+	private String ComponentCode;
+	
+	@Expose
+	@Column(name = "IOTProcedureID")
+	private String IOTProcedureID;
+	
+	@Expose
+	@Column(name = "ComponentUnit")
+	private String ComponentUnit;
+
 	public String getId() {
 		return id;
 	}
@@ -231,4 +275,93 @@ public class V_benLabTestOrderedDetails {
 		this.visitCode = visitCode;
 	}
 
+	public String getIotProcedureName() {
+		return iotProcedureName;
+	}
+
+	public void setIotProcedureName(String iotProcedureName) {
+		this.iotProcedureName = iotProcedureName;
+	}
+
+	public String getProcedureCode() {
+		return procedureCode;
+	}
+
+	public void setProcedureCode(String procedureCode) {
+		this.procedureCode = procedureCode;
+	}
+
+	public String getProcedureStartAPI() {
+		return ProcedureStartAPI;
+	}
+
+	public void setProcedureStartAPI(String procedureStartAPI) {
+		ProcedureStartAPI = procedureStartAPI;
+	}
+
+	public String getProcedureEndAPI() {
+		return ProcedureEndAPI;
+	}
+
+	public void setProcedureEndAPI(String procedureEndAPI) {
+		ProcedureEndAPI = procedureEndAPI;
+	}
+
+	public String getProcedureStatusAPI() {
+		return ProcedureStatusAPI;
+	}
+
+	public void setProcedureStatusAPI(String procedureStatusAPI) {
+		ProcedureStatusAPI = procedureStatusAPI;
+	}
+
+	public Boolean getIsLabProcedure() {
+		return isLabProcedure;
+	}
+
+	public void setIsLabProcedure(Boolean isLabProcedure) {
+		this.isLabProcedure = isLabProcedure;
+	}
+
+	public String getDiscoveryCode() {
+		return DiscoveryCode;
+	}
+
+	public void setDiscoveryCode(String discoveryCode) {
+		DiscoveryCode = discoveryCode;
+	}
+
+	public String getIOTComponentName() {
+		return IOTComponentName;
+	}
+
+	public void setIOTComponentName(String iOTComponentName) {
+		IOTComponentName = iOTComponentName;
+	}
+
+	public String getComponentCode() {
+		return ComponentCode;
+	}
+
+	public void setComponentCode(String componentCode) {
+		ComponentCode = componentCode;
+	}
+
+	public String getIOTProcedureID() {
+		return IOTProcedureID;
+	}
+
+	public void setIOTProcedureID(String iOTProcedureID) {
+		IOTProcedureID = iOTProcedureID;
+	}
+
+	public String getComponentUnit() {
+		return ComponentUnit;
+	}
+
+	public void setComponentUnit(String componentUnit) {
+		ComponentUnit = componentUnit;
+	}
+
+	
 }
