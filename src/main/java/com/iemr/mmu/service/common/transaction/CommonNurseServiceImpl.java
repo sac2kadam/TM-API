@@ -460,7 +460,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			fileIds = new Integer[fileIdsTemp.length];
 			int pointer = 0;
 			for (String str : fileIdsTemp) {
-				if (str != null && str.length() > 0) {
+				if (str != null && str.trim().length() > 0) {
 					fileIds[pointer] = Integer.parseInt(str.trim());
 					pointer++;
 				}
