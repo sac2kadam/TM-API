@@ -45,7 +45,6 @@ public class NCDFetchController {
 	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get NCD Screening Visit Details", consumes = "application/json", produces = "application/json")
-
 	@RequestMapping(value = { "/get/nurseData" }, method = { RequestMethod.POST })
 	public String getNCDScreenigDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {

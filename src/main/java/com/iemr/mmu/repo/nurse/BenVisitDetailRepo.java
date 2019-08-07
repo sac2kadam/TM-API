@@ -31,8 +31,7 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 			@Param("modifiedBy") String modifiedBy, @Param("benVisitID") Long benVisitID);
 
 	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.visitCode = :visitCode")
-	public BeneficiaryVisitDetail getVisitDetails(@Param("benRegID") Long benRegID,
-			@Param("visitCode") Long visitCode);
+	public BeneficiaryVisitDetail getVisitDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID and DATE(CreatedDate)<curdate()")
 	public List<BeneficiaryVisitDetail> getBeneficiaryVisitHistory(@Param("benRegID") Long benRegID);
@@ -58,11 +57,19 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 			+ " WHERE v.beneficiaryRegID = :benRegID "
 			+ " AND v.visitCategory IS NOT NULL ORDER BY v.createdDate DESC limit 6 ")
 	public ArrayList<Object[]> getLastSixVisitDetailsForBeneficiary(@Param("benRegID") Long benRegID);
-	
+
 	// updating record with visitcode.
 	@Transactional
 	@Modifying
 	@Query("UPDATE BeneficiaryVisitDetail set visitCode = :visitCode where benVisitID = :benVisitID ")
 	public Integer updateVisitCode(@Param("visitCode") Long visitCode, @Param("benVisitID") Long benVisitID);
+
+	// get file uuid from file id
+	@Query(nativeQuery = true, value = " SELECT FileUID from t_kmfilemanager where KmFileManagerID = :fileID ")
+	public String getFileUUID(@Param("fileID") int fileID);
+
+	// get file uuid from file id
+	@Query("UPDATE BeneficiaryVisitDetail set reportFilePath = concat(IFNULL(reportFilePath, ''), ',' ,IFNULL(:fileIDs, ''))")
+	public String updateFileID(@Param("fileIDs") String fileIDs);
 
 }

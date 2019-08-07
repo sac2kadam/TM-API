@@ -10,7 +10,7 @@ public class WrapperLabResultEntry {
 	private Integer providerServiceMapID;
 	private String createdBy;
 	private List<LabResultEntry> labTestResults;
-	// private List<LabResultEntry> radiologyResults;
+	private List<LabResultEntry> radiologyTestResults;
 	private Boolean labCompleted;
 	private Long benFlowID;
 
@@ -124,6 +124,14 @@ public class WrapperLabResultEntry {
 
 	public void setLabTestResults(List<LabResultEntry> labTestResults) {
 		this.labTestResults = labTestResults;
+	}
+
+	public List<LabResultEntry> getRadiologyTestResults() {
+		return radiologyTestResults;
+	}
+
+	public void setRadiologyTestResults(List<LabResultEntry> radiologyTestResults) {
+		this.radiologyTestResults = radiologyTestResults;
 	}
 
 }

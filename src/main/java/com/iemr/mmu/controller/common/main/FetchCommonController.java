@@ -1,5 +1,7 @@
 package com.iemr.mmu.controller.common.main;
 
+import javax.ws.rs.core.MediaType;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -787,6 +789,28 @@ public class FetchCommonController {
 		} catch (Exception e) {
 			logger.error("Error in getTC_SpecialistWorkList future scheduled:" + e);
 			response.setError(5000, "Error while getting TC specialist future scheduled worklist");
+		}
+		return response.toString();
+	}
+
+	// openkm file download
+	@CrossOrigin
+	@ApiOperation(value = "API will add file sent as string in KM.")
+	@RequestMapping(value = "/getKMFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
+	public String getKMFile(@ApiParam(value = "{}") @RequestBody String request,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		logger.info("add file request is " + request);
+		try {
+			String s = commonServiceImpl.getOpenKMDocURL(request, Authorization);
+			if (s != null)
+				response.setResponse(s);
+			else {
+				logger.error("file not available for request : " + request);
+				response.setError(5000, "file not available, please contact administrator");
+			}
+		} catch (Exception e) {
+			logger.error("Error while getting file download url : " + e);
 		}
 		return response.toString();
 	}

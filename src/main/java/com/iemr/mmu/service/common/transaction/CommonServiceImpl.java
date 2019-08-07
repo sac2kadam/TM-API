@@ -5,8 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -16,6 +25,7 @@ import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.repo.provider.ProviderServiceMappingRepo;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.anc.Utility;
@@ -30,7 +40,11 @@ import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class CommonServiceImpl implements CommonService {
+
+	@Value("${openkmDocUrl}")
+	private String openkmDocUrl;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -47,6 +61,9 @@ public class CommonServiceImpl implements CommonService {
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 	@Autowired
 	private ProviderServiceMappingRepo providerServiceMappingRepo;
+
+	@Autowired
+	private BenVisitDetailRepo benVisitDetailRepo;
 
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
@@ -427,4 +444,29 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	// end
+
+	public String getOpenKMDocURL(String requestOBJ, String Authorization) {
+		RestTemplate restTemplate = new RestTemplate();
+		String fileUUID = null;
+		JSONObject obj = new JSONObject(requestOBJ);
+		if (obj.has("fileID")) {
+			fileUUID = benVisitDetailRepo.getFileUUID(obj.getInt("fileID"));
+
+			if (fileUUID != null) {
+				Map<String, Object> requestBody = new HashMap<>();
+				requestBody.put("fileUID", fileUUID);
+
+				MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+				headers.add("Content-Type", "application/json");
+				headers.add("AUTHORIZATION", Authorization);
+				HttpEntity<Object> request = new HttpEntity<Object>(requestBody, headers);
+				ResponseEntity<String> response = restTemplate.exchange(openkmDocUrl, HttpMethod.POST, request,
+						String.class);
+				return response.getBody();
+			} else
+				return null;
+		} else
+			return null;
+
+	}
 }

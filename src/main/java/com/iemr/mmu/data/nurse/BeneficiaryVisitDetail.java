@@ -144,6 +144,10 @@ public class BeneficiaryVisitDetail {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 
+	@Expose
+	@Transient
+	private Integer[] fileIDs;
+
 	public BeneficiaryVisitDetail() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -484,6 +488,14 @@ public class BeneficiaryVisitDetail {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Integer[] getFileIDs() {
+		return fileIDs;
+	}
+
+	public void setFileIDs(Integer[] fileIDs) {
+		this.fileIDs = fileIDs;
 	}
 
 }

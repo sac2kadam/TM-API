@@ -158,6 +158,10 @@ public class LabResultEntry {
 	@Transient
 	private Date date;
 
+	@Expose
+	@Transient
+	private Integer[] fileIDs;
+
 	public Date getDate() {
 		return date;
 	}
@@ -237,6 +241,23 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					// file id array from string
+					Integer fileIds[];
+					if (obj.getTestReportFilePath() != null) {
+						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
+						fileIds = new Integer[fileIdsTemp.length];
+						int pointer = 0;
+						for (String str : fileIdsTemp) {
+							if (str != null && fileIdsTemp.length > 0) {
+								fileIds[pointer] = Integer.parseInt(str.trim());
+								pointer++;
+							}
+						}
+					} else {
+						fileIds = new Integer[1];
+					}
+					compDetails.put("fileIDs", fileIds);
+
 					compDetails.put("remarks", obj.getRemarks());
 
 					componentList = new ArrayList<>();
@@ -253,6 +274,24 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					// file id array from string
+					Integer fileIds[];
+					if (obj.getTestReportFilePath() != null) {
+						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
+						fileIds = new Integer[fileIdsTemp.length];
+						int pointer = 0;
+						for (String str : fileIdsTemp) {
+							if (str != null && fileIdsTemp.length > 0) {
+								fileIds[pointer] = Integer.parseInt(str.trim());
+								pointer++;
+							}
+						}
+						compDetails.put("fileIDs", fileIds);
+					} else {
+						fileIds = new Integer[1];
+						compDetails.put("fileIDs", fileIds);
+					}
+
 					compDetails.put("remarks", obj.getRemarks());
 					componentList.add(compDetails);
 				}
@@ -510,6 +549,14 @@ public class LabResultEntry {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public Integer[] getFileIDs() {
+		return fileIDs;
+	}
+
+	public void setFileIDs(Integer[] fileIDs) {
+		this.fileIDs = fileIDs;
 	}
 
 }

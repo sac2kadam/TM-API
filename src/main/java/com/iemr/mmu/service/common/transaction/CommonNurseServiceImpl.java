@@ -342,6 +342,16 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		}
 		beneficiaryVisitDetail.setVisitNo(benVisitCount);
 
+		// file id, comma seperated
+		Integer[] docIdArr = beneficiaryVisitDetail.getFileIDs();
+		StringBuilder sb = new StringBuilder();
+		if (docIdArr != null && docIdArr.length > 0) {
+			for (Integer i : docIdArr) {
+				sb.append(i + ",");
+			}
+		}
+		beneficiaryVisitDetail.setReportFilePath(sb.toString());
+
 		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
 		if (response != null) {
@@ -442,6 +452,24 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					benVisitDetailsOBJ.getModifiedBy(), benVisitDetailsOBJ.getLastModDate());
 
 		}
+
+		// file id array from string
+		Integer fileIds[];
+		if (benVisitDetailsOBJ.getReportFilePath() != null) {
+			String fileIdsTemp[] = benVisitDetailsOBJ.getReportFilePath().split(",");
+			fileIds = new Integer[fileIdsTemp.length];
+			int pointer = 0;
+			for (String str : fileIdsTemp) {
+				if (str != null && fileIdsTemp.length > 0) {
+					fileIds[pointer] = Integer.parseInt(str.trim());
+					pointer++;
+				}
+			}
+		} else {
+			fileIds = new Integer[1];
+		}
+
+		benVisitDetailsOBJ.setFileIDs(fileIds);
 
 		return benVisitDetailsOBJ1;
 	}

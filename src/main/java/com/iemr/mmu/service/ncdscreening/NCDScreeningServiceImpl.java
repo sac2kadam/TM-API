@@ -17,6 +17,7 @@ import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -28,6 +29,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+
+	@Autowired
+	private BenVisitDetailRepo benVisitDetailRepo;
 
 	@Autowired
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
@@ -94,12 +98,12 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							benVisitCode, nurseUtilityClass.getVanID());
 
 					result = 1;
-				}else {
+				} else {
 					throw new RuntimeException("Error occurred while saving data");
 				}
-			}else
+			} else
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
-		}else {
+		} else {
 			throw new Exception("Invalid input");
 		}
 		return result;
@@ -184,6 +188,17 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				.updateANCAnthropometryDetails(anthropometryDetail);
 		Integer updateANCPhysicalVitalDetails = commonNurseServiceImpl
 				.updateANCPhysicalVitalDetails(physicalVitalDetail);
+
+		// add file/doc id
+		Integer[] docIdArr = ncdScreening.getFileIDs();
+		StringBuilder sb = new StringBuilder();
+		if (docIdArr != null && docIdArr.length > 0) {
+			for (Integer i : docIdArr) {
+				sb.append(i + ",");
+			}
+		}
+		if (sb.length() > 0)
+			benVisitDetailRepo.updateFileID(sb.toString());
 
 		if (null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails
 				&& null != updateNCDScreeningDetails) {

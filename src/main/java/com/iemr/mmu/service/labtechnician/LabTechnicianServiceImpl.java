@@ -98,7 +98,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureDesc", obj.getProcedureDesc());
 					procDetails.put("procedureType", "Laboratory");
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
-					
+
 					procDetails.put("iotProcedureName", obj.getIotProcedureName());
 					procDetails.put("procedureCode", obj.getProcedureCode());
 					procDetails.put("procedureStartAPI", obj.getProcedureStartAPI());
@@ -125,12 +125,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
 						compDetails.put("isDecimal", obj.getIsDecimal());
-						
+
 						compDetails.put("iotComponentName", obj.getIOTComponentName());
 						compDetails.put("componentCode", obj.getComponentCode());
 						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
 						compDetails.put("componentUnit", obj.getComponentUnit());
-						
 
 						compOption = new HashMap<>();
 						compOptionList = new ArrayList<>();
@@ -154,7 +153,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
-						
+
 						compDetails.put("iotComponentName", obj.getIOTComponentName());
 						compDetails.put("componentCode", obj.getComponentCode());
 						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
@@ -189,7 +188,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
 						compDetails.put("range_normal_max", obj.getRange_normal_max());
 						compDetails.put("range_max", obj.getRange_max());
-						
+
 						compDetails.put("iotComponentName", obj.getIOTComponentName());
 						compDetails.put("componentCode", obj.getComponentCode());
 						compDetails.put("iotProcedureID", obj.getIOTProcedureID());
@@ -374,7 +373,9 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 		List<LabResultEntry> labResultsList = wrapperLabResults.getLabTestResults();
 
-		if (null != labResultsList && labResultsList.size() > 0) {
+		if ((null != labResultsList && labResultsList.size() > 0)
+				|| (null != wrapperLabResults.getRadiologyTestResults()
+						&& wrapperLabResults.getRadiologyTestResults().size() > 0)) {
 			List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
 			for (LabResultEntry labResult : labResultsList) {
 				List<Map<String, String>> compResult = labResult.getCompList();
@@ -413,6 +414,29 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 					}
 				}
+			}
+			for (LabResultEntry labResultEntry : wrapperLabResults.getRadiologyTestResults()) {
+				labResultEntry.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
+				labResultEntry.setBenVisitID(wrapperLabResults.getVisitID());
+				labResultEntry.setVisitCode(wrapperLabResults.getVisitCode());
+				labResultEntry.setProviderServiceMapID(wrapperLabResults.getProviderServiceMapID());
+				labResultEntry.setCreatedBy(wrapperLabResults.getCreatedBy());
+
+				labResultEntry.setVanID(wrapperLabResults.getVanID());
+				labResultEntry.setParkingPlaceID(wrapperLabResults.getParkingPlaceID());
+
+				// add file/doc id
+				Integer[] docIdArr = labResultEntry.getFileIDs();
+				StringBuilder sb = new StringBuilder();
+				if (docIdArr != null && docIdArr.length > 0) {
+					for (Integer i : docIdArr) {
+						sb.append(i + ",");
+					}
+				}
+				labResultEntry.setTestReportFilePath(sb.toString());
+
+				labResultsListNew.add(labResultEntry);
+
 			}
 			if (null != labResultsListNew && labResultsListNew.size() > 0) {
 				List<LabResultEntry> labResultEntryRes = (List<LabResultEntry>) labResultEntryRepo
