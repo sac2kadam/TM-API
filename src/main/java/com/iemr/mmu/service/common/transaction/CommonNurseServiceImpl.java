@@ -437,25 +437,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public BeneficiaryVisitDetail getCSVisitDetails(Long benRegID, Long visitCode) {
 		BeneficiaryVisitDetail benVisitDetailsOBJ = benVisitDetailRepo.getVisitDetails(benRegID, visitCode);
 
-		// BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
-		// if (null != benVisitDetailsOBJ) {
-		// benVisitDetailsOBJ1 = new
-		// BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
-		// benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getVisitCode(),
-		// benVisitDetailsOBJ.getProviderServiceMapID(),
-		// benVisitDetailsOBJ.getVisitDateTime(),
-		// benVisitDetailsOBJ.getVisitNo(), benVisitDetailsOBJ.getVisitReasonID(),
-		// benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategoryID(),
-		// benVisitDetailsOBJ.getVisitCategory(),
-		// benVisitDetailsOBJ.getPregnancyStatus(),
-		// benVisitDetailsOBJ.getrCHID(), benVisitDetailsOBJ.getHealthFacilityType(),
-		// benVisitDetailsOBJ.getHealthFacilityLocation(),
-		// benVisitDetailsOBJ.getReportFilePath(),
-		// benVisitDetailsOBJ.getDeleted(), benVisitDetailsOBJ.getProcessed(),
-		// benVisitDetailsOBJ.getCreatedBy(), benVisitDetailsOBJ.getCreatedDate(),
-		// benVisitDetailsOBJ.getModifiedBy(), benVisitDetailsOBJ.getLastModDate());
-		//
-		// }
+		BeneficiaryVisitDetail benVisitDetailsOBJ1 = null;
+		if (null != benVisitDetailsOBJ) {
+			benVisitDetailsOBJ1 = new BeneficiaryVisitDetail(benVisitDetailsOBJ.getBenVisitID(),
+					benVisitDetailsOBJ.getBeneficiaryRegID(), benVisitDetailsOBJ.getVisitCode(),
+					benVisitDetailsOBJ.getProviderServiceMapID(), benVisitDetailsOBJ.getVisitDateTime(),
+					benVisitDetailsOBJ.getVisitNo(), benVisitDetailsOBJ.getVisitReasonID(),
+					benVisitDetailsOBJ.getVisitReason(), benVisitDetailsOBJ.getVisitCategoryID(),
+					benVisitDetailsOBJ.getVisitCategory(), benVisitDetailsOBJ.getPregnancyStatus(),
+					benVisitDetailsOBJ.getrCHID(), benVisitDetailsOBJ.getHealthFacilityType(),
+					benVisitDetailsOBJ.getHealthFacilityLocation(), benVisitDetailsOBJ.getReportFilePath(),
+					benVisitDetailsOBJ.getDeleted(), benVisitDetailsOBJ.getProcessed(),
+					benVisitDetailsOBJ.getCreatedBy(), benVisitDetailsOBJ.getCreatedDate(),
+					benVisitDetailsOBJ.getModifiedBy(), benVisitDetailsOBJ.getLastModDate());
+
+		}
 
 		// file id array from string
 		Integer fileIds[];
@@ -470,12 +466,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				}
 			}
 		} else {
-			fileIds = new Integer[1];
+			fileIds = new Integer[0];
 		}
 
-		benVisitDetailsOBJ.setFileIDs(fileIds);
+		benVisitDetailsOBJ1.setFileIDs(fileIds);
 
-		return benVisitDetailsOBJ;
+		return benVisitDetailsOBJ1;
 	}
 
 	public int saveBenChiefComplaints(List<BenChiefComplaint> benChiefComplaintList) {
