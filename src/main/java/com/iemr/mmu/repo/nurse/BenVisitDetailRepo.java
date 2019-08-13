@@ -69,7 +69,9 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	public String getFileUUID(@Param("fileID") int fileID);
 
 	// get file uuid from file id
-	@Query("UPDATE BeneficiaryVisitDetail set reportFilePath = concat(IFNULL(reportFilePath, ''), ',' ,IFNULL(:fileIDs, ''))")
-	public String updateFileID(@Param("fileIDs") String fileIDs);
+	@Query("UPDATE BeneficiaryVisitDetail set reportFilePath = concat(IFNULL(reportFilePath, ''), ',' ,IFNULL(:fileIDs, '')) "
+			+ " WHERE beneficiaryRegID = :regID AND visitCode = :visitCode ")
+	public String updateFileID(@Param("fileIDs") String fileIDs, @Param("regID") Long regID,
+			@Param("visitCode") Long visitCode);
 
 }

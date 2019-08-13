@@ -198,7 +198,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			}
 		}
 		if (sb.length() > 0)
-			benVisitDetailRepo.updateFileID(sb.toString());
+			benVisitDetailRepo.updateFileID(sb.toString(), ncdScreening.getBeneficiaryRegID(),
+					ncdScreening.getVisitCode());
 
 		if (null != updateANCAnthropometryDetails && null != updateANCPhysicalVitalDetails
 				&& null != updateNCDScreeningDetails) {
