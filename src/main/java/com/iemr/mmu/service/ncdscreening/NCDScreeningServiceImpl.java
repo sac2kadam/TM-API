@@ -215,7 +215,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					ncdScreening.getBenFlowID(), ncdScreening.getBeneficiaryRegID(), nurseFlag);
 
 			result = 1;
-		}
+		} else
+			throw new RuntimeException("Error occured while updating record in between...");
 
 		return result;
 
