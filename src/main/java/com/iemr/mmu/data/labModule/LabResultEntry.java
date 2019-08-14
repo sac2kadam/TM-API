@@ -243,7 +243,7 @@ public class LabResultEntry {
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 					// file id array from string
 					Integer fileIds[];
-					if (obj.getTestReportFilePath() != null) {
+					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
 						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
 						fileIds = new Integer[fileIdsTemp.length];
 						int pointer = 0;
@@ -276,7 +276,7 @@ public class LabResultEntry {
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
 					// file id array from string
 					Integer fileIds[];
-					if (obj.getTestReportFilePath() != null) {
+					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
 						String fileIdsTemp[] = obj.getTestReportFilePath().split(",");
 						fileIds = new Integer[fileIdsTemp.length];
 						int pointer = 0;
