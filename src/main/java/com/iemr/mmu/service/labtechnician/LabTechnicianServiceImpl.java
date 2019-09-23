@@ -148,6 +148,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("testComponentName", obj.getTestComponentName());
 						compDetails.put("testComponentDesc", obj.getTestComponentDesc());
 						compDetails.put("inputType", obj.getInputType());
+						compDetails.put("isDecimal", obj.getIsDecimal());
 						compDetails.put("measurementUnit", obj.getMeasurementUnit());
 						compDetails.put("range_min", obj.getRange_min());
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
@@ -183,6 +184,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						compDetails.put("testComponentName", obj.getTestComponentName());
 						compDetails.put("testComponentDesc", obj.getTestComponentDesc());
 						compDetails.put("inputType", obj.getInputType());
+						compDetails.put("isDecimal", obj.getIsDecimal());
 						compDetails.put("measurementUnit", obj.getMeasurementUnit());
 						compDetails.put("range_min", obj.getRange_min());
 						compDetails.put("range_normal_min", obj.getRange_normal_min());
