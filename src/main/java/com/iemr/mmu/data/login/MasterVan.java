@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
@@ -18,6 +16,9 @@ public class MasterVan {
 	@Expose
 	@Column(name = "VanID")
 	private Integer vanID;
+	@Expose
+	@Column(name = "VanName")
+	private String vanName;
 	@Expose
 	@Column(name = "VehicalNo")
 	private String vehicalNo;
@@ -41,23 +42,26 @@ public class MasterVan {
 	@Column(name = "SwymedEmailID")
 	private String swymedEmailID;
 
-	@ManyToOne
-	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)
-	private UserParkingplaceMapping userParkingplaceMapping;
+//	@ManyToOne
+//	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)
+//	private UserParkingplaceMapping userParkingplaceMapping;
+
+//	@OneToOne(mappedBy = "masterVan")
+//	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 
 	public MasterVan() {
 	}
 
-	public MasterVan(Integer vanID, String vehicalNo, Integer providerServiceMapID, Integer parkingPlaceID,
-			Boolean deleted, UserParkingplaceMapping userParkingplaceMapping) {
-		super();
-		this.vanID = vanID;
-		this.vehicalNo = vehicalNo;
-		this.providerServiceMapID = providerServiceMapID;
-		this.parkingPlaceID = parkingPlaceID;
-		this.deleted = deleted;
-		this.userParkingplaceMapping = userParkingplaceMapping;
-	}
+//	public MasterVan(Integer vanID, String vehicalNo, Integer providerServiceMapID, Integer parkingPlaceID,
+//			Boolean deleted, UserParkingplaceMapping userParkingplaceMapping) {
+//		super();
+//		this.vanID = vanID;
+//		this.vehicalNo = vehicalNo;
+//		this.providerServiceMapID = providerServiceMapID;
+//		this.parkingPlaceID = parkingPlaceID;
+//		this.deleted = deleted;
+//		this.userParkingplaceMapping = userParkingplaceMapping;
+//	}
 
 	public Boolean getIsFacility() {
 		return isFacility;
@@ -115,13 +119,13 @@ public class MasterVan {
 		this.deleted = deleted;
 	}
 
-	public UserParkingplaceMapping getUserParkingplaceMapping() {
-		return userParkingplaceMapping;
-	}
-
-	public void setUserParkingplaceMapping(UserParkingplaceMapping userParkingplaceMapping) {
-		this.userParkingplaceMapping = userParkingplaceMapping;
-	}
+//	public UserParkingplaceMapping getUserParkingplaceMapping() {
+//		return userParkingplaceMapping;
+//	}
+//
+//	public void setUserParkingplaceMapping(UserParkingplaceMapping userParkingplaceMapping) {
+//		this.userParkingplaceMapping = userParkingplaceMapping;
+//	}
 
 	public String getSwymedEmailID() {
 		return swymedEmailID;
@@ -129,6 +133,14 @@ public class MasterVan {
 
 	public void setSwymedEmailID(String swymedEmailID) {
 		this.swymedEmailID = swymedEmailID;
+	}
+
+	public String getVanName() {
+		return vanName;
+	}
+
+	public void setVanName(String vanName) {
+		this.vanName = vanName;
 	}
 
 }

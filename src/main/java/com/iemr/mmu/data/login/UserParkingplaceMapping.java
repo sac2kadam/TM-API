@@ -1,7 +1,5 @@
 package com.iemr.mmu.data.login;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,7 +31,7 @@ public class UserParkingplaceMapping {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(updatable = false, insertable = false, name = "parkingPlaceID")
 	private ParkingPlace m_parkingplace;
-	
+
 	@Expose
 	@Column(name = "StateID")
 	private Integer stateID;
@@ -47,25 +45,29 @@ public class UserParkingplaceMapping {
 	@Column(name = "Deleted")
 	private Integer deleted;
 
-	@OneToMany(mappedBy = "userParkingplaceMapping", cascade = CascadeType.ALL)
-	private Set<MasterVan> masterVanSet;
+//	@OneToMany(mappedBy = "userParkingplaceMapping", cascade = CascadeType.ALL)
+//	private Set<MasterVan> masterVanSet;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "parkingPlaceID", insertable = false, updatable = false)
+	private MasterVan masterVanSet;
 
 	public UserParkingplaceMapping() {
 	}
 
-	public UserParkingplaceMapping(Integer userParkingPlaceMapID, Integer userID, Integer parkingPlaceID,
-			Integer stateID, Integer districtID, Integer providerServiceMapId, Integer deleted,
-			Set<MasterVan> masterVanSet) {
-		super();
-		this.userParkingPlaceMapID = userParkingPlaceMapID;
-		this.userID = userID;
-		this.parkingPlaceID = parkingPlaceID;
-		this.stateID = stateID;
-		this.districtID = districtID;
-		this.providerServiceMapId = providerServiceMapId;
-		this.deleted = deleted;
-		this.masterVanSet = masterVanSet;
-	}
+//	public UserParkingplaceMapping(Integer userParkingPlaceMapID, Integer userID, Integer parkingPlaceID,
+//			Integer stateID, Integer districtID, Integer providerServiceMapId, Integer deleted,
+//			Set<MasterVan> masterVanSet) {
+//		super();
+//		this.userParkingPlaceMapID = userParkingPlaceMapID;
+//		this.userID = userID;
+//		this.parkingPlaceID = parkingPlaceID;
+//		this.stateID = stateID;
+//		this.districtID = districtID;
+//		this.providerServiceMapId = providerServiceMapId;
+//		this.deleted = deleted;
+//		this.masterVanSet = masterVanSet;
+//	}
 
 	public Integer getUserParkingPlaceMapID() {
 		return userParkingPlaceMapID;
@@ -123,12 +125,12 @@ public class UserParkingplaceMapping {
 		this.deleted = deleted;
 	}
 
-	public Set<MasterVan> getMasterVanSet() {
-		return masterVanSet;
-	}
-
-	public void setMasterVanSet(Set<MasterVan> masterVanSet) {
-		this.masterVanSet = masterVanSet;
-	}
+//	public Set<MasterVan> getMasterVanSet() {
+//		return masterVanSet;
+//	}
+//
+//	public void setMasterVanSet(Set<MasterVan> masterVanSet) {
+//		this.masterVanSet = masterVanSet;
+//	}
 
 }
