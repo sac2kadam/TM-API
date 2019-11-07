@@ -4,14 +4,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 
 /***
@@ -193,6 +197,11 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "vanID")
 	private Integer vanID;
+
+	@Expose
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "vanID", referencedColumnName = "vanID", insertable = false, updatable = false)
+	private MasterVan masterVan;
 
 	@Expose
 	@Column(name = "vanNo")
@@ -902,6 +911,14 @@ public class BeneficiaryFlowStatus {
 
 	public void setBenArrivedFlag(Boolean benArrivedFlag) {
 		this.benArrivedFlag = benArrivedFlag;
+	}
+
+	public MasterVan getMasterVan() {
+		return masterVan;
+	}
+
+	public void setMasterVan(MasterVan masterVan) {
+		this.masterVan = masterVan;
 	}
 
 }
