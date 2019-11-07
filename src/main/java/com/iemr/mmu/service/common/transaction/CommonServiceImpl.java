@@ -256,6 +256,10 @@ public class CommonServiceImpl implements CommonService {
 	private String getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
+		Integer tcspID= beneficiaryFlowStatusRepo.getTCspecialistID(benRegID, benFlowID);
+		if(tcspID!=null && tcspID>0) {
+			obj.settCSpecialistUserID(tcspID);
+		}
 		return new Gson().toJson(obj);
 	}
 
