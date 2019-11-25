@@ -74,13 +74,15 @@ public class IEMRApplBeans {
 
 	@Bean
 	public LettuceConnectionFactory connectionFactory() {
+		System.out.print("Connecting to Redis " + redisHost + ":" + redisPort);
+
 		return new LettuceConnectionFactory(redisHost, redisPort);
 	}
 
-//	@Bean
-//	public RedisHttpSessionConfiguration redisSession() {
-//		return new RedisHttpSessionConfiguration();
-//	}
+	/*
+	 * @Bean public RedisHttpSessionConfiguration redisSession() { return new
+	 * RedisHttpSessionConfiguration(); }
+	 */
 
 	// @Bean
 	// public HTTPRequestInterceptor myInterceptor()
