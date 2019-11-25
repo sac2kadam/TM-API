@@ -2817,16 +2817,16 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 								if (frequency.equalsIgnoreCase("Once in a Week")) {
 									if (form.equalsIgnoreCase("Tablet")) {
 										if (dose.equalsIgnoreCase("Half Tab")) {
-											qtyInOneDay = .072;
+											qtyInOneDay = .07142;
 										} else {
 											if (dose.equalsIgnoreCase("One Tab")) {
-												qtyInOneDay = .15;
+												qtyInOneDay = .14285;
 											} else {
 												if (dose.equalsIgnoreCase("One & Half Tab")) {
-													qtyInOneDay = .222;
+													qtyInOneDay = .21428;
 												} else {
 													if (dose.equalsIgnoreCase("Two Tabs")) {
-														qtyInOneDay = .30;
+														qtyInOneDay = .28571;
 													}
 												}
 											}
