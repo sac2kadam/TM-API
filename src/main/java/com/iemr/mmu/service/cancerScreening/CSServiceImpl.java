@@ -192,7 +192,7 @@ public class CSServiceImpl implements CSService {
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID, benVisitCode);
 				// call method to save Examination data
 				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization,
-						benVisitCode);
+						benVisitCode, benFlowID);
 				// call method to save vitals data
 				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID, benVisitCode);
 
@@ -886,7 +886,7 @@ public class CSServiceImpl implements CSService {
 	 */
 
 	public Long saveBenExaminationDetails(JsonObject requestOBJ, Long benVisitID, String Authorization,
-			Long benVisitCode) throws Exception {
+			Long benVisitCode, Long benFlowID) throws Exception {
 		Long signSympSuccessFlag = null;
 		Long lymphNodeSuccessFlag = null;
 		Long oralDetailsSuccessFlag = null;
@@ -978,7 +978,7 @@ public class CSServiceImpl implements CSService {
 							&& cancerBreastExamination.getReferredToMammogram() == true) {
 
 						int r = createCareStreamOrder(cancerBreastExamination.getBeneficiaryRegID(),
-								cancerBreastExamination.getBenVisitID(), Authorization);
+								cancerBreastExamination.getBenVisitID(), Authorization, benFlowID);
 						if (r > 0) {
 							breastExmnSuccessFlag = Long.valueOf(2);
 						} else {
@@ -1226,8 +1226,9 @@ public class CSServiceImpl implements CSService {
 
 	}
 
-	private int createCareStreamOrder(long benRegID, long benVisitID, String Authorization) {
-		ArrayList<Object[]> benDataForCareStream = registrarRepoBenData.getBenDataForCareStream(benRegID);
+	private int createCareStreamOrder(long benRegID, long benVisitID, String Authorization, Long benFlowID) {
+//		ArrayList<Object[]> benDataForCareStream = registrarRepoBenData.getBenDataForCareStream(benRegID);
+		ArrayList<Object[]> benDataForCareStream = beneficiaryFlowStatusRepo.getBenDataForCareStream(benFlowID);
 
 		int r = cSCarestreamServiceImpl.createMamographyRequest(benDataForCareStream, benRegID, benVisitID,
 				Authorization);

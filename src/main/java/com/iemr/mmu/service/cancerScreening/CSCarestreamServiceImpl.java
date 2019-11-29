@@ -60,10 +60,10 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 		if (benDataForCareStream != null && benDataForCareStream.size() > 0) {
 			Object[] objArr = benDataForCareStream.get(0);
 
-			Date dob = (Date) objArr[2];
+			Date dob = (Date) objArr[1];
 			String dobStr = dob.toString();
 			dobStr = dobStr.replaceAll("-", "");
-			short genderID = (short) objArr[3];
+			short genderID = (short) objArr[2];
 			String gender = "";
 
 			if (genderID == 1)
@@ -73,8 +73,14 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 			else
 				gender = "T";
 
-			requestOBJ.put("firstName", objArr[0]);
-			requestOBJ.put("LastName", objArr[1]);
+			String[] arr = String.valueOf(objArr[0]).split(" ", 2);
+
+			if (arr != null && arr.length > 0)
+				requestOBJ.put("firstName", arr[0]);
+
+			if (arr != null && arr.length >= 2) {
+				requestOBJ.put("LastName", arr[1]);
+			}
 			requestOBJ.put("patientID", benRegID);
 			requestOBJ.put("acc", benVisitID);
 			requestOBJ.put("gender", gender);
