@@ -479,7 +479,8 @@ public class BenAllergyHistory {
 					for (int i = 0; i < allergicReactionTypes.length; i++) {
 						reactionTypes = new HashMap<String, String>();
 						reactionTypes.put("name", allergicReactionTypes[i]);
-						reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
+						if (allergicReactionTypeIDs != null && allergicReactionTypeIDs.length > 0)
+							reactionTypes.put("allergicReactionTypeID", allergicReactionTypeIDs[i]);
 
 						reactionTypesList.add(reactionTypes);
 					}
