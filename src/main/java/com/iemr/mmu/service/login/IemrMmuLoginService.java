@@ -7,5 +7,7 @@ public interface IemrMmuLoginService {
 	public String getServicepointVillages(Integer servicePointID);
 
 	public String getUserVanSpDetails(Integer userID, Integer providerServiceMapID);
+	
+	public String getUserSpokeDetails(Integer psmId);
 
 }

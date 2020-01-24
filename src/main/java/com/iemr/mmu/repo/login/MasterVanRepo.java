@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.login;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,4 +21,9 @@ public interface MasterVanRepo extends CrudRepository<MasterVan, Integer> {
 
 	@Query("Select mv.swymedEmailID from MasterVan mv WHERE mv.vanID = :vanID ")
 	public String getSpokeEmail(@Param("vanID") Integer vanID);
+	
+	/* created by = DU20091017 */
+	
+	@Query("Select mv.vanID, mv.vehicalNo from MasterVan mv WHERE mv.providerServiceMapID = :providerServiceMapID ")
+	public ArrayList<Object[]> getVanMaster(@Param("providerServiceMapID") Integer providerServiceMapID);
 }
