@@ -714,13 +714,17 @@ public class BenPersonalHabit {
 					timePeriod = Utility.convertTimeToWords(personalHabits.getTobaccoUseDuration(),
 							personalHabits.getCreatedDate());
 
-					if (timePeriod != null && timePeriod.get("timePeriodAgo") != null)
-						tobaccoInfo.put("duration", timePeriod.get("timePeriodAgo").toString());
-					else
-						tobaccoInfo.put("duration", null);
+					if (timePeriod != null) {
+						if (timePeriod.get("timePeriodAgo") != null)
+							tobaccoInfo.put("duration", timePeriod.get("timePeriodAgo").toString());
+						else
+							tobaccoInfo.put("duration", null);
 
-					tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
-
+						if (timePeriod.get("timePeriodUnit") != null)
+							tobaccoInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+						else
+							tobaccoInfo.put("durationUnit", null);
+					}
 					tobaccoList.add(tobaccoInfo);
 				}
 				if (null != personalHabits.getAlcoholTypeID()) {

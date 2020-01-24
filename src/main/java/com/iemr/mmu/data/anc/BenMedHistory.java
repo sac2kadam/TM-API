@@ -422,6 +422,7 @@ public class BenMedHistory {
 			benMedHistory.setVanID(vanID);
 			benMedHistory.setParkingPlaceID(parkingPlaceID);
 			benMedHistory.setCreatedBy(createdBy);
+
 			if (null != pastIllness && pastIllness.size() > i) {
 				Map<String, Object> illness = (Map<String, Object>) pastIllness.get(i);
 
@@ -445,6 +446,9 @@ public class BenMedHistory {
 				benMedHistory.setYearofIllness(Utility.convertToDateFormat(timePeriodUnit, timePeriodAgo));
 			}
 			if (null != pastSurgery && pastSurgery.size() > i) {
+				String surgeryTimePeriodUnit = null;
+				Integer surgeryTimePeriodAgo = 0;
+
 				Map<String, Object> surgery = (Map<String, Object>) pastSurgery.get(i);
 				if (null != surgery) {
 					if (null != surgery.get("surgeryID")) {
@@ -457,13 +461,19 @@ public class BenMedHistory {
 					if (null != surgery.get("otherSurgeryType")) {
 						benMedHistory.setOtherSurgeryType(surgery.get("otherSurgeryType").toString());
 					}
+
+					surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
+
+					if (null != surgery.get("timePeriodAgo")) {
+						surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
+					}
 				}
 
-				String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
-				Integer surgeryTimePeriodAgo = 0;
-				if (null != surgery.get("timePeriodAgo")) {
-					surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
-				}
+//				String surgeryTimePeriodUnit = (String) surgery.get("timePeriodUnit");
+//				Integer surgeryTimePeriodAgo = 0;
+//				if (null != surgery.get("timePeriodAgo")) {
+//					surgeryTimePeriodAgo = Integer.parseInt(surgery.get("timePeriodAgo").toString());
+//				}
 				benMedHistory
 						.setYearofSurgery(Utility.convertToDateFormat(surgeryTimePeriodUnit, surgeryTimePeriodAgo));
 			}
