@@ -37,12 +37,27 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 	}
 
 	public String getNCDCareDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
-		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
-				visitCode);
+
+		ArrayList<Object[]> prescriptionData = prescriptionDetailRepo
+				.getExternalinvestigationForVisitCode(beneficiaryRegID, visitCode);
+
+		String externalInvestigation = null;
+		String instruction = null;
+		if (prescriptionData != null && prescriptionData.size() > 0) {
+			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
+			instruction = String.valueOf(prescriptionData.get(0)[1]);
+		}
+
+//		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
+//				visitCode);
+
 		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, visitCode);
 		NCDCareDiagnosis ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
 		if (externalInvestigation != null)
 			ncdCareDiagnosisDetails.setExternalInvestigation(externalInvestigation);
+		if (instruction != null)
+			ncdCareDiagnosisDetails.setSpecialistDiagnosis(instruction);
+
 		return new Gson().toJson(ncdCareDiagnosisDetails);
 	}
 

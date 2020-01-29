@@ -729,6 +729,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 				findingSuccessFlag = 1;
 			}
 
+			String instruction = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+					&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
+					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
+				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
+			}
+
 			// generate prescription
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
@@ -736,7 +743,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
 					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
-					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID());
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID(), instruction);
 
 			// save diagnosis
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {

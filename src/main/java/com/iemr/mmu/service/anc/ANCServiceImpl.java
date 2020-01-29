@@ -287,11 +287,18 @@ public class ANCServiceImpl implements ANCService {
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
+			String instruction = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+					&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
+					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
+				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
+			}
+
 			prescriptionID = commonNurseServiceImpl.savePrescriptionDetailsAndGetPrescriptionID(
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
 					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
-					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID());
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID(), instruction);
 
 			// save prescribed lab test
 			if (isTestPrescribed) {

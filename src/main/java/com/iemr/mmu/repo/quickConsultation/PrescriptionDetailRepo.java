@@ -35,9 +35,9 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	public String getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
 
-	@Query(nativeQuery = true, value = "SELECT ExternalInvestigation FROM t_prescription "
+	@Query(nativeQuery = true, value = "SELECT ExternalInvestigation, instruction FROM t_prescription "
 			+ " WHERE BeneficiaryRegID=:benRegID AND VisitCode = :visitCode ORDER BY CreatedDate DESC LIMIT 1")
-	public String getExternalinvestigationForVisitCode(@Param("benRegID") Long benRegID,
+	public ArrayList<Object[]> getExternalinvestigationForVisitCode(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
 	@Transactional

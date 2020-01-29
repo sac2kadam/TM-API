@@ -109,6 +109,10 @@ public class NCDCareDiagnosis {
 	@Expose
 	private String externalInvestigation;
 
+	@Transient
+	@Expose
+	private String specialistDiagnosis;
+
 	public String getNcdScreeningCondition() {
 		return ncdScreeningCondition;
 	}
@@ -317,6 +321,22 @@ public class NCDCareDiagnosis {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
+	public String getSpecialistDiagnosis() {
+		return specialistDiagnosis;
+	}
+
+	public void setSpecialistDiagnosis(String specialistDiagnosis) {
+		this.specialistDiagnosis = specialistDiagnosis;
 	}
 
 }

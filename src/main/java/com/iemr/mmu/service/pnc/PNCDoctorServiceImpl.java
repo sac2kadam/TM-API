@@ -114,8 +114,18 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 	}
 
 	public String getPNCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
-		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
-				visitCode);
+//		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
+//				visitCode);
+
+		ArrayList<Object[]> prescriptionData = prescriptionDetailRepo
+				.getExternalinvestigationForVisitCode(beneficiaryRegID, visitCode);
+
+		String externalInvestigation = null;
+		String instruction = null;
+		if (prescriptionData != null && prescriptionData.size() > 0) {
+			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
+			instruction = String.valueOf(prescriptionData.get(0)[1]);
+		}
 
 		PNCDiagnosis pncDiagnosisDetails;
 		SCTDescription sctOBJ;
@@ -186,6 +196,8 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		} else {
 			pncDiagnosisDetails = new PNCDiagnosis();
 		}
+		if (instruction != null)
+			pncDiagnosisDetails.setSpecialistDiagnosis(instruction);
 
 		return new Gson().toJson(pncDiagnosisDetails);
 	}

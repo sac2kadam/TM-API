@@ -63,17 +63,23 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 	}
 
 	public String getANCDiagnosisDetails(Long beneficiaryRegID, Long visitCode) {
-		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
-				visitCode);
+//		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
+//		visitCode);
+
+		ArrayList<Object[]> prescriptionData = prescriptionDetailRepo
+				.getExternalinvestigationForVisitCode(beneficiaryRegID, visitCode);
+
+		String externalInvestigation = null;
+		String instruction = null;
+		if (prescriptionData != null && prescriptionData.size() > 0) {
+			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
+			instruction = String.valueOf(prescriptionData.get(0)[1]);
+		}
+
 		ANCDiagnosis ancDiagnosisDetails = new ANCDiagnosis();
-		// ArrayList<Object[]> resList =
-		// ancDiagnosisRepo.getANCDiagnosisDetails(beneficiaryRegID, visitCode);
 
 		ArrayList<ANCDiagnosis> ancDiagnosisList = ancDiagnosisRepo.findByBeneficiaryRegIDAndVisitCode(beneficiaryRegID,
 				visitCode);
-
-		// ANCDiagnosis ancDiagnosisDetails =
-		// ANCDiagnosis.getANCDiagnosisDetails(resList);
 
 		if (ancDiagnosisList != null && ancDiagnosisList.size() > 0)
 			ancDiagnosisDetails = ancDiagnosisList.get(0);
@@ -95,6 +101,9 @@ public class ANCDoctorServiceImpl implements ANCDoctorService {
 
 		if (externalInvestigation != null)
 			ancDiagnosisDetails.setExternalInvestigation(externalInvestigation);
+		if (instruction != null)
+			ancDiagnosisDetails.setSpecialistDiagnosis(instruction);
+
 		return new Gson().toJson(ancDiagnosisDetails);
 	}
 

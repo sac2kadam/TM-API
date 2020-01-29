@@ -139,6 +139,10 @@ public class PNCDiagnosis {
 	@Expose
 	private String externalInvestigation;
 
+	@Transient
+	@Expose
+	private String specialistDiagnosis;
+
 	@Expose
 	@Transient
 	private ArrayList<SCTDescription> provisionalDiagnosisList;
@@ -434,6 +438,14 @@ public class PNCDiagnosis {
 
 	public void setConfirmatoryDiagnosisList(ArrayList<SCTDescription> confirmatoryDiagnosisList) {
 		this.confirmatoryDiagnosisList = confirmatoryDiagnosisList;
+	}
+
+	public String getSpecialistDiagnosis() {
+		return specialistDiagnosis;
+	}
+
+	public void setSpecialistDiagnosis(String specialistDiagnosis) {
+		this.specialistDiagnosis = specialistDiagnosis;
 	}
 
 }

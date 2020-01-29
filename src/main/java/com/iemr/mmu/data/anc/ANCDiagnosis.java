@@ -130,6 +130,10 @@ public class ANCDiagnosis {
 
 	@Transient
 	@Expose
+	private String specialistDiagnosis;
+
+	@Transient
+	@Expose
 	private ArrayList<Map<String, String>> complicationOfCurrentPregnancyList;
 
 	@Expose
@@ -403,6 +407,14 @@ public class ANCDiagnosis {
 
 	public void setOtherCurrPregComplication(String otherCurrPregComplication) {
 		this.otherCurrPregComplication = otherCurrPregComplication;
+	}
+
+	public String getSpecialistDiagnosis() {
+		return specialistDiagnosis;
+	}
+
+	public void setSpecialistDiagnosis(String specialistDiagnosis) {
+		this.specialistDiagnosis = specialistDiagnosis;
 	}
 
 }
