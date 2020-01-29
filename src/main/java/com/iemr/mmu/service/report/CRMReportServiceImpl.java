@@ -36,14 +36,29 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	ObjectMapper mapper = new ObjectMapper();
 
-	Integer getParkingplaceID(Integer userid, Integer providerServiceMapId) throws TMException {
+	/*
+	 * Integer getParkingplaceID(Integer userid, Integer providerServiceMapId)
+	 * throws TMException { UserParkingplaceMapping usermap =
+	 * userParkingplaceMappingRepo
+	 * .findOneByUserIDAndProviderServiceMapIdAndDeleted(userid,
+	 * providerServiceMapId, 0);
+	 * 
+	 * if (usermap == null || usermap.getParkingPlaceID() == null) { throw new
+	 * TMException("User Not mapped to any Parking Place"); } return
+	 * usermap.getParkingPlaceID(); }
+	 */
+
+	public Integer getParkingplaceID(Integer userID, Integer providerServiceMapId) throws TMException {
+		// Integer ppID = 0;
 		UserParkingplaceMapping usermap = userParkingplaceMappingRepo
-				.findOneByUserIDAndProviderServiceMapIdAndDeleted(userid, providerServiceMapId, 0);
+				.findOneByUserIDAndProviderServiceMapIdAndDeleted(userID, providerServiceMapId, 0);
 
 		if (usermap == null || usermap.getParkingPlaceID() == null) {
 			throw new TMException("User Not mapped to any Parking Place");
+
 		}
 		return usermap.getParkingPlaceID();
+		// return ppID;
 	}
 
 	static ChiefComplaintReport getBenChiefComplaintReportObj(Object[] obj) {
@@ -59,7 +74,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 
 	}
 
-	public static String calculateTime(Timestamp consultedTime,Timestamp arrivalTime){
+	public static String calculateTime(Timestamp consultedTime, Timestamp arrivalTime) {
 		if (consultedTime != null && arrivalTime != null) {
 			Long waitingtime = consultedTime.getTime() - arrivalTime.getTime();
 			Long totalsec = waitingtime / (1000);
@@ -82,17 +97,18 @@ public class CRMReportServiceImpl implements CRMReportService {
 				st.append(min);
 				st.append(" min");
 			}
-			if (hour == 0 && min == 0 && sec >0) {
+			if (hour == 0 && min == 0 && sec > 0) {
 				st.append(sec);
 				st.append(" sec");
 			}
-			if(sec<0 || hour<0 || min<0){
+			if (sec < 0 || hour < 0 || min < 0) {
 				st.append("No Waiting");
 			}
 			return st.toString();
 		}
 		return null;
 	}
+
 	static ConsultationReport getConsultationReportObj(Object[] obj) {
 		ConsultationReport report = new ConsultationReport();
 		report.setBeneficiaryRegID(obj[2].toString());
@@ -106,7 +122,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 		}
 		report.setArrivalTime((Timestamp) obj[16]);
 		report.setConsultedTime((Timestamp) obj[17]);
-		report.setWaitingTime(calculateTime(report.getConsultedTime(),report.getArrivalTime()));
+		report.setWaitingTime(calculateTime(report.getConsultedTime(), report.getArrivalTime()));
 
 		return report;
 
@@ -233,8 +249,15 @@ public class CRMReportServiceImpl implements CRMReportService {
 	@Override
 	public String getMonthlyReport(ReportInput input) throws TMException {
 		Integer ppid = getParkingplaceID(input.getUserID(), input.getProviderServiceMapID());
+		Integer vanID = 0;
+		if (input.getVanID() == 0) {
+			vanID = null;
+		} else {
+			vanID = input.getVanID();
+		}
+
 		List<Object[]> objarr = benChiefComplaintReportRepo.getMonthlyReport(input.getFromDate(), input.getToDate(),
-				ppid);
+				ppid, vanID);
 
 		LinkedHashMap<String, String> header = new LinkedHashMap<>();
 		Date inputfromdate = input.getFromDate();

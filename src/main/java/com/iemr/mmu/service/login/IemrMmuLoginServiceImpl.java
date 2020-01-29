@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.login.ServicePointVillageMapping;
 import com.iemr.mmu.data.login.UserVanSpDetails_View;
 import com.iemr.mmu.repo.login.MasterVanRepo;
@@ -18,6 +19,7 @@ import com.iemr.mmu.repo.login.ServicePointVillageMappingRepo;
 import com.iemr.mmu.repo.login.UserParkingplaceMappingRepo;
 import com.iemr.mmu.repo.login.UserVanSpDetails_View_Repo;
 import com.iemr.mmu.repo.login.VanServicepointMappingRepo;
+import com.iemr.mmu.utils.response.OutputResponse;
 
 @Service
 public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
@@ -142,9 +144,7 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 				UserVanSpDetails_View userVanSpDetails_ViewOBJ = new UserVanSpDetails_View((Integer) objArray[0],
 						(Integer) objArray[1], (String) objArray[2], (Short) objArray[3], (Integer) objArray[4],
 						(String) objArray[5], (Integer) objArray[6], (Integer) objArray[7], 0);
-
 				userVanSpDetails_ViewList.add(userVanSpDetails_ViewOBJ);
-
 			}
 		}
 		resMap.put("UserVanSpDetails", userVanSpDetails_ViewList);
@@ -166,5 +166,24 @@ public class IemrMmuLoginServiceImpl implements IemrMmuLoginService {
 		resMap.put("UserLocDetails", parkingPlaceLocationMap);
 		// 1.1
 		return new Gson().toJson(resMap);
+	}
+	
+	/* created by = DU20091017 */
+	
+	@Override
+	public String getUserSpokeDetails (Integer psmId)  {
+		MasterVan mVan;
+		ArrayList<MasterVan> vanMasterList = new ArrayList<>();
+		mVan = new MasterVan(0, "All");
+		vanMasterList.add(mVan);
+		ArrayList<Object[]> vanMaster = masterVanRepo.getVanMaster(psmId);
+
+		if (vanMaster != null && vanMaster.size() > 0) {
+			for (Object[] arr : vanMaster) {
+				mVan = new MasterVan((Integer) arr[0], (String) arr[1]);
+				vanMasterList.add(mVan);
+			}
+		}
+		return new Gson().toJson(vanMasterList);
 	}
 }

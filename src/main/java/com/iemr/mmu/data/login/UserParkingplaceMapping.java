@@ -48,9 +48,10 @@ public class UserParkingplaceMapping {
 //	@OneToMany(mappedBy = "userParkingplaceMapping", cascade = CascadeType.ALL)
 //	private Set<MasterVan> masterVanSet;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "parkingPlaceID", insertable = false, updatable = false)
-	private MasterVan masterVanSet;
+	// 23-01-2019, report download issue, since mapping is not available in mastervan.
+//	@ManyToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "parkingPlaceID", insertable = false, updatable = false)
+//	private MasterVan masterVanSet;
 
 	public UserParkingplaceMapping() {
 	}
