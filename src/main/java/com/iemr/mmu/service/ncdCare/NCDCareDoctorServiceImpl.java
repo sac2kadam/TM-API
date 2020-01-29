@@ -45,7 +45,9 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		String instruction = null;
 		if (prescriptionData != null && prescriptionData.size() > 0) {
 			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
-			instruction = String.valueOf(prescriptionData.get(0)[1]);
+			if (String.valueOf(prescriptionData.get(0)[1]) != null
+					&& !String.valueOf(prescriptionData.get(0)[1]).isEmpty())
+				instruction = String.valueOf(prescriptionData.get(0)[1]);
 		}
 
 //		String externalInvestigation = prescriptionDetailRepo.getExternalinvestigationForVisitCode(beneficiaryRegID,
