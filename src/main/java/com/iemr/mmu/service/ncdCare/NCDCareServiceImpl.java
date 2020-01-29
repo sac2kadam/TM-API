@@ -1138,6 +1138,9 @@ public class NCDCareServiceImpl implements NCDCareService {
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 				prescriptionID = prescriptionDetail.getPrescriptionID();
 				ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), NCDCareDiagnosis.class);
+
+				if (ncdCareDiagnosis != null && ncdCareDiagnosis.getSpecialistDiagnosis() != null)
+					prescriptionDetail.setInstruction(ncdCareDiagnosis.getSpecialistDiagnosis());
 			}
 
 			// update prescription

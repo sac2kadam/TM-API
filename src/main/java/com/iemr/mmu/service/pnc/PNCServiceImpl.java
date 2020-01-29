@@ -1333,6 +1333,9 @@ public class PNCServiceImpl implements PNCService {
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 				prescriptionID = prescriptionDetail.getPrescriptionID();
 				pncDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PNCDiagnosis.class);
+
+				if (pncDiagnosis != null && pncDiagnosis.getSpecialistDiagnosis() != null)
+					prescriptionDetail.setInstruction(pncDiagnosis.getSpecialistDiagnosis());
 			}
 
 			// update prescription

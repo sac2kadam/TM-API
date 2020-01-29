@@ -1468,6 +1468,8 @@ public class ANCServiceImpl implements ANCService {
 
 				// prescription OBJ
 				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+				if (ancDiagnosis != null && ancDiagnosis.getSpecialistDiagnosis() != null)
+					prescriptionDetail.setInstruction(ancDiagnosis.getSpecialistDiagnosis());
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 			}
 
