@@ -124,8 +124,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		String instruction = null;
 		if (prescriptionData != null && prescriptionData.size() > 0) {
 			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
-			if (String.valueOf(prescriptionData.get(0)[1]) != null
-					&& !String.valueOf(prescriptionData.get(0)[1]).isEmpty())
+			if (prescriptionData.get(0)[1] != null)
 				instruction = String.valueOf(prescriptionData.get(0)[1]);
 		}
 
