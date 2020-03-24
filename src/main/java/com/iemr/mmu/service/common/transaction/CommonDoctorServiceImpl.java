@@ -417,6 +417,9 @@ public class CommonDoctorServiceImpl {
 						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 					}
 
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
@@ -608,6 +611,9 @@ public class CommonDoctorServiceImpl {
 
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
+
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
 
 					referDetailsList.add(referDetailsTemp);
 				}

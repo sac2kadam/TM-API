@@ -124,6 +124,11 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+
+	@Expose
+	@Column(name = "revisitdate")
+	private Timestamp revisitDate;
 
 	public CancerDiagnosis() {
 		super();
@@ -353,5 +358,15 @@ public class CancerDiagnosis {
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
 	}
+
+	public Timestamp getRevisitDate() {
+		return revisitDate;
+	}
+
+	public void setRevisitDate(Timestamp revisitDate) {
+		this.revisitDate = revisitDate;
+	}
+	
+	
 
 }
