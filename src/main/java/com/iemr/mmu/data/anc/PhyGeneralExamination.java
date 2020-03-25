@@ -164,6 +164,30 @@ public class PhyGeneralExamination {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 	
+	@Expose
+	@Column(name = "Quickening")
+	private String Quickening;
+	
+	@Expose
+	@Column(name = "Foetal_movements")
+	private String Foetal_movements;
+	
+	public String getQuickening() {
+		return Quickening;
+	}
+
+	public void setQuickening(String Quickening) {
+		this.Quickening = Quickening;
+	}
+
+	public String getFoetal_movements() {
+		return Foetal_movements;
+	}
+
+	public void setFoetal_movements(String Foetal_movements) {
+		this.Foetal_movements = Foetal_movements;
+	}
+
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
 	}
