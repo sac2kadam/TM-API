@@ -166,26 +166,28 @@ public class PhyGeneralExamination {
 	
 	@Expose
 	@Column(name = "Quickening")
-	private String Quickening;
+	private String quickening;
 	
 	@Expose
 	@Column(name = "Foetal_movements")
-	private String Foetal_movements;
+	private String foetalMovements;
 	
+	
+
 	public String getQuickening() {
-		return Quickening;
+		return quickening;
 	}
 
-	public void setQuickening(String Quickening) {
-		this.Quickening = Quickening;
+	public void setQuickening(String quickening) {
+		this.quickening = quickening;
 	}
 
-	public String getFoetal_movements() {
-		return Foetal_movements;
+	public String getFoetalMovements() {
+		return foetalMovements;
 	}
 
-	public void setFoetal_movements(String Foetal_movements) {
-		this.Foetal_movements = Foetal_movements;
+	public void setFoetalMovements(String foetalMovements) {
+		this.foetalMovements = foetalMovements;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -475,5 +477,6 @@ public class PhyGeneralExamination {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
+	
 	
 }

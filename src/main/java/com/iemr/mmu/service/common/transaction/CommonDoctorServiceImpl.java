@@ -424,8 +424,9 @@ public class CommonDoctorServiceImpl {
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
+
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
@@ -619,7 +620,7 @@ public class CommonDoctorServiceImpl {
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
 		}
 
