@@ -1,8 +1,5 @@
 package com.iemr.mmu.repo.nurse.anc;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,11 +16,9 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 	public PhyGeneralExamination getPhyGeneralExaminationData(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
-
 	@Query("SELECT processed from PhyGeneralExamination where beneficiaryRegID=:benRegID AND visitCode = :visitCode")
-	public String getBenGeneralExaminationStatus(@Param("benRegID") Long benRegID,
-			@Param("visitCode") Long visitCode);
-	
+	public String getBenGeneralExaminationStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+
 	@Transactional
 	@Modifying
 	@Query("update PhyGeneralExamination set consciousness=:consciousness, cooperation=:cooperation, coherence=:coherence, "
@@ -35,29 +30,16 @@ public interface PhyGeneralExaminationRepo extends CrudRepository<PhyGeneralExam
 			+ "quickening=:quickening, foetalMovements=:foetalMovements ,"
 			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:benRegID and visitCode = :visitCode ")
 	public int updatePhyGeneralExamination(@Param("consciousness") String consciousness,
-			@Param("coherence") String coherence,
-			@Param("cooperation") String cooperation,
-			@Param("comfortness") String comfortness,
-			@Param("builtAndAppearance") String builtAndAppearance,
-			@Param("gait") String gait,
-			@Param("dangerSigns") String dangerSigns,
-			@Param("typeOfDangerSign") String typeOfDangerSign,
-			@Param("pallor") String pallor,
-			@Param("jaundice") String jaundice,
-			@Param("cyanosis") String cyanosis,
-			@Param("clubbing") String clubbing,
-			@Param("lymphadenopathy") String lymphadenopathy,
-			@Param("lymphnodesInvolved") String lymphnodesInvolved,
-			@Param("typeOfLymphadenopathy") String typeOfLymphadenopathy,
-			@Param("edema") String edema,
-			@Param("extentOfEdema") String extentOfEdema,
-			@Param("quickening") String quickening,
-         	@Param("foetalMovements") String foetalMovements,
-        	@Param("edemaType") String edemaType,
-			@Param("modifiedBy") String modifiedBy,
-			@Param("processed") String processed,
-			@Param("benRegID") Long benRegID,
-			@Param("visitCode") Long visitCode);
-	
-	        
+			@Param("coherence") String coherence, @Param("cooperation") String cooperation,
+			@Param("comfortness") String comfortness, @Param("builtAndAppearance") String builtAndAppearance,
+			@Param("gait") String gait, @Param("dangerSigns") String dangerSigns,
+			@Param("typeOfDangerSign") String typeOfDangerSign, @Param("pallor") String pallor,
+			@Param("jaundice") String jaundice, @Param("cyanosis") String cyanosis, @Param("clubbing") String clubbing,
+			@Param("lymphadenopathy") String lymphadenopathy, @Param("lymphnodesInvolved") String lymphnodesInvolved,
+			@Param("typeOfLymphadenopathy") String typeOfLymphadenopathy, @Param("edema") String edema,
+			@Param("extentOfEdema") String extentOfEdema, @Param("edemaType") String edemaType,
+			@Param("quickening") String quickening, @Param("foetalMovements") String foetalMovements,
+			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
+
 }
