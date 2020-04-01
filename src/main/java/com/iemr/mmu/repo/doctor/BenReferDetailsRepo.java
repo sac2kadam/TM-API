@@ -1,5 +1,6 @@
 package com.iemr.mmu.repo.doctor;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.transaction.Transactional;
@@ -32,9 +33,10 @@ public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Lon
 	@Modifying
 	@Transactional
 	@Query(" Update BenReferDetails  set referredToInstituteID=:referredToInstituteID, "
-			+ "referredToInstituteName=:referredToInstituteName, processed=:processed "
+			+ "referredToInstituteName=:referredToInstituteName,revisitDate=:revisitDate, processed=:processed "
 			+ "WHERE benReferID =:benReferID")
 	public int updateReferredInstituteName(@Param("referredToInstituteID") Integer referredToInstituteID,
-			@Param("referredToInstituteName") String referredToInstituteName, @Param("benReferID") Long benReferID,
+			@Param("referredToInstituteName") String referredToInstituteName,@Param("revisitDate") Timestamp revisitDate, 
+			@Param("benReferID") Long benReferID,
 			@Param("processed") String processed);
 }
