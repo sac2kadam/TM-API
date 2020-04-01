@@ -591,7 +591,7 @@ public class CommonDoctorServiceImpl {
 				processed = "N";
 			}
 			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(), (Long) obj[0], processed);
+					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
