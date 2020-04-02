@@ -228,6 +228,7 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 		// TODO Auto-generated method stub
 		Long r = null;
 		SysObstetricExamination obstetricExaminationRS = sysObstetricExaminationRepo.save(obstetricExamination);
+		
 		if (obstetricExaminationRS != null)
 			r = obstetricExaminationRS.getID();
 		return r;
@@ -364,7 +365,9 @@ public class ANCNurseServiceImpl implements ANCNurseService {
 					obstetricExamination.getFetalMovements(), obstetricExamination.getFetalHeartSounds(),
 					obstetricExamination.getFetalHeartRate_BeatsPerMinute(),
 					obstetricExamination.getFetalPositionOrLie(), obstetricExamination.getFetalPresentation(),
-					obstetricExamination.getAbdominalScars(), obstetricExamination.getModifiedBy(), processed,
+					obstetricExamination.getAbdominalScars(),
+					obstetricExamination.getSfh(),
+					obstetricExamination.getModifiedBy(), processed,
 					obstetricExamination.getBeneficiaryRegID(), obstetricExamination.getVisitCode());
 		}
 		return r;

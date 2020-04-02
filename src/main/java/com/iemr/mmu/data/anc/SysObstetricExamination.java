@@ -73,6 +73,10 @@ public class SysObstetricExamination {
 	private String abdominalScars;
 	
 	@Expose
+	@Column(name = "SFH")
+	private Integer sfh;
+	
+	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 
@@ -332,5 +336,21 @@ public class SysObstetricExamination {
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
 	}
+
+	public Integer getSfh() {
+		return sfh;
+	}
+
+	public void setSfh(Integer sfh) {
+		this.sfh = sfh;
+	}
+	
+
+	
+
+	
+	
+	
+
 	
 }
