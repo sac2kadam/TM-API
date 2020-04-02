@@ -325,6 +325,7 @@ public class BenReferDetails {
 		if (resList != null && resList.size() > 0) {
 
 			Object[] obj1 = resList.get(0);
+
 			cOBJ = new BenReferDetails((Long) obj1[0], (Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],
 					(Integer) obj1[4], (String) obj1[5], (Short) obj1[6], (String) obj1[7], (Long) obj1[8],
 					(Timestamp) obj1[9]);
