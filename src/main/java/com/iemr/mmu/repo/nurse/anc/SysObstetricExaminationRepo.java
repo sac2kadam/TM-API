@@ -39,7 +39,7 @@ public interface SysObstetricExaminationRepo extends CrudRepository<SysObstetric
 			@Param("fetalPositionOrLie") String fetalPositionOrLie,
 			@Param("fetalPresentation") String fetalPresentation,
 			@Param("abdominalScars") String abdominalScars,
-			@Param("sfh") Integer sfh,
+			@Param("sfh") Double sfh,
 			@Param("modifiedBy") String modifiedBy,
 			@Param("processed") String processed,
 			@Param("benRegID") Long benRegID,
