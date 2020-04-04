@@ -73,8 +73,8 @@ public class SysObstetricExamination {
 	private String abdominalScars;
 	
 	@Expose
-	@Column(name = "SFH")
-	private Integer sfh;
+	@Column(name = "sfh")
+	private Double sfh;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -337,11 +337,11 @@ public class SysObstetricExamination {
 		this.visitCode = visitCode;
 	}
 
-	public Integer getSfh() {
+	public Double getSfh() {
 		return sfh;
 	}
 
-	public void setSfh(Integer sfh) {
+	public void setSfh(Double sfh) {
 		this.sfh = sfh;
 	}
 	
