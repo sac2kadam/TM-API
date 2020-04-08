@@ -1,6 +1,6 @@
 package com.iemr.mmu.repo.doctor;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,37 +17,31 @@ public interface CancerDiagnosisRepo extends CrudRepository<CancerDiagnosis, Lon
 	@Query(" SELECT c from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID "
 			+ " AND c.deleted = false AND c.visitCode = :visitCode")
 	public CancerDiagnosis getBenCancerDiagnosisDetails(@Param("benRegID") Long benRegID,
-			 @Param("visitCode") Long visitCode);
+			@Param("visitCode") Long visitCode);
 
 	@Query(" SELECT processed  from CancerDiagnosis c  WHERE c.beneficiaryRegID = :benRegID AND c.visitCode = :visitCode AND c.deleted=false")
-	public String getCancerDiagnosisStatuses(@Param("benRegID") Long benRegID,
-			@Param("visitCode") Long visitCode);
+	public String getCancerDiagnosisStatuses(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Transactional
 	@Modifying
 	@Query(" update CancerDiagnosis set provisionalDiagnosisOncologist=:provisionalDiagnosisOncologist, modifiedBy=:modifiedBy, processed=:processed "
 			+ "WHERE beneficiaryRegID =:benRegID AND visitCode =:visitCode")
 	public int updateDetailsByOncologist(@Param("provisionalDiagnosisOncologist") String provisionalDiagnosisOncologist,
-			@Param("benRegID") Long benRegID, 
-			@Param("visitCode") Long visitCode,
-			@Param("modifiedBy") String modifiedBy,
-			@Param("processed") String processed);
-	
-	
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
+			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed);
+
 	@Transactional
 	@Modifying
 	@Query(" update CancerDiagnosis set provisionalDiagnosisPrimaryDoctor=:provisionalDiagnosisPrimaryDoctor, remarks=:remarks, "
 			+ "referredToInstituteID=:referredToInstituteID, refrredToAdditionalService=:refrredToAdditionalService, "
-			+ "modifiedBy=:modifiedBy, processed=:processed "
+			+ "modifiedBy=:modifiedBy, processed=:processed, revisitDate =:revisitDate "
 			+ "WHERE beneficiaryRegID =:beneficiaryRegID AND visitCode =:visitCode")
-	public int updateCancerDiagnosisDetailsByDoctor(@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
-			@Param("remarks") String remarks,
-			@Param("referredToInstituteID") Integer referredToInstituteID,
+	public int updateCancerDiagnosisDetailsByDoctor(
+			@Param("provisionalDiagnosisPrimaryDoctor") String provisionalDiagnosisPrimaryDoctor,
+			@Param("remarks") String remarks, @Param("referredToInstituteID") Integer referredToInstituteID,
 			@Param("refrredToAdditionalService") String refrredToAdditionalService,
-			@Param("modifiedBy") String modifiedBy,
-			@Param("processed") String processed,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, 
-			@Param("visitCode") Long visitCode);
-	
+			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("revisitDate") Timestamp revisitDate);
+
 }
-		

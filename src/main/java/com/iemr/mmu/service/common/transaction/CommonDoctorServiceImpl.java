@@ -417,12 +417,16 @@ public class CommonDoctorServiceImpl {
 						referDetailsTemp.setReferredToInstituteName(referDetails.getReferredToInstituteName());
 					}
 
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
+
 		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.save(referDetailsList);
@@ -587,7 +591,7 @@ public class CommonDoctorServiceImpl {
 				processed = "N";
 			}
 			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(), (Long) obj[0], processed);
+					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
@@ -609,11 +613,14 @@ public class CommonDoctorServiceImpl {
 					referDetailsTemp.setServiceID(sm.getServiceID());
 					referDetailsTemp.setServiceName(sm.getServiceName());
 
+					if (referDetails.getRevisitDate() != null)
+						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
 				referDetailsList.add(referDetails);
 		}
 

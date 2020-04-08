@@ -494,11 +494,11 @@ public class TestCommonServices
 				Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
 		
 		
-		when(phyGeneralExaminationRepoMock.updatePhyGeneralExamination(Matchers.anyVararg(), Matchers.anyString(), Matchers.anyString(), 
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), 
-				Matchers.anyLong())).thenReturn(1);
+//		when(phyGeneralExaminationRepoMock.updatePhyGeneralExamination(Matchers.anyVararg(), Matchers.anyString(), Matchers.anyString(), 
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 
+//				Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), 
+//				Matchers.anyLong())).thenReturn(1);
 		
 		
 		when(phyHeadToToeExaminationRepoMock.updatePhyHeadToToeExamination(Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), 

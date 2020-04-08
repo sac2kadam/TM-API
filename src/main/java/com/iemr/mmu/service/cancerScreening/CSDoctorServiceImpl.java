@@ -59,7 +59,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 		if (null != cancerDiagnosis && null != cancerDiagnosis.getInstitute()) {
 			cancerDiagnosis.setReferredToInstituteName(cancerDiagnosis.getInstitute().getInstitutionName());
 		}
-		if (cancerDiagnosis!= null && cancerDiagnosis.getRefrredToAdditionalService() != null) {
+		if (cancerDiagnosis != null && cancerDiagnosis.getRefrredToAdditionalService() != null) {
 			cancerDiagnosis.setRefrredToAdditionalServiceList(Arrays
 					.stream(cancerDiagnosis.getRefrredToAdditionalService().split(",")).collect(Collectors.toList()));
 		}
@@ -89,9 +89,9 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 					cancerDiagnosis.getProvisionalDiagnosisPrimaryDoctor(), cancerDiagnosis.getRemarks(),
 					cancerDiagnosis.getReferredToInstituteID(), cancerDiagnosis.getRefrredToAdditionalService(),
 					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
-					cancerDiagnosis.getVisitCode());
+					cancerDiagnosis.getVisitCode(), cancerDiagnosis.getRevisitDate());
 		} else {
-			//cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
+			// cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
 			Long cancerDiagnosisRS = saveCancerDiagnosisData(cancerDiagnosis);
 			if (cancerDiagnosisRS != null && cancerDiagnosisRS > 0) {
 				response = 1;
