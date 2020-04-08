@@ -2608,13 +2608,23 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		}
 
-		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),
-				prescription.getVisitCode(), prescription.getPrescriptionID());
-		if (null != processed && !processed.equals("N")) {
+//		String processed = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(prescription.getBeneficiaryRegID(),
+//				prescription.getVisitCode(), prescription.getPrescriptionID());
+//		if (null != processed && !processed.equals("N")) {
+//			processed = "U";
+//		}
+
+		String processed;
+		PrescriptionDetail pDetails = prescriptionDetailRepo.getGeneralOPDDiagnosisStatus(
+				prescription.getBeneficiaryRegID(), prescription.getVisitCode(), prescription.getPrescriptionID());
+		if (null != pDetails && !pDetails.getProcessed().equals("N")) {
 			processed = "U";
-		}
+		} else
+			processed = pDetails.getProcessed();
 
 		prescription.setProcessed(processed);
+		if (pDetails.getInstruction() != null)
+			prescription.setInstruction(pDetails.getInstruction());
 
 		PrescriptionDetail resultSet = prescriptionDetailRepo.save(prescription);
 		if (resultSet != null && resultSet.getPrescriptionID() > 0)
