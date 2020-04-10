@@ -2623,9 +2623,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			processed = pDetails.getProcessed();
 
 		prescription.setProcessed(processed);
-		if (pDetails.getInstruction() != null)
-			prescription.setInstruction(pDetails.getInstruction());
-
+//		if (pDetails.getInstruction() != null) {
+//			prescription.setInstruction(pDetails.getInstruction());}
+//		
+		if(prescription.getInstruction() == null) {
+            prescription.setInstruction(pDetails.getInstruction());
+        }
 		PrescriptionDetail resultSet = prescriptionDetailRepo.save(prescription);
 		if (resultSet != null && resultSet.getPrescriptionID() > 0)
 			i = 1;
