@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 
@@ -112,7 +114,9 @@ public class BenReferDetails {
 
 	@Expose
 	@Column(name = "revisitdate")
+//	 @JsonFormat(pattern="yyyy-MM-dd")
 	private Timestamp revisitDate;
+	
 
 	public Long getBenReferID() {
 		return benReferID;
@@ -294,12 +298,15 @@ public class BenReferDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	public Timestamp getRevisitDate() {
+		
 		return revisitDate;
 	}
 
 	public void setRevisitDate(Timestamp revisitDate) {
+		
 		this.revisitDate = revisitDate;
 	}
 
