@@ -102,17 +102,6 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				nurseMasterData = "No Master Data found for QuickConsultation";
 			}
 				break;
-			case (8): {
-				// 8 : Covid 19 - pandemic
-				nurseMasterData = ancMasterDataServiceImpl
-						.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
-			}
-			case (10): {
-				// 10 : Covid 19 - pandemic
-				nurseMasterData = ancMasterDataServiceImpl
-						.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
-			}
-				break;
 			default: {
 				nurseMasterData = "Invalid VisitCategoryID";
 			}
