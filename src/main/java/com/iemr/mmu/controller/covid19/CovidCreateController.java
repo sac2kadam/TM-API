@@ -40,7 +40,7 @@ public class CovidCreateController {
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for NCD Care nurse data saving :" + requestObj);
+			logger.info("Request object for covid 19 nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();

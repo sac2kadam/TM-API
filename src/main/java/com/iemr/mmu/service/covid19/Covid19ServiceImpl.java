@@ -501,14 +501,40 @@ public class Covid19ServiceImpl implements Covid19Service {
 		Map<String, Object> resMap = new HashMap<>();
 
 		BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
+		Covid19BenFeedback covid19BenFeedback = getCovidDetails(benRegID, visitCode);
 
-		resMap.put("NCDCareNurseVisitDetail", new Gson().toJson(visitDetail));
+		resMap.put("covid19NurseVisitDetail", new Gson().toJson(visitDetail));
+		resMap.put("covidDetails", new Gson().toJson(covid19BenFeedback));
 
 //		resMap.put("BenAdherence", commonNurseServiceImpl.getBenAdherence(benRegID, visitCode));
 //
 //		resMap.put("Investigation", commonNurseServiceImpl.getLabTestOrders(benRegID, visitCode));
 
 		return resMap.toString();
+	}
+
+	private Covid19BenFeedback getCovidDetails(Long benRegID, Long visitCode) {
+		Covid19BenFeedback obj = covid19BenFeedbackRepo.findByBeneficiaryRegIDAndVisitCode(benRegID, visitCode);
+		if (obj != null) {
+			if (obj.getSymptoms_db() != null) {
+				String[] symptomsArr = obj.getSymptoms_db().split("\\|\\|");
+				if (symptomsArr != null)
+					obj.setSymptoms(symptomsArr);
+			}
+
+			if (obj.getTravelType() != null) {
+				String[] treavelTypeArr = obj.getTravelType().split("\\|\\|");
+				if (treavelTypeArr != null)
+					obj.setTravelList(treavelTypeArr);
+			}
+			if (obj.getcOVID19_contact_history() != null) {
+				String[] contactHistoryArr = obj.getcOVID19_contact_history().split("\\|\\|");
+				if (contactHistoryArr != null)
+					obj.setContactStatus(contactHistoryArr);
+			}
+
+		}
+		return obj;
 	}
 
 	public String getBenCovid19HistoryDetails(Long benRegID, Long visitCode) {
@@ -555,7 +581,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 				if (pointer == covid19BenFeedbackOBJ.getSymptoms().length)
 					sb.append(s);
 				else
-					sb.append(s + " || ");
+					sb.append(s + "||");
 
 				pointer++;
 			}
@@ -569,7 +595,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 				if (pointer == covid19BenFeedbackOBJ.getContactStatus().length)
 					sb.append(s);
 				else
-					sb.append(s + " || ");
+					sb.append(s + "||");
 
 				pointer++;
 			}
@@ -583,7 +609,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 				if (pointer == covid19BenFeedbackOBJ.getTravelList().length)
 					sb.append(s);
 				else
-					sb.append(s + " || ");
+					sb.append(s + "||");
 
 				pointer++;
 			}
