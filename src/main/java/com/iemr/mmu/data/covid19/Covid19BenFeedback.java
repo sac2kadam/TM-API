@@ -1,6 +1,7 @@
 package com.iemr.mmu.data.covid19;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,7 +87,7 @@ public class Covid19BenFeedback {
 	private Boolean suspectedStatus;
 	@Expose
 	@Column(name = "recommendation")
-	private String recommendation;
+	private String recommendation_db;
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
@@ -129,6 +130,10 @@ public class Covid19BenFeedback {
 	@Expose
 	@Transient
 	private String[] travelList;
+
+	@Expose
+	@Transient
+	private ArrayList<String[]> recommendation;
 
 	public Long getcOVID19ID() {
 		return cOVID19ID;
@@ -306,12 +311,12 @@ public class Covid19BenFeedback {
 		this.suspectedStatus = suspectedStatus;
 	}
 
-	public String getRecommendation() {
-		return recommendation;
+	public String getRecommendation_db() {
+		return recommendation_db;
 	}
 
-	public void setRecommendation(String recommendation) {
-		this.recommendation = recommendation;
+	public void setRecommendation_db(String recommendation_db) {
+		this.recommendation_db = recommendation_db;
 	}
 
 	public Boolean getDeleted() {
@@ -416,6 +421,38 @@ public class Covid19BenFeedback {
 
 	public void setTravelList(String[] travelList) {
 		this.travelList = travelList;
+	}
+
+	public Integer getFromCityInter() {
+		return fromCityInter;
+	}
+
+	public void setFromCityInter(Integer fromCityInter) {
+		this.fromCityInter = fromCityInter;
+	}
+
+	public Integer getToCityInter() {
+		return toCityInter;
+	}
+
+	public void setToCityInter(Integer toCityInter) {
+		this.toCityInter = toCityInter;
+	}
+
+	public String[] getSymptom() {
+		return symptom;
+	}
+
+	public void setSymptom(String[] symptom) {
+		this.symptom = symptom;
+	}
+
+	public ArrayList<String[]> getRecommendation() {
+		return recommendation;
+	}
+
+	public void setRecommendation(ArrayList<String[]> recommendation) {
+		this.recommendation = recommendation;
 	}
 
 }
