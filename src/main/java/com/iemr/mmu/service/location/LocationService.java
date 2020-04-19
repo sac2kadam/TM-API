@@ -2,6 +2,10 @@ package com.iemr.mmu.service.location;
 
 public interface LocationService {
 
+	public String getCountryList();
+
+	public String getCountryCityList(Integer countryID);
+
 	public String getStateList();
 
 	public String getZoneList(Integer stateID);
