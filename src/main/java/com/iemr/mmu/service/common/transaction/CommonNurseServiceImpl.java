@@ -2369,9 +2369,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					generalExamination.getJaundice(), generalExamination.getCyanosis(),
 					generalExamination.getClubbing(), generalExamination.getLymphadenopathy(),
 					generalExamination.getLymphnodesInvolved(), generalExamination.getTypeOfLymphadenopathy(),
-					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),generalExamination.getEdemaType(),
-					generalExamination.getQuickening(),generalExamination.getFoetalMovements(),
-				    generalExamination.getModifiedBy(), processed,
+					generalExamination.getEdema(), generalExamination.getExtentOfEdema(),
+					generalExamination.getEdemaType(), generalExamination.getQuickening(),
+					generalExamination.getFoetalMovements(), generalExamination.getModifiedBy(), processed,
 					generalExamination.getBeneficiaryRegID(), generalExamination.getVisitCode());
 		}
 		return response;
@@ -2519,6 +2519,31 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return prescriptionID;
 	}
 
+	// prescription for covid diagnosis
+	public Long savePrescriptionCovid(Long benRegID, Long benVisitID, Integer psmID, String createdBy,
+			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction,
+			String doctorDiagnosis) {
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		prescriptionDetail.setBeneficiaryRegID(benRegID);
+		prescriptionDetail.setBenVisitID(benVisitID);
+		prescriptionDetail.setVisitCode(benVisitCode);
+		prescriptionDetail.setProviderServiceMapID(psmID);
+		prescriptionDetail.setCreatedBy(createdBy);
+		prescriptionDetail.setExternalInvestigation(externalInvestigation);
+		prescriptionDetail.setVanID(vanID);
+		prescriptionDetail.setParkingPlaceID(parkingPlaceID);
+
+		if (instruction != null)
+			prescriptionDetail.setInstruction(instruction);
+
+		if (doctorDiagnosis != null)
+			prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+
+		Long prescriptionID = saveBenPrescription(prescriptionDetail);
+
+		return prescriptionID;
+	}
+
 	public Long saveBeneficiaryPrescription(JsonObject caseSheet) throws Exception {
 
 		PrescriptionDetail prescriptionDetail = InputMapper.gson().fromJson(caseSheet, PrescriptionDetail.class);
@@ -2626,9 +2651,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 //		if (pDetails.getInstruction() != null) {
 //			prescription.setInstruction(pDetails.getInstruction());}
 //		
-		if(prescription.getInstruction() == null) {
-            prescription.setInstruction(pDetails.getInstruction());
-        }
+		if (prescription.getInstruction() == null) {
+			prescription.setInstruction(pDetails.getInstruction());
+		}
 		PrescriptionDetail resultSet = prescriptionDetailRepo.save(prescription);
 		if (resultSet != null && resultSet.getPrescriptionID() > 0)
 			i = 1;

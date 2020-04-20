@@ -65,4 +65,42 @@ public class CovidCreateController {
 		}
 		return response.toString();
 	}
+	
+	/**
+	 * @Objective Save Covid data for doctor.
+	 * @param JSON
+	 *            requestObj
+	 * @return success or failure response
+	 */
+	@CrossOrigin
+	@ApiOperation(value = "Save Covid doctor data..", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveBenCovidDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for Covid doctor data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null) {
+				Long ncdCareRes = covid19ServiceImpl.saveDoctorData(jsnOBJ, Authorization);
+				if (null != ncdCareRes && ncdCareRes > 0) {
+					response.setResponse("Data saved successfully");
+				} else {
+					response.setResponse("Unable to save data");
+				}
+
+			} else {
+				response.setResponse("Invalid request");
+			}
+		} catch (Exception e) {
+			logger.error("Error while saving Covid doctor data :" + e);
+			response.setError(5000, "Unable to save data. " + e.getMessage());
+		}
+		return response.toString();
+	}
 }

@@ -108,13 +108,13 @@ public class CovidFetchController {
 	 */
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary NCD Care vital details from Nurse NCD Care", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVitalDetailsFrmNurseNCDCare" }, method = { RequestMethod.POST })
+	@ApiOperation(value = "Get Beneficiary Covid 19 vital details from Nurse NCD Care", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVitalDetailsFrmNurseCovid" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurseNCDCare(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care vital data fetching :" + comingRequest);
+		logger.info("Request object for Covid 19 vital data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
@@ -127,7 +127,7 @@ public class CovidFetchController {
 				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("NCD Care vital data fetching Response:" + response);
+			logger.info("Covid 19 vital data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary vital data");
 			logger.error("Error while getting beneficiary vital data :" + e);
@@ -142,26 +142,26 @@ public class CovidFetchController {
 	 */
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorNCDCare" }, method = { RequestMethod.POST })
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorCovid" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
-	public String getBenCaseRecordFromDoctorNCDCare(
+	public String getBenCaseRecordFromDoctorCovid19(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request object for NCD Care doctor data fetching :" + comingRequest);
+		logger.info("Request object for Covid 19 doctor data fetching :" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
-				String res = covid19ServiceImpl.getBenCaseRecordFromDoctorNCDCare(benRegID, visitCode);
+				String res = covid19ServiceImpl.getBenCaseRecordFromDoctorCovid19(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
 				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("NCD Care doctor data fetching Response:" + response);
+			logger.info("Covid 19 doctor data fetching Response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary doctor data");
 			logger.error("Error while getting beneficiary doctor data :" + e);
