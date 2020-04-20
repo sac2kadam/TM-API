@@ -552,6 +552,14 @@ public class Covid19ServiceImpl implements Covid19Service {
 					obj.setRecommendation((recommendationList));
 				}
 			}
+
+			if (obj.getSuspectedStatus() != null) {
+				if (obj.getSuspectedStatus())
+					obj.setSuspectedStatusUI("YES");
+				else
+					obj.setSuspectedStatusUI("NO");
+			}
+
 		}
 		return obj;
 	}
@@ -651,6 +659,11 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 			covid19BenFeedbackOBJ.setRecommendation_db(sb.toString());
 		}
+
+		if (covid19BenFeedbackOBJ.getSuspectedStatusUI().equalsIgnoreCase("YES"))
+			covid19BenFeedbackOBJ.setSuspectedStatus(true);
+		else if (covid19BenFeedbackOBJ.getSuspectedStatusUI().equalsIgnoreCase("NO"))
+			covid19BenFeedbackOBJ.setSuspectedStatus(false);
 
 		Covid19BenFeedback resultSetObj = covid19BenFeedbackRepo.save(covid19BenFeedbackOBJ);
 		if (resultSetObj != null && resultSetObj.getcOVID19ID() > 0)
@@ -1080,25 +1093,25 @@ public class Covid19ServiceImpl implements Covid19Service {
 		ArrayList<PrescriptionDetail> obj = prescriptionDetailRepo.findByBeneficiaryRegIDAndVisitCode(benRegID,
 				visitCode);
 		if (obj != null && obj.size() > 0) {
-			diagnosisMap.put("doctorDiagnonsis", obj.get(1).getDiagnosisProvided());
-			diagnosisMap.put("specialistDiagnosis", obj.get(1).getInstruction());
-			diagnosisMap.put("prescriptionID", obj.get(1).getPrescriptionID());
-			diagnosisMap.put("beneficiaryRegID", obj.get(1).getBeneficiaryRegID());
-			diagnosisMap.put("visitCode", obj.get(1).getVisitCode());
-			diagnosisMap.put("vanID", obj.get(1).getVanID());
-			diagnosisMap.put("providerServiceMapID", obj.get(1).getProviderServiceMapID());
-			diagnosisMap.put("parkingPlaceID", obj.get(1).getParkingPlaceID());
-			diagnosisMap.put("createdBy", obj.get(1).getCreatedBy());
+			diagnosisMap.put("doctorDiagnonsis", obj.get(0).getDiagnosisProvided());
+			diagnosisMap.put("specialistDiagnosis", obj.get(0).getInstruction());
+			diagnosisMap.put("prescriptionID", obj.get(0).getPrescriptionID());
+			diagnosisMap.put("beneficiaryRegID", obj.get(0).getBeneficiaryRegID());
+			diagnosisMap.put("visitCode", obj.get(0).getVisitCode());
+			diagnosisMap.put("vanID", obj.get(0).getVanID());
+			diagnosisMap.put("providerServiceMapID", obj.get(0).getProviderServiceMapID());
+			diagnosisMap.put("parkingPlaceID", obj.get(0).getParkingPlaceID());
+			diagnosisMap.put("createdBy", obj.get(0).getCreatedBy());
 		} else {
 			diagnosisMap.put("doctorDiagnonsis", null);
 			diagnosisMap.put("specialistDiagnosis", null);
 			diagnosisMap.put("prescriptionID", null);
-			diagnosisMap.put("beneficiaryRegID", obj.get(1).getBeneficiaryRegID());
-			diagnosisMap.put("visitCode", obj.get(1).getVisitCode());
-			diagnosisMap.put("vanID", obj.get(1).getVanID());
-			diagnosisMap.put("providerServiceMapID", obj.get(1).getProviderServiceMapID());
-			diagnosisMap.put("parkingPlaceID", obj.get(1).getParkingPlaceID());
-			diagnosisMap.put("createdBy", obj.get(1).getCreatedBy());
+			diagnosisMap.put("beneficiaryRegID", null);
+			diagnosisMap.put("visitCode", null);
+			diagnosisMap.put("vanID", null);
+			diagnosisMap.put("providerServiceMapID", null);
+			diagnosisMap.put("parkingPlaceID", null);
+			diagnosisMap.put("createdBy", null);
 		}
 		return new Gson().toJson(diagnosisMap);
 	}

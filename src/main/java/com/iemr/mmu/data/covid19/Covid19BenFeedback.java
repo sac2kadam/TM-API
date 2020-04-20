@@ -85,6 +85,11 @@ public class Covid19BenFeedback {
 	@Expose
 	@Column(name = "Suspected_COVID19")
 	private Boolean suspectedStatus;
+
+	@Expose
+	@Transient
+	private String suspectedStatusUI;
+
 	@Expose
 	@Column(name = "recommendation")
 	private String recommendation_db;
@@ -453,6 +458,14 @@ public class Covid19BenFeedback {
 
 	public void setRecommendation(ArrayList<String[]> recommendation) {
 		this.recommendation = recommendation;
+	}
+
+	public String getSuspectedStatusUI() {
+		return suspectedStatusUI;
+	}
+
+	public void setSuspectedStatusUI(String suspectedStatusUI) {
+		this.suspectedStatusUI = suspectedStatusUI;
 	}
 
 }
