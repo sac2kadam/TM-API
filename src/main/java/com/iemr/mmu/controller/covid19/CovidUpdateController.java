@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -116,35 +117,35 @@ public class CovidUpdateController {
 	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace NCD Care doctor data for the doctor next visit
+	 * @objective Replace covid 19 doctor data for the doctor next visit
 	 */
-//	@CrossOrigin
-//	@ApiOperation(value = "update NCDCare Doctor Data", consumes = "application/json", produces = "application/json")
-//	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-//	public String updateNCDCareDoctorData(@RequestBody String requestObj,
-//			@RequestHeader(value = "Authorization") String Authorization) {
-//
-//		OutputResponse response = new OutputResponse();
-//		logger.info("Request object for doctor data updating :" + requestObj);
-//
-//		JsonObject jsnOBJ = new JsonObject();
-//		JsonParser jsnParser = new JsonParser();
-//		JsonElement jsnElmnt = jsnParser.parse(requestObj);
-//		jsnOBJ = jsnElmnt.getAsJsonObject();
-//
-//		try {
-//			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, Authorization);
-//			if (null != result && result > 0) {
-//				response.setResponse("Data updated successfully");
-//			} else {
-//				response.setError(500, "Unable to modify data");
-//			}
-//			logger.info("Doctor data update Response:" + response);
-//		} catch (Exception e) {
-//			response.setError(500, "Unable to modify data. " + e.getMessage());
-//			logger.error("Error while updating doctor data :" + e);
-//		}
-//
-//		return response.toString();
-//	}
+	@CrossOrigin
+	@ApiOperation(value = "update covid 19 Doctor Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updateCovid19DoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for doctor data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = covid19ServiceImpl.updateCovid19DoctorData(jsnOBJ, Authorization);
+			if (null != result && result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("Doctor data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(500, "Unable to modify data. " + e.getMessage());
+			logger.error("Error while updating doctor data :" + e);
+		}
+
+		return response.toString();
+	}
 }
