@@ -2655,7 +2655,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			prescription.setInstruction(pDetails.getInstruction());
 		}
 		if (prescription.getDiagnosisProvided() == null && pDetails.getDiagnosisProvided() != null) {
-			prescription.setDiagnosisProvided(pDetails.getInstruction());
+			prescription.setDiagnosisProvided(pDetails.getDiagnosisProvided());
 		}
 
 		PrescriptionDetail resultSet = prescriptionDetailRepo.save(prescription);
