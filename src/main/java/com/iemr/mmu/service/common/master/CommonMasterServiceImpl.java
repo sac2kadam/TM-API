@@ -181,6 +181,18 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
+			case 8: {
+				// 8, covid
+				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
+			}
+				break;
+			case 10: {
+				// 10, covid, only applicable for dev env, later will be removed
+				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
+			}
+				break;
 			default: {
 				doctorMasterData = "Invalid VisitCategoryID";
 			}
