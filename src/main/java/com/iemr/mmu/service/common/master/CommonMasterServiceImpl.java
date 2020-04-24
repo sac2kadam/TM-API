@@ -102,6 +102,17 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				nurseMasterData = "No Master Data found for QuickConsultation";
 			}
 				break;
+			case (8): {
+				// 8 : Covid 19 - pandemic
+				nurseMasterData = ancMasterDataServiceImpl
+						.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
+			}
+			case (10): {
+				// 10 : Covid 19 - pandemic
+				nurseMasterData = ancMasterDataServiceImpl
+						.getCommonNurseMasterDataForGenopdAncNcdcarePnc(visitCategoryID, providerServiceMapID, gender);
+			}
+				break;
 			default: {
 				nurseMasterData = "Invalid VisitCategoryID";
 			}
@@ -166,6 +177,18 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				// facilityID);
 
 				// ne298657 have commented the code on 27-07-2018
+				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
+			}
+				break;
+			case 8: {
+				// 8, covid
+				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
+			}
+				break;
+			case 10: {
+				// 10, covid, only applicable for dev env, later will be removed
 				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
 						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
