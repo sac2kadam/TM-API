@@ -95,11 +95,8 @@ public class SwymedServiceImpl implements SwymedService {
 		}
 		if (touser == null) {
 			throw new SwymedException("Callee  couldnt be found. Please call manually");
-		}
+		}	
 		
-		if (!user.getJitsiUserName().equalsIgnoreCase(touser.getJitsiUserName())) {
-			throw new SwymedException("JITSI credentials are not matching, contact administrator");
-		}
 
 		StringBuilder data = new StringBuilder();
 
@@ -158,10 +155,7 @@ public class SwymedServiceImpl implements SwymedService {
 		if (userVan == null) {
 			throw new SwymedException("Callee  couldnt be found. Please call manually");
 		}
-
-		if (!userVan.getJitsiUserName().equalsIgnoreCase(user.getJitsiUserName())) {
-			throw new SwymedException("JITSI credentials are not matching, contact administrator");
-		}
+		
 
 		StringBuilder data = new StringBuilder();
 
@@ -170,7 +164,7 @@ public class SwymedServiceImpl implements SwymedService {
 		data.append(userVan.getJitsiUserName());
 		if(user.getJitsiPassword() != null) {
 			data.append("/");
-			data.append(user.getJitsiPassword());
+			data.append(userVan.getJitsiPassword());
 		}
 
 		return data.toString();
