@@ -32,8 +32,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 
 	@Query("SELECT t from PrescriptionDetail t where t.prescriptionID = :prescriptionID AND "
 			+ " t.beneficiaryRegID=:benRegID AND t.visitCode = :visitCode")
-	public PrescriptionDetail getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
-			@Param("prescriptionID") Long prescriptionID);
+	public PrescriptionDetail getGeneralOPDDiagnosisStatus(@Param("benRegID") Long benRegID,
+			@Param("visitCode") Long visitCode, @Param("prescriptionID") Long prescriptionID);
 
 	@Query(nativeQuery = true, value = "SELECT ExternalInvestigation, instruction FROM t_prescription "
 			+ " WHERE BeneficiaryRegID=:benRegID AND VisitCode = :visitCode ORDER BY CreatedDate DESC LIMIT 1")
@@ -56,5 +56,9 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			@Param("externalInvestigation") String externalInvestigation,
 			@Param("diagnosisProvided_SCTCode") String diagnosisProvided_SCTCode,
 			@Param("diagnosisProvided_SCTTerm") String diagnosisProvided_SCTTerm);
+
+	// covid 19
+	// PrescriptionDetail findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long
+	// visitCode);
 
 }

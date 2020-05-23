@@ -31,6 +31,7 @@ import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.cancerScreening.CSNurseServiceImpl;
 import com.iemr.mmu.service.cancerScreening.CSServiceImpl;
+import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareServiceImpl;
 import com.iemr.mmu.service.pnc.PNCServiceImpl;
@@ -45,6 +46,9 @@ public class CommonServiceImpl implements CommonService {
 
 	@Value("${openkmDocUrl}")
 	private String openkmDocUrl;
+
+	@Autowired
+	private Covid19ServiceImpl covid19ServiceImpl;
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private ANCServiceImpl ancServiceImpl;
@@ -138,6 +142,10 @@ public class CommonServiceImpl implements CommonService {
 				break;
 			case "Cancer Screening": {
 				caseSheetData = getCancerScreening_PrintData(benFlowOBJ);
+			}
+				break;
+			case "COVID-19 Screening": {
+				caseSheetData = getCovid19_PrintData(benFlowOBJ);
 			}
 				break;
 			default: {
@@ -253,11 +261,28 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+		Map<String, Object> caseSheetData = new HashMap<>();
+
+		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
+				benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("doctorData", covid19ServiceImpl
+				.getBenCaseRecordFromDoctorCovid19(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+
+		caseSheetData.put("BeneficiaryData",
+				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
+
+		caseSheetData.put("serviceID", 4);
+
+		return caseSheetData.toString();
+	}
+
 	private String getBenDetails(Long benFlowID, Long benRegID) {
 		ArrayList<Object[]> tmpOBJ = beneficiaryFlowStatusRepo.getBenDetailsForLeftSidePanel(benRegID, benFlowID);
 		BeneficiaryFlowStatus obj = BeneficiaryFlowStatus.getBeneficiaryFlowStatusForLeftPanel(tmpOBJ);
-		Integer tcspID= beneficiaryFlowStatusRepo.getTCspecialistID(benRegID, benFlowID);
-		if(tcspID!=null && tcspID>0) {
+		Integer tcspID = beneficiaryFlowStatusRepo.getTCspecialistID(benRegID, benFlowID);
+		if (tcspID != null && tcspID > 0) {
 			obj.settCSpecialistUserID(tcspID);
 		}
 		return new Gson().toJson(obj);

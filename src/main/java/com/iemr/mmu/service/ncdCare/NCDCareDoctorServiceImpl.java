@@ -44,6 +44,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		String externalInvestigation = null;
 		String instruction = null;
 		if (prescriptionData != null && prescriptionData.size() > 0) {
+			if (prescriptionData.get(0)[0] != null)
 			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
 			if (prescriptionData.get(0)[1] != null)
 				instruction = String.valueOf(prescriptionData.get(0)[1]);
