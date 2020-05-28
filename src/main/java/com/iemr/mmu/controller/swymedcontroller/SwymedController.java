@@ -70,6 +70,37 @@ public class SwymedController {
 		return response.toString();
 
 	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/call/{fromuserID}/{touserID}/{type}", headers = "Authorization", method = {
+			RequestMethod.GET }, produces = { "application/json" })
+	public String CallSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID, @PathVariable("touserID") Long touserID,
+			@PathVariable("type") String Type) {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+			String createdData =null;
+			if(Type.equalsIgnoreCase("Swymed")) {
+				createdData = swymedService.callUser(fromuserID, touserID);
+			}else {
+				createdData = swymedService.callUserjitsi(fromuserID, touserID);
+			}
+			
+
+			response.setResponse(createdData.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+
+		}
+		/**
+		 * sending the response...
+		 */
+		return response.toString();
+
+	}
 
 	@CrossOrigin()
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}", headers = "Authorization", method = {
@@ -95,6 +126,39 @@ public class SwymedController {
 		return response.toString();
 
 	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}/{type}", headers = "Authorization", method = {
+			RequestMethod.GET }, produces = { "application/json" })
+	public String CallVanSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID, @PathVariable("vanID") Integer vanID,
+			@PathVariable("type") String Type) {
+
+		OutputResponse response = new OutputResponse();
+
+		try {
+			
+			String createdData =null;
+			if(Type.equalsIgnoreCase("Swymed")) {
+				createdData = swymedService.callVan(fromuserID, vanID);
+			}else {
+				createdData = swymedService.callVanJitsi(fromuserID, vanID);
+			}
+			
+
+			response.setResponse(createdData.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setError(e);
+
+		}
+		/**
+		 * sending the response...
+		 */
+		return response.toString();
+
+	}
+	
 	
 	@CrossOrigin()
 	@RequestMapping(value = "/logout", headers = "Authorization", method = {

@@ -1,10 +1,14 @@
 package com.iemr.mmu.service.swymed;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iemr.mmu.data.swymed.UserJitsi;
 import com.iemr.mmu.data.swymed.UserSwymed;
 import com.iemr.mmu.repo.login.MasterVanRepo;
+import com.iemr.mmu.repo.swymed.UserJitsiRepo;
 import com.iemr.mmu.repo.swymed.UserRepo;
 import com.iemr.mmu.repo.swymed.UserSwymedRepo;
 import com.iemr.mmu.utils.config.ConfigProperties;
@@ -15,9 +19,14 @@ public class SwymedServiceImpl implements SwymedService {
 
 	// swymed://dnsname?l=mylogin&p=mypassword&d=mydomain&c=callnumber&m=1
 	private String swymed_dnsname = ConfigProperties.getPropertyByName("swymed_dnsname");
+	
+	private String jitsi_dnsname = ConfigProperties.getPropertyByName("jitsi_dnsname");
 
 	@Autowired
 	private UserRepo userRepo;
+	
+	@Autowired
+	private UserJitsiRepo userJitsiRepo;
 
 	@Autowired
 	private UserSwymedRepo userSwymedRepo;
@@ -74,13 +83,40 @@ public class SwymedServiceImpl implements SwymedService {
 
 		return data.toString();
 	}
+	
+	@Override
+	public String callUserjitsi(Long fromuserid, Long touserid) throws SwymedException {
+		// TODO Auto-generated method stub
+		UserJitsi user = userJitsiRepo.findOneJitsiMap(fromuserid);
+		UserJitsi touser = userJitsiRepo.findOneJitsiMap(touserid);
+
+		if (user == null) {
+			throw new SwymedException("User doesnt have access to Swymed");
+		}
+		if (touser == null) {
+			throw new SwymedException("Callee  couldnt be found. Please call manually");
+		}	
+		
+
+		StringBuilder data = new StringBuilder();
+
+		data.append(jitsi_dnsname);
+		data.append("/");
+		data.append(user.getJitsiUserName());
+		if(user.getJitsiPassword() != null) {
+			data.append("/");
+			data.append(user.getJitsiPassword());
+		}
+
+		return data.toString();
+	}
 
 	@Override
-	public String callVan(Long fromuserid, Integer vanid) throws SwymedException {
+	public String callVan(Long fromuserid, Integer vanID) throws SwymedException {
 		// TODO Auto-generated method stubUserSwymed user =
 		// userSwymedRepo.findOneMap(fromuserid);
 		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
-		String vanSwymesEmail = masterVanRepo.getSpokeEmail(vanid);
+		String vanSwymesEmail = masterVanRepo.getSpokeEmail(vanID);
 		// MasterVan van = masterVanRepo.findOne(vanid);
 
 		if (user == null) {
@@ -101,6 +137,35 @@ public class SwymedServiceImpl implements SwymedService {
 		data.append(user.getSwymedDomain());
 		data.append("&e=");
 		data.append(vanSwymesEmail);
+
+		return data.toString();
+	}
+	
+	@Override
+	public String callVanJitsi(Long fromuserid, Integer vanID) throws SwymedException {
+		// TODO Auto-generated method stubUserSwymed user =
+		// userSwymedRepo.findOneMap(fromuserid);
+		UserJitsi user = userJitsiRepo.findOneJitsiMap(fromuserid);
+		UserJitsi userVan = userJitsiRepo.findOneJitsiMapVan(vanID);
+		// MasterVan van = masterVanRepo.findOne(vanid);
+
+		if (user == null) {
+			throw new SwymedException("User doesnt have access to Swymed");
+		}
+		if (userVan == null) {
+			throw new SwymedException("Callee  couldnt be found. Please call manually");
+		}
+		
+
+		StringBuilder data = new StringBuilder();
+
+		data.append(jitsi_dnsname);
+		data.append("/");
+		data.append(userVan.getJitsiUserName());
+		if(user.getJitsiPassword() != null) {
+			data.append("/");
+			data.append(userVan.getJitsiPassword());
+		}
 
 		return data.toString();
 	}
