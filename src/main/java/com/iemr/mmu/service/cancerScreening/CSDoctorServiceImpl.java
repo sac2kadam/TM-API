@@ -89,7 +89,7 @@ public class CSDoctorServiceImpl implements CSDoctorService {
 					cancerDiagnosis.getProvisionalDiagnosisPrimaryDoctor(), cancerDiagnosis.getRemarks(),
 					cancerDiagnosis.getReferredToInstituteID(), cancerDiagnosis.getRefrredToAdditionalService(),
 					cancerDiagnosis.getModifiedBy(), processed, cancerDiagnosis.getBeneficiaryRegID(),
-					cancerDiagnosis.getVisitCode(), cancerDiagnosis.getRevisitDate());
+					cancerDiagnosis.getVisitCode(), cancerDiagnosis.getRevisitDate(), cancerDiagnosis.getReferralReason());
 		} else {
 			// cancerDiagnosis.setCreatedBy(cancerDiagnosis.getModifiedBy());
 			Long cancerDiagnosisRS = saveCancerDiagnosisData(cancerDiagnosis);
