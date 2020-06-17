@@ -41,6 +41,7 @@ import com.iemr.mmu.data.masterdata.anc.PregOutcome;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.doctor.ItemFormMaster;
+import com.iemr.mmu.data.masterdata.doctor.ItemMaster;
 import com.iemr.mmu.data.masterdata.doctor.RouteOfAdmin;
 import com.iemr.mmu.data.masterdata.doctor.V_DrugPrescription;
 import com.iemr.mmu.data.masterdata.ncdcare.NCDCareType;
@@ -84,6 +85,7 @@ import com.iemr.mmu.repo.masterrepo.covid19.CovidRecommnedationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidSymptomsMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.InstituteRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.ItemFormMasterRepo;
+import com.iemr.mmu.repo.masterrepo.doctor.ItemMasterRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.RouteOfAdminRepo;
 import com.iemr.mmu.repo.masterrepo.doctor.V_DrugPrescriptionRepo;
 import com.iemr.mmu.repo.masterrepo.ncdCare.NCDCareTypeRepo;
@@ -145,8 +147,9 @@ public class ANCMasterDataServiceImpl {
 	// private TempMasterDrugRepo tempMasterDrugRepo;
 
 	private OptionalVaccinationsRepo optionalVaccinationsRepo;
-
-	// private ItemMasterRepo itemMasterRepo;
+	@Autowired
+	 private ItemMasterRepo itemMasterRepo;
+	
 	private ItemFormMasterRepo itemFormMasterRepo;
 	private RouteOfAdminRepo routeOfAdminRepo;
 	private V_DrugPrescriptionRepo v_DrugPrescriptionRepo;
@@ -603,7 +606,7 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
-
+		ArrayList<Object[]> edlList=itemMasterRepo.searchEdl();
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
 		if (facilityID == null || facilityID <= 0) {
 			Integer fID = masterVanRepo.getFacilityID(vanID);
@@ -612,21 +615,21 @@ public class ANCMasterDataServiceImpl {
 		}
 
 		itemList = v_DrugPrescriptionRepo.getItemListForFacility(facilityID);
-
+		//ArrayList<ItemMaster> edlList=new ArrayList<>();
+		//edlList=itemMasterRepo.findByEdl();
 		resMap.put("drugFormMaster", ItemFormMaster.getItemFormList(ifmList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
 		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));
 		resMap.put("drugFrequencyMaster", DrugFrequencyMaster.getDrugFrequencyMaster(dfrmList));
 		resMap.put("routeOfAdmin", RouteOfAdmin.getRouteOfAdminList(roaList));
 		resMap.put("itemMaster", itemList);
-
+		resMap.put("edlMaster", edlList);
 		// NCD Care specific master data
 		if (visitCategoryID == 3) {
 			resMap.put("ncdCareConditions", NCDScreeningCondition.getNCDScreeningCondition(
 					(ArrayList<Object[]>) ncdScreeningMasterServiceImpl.getNCDScreeningConditions()));
 			resMap.put("ncdCareTypes",
 					NCDCareType.getNCDCareTypes((ArrayList<Object[]>) ncdCareTypeRepo.getNCDCareTypes()));
-
 		}
 
 		return new Gson().toJson(resMap);
