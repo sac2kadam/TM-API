@@ -129,6 +129,10 @@ public class CancerDiagnosis {
 	@Expose
 	@Column(name = "revisitdate")
 	private Timestamp revisitDate;
+	
+	@Expose
+	@Column(name = "referralreason")
+	private String referralReason;
 
 	public CancerDiagnosis() {
 		super();
@@ -137,7 +141,7 @@ public class CancerDiagnosis {
 
 	public CancerDiagnosis(Long iD, Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,
 			String provisionalDiagnosisPrimaryDoctor, String provisionalDiagnosisOncologist, String remarks,
-			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService) {
+			Integer referredToInstituteID, String referredToInstituteName, String refrredToAdditionalService, String referralReason) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -149,6 +153,7 @@ public class CancerDiagnosis {
 		this.referredToInstituteID = referredToInstituteID;
 		this.referredToInstituteName = referredToInstituteName;
 		this.refrredToAdditionalService = refrredToAdditionalService;
+		this.referralReason = referralReason;
 	}
 
 	public Long getID() {
@@ -365,6 +370,14 @@ public class CancerDiagnosis {
 
 	public void setRevisitDate(Timestamp revisitDate) {
 		this.revisitDate = revisitDate;
+	}
+
+	public String getReferralReason() {
+		return referralReason;
+	}
+
+	public void setReferralReason(String referralReason) {
+		this.referralReason = referralReason;
 	}
 	
 	
