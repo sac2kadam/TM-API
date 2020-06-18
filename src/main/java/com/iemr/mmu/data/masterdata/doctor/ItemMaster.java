@@ -92,6 +92,11 @@ public class ItemMaster {
 	private Integer uomID;
 	
 	@Expose
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(updatable = false, insertable = false, name = "RouteID")
+	private M_Uom uom;
+	
+	@Expose
 	@Column(name="IsScheduledDrug")
 	private Boolean isScheduledDrug;
 	
@@ -99,15 +104,15 @@ public class ItemMaster {
 	@Column(name="Composition")
 	private String composition;
 
-//	@Expose
-//	@Column(name="RouteID")
-//	private Integer routeID;
-//	
-//	@Expose
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(updatable = false, insertable = false, name = "RouteID")
-//	private M_Route route;
-//	
+	@Expose
+	@Column(name="RouteID")
+	private Integer routeID;
+	
+	@Expose
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(updatable = false, insertable = false, name = "RouteID")
+	private M_Route route;
+	
 	@Expose
 	@Column(name="ProviderServiceMapID")
 	private Integer providerServiceMapID;

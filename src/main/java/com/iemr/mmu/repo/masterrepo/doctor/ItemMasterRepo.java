@@ -12,6 +12,6 @@ import com.iemr.mmu.data.masterdata.doctor.V_DrugPrescription;
 
 @Repository
 public interface ItemMasterRepo extends CrudRepository<ItemMaster, Long> {
-	@Query("SELECT t FROM ItemMaster t WHERE t.isEDL = true ")
-	public ArrayList<Object[]> searchEdl();
+	@Query("SELECT t FROM ItemMaster t WHERE t.providerServiceMapID= :psmID and t.isEDL = true ")
+	public ArrayList<Object[]> searchEdl(@Param("psmID") Integer psmID);
 }
