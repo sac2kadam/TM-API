@@ -143,7 +143,10 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-
+	
+	@Expose
+	@Column(name = "isEDL")
+	private Boolean isEDL;
 	public PrescribedDrugDetail() {
 	}
 
