@@ -93,7 +93,7 @@ public class ItemMaster {
 	
 	@Expose
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(updatable = false, insertable = false, name = "RouteID")
+	@JoinColumn(updatable = false, insertable = false, name = "UOMID")
 	private M_Uom uom;
 	
 	@Expose
