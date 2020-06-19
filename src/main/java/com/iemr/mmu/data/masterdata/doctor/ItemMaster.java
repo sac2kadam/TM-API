@@ -158,6 +158,9 @@ public class ItemMaster {
 	@Transient
 	private Integer quantity;
 	
+	@Expose
+	@Transient
+	private String unitOfMeasurement;
 	
 //	@Transient
 //	private OutputMapper outputMapper = new OutputMapper();
@@ -167,6 +170,262 @@ public class ItemMaster {
 //		return outputMapper.gson().toJson(this);
 //	}
 	
+	public Integer getItemID() {
+		return itemID;
+	}
+
+	public void setItemID(Integer itemID) {
+		this.itemID = itemID;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public Boolean getIsEDL() {
+		return isEDL;
+	}
+
+	public void setIsEDL(Boolean isEDL) {
+		this.isEDL = isEDL;
+	}
+
+	public String getItemDesc() {
+		return itemDesc;
+	}
+
+	public void setItemDesc(String itemDesc) {
+		this.itemDesc = itemDesc;
+	}
+
+	public String getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+
+	public Integer getItemCategoryID() {
+		return itemCategoryID;
+	}
+
+	public void setItemCategoryID(Integer itemCategoryID) {
+		this.itemCategoryID = itemCategoryID;
+	}
+
+	public M_ItemCategory getItemCategory() {
+		return itemCategory;
+	}
+
+	public void setItemCategory(M_ItemCategory itemCategory) {
+		this.itemCategory = itemCategory;
+	}
+
+	public Boolean getIsMedical() {
+		return isMedical;
+	}
+
+	public void setIsMedical(Boolean isMedical) {
+		this.isMedical = isMedical;
+	}
+
+	public Integer getItemFormID() {
+		return itemFormID;
+	}
+
+	public void setItemFormID(Integer itemFormID) {
+		this.itemFormID = itemFormID;
+	}
+
+	public M_ItemForm getItemForm() {
+		return itemForm;
+	}
+
+	public void setItemForm(M_ItemForm itemForm) {
+		this.itemForm = itemForm;
+	}
+
+	public Integer getPharmacologyCategoryID() {
+		return pharmacologyCategoryID;
+	}
+
+	public void setPharmacologyCategoryID(Integer pharmacologyCategoryID) {
+		this.pharmacologyCategoryID = pharmacologyCategoryID;
+	}
+
+	public M_Pharmacologicalcategory getPharmacologyCategory() {
+		return pharmacologyCategory;
+	}
+
+	public void setPharmacologyCategory(M_Pharmacologicalcategory pharmacologyCategory) {
+		this.pharmacologyCategory = pharmacologyCategory;
+	}
+
+	public Integer getManufacturerID() {
+		return manufacturerID;
+	}
+
+	public void setManufacturerID(Integer manufacturerID) {
+		this.manufacturerID = manufacturerID;
+	}
+
+	public M_Manufacturer getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(M_Manufacturer manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getStrength() {
+		return strength;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public Integer getUomID() {
+		return uomID;
+	}
+
+	public void setUomID(Integer uomID) {
+		this.uomID = uomID;
+	}
+
+	public M_Uom getUom() {
+		return uom;
+	}
+
+	public void setUom(M_Uom uom) {
+		this.uom = uom;
+	}
+
+	public Boolean getIsScheduledDrug() {
+		return isScheduledDrug;
+	}
+
+	public void setIsScheduledDrug(Boolean isScheduledDrug) {
+		this.isScheduledDrug = isScheduledDrug;
+	}
+
+	public String getComposition() {
+		return composition;
+	}
+
+	public void setComposition(String composition) {
+		this.composition = composition;
+	}
+
+	public Integer getRouteID() {
+		return routeID;
+	}
+
+	public void setRouteID(Integer routeID) {
+		this.routeID = routeID;
+	}
+
+	public M_Route getRoute() {
+		return route;
+	}
+
+	public void setRoute(M_Route route) {
+		this.route = route;
+	}
+
+	public Integer getProviderServiceMapID() {
+		return providerServiceMapID;
+	}
+
+	public void setProviderServiceMapID(Integer providerServiceMapID) {
+		this.providerServiceMapID = providerServiceMapID;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Boolean getDiscontinued() {
+		return discontinued;
+	}
+
+	public void setDiscontinued(Boolean discontinued) {
+		this.discontinued = discontinued;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Character getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(Character processed) {
+		this.processed = processed;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Date lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getUnitOfMeasurement() {
+		return unitOfMeasurement;
+	}
+
+	public void setUnitOfMeasurement(String unitOfMeasurement) {
+		this.unitOfMeasurement = unitOfMeasurement;
+	}
+
 	public ItemMaster() {
 	}
 
