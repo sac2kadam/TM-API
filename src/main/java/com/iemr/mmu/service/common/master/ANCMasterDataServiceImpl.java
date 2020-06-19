@@ -606,7 +606,14 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
-		ArrayList<Object[]> edlList=itemMasterRepo.searchEdl(psmID);
+		//ArrayList<Object[]> edlList=itemMasterRepo.searchEdl(psmID);
+		ArrayList<ItemMaster> edlList=itemMasterRepo.searchEdl(psmID);
+		//edlist.get()
+		//foreach()
+		for(int i=0;i<edlList.size();i++)
+		{
+			edlList.get(i).setUnitOfMeasurement(edlList.get(i).getUom().getuOMName());
+		}
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
 		if (facilityID == null || facilityID <= 0) {
 			Integer fID = masterVanRepo.getFacilityID(vanID);
