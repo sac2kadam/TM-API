@@ -38,6 +38,7 @@ import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationStats;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.doctor.DocWorkListRepo;
@@ -46,6 +47,7 @@ import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
+import com.iemr.mmu.repo.tc_consultation.TeleconsultationStatsRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.snomedct.SnomedServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
@@ -128,6 +130,9 @@ public class CommonDoctorServiceImpl {
 	public void setBenClinicalObservationsRepo(BenClinicalObservationsRepo benClinicalObservationsRepo) {
 		this.benClinicalObservationsRepo = benClinicalObservationsRepo;
 	}
+
+	@Autowired
+	private TeleconsultationStatsRepo teleconsultationStatsRepo;
 
 	public Integer saveFindings(JsonObject obj) throws Exception {
 		int i = 0;
@@ -590,10 +595,12 @@ public class CommonDoctorServiceImpl {
 			} else {
 				processed = "N";
 			}
-			if(referDetails.getReferredToInstituteID() != null ||
-					referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate()!= null) {
-			benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
-					referDetails.getReferredToInstituteName(),referDetails.getRevisitDate(), (Long) obj[0], processed);}
+			if (referDetails.getReferredToInstituteID() != null || referDetails.getReferredToInstituteName() != null
+					|| referDetails.getRevisitDate() != null) {
+				benReferDetailsRepo.updateReferredInstituteName(referDetails.getReferredToInstituteID(),
+						referDetails.getReferredToInstituteName(), referDetails.getRevisitDate(), (Long) obj[0],
+						processed);
+			}
 		}
 
 		if (referDetails.getRefrredToAdditionalServiceList() != null
@@ -700,6 +707,23 @@ public class CommonDoctorServiceImpl {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
 						commonUtilityClass.getVisitCode(), "D");
 			}
+
+			// check if consultation start time is there and update the end time
+			TeleconsultationStats teleconsultationStats = teleconsultationStatsRepo
+					.getLatestStartTime(commonUtilityClass.getBeneficiaryRegID(), commonUtilityClass.getVisitCode());
+
+			// if consultation end time is not available, update it else create a new entry
+			if (teleconsultationStats != null) {
+				if (teleconsultationStats.getEndTime() == null) {
+					teleconsultationStats.setEndTime(new Timestamp(System.currentTimeMillis()));
+				} else {
+					teleconsultationStats.settMStatsID(null);
+					teleconsultationStats.setEndTime(new Timestamp(System.currentTimeMillis()));
+				}
+
+				teleconsultationStatsRepo.save(teleconsultationStats);
+			}
+
 		} else
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
@@ -751,6 +775,22 @@ public class CommonDoctorServiceImpl {
 			if (tcSpecialistFlag == 9) {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
 						commonUtilityClass.getVisitCode(), "D");
+			}
+
+			// check if consultation start time is there and update the end time
+			TeleconsultationStats teleconsultationStats = teleconsultationStatsRepo
+					.getLatestStartTime(commonUtilityClass.getBeneficiaryRegID(), commonUtilityClass.getVisitCode());
+
+			// if consultation end time is not available, update it else create a new entry
+			if (teleconsultationStats != null) {
+				if (teleconsultationStats.getEndTime() == null) {
+					teleconsultationStats.setEndTime(new Timestamp(System.currentTimeMillis()));
+				} else {
+					teleconsultationStats.settMStatsID(null);
+					teleconsultationStats.setEndTime(new Timestamp(System.currentTimeMillis()));
+				}
+
+				teleconsultationStatsRepo.save(teleconsultationStats);
 			}
 
 		} else {

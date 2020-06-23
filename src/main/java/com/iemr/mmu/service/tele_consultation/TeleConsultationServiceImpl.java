@@ -31,8 +31,10 @@ import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.data.tele_consultation.TeleconsultationStats;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
+import com.iemr.mmu.repo.tc_consultation.TeleconsultationStatsRepo;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.mapper.OutputMapper;
@@ -51,6 +53,8 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	private CommonServiceImpl commonServiceImpl;
 	@Autowired
 	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
+	@Autowired
+	private TeleconsultationStatsRepo teleconsultationStatsRepo;
 
 	public Long createTCRequest(TCRequestModel tCRequestModel) {
 		TCRequestModel tCRequestModelRS = tCRequestModelRepo.save(tCRequestModel);
@@ -90,6 +94,7 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 				int j = tCRequestModelRepo.updateBeneficiaryStatus(requestJson.get("benRegID").getAsLong(),
 						requestJson.get("visitCode").getAsLong(), statusStr,
 						requestJson.get("modifiedBy").getAsString(), requestJson.get("userID").getAsInt(), false);
+
 				if (j > 0)
 					resultFlag = 1;
 				else
@@ -307,6 +312,15 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	}
 
 	public Integer startconsultation(Long benRegID, Long visitCode) {
+		// check tm stats
+		TeleconsultationStats teleconsultationStats = new TeleconsultationStats();
+		teleconsultationStats.setBeneficiaryRegID(benRegID);
+		teleconsultationStats.setVisitCode(visitCode);
+		teleconsultationStats.setStartTime(new Timestamp(System.currentTimeMillis()));
+		teleconsultationStats.setCreatedBy("Report");
+
+		teleconsultationStatsRepo.save(teleconsultationStats);
+
 		// TODO Auto-generated method stub
 		return tCRequestModelRepo.updateStartConsultationTime(benRegID, visitCode);
 	}
