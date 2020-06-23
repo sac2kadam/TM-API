@@ -424,12 +424,15 @@ public class CommonDoctorServiceImpl {
 
 					if (referDetails.getRevisitDate() != null)
 						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
+					
+					if (referDetails.getReferralReason() != null)
+						referDetailsTemp.setReferralReason(referDetails.getReferralReason());
 
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null || referDetails.getReferralReason() != null)
 				referDetailsList.add(referDetails);
 
 		}

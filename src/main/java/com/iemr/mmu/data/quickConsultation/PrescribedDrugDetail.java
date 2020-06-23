@@ -143,14 +143,18 @@ public class PrescribedDrugDetail {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
-
+	
+	@Expose
+	@Column(name = "isEDL")
+	private Boolean isEDL;
+	
 	public PrescribedDrugDetail() {
 	}
 
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
 			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
-			String specialInstruction, Integer qtyPrescribed) {
+			String specialInstruction, Integer qtyPrescribed , Boolean isEDL) {
 		super();
 		this.id = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
@@ -167,6 +171,7 @@ public class PrescribedDrugDetail {
 		this.relationToFood = relationToFood;
 		this.instructions = specialInstruction;
 		this.qtyPrescribed = qtyPrescribed;
+		this.isEDL = isEDL;
 	}
 
 	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
@@ -177,7 +182,7 @@ public class PrescribedDrugDetail {
 				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
 						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
 						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13],
-						(Integer) obj[14]);
+						(Integer) obj[14], (Boolean)obj[15]);
 				resArray.add(cOBJ);
 			}
 		}

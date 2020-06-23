@@ -15,7 +15,7 @@ import com.iemr.mmu.data.doctor.BenReferDetails;
 public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Long> {
 
 	@Query(" SELECT benReferID, beneficiaryRegID, benVisitID, providerServiceMapID, referredToInstituteID, "
-			+ "referredToInstituteName, serviceID, serviceName, visitCode, revisitDate "
+			+ "referredToInstituteName, serviceID, serviceName, visitCode, revisitDate , referralReason "
 			+ "from BenReferDetails ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
 	public ArrayList<Object[]> getBenReferDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
