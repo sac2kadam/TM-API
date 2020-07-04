@@ -12,6 +12,8 @@ public class ConsultationReport {
 	@Expose
 	private String beneficiaryRegID;
 	@Expose
+	private String visitCode;
+	@Expose
 	private String beneficiaryName;
 	
 	@Expose
@@ -273,15 +275,30 @@ public class ConsultationReport {
 
 
 
-	public String gettATForSpecialistConsultationStartToEND() {
+	public String gettATForSpecialistConsultationStartToEnd() {
 		return tATForSpecialistConsultationStartToEnd;
 	}
 
 
 
-	public void settATForSpecialistConsultationStartToEND(String tATForSpecialistConsultationStartToEND) {
-		this.tATForSpecialistConsultationStartToEnd = tATForSpecialistConsultationStartToEND;
+	public void settATForSpecialistConsultationStartToEnd(String tATForSpecialistConsultationStartToEnd) {
+		this.tATForSpecialistConsultationStartToEnd = tATForSpecialistConsultationStartToEnd;
 	}
+
+
+
+	public String getVisitCode() {
+		return visitCode;
+	}
+
+
+
+	public void setVisitCode(String visitCode) {
+		this.visitCode = visitCode;
+	}
+
+
+	
 	
 	
 }
