@@ -1527,7 +1527,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						(String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (String) obj[6],
 						(String) obj[7], (String) obj[8], (String) obj[9], (String) obj[10], (String) obj[11],
 						(String) obj[12], (String) obj[13], (String) obj[14], (String) obj[15], (String) obj[16],
-						(String) obj[17],(String) obj[18],(String) obj[19],(String) obj[20],(Timestamp) obj[21]);
+						(String) obj[17]);
 				femaleObstetricDetails.add(history);
 			}
 

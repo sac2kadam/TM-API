@@ -17,8 +17,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 
 	@Query("select Date(createdDate), pregOrder, pregComplicationType, otherPregComplication, durationType, deliveryType, deliveryPlace, otherDeliveryPlace, "
 			+ " deliveryComplicationType, otherDeliveryComplication, pregOutcome, postpartumComplicationType, otherPostpartumCompType, "
-			+ " postNatalComplication, otherPostNatalComplication, congenitalAnomalies, newBornComplication, otherNewBornComplication ,"
-			+ " typeOfAbortion, congenitalAnomaliesInFetus, complicationPost, Date(year) from "
+			+ " postNatalComplication, otherPostNatalComplication, congenitalAnomalies, newBornComplication, otherNewBornComplication from "
 			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID AND pregOrder is not null AND deleted = false "
 			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
@@ -27,8 +26,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ "durationType, deliveryTypeID, deliveryType, deliveryPlaceID, deliveryPlace, otherDeliveryPlace, deliveryComplicationID, "
 			+ "deliveryComplicationType, otherDeliveryComplication, pregOutcomeID, pregOutcome, postpartumComplicationID, "
 			+ " postpartumComplicationType, otherPostpartumCompType, postNatalComplicationID, postNatalComplication, otherPostNatalComplication,"
-			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication,"
-			+ "typeOfAbortion, congenitalAnomaliesInFetus, complicationPost, year, visitCode from "
+			+ " congenitalAnomalies, newBornComplicationID, newBornComplication, otherNewBornComplication, visitCode from "
 			+ "FemaleObstetricHistory a where a.beneficiaryRegID = :beneficiaryRegID and deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenFemaleObstetricHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, 
 			@Param("visitCode") Long visitCode);
@@ -53,9 +51,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ " postpartumComplicationID=:postpartumComplicationID, postpartumComplicationType=:postpartumComplicationType, otherPostpartumCompType=:otherPostpartumCompType,"
 			+ " postNatalComplicationID=:postNatalComplicationID, postNatalComplication=:postNatalComplication, otherPostNatalComplication=:otherPostNatalComplication,"
 			+ " newBornComplicationID=:newBornComplicationID, newBornComplication=:newBornComplication, otherNewBornComplication=:otherNewBornComplication,"
-			+ " congenitalAnomalies=:congenitalAnomalies,typeOfAbortion=:typeOfAbortion  ,"
-			+ " congenitalAnomaliesInFetus=:congenitalAnomaliesInFetus, complicationPost=:complicationPost, year=:year,"
-			+ "  modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ " congenitalAnomalies=:congenitalAnomalies,modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
 	public int updatePastObstetricHistory(
 			@Param("pregOrder") Short pregOrder,
 			@Param("pregComplicationID") Short pregComplicationID,
@@ -93,12 +89,6 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			
 			@Param("congenitalAnomalies") String congenitalAnomalies,
 			
-			@Param("typeOfAbortion") String typeOfAbortion,
-			@Param("congenitalAnomaliesInFetus") String congenitalAnomaliesInFetus,
-			@Param("complicationPost") String complicationPost,
-			@Param("year") Timestamp year,
-//			@Param("timePeriodAgo") Integer timePeriodAgo,
-//			@Param("timePeriodUnit") String timePeriodUnit,
 			
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,

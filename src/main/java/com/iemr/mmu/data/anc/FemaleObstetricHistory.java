@@ -218,77 +218,11 @@ public class FemaleObstetricHistory {
 	@Transient
 	private Date captureDate;
 	
-	@Expose
-	@Column(name = "typeOfAbortion")
-	private String typeOfAbortion;
 	
-	@Expose
-	@Column(name = "congenitalAnomaliesInFetus")
-	private String congenitalAnomaliesInFetus;
 	
-	@Expose
-	@Column(name = "complicationPost")
-	private String complicationPost;
 	
-	public String getTypeOfAbortion() {
-		return typeOfAbortion;
-	}
 
-	public void setTypeOfAbortion(String typeOfAbortion) {
-		this.typeOfAbortion = typeOfAbortion;
-	}
-
-	public String getCongenitalAnomaliesInFetus() {
-		return congenitalAnomaliesInFetus;
-	}
-
-	public void setCongenitalAnomaliesInFetus(String congenitalAnomaliesInFetus) {
-		this.congenitalAnomaliesInFetus = congenitalAnomaliesInFetus;
-	}
-
-	public String getComplicationPost() {
-		return complicationPost;
-	}
-
-	public void setComplicationPost(String complicationPost) {
-		this.complicationPost = complicationPost;
-	}
-
-	public Timestamp getYear() {
-		return year;
-	}
-
-	public void setYear(Timestamp year) {
-		this.year = year;
-	}
-
-	public Integer getTimePeriodAgo() {
-		return timePeriodAgo;
-	}
-
-	public void setTimePeriodAgo(Integer timePeriodAgo) {
-		this.timePeriodAgo = timePeriodAgo;
-	}
-
-	public String getTimePeriodUnit() {
-		return timePeriodUnit;
-	}
-
-	public void setTimePeriodUnit(String timePeriodUnit) {
-		this.timePeriodUnit = timePeriodUnit;
-	}
-
-	@Expose
-	@Column(name = "year")
-	private Timestamp year;
 	
-	@Transient
-	@Expose
-	private Integer timePeriodAgo;
-
-	@Transient
-	@Expose
-	private String timePeriodUnit;
 
 	public Integer getVanID() {
 		return vanID;
@@ -654,8 +588,7 @@ public class FemaleObstetricHistory {
 			String otherDeliveryPlace, String deliveryComplicationType, String otherDeliveryComplication,
 			String pregOutcome, String postpartumComplicationType, String otherPostpartumCompType,
 			String postNatalComplication, String otherPostNatalComplication, String congenitalAnomalies,
-			String newBornComplication, String otherNewBornComplication,String typeOfAbortion,
-			String congenitalAnomaliesInFetus,String complicationPost,Timestamp year) {
+			String newBornComplication, String otherNewBornComplication) {
 		super();
 		this.captureDate = createdDate;
 		this.pregOrder = pregOrder;
@@ -676,10 +609,7 @@ public class FemaleObstetricHistory {
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
 		
-		this.typeOfAbortion = typeOfAbortion;
-		this.congenitalAnomaliesInFetus = congenitalAnomaliesInFetus;
-		this.complicationPost = complicationPost;
-		this.year = year;
+		
 	}
 
 	public FemaleObstetricHistory(Short pregOrder, String pregComplicationID, String pregComplicationType,
@@ -689,8 +619,7 @@ public class FemaleObstetricHistory {
 			Short pregOutcomeID, String pregOutcome, String postpartumComplicationID, String postpartumComplicationType,
 			String otherPostpartumCompType, Short postNatalComplicationID, String postNatalComplication,
 			String otherPostNatalComplication, String congenitalAnomalies, Short newBornComplicationID,
-			String newBornComplication, String otherNewBornComplication,String typeOfAbortion,
-			String congenitalAnomaliesInFetus,String complicationPost,Integer timePeriodAgo, String timePeriodUnit, Long visitCode) {
+			String newBornComplication, String otherNewBornComplication, Long visitCode) {
 		super();
 		this.pregOrder = pregOrder;
 		this.pregComplicationID = pregComplicationID;
@@ -719,11 +648,7 @@ public class FemaleObstetricHistory {
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
 		
-		this.typeOfAbortion = typeOfAbortion;
-		this.congenitalAnomaliesInFetus = congenitalAnomaliesInFetus;
-		this.complicationPost = complicationPost;
-		this.timePeriodAgo = timePeriodAgo;
-		this.timePeriodUnit = timePeriodUnit;
+		
 		
 		this.visitCode = visitCode;
 	}
