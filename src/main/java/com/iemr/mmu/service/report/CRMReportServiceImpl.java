@@ -112,17 +112,28 @@ public class CRMReportServiceImpl implements CRMReportService {
 	static ConsultationReport getConsultationReportObj(Object[] obj) {
 		ConsultationReport report = new ConsultationReport();
 		report.setBeneficiaryRegID(obj[2].toString());
+		report.setVisitCode(obj[5].toString());
 		report.setBeneficiaryName((String) obj[3]);
 		report.setSpecialistName((String) obj[11]);
-		report.setScheduledTime((Timestamp) obj[12]);
+		report.setSpecialistId(obj[22].toString());
+		report.setSpecializationID(obj[7].toString());
+		report.setSpecialization((String) obj[8]);
+		report.setRequestedDate((Timestamp) obj[12]);
+		
 		if (obj[14] != null && ((String) obj[14]).equals("D")) {
 			report.setConsulted("YES");
 		} else {
 			report.setConsulted("NO");
 		}
-		report.setArrivalTime((Timestamp) obj[16]);
-		report.setConsultedTime((Timestamp) obj[17]);
-		report.setWaitingTime(calculateTime(report.getConsultedTime(), report.getArrivalTime()));
+		report.setBeneficiaryArrivalTime((Timestamp) obj[16]);
+		report.setConsultationFirstStart((Timestamp) obj [17]);
+//		report.setConsultedTime((Timestamp) obj[17]);
+//		report.setWaitingTime(calculateTime(report.getConsultedTime(), report.getArrivalTime()));
+		report.setSpecialistConsultationStart((Timestamp) obj[23]);
+		report.setConsultationEnd((Timestamp) obj[24]);
+		report.settATForArrivalToConsultationStart((obj[25] == null) ? "" : obj[25].toString());
+		report.settATForSpecialistConsultationStartToEnd((obj[26] == null) ? "" : obj[26].toString());
+		
 
 		return report;
 

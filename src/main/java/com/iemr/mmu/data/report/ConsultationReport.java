@@ -12,25 +12,62 @@ public class ConsultationReport {
 	@Expose
 	private String beneficiaryRegID;
 	@Expose
+	private String visitCode;
+	@Expose
 	private String beneficiaryName;
 	
 	@Expose
 	private String specialistName;
 	
 	@Expose
-	private Timestamp scheduledTime;
+	private String specialistId;
+		
+	@Expose
+	private String specialization;
+	
+	@Expose
+	private String specializationID;
+	
+//	@Expose
+//	private Timestamp scheduledTime;
+	
+	@Expose
+	private Timestamp requestedDate;
 		
 	@Expose
 	private String consulted;
 	
-	@Expose
-	private Timestamp arrivalTime;
+//	@Expose
+//	private Timestamp arrivalTime;
 	
 	@Expose
-	private Timestamp consultedTime;
+	private Timestamp beneficiaryArrivalTime;
+	
+//	@Expose
+//	private Timestamp consultedTime;
+//	
+//	@Expose
+//	private String waitingTime;
 	
 	@Expose
-	private String waitingTime;
+	private Timestamp consultationFirstStart;
+	
+	@Expose
+	private Timestamp specialistConsultationStart;
+	
+	@Expose
+	private Timestamp consultationEnd 
+;
+	
+	@Expose
+	private String tATForArrivalToConsultationStart
+;
+	
+	@Expose
+	private String tATForSpecialistConsultationStartToEnd
+;
+	
+	
 
 	@Transient
 	private static GsonBuilder builder;
@@ -84,13 +121,13 @@ public class ConsultationReport {
 		this.specialistName = specialistName;
 	}
 
-	public Timestamp getScheduledTime() {
-		return scheduledTime;
-	}
-
-	public void setScheduledTime(Timestamp scheduledTime) {
-		this.scheduledTime = scheduledTime;
-	}
+//	public Timestamp getScheduledTime() {
+//		return scheduledTime;
+//	}
+//
+//	public void setScheduledTime(Timestamp scheduledTime) {
+//		this.scheduledTime = scheduledTime;
+//	}
 
 	public String getConsulted() {
 		return consulted;
@@ -100,29 +137,168 @@ public class ConsultationReport {
 		this.consulted = consulted;
 	}
 
-	public Timestamp getArrivalTime() {
-		return arrivalTime;
+//	public Timestamp getArrivalTime() {
+//		return arrivalTime;
+//	}
+//
+//	public void setArrivalTime(Timestamp arrivalTime) {
+//		this.arrivalTime = arrivalTime;
+//	}
+
+//	public Timestamp getConsultedTime() {
+//		return consultedTime;
+//	}
+//
+//	public void setConsultedTime(Timestamp consultedTime) {
+//		this.consultedTime = consultedTime;
+//	}
+//
+//	public String getWaitingTime() {
+//		return waitingTime;
+//	}
+//
+//	public void setWaitingTime(String waitingTime) {
+//		this.waitingTime = waitingTime;
+//	}
+
+
+
+	
+
+
+
+	public String getSpecialistId() {
+		return specialistId;
 	}
 
-	public void setArrivalTime(Timestamp arrivalTime) {
-		this.arrivalTime = arrivalTime;
+
+
+	public void setSpecialistId(String specialistId) {
+		this.specialistId = specialistId;
 	}
 
-	public Timestamp getConsultedTime() {
-		return consultedTime;
+
+
+	public String getSpecialization() {
+		return specialization;
 	}
 
-	public void setConsultedTime(Timestamp consultedTime) {
-		this.consultedTime = consultedTime;
+
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
 	}
 
-	public String getWaitingTime() {
-		return waitingTime;
+
+
+	public String getSpecializationID() {
+		return specializationID;
 	}
 
-	public void setWaitingTime(String waitingTime) {
-		this.waitingTime = waitingTime;
+
+
+	public void setSpecializationID(String specializationID) {
+		this.specializationID = specializationID;
 	}
+
+
+
+	public Timestamp getConsultationFirstStart() {
+		return consultationFirstStart;
+	}
+
+
+
+	public void setConsultationFirstStart(Timestamp consultationFirstStart) {
+		this.consultationFirstStart = consultationFirstStart;
+	}
+
+
+
+	public Timestamp getRequestedDate() {
+		return requestedDate;
+	}
+
+
+
+	public void setRequestedDate(Timestamp requestedDate) {
+		this.requestedDate = requestedDate;
+	}
+
+
+
+	public Timestamp getBeneficiaryArrivalTime() {
+		return beneficiaryArrivalTime;
+	}
+
+
+
+	public void setBeneficiaryArrivalTime(Timestamp beneficiaryArrivalTime) {
+		this.beneficiaryArrivalTime = beneficiaryArrivalTime;
+	}
+
+
+
+	public Timestamp getSpecialistConsultationStart() {
+		return specialistConsultationStart;
+	}
+
+
+
+	public void setSpecialistConsultationStart(Timestamp specialistConsultationStart) {
+		this.specialistConsultationStart = specialistConsultationStart;
+	}
+
+
+
+	public Timestamp getConsultationEnd() {
+		return consultationEnd;
+	}
+
+
+
+	public void setConsultationEnd(Timestamp consultationEnd) {
+		this.consultationEnd = consultationEnd;
+	}
+
+
+
+	public String gettATForArrivalToConsultationStart() {
+		return tATForArrivalToConsultationStart;
+	}
+
+
+
+	public void settATForArrivalToConsultationStart(String tATForArrivalToConsultationStart) {
+		this.tATForArrivalToConsultationStart = tATForArrivalToConsultationStart;
+	}
+
+
+
+	public String gettATForSpecialistConsultationStartToEnd() {
+		return tATForSpecialistConsultationStartToEnd;
+	}
+
+
+
+	public void settATForSpecialistConsultationStartToEnd(String tATForSpecialistConsultationStartToEnd) {
+		this.tATForSpecialistConsultationStartToEnd = tATForSpecialistConsultationStartToEnd;
+	}
+
+
+
+	public String getVisitCode() {
+		return visitCode;
+	}
+
+
+
+	public void setVisitCode(String visitCode) {
+		this.visitCode = visitCode;
+	}
+
+
+	
 	
 	
 }
