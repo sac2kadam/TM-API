@@ -250,12 +250,12 @@ public class FemaleObstetricHistory {
 		this.postAbortionComplicationsid = postAbortionComplicationsid;
 	}
 
-	public Integer getCompletedWeeksofPregnancy() {
-		return completedWeeksofPregnancy;
+	public Integer getPregDuration() {
+		return pregDuration;
 	}
 
-	public void setCompletedWeeksofPregnancy(Integer completedWeeksofPregnancy) {
-		this.completedWeeksofPregnancy = completedWeeksofPregnancy;
+	public void setPregDuration(Integer pregDuration) {
+		this.pregDuration = pregDuration;
 	}
 
 	public Integer getServiceFacilityID() {
