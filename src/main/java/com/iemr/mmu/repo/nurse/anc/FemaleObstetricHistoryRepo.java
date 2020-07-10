@@ -51,7 +51,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			+ " postpartumComplicationID=:postpartumComplicationID, postpartumComplicationType=:postpartumComplicationType, otherPostpartumCompType=:otherPostpartumCompType,"
 			+ " postNatalComplicationID=:postNatalComplicationID, postNatalComplication=:postNatalComplication, otherPostNatalComplication=:otherPostNatalComplication,"
 			+ " newBornComplicationID=:newBornComplicationID, newBornComplication=:newBornComplication, otherNewBornComplication=:otherNewBornComplication,"
-			+ " congenitalAnomalies=:congenitalAnomalies,  modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
+			+ " congenitalAnomalies=:congenitalAnomalies,modifiedBy=:modifiedBy where beneficiaryRegID=:beneficiaryRegID AND benVisitID = :benVisitID")
 	public int updatePastObstetricHistory(
 			@Param("pregOrder") Short pregOrder,
 			@Param("pregComplicationID") Short pregComplicationID,
@@ -88,6 +88,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			@Param("otherNewBornComplication") String otherNewBornComplication,
 			
 			@Param("congenitalAnomalies") String congenitalAnomalies,
+			
 			
 			@Param("modifiedBy") String modifiedBy,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,

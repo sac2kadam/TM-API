@@ -38,6 +38,7 @@ import com.iemr.mmu.data.masterdata.anc.OptionalVaccinations;
 import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
 import com.iemr.mmu.data.masterdata.anc.PregDuration;
 import com.iemr.mmu.data.masterdata.anc.PregOutcome;
+import com.iemr.mmu.data.masterdata.anc.ServiceFacilityMaster;
 import com.iemr.mmu.data.masterdata.anc.ServiceMaster;
 import com.iemr.mmu.data.masterdata.anc.SurgeryTypes;
 import com.iemr.mmu.data.masterdata.doctor.ItemFormMaster;
@@ -78,6 +79,7 @@ import com.iemr.mmu.repo.masterrepo.anc.OptionalVaccinationsRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PersonalHabitTypeRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregDurationRepo;
 import com.iemr.mmu.repo.masterrepo.anc.PregOutcomeRepo;
+import com.iemr.mmu.repo.masterrepo.anc.ServiceFacilityMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.ServiceMasterRepo;
 import com.iemr.mmu.repo.masterrepo.anc.SurgeryTypesRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidContactHistoryMasterRepo;
@@ -148,8 +150,8 @@ public class ANCMasterDataServiceImpl {
 
 	private OptionalVaccinationsRepo optionalVaccinationsRepo;
 	@Autowired
-	 private ItemMasterRepo itemMasterRepo;
-	
+	private ItemMasterRepo itemMasterRepo;
+
 	private ItemFormMasterRepo itemFormMasterRepo;
 	private RouteOfAdminRepo routeOfAdminRepo;
 	private V_DrugPrescriptionRepo v_DrugPrescriptionRepo;
@@ -416,6 +418,9 @@ public class ANCMasterDataServiceImpl {
 		this.complicationTypesRepo = complicationTypesRepo;
 	}
 
+	@Autowired
+	private ServiceFacilityMasterRepo serviceFacilityMasterRepo;
+
 	public String getCommonNurseMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID, Integer providerServiceMapID,
 			String gender) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
@@ -472,6 +477,18 @@ public class ANCMasterDataServiceImpl {
 				.getComplicationTypes("Pregnancy Complication");
 		ArrayList<Object[]> postNatalComplications = complicationTypesRepo
 				.getComplicationTypes("Postnatal Complication");
+
+		// newely added masters, 10-07-2020
+		ArrayList<Object[]> typeOfAbbortion = complicationTypesRepo.getComplicationTypes("typeOfAbortion");
+		ArrayList<Object[]> postAbortionComplications = complicationTypesRepo
+				.getComplicationTypes("PostAbortionComplications");
+
+		ArrayList<ServiceFacilityMaster> serviceFacility = serviceFacilityMasterRepo.findByDeleted(false);
+
+		resMap.put("typeOfAbortion", ComplicationTypes.getComplicationTypes(typeOfAbbortion, 0));
+		resMap.put("postAbortionComplications", ComplicationTypes.getComplicationTypes(postAbortionComplications, 0));
+		resMap.put("serviceFacilities", serviceFacility);
+
 		// newborn and birth complications are same
 		// ArrayList<Object[]> newBornComplications =
 		// complicationTypesRepo.getComplicationTypes("Birth Complication");
@@ -606,12 +623,11 @@ public class ANCMasterDataServiceImpl {
 		ArrayList<Object[]> ddumList = drugDurationUnitMasterRepo.getDrugDurationUnitMaster();
 		ArrayList<Object[]> dfrmList = drugFrequencyMasterRepo.getDrugFrequencyMaster();
 		ArrayList<Object[]> roaList = routeOfAdminRepo.getRouteOfAdminList();
-		//ArrayList<Object[]> edlList=itemMasterRepo.searchEdl(psmID);
-		ArrayList<ItemMaster> NonedlList=itemMasterRepo.searchEdl(psmID);
-		//edlist.get()
-		//foreach()
-		for(int i=0;i<NonedlList.size();i++)
-		{
+		// ArrayList<Object[]> edlList=itemMasterRepo.searchEdl(psmID);
+		ArrayList<ItemMaster> NonedlList = itemMasterRepo.searchEdl(psmID);
+		// edlist.get()
+		// foreach()
+		for (int i = 0; i < NonedlList.size(); i++) {
 			NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
 		}
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
@@ -622,8 +638,8 @@ public class ANCMasterDataServiceImpl {
 		}
 
 		itemList = v_DrugPrescriptionRepo.getItemListForFacility(facilityID);
-		//ArrayList<ItemMaster> edlList=new ArrayList<>();
-		//edlList=itemMasterRepo.findByEdl();
+		// ArrayList<ItemMaster> edlList=new ArrayList<>();
+		// edlList=itemMasterRepo.findByEdl();
 		resMap.put("drugFormMaster", ItemFormMaster.getItemFormList(ifmList));
 		resMap.put("drugDoseMaster", DrugDoseMaster.getDrugDoseMasters(ddmList));
 		resMap.put("drugDurationUnitMaster", DrugDurationUnitMaster.getDrugDurationUnitMaster(ddumList));

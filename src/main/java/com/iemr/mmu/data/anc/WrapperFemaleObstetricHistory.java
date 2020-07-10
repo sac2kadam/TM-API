@@ -2,6 +2,8 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
+import com.iemr.mmu.service.anc.Utility;
+
 public class WrapperFemaleObstetricHistory {
 
 	private Long beneficiaryRegID;
@@ -51,11 +53,13 @@ public class WrapperFemaleObstetricHistory {
 				femaleObstetricHistory.setParkingPlaceID(parkingPlaceID);
 				femaleObstetricHistory.setCreatedBy(createdBy);
 				femaleObstetricHistory.setTotalNoOfPreg(totalNoOfPreg);
+				
 
 			}
 		} else {
 			if (totalNoOfPreg != null) {
 				FemaleObstetricHistory tmpOBJ = new FemaleObstetricHistory();
+
 				tmpOBJ.setBeneficiaryRegID(beneficiaryRegID);
 				tmpOBJ.setBenVisitID(benVisitID);
 				tmpOBJ.setVisitCode(visitCode);
@@ -90,7 +94,7 @@ public class WrapperFemaleObstetricHistory {
 							(String) obj[15], (String) obj[16], (String) obj[17], (Short) obj[18], (String) obj[19],
 							(String) obj[20], (String) obj[21], (String) obj[22], (Short) obj[23], (String) obj[24],
 							(String) obj[25], (String) obj[26], (Short) obj[27], (String) obj[28], (String) obj[29],
-							(Long) obj[30]);
+							(Long) obj[35]);
 
 					WFO.femaleObstetricHistoryList.add(obstetricHistory);
 
