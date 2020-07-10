@@ -217,12 +217,54 @@ public class FemaleObstetricHistory {
 
 	@Transient
 	private Date captureDate;
-	
-	
-	
-	
 
-	
+	@Expose
+	@Column(name = "typeOfAbortionid")
+	private Integer typeOfAbortionid;
+
+	@Expose
+	@Column(name = "PostAbortionComplicationsid")
+	private Integer postAbortionComplicationsid;
+
+	@Expose
+	@Column(name = "CompletedWeeksofPregnancy")
+	private Integer pregDuration;
+
+	@Expose
+	@Column(name = "ServiceFacilityID")
+	private Integer serviceFacilityID;
+
+	public Integer getTypeOfAbortionid() {
+		return typeOfAbortionid;
+	}
+
+	public void setTypeOfAbortionid(Integer typeOfAbortionid) {
+		this.typeOfAbortionid = typeOfAbortionid;
+	}
+
+	public Integer getPostAbortionComplicationsid() {
+		return postAbortionComplicationsid;
+	}
+
+	public void setPostAbortionComplicationsid(Integer postAbortionComplicationsid) {
+		this.postAbortionComplicationsid = postAbortionComplicationsid;
+	}
+
+	public Integer getCompletedWeeksofPregnancy() {
+		return completedWeeksofPregnancy;
+	}
+
+	public void setCompletedWeeksofPregnancy(Integer completedWeeksofPregnancy) {
+		this.completedWeeksofPregnancy = completedWeeksofPregnancy;
+	}
+
+	public Integer getServiceFacilityID() {
+		return serviceFacilityID;
+	}
+
+	public void setServiceFacilityID(Integer serviceFacilityID) {
+		this.serviceFacilityID = serviceFacilityID;
+	}
 
 	public Integer getVanID() {
 		return vanID;
@@ -608,8 +650,7 @@ public class FemaleObstetricHistory {
 		this.congenitalAnomalies = congenitalAnomalies;
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
-		
-		
+
 	}
 
 	public FemaleObstetricHistory(Short pregOrder, String pregComplicationID, String pregComplicationType,
@@ -647,9 +688,7 @@ public class FemaleObstetricHistory {
 		this.newBornComplicationID = newBornComplicationID;
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
-		
-		
-		
+
 		this.visitCode = visitCode;
 	}
 
