@@ -220,11 +220,11 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "typeOfAbortionid")
-	private Integer typeOfAbortionid;
+	private Integer abortionTypeID;
 
 	@Expose
-	@Column(name = "PostAbortionComplicationsid")
-	private Integer postAbortionComplicationsid;
+	@Column(name = "PostAbortionComplications")
+	private String postAbortionComplication_db;
 
 	@Expose
 	@Column(name = "CompletedWeeksofPregnancy")
@@ -232,22 +232,42 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "ServiceFacilityID")
-	private Integer serviceFacilityID;
+	private Integer typeofFacilityID;
 
-	public Integer getTypeOfAbortionid() {
-		return typeOfAbortionid;
+	@Expose
+	@Transient
+	private ArrayList<Map<String, Object>> postAbortionComplication;
+
+	public Integer getAbortionTypeID() {
+		return abortionTypeID;
 	}
 
-	public void setTypeOfAbortionid(Integer typeOfAbortionid) {
-		this.typeOfAbortionid = typeOfAbortionid;
+	public void setAbortionTypeID(Integer abortionTypeID) {
+		this.abortionTypeID = abortionTypeID;
 	}
 
-	public Integer getPostAbortionComplicationsid() {
-		return postAbortionComplicationsid;
+	public String getPostAbortionComplication_db() {
+		return postAbortionComplication_db;
 	}
 
-	public void setPostAbortionComplicationsid(Integer postAbortionComplicationsid) {
-		this.postAbortionComplicationsid = postAbortionComplicationsid;
+	public void setPostAbortionComplication_db(String postAbortionComplication_db) {
+		this.postAbortionComplication_db = postAbortionComplication_db;
+	}
+
+	public Integer getTypeofFacilityID() {
+		return typeofFacilityID;
+	}
+
+	public void setTypeofFacilityID(Integer typeofFacilityID) {
+		this.typeofFacilityID = typeofFacilityID;
+	}
+
+	public ArrayList<Map<String, Object>> getPostAbortionComplication() {
+		return postAbortionComplication;
+	}
+
+	public void setPostAbortionComplication(ArrayList<Map<String, Object>> postAbortionComplication) {
+		this.postAbortionComplication = postAbortionComplication;
 	}
 
 	public Integer getPregDuration() {
@@ -259,11 +279,11 @@ public class FemaleObstetricHistory {
 	}
 
 	public Integer getServiceFacilityID() {
-		return serviceFacilityID;
+		return typeofFacilityID;
 	}
 
 	public void setServiceFacilityID(Integer serviceFacilityID) {
-		this.serviceFacilityID = serviceFacilityID;
+		this.typeofFacilityID = serviceFacilityID;
 	}
 
 	public Integer getVanID() {
