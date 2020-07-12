@@ -565,6 +565,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		StringBuilder deliComplicationName;
 		StringBuilder postpartumComplicationID;
 		StringBuilder postpartumComplicationName;
+		StringBuilder postAbortionComp;
 
 		// iterate through pregnancy complication
 		for (FemaleObstetricHistory obj : femaleObstetricHistorylist) {
@@ -574,6 +575,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			deliComplicationName = new StringBuilder();
 			postpartumComplicationID = new StringBuilder();
 			postpartumComplicationName = new StringBuilder();
+			postAbortionComp = new StringBuilder();
 
 			// check for pregnancy complication
 			if (obj.getPregComplicationList() != null && obj.getPregComplicationList().size() > 0) {
@@ -625,6 +627,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 								.append(",");
 					}
 				}
+			}
+
+			if (obj.getPostAbortionComplication() != null && obj.getPostAbortionComplication().size() > 0) {
+				int pointer = 1;
+				for (Map<String, Object> postAbortionCompMap : obj.getPostAbortionComplication()) {
+					if (pointer == obj.getPostAbortionComplication().size()) {
+						postAbortionComp.append(
+								String.valueOf(((Double) postAbortionCompMap.get("complicationID")).intValue()));
+					} else {
+						postAbortionComp.append(
+								String.valueOf(((Double) postAbortionCompMap.get("complicationID")).intValue()) + ",");
+					}
+					pointer++;
+				}
+
+				obj.setPostAbortionComplication_db(postAbortionComp.toString());
 			}
 
 			// set pregnancy complication ID & Name (comma "," seperated)
