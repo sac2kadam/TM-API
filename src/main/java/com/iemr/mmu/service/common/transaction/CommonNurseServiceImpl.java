@@ -565,7 +565,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		StringBuilder deliComplicationName;
 		StringBuilder postpartumComplicationID;
 		StringBuilder postpartumComplicationName;
+
 		StringBuilder postAbortionComp;
+		StringBuilder postAbortionCompValues;
+
+//		StringBuilder typeOfAbortionID;
+//		StringBuilder typeOfAbortionValue;
+//
+//		StringBuilder serviceFacilityID;
+//		StringBuilder serviceFacilityValue;
 
 		// iterate through pregnancy complication
 		for (FemaleObstetricHistory obj : femaleObstetricHistorylist) {
@@ -576,6 +584,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			postpartumComplicationID = new StringBuilder();
 			postpartumComplicationName = new StringBuilder();
 			postAbortionComp = new StringBuilder();
+			postAbortionCompValues = new StringBuilder();
 
 			// check for pregnancy complication
 			if (obj.getPregComplicationList() != null && obj.getPregComplicationList().size() > 0) {
@@ -635,14 +644,32 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					if (pointer == obj.getPostAbortionComplication().size()) {
 						postAbortionComp.append(
 								String.valueOf(((Double) postAbortionCompMap.get("complicationID")).intValue()));
+						postAbortionCompValues
+								.append(String.valueOf((String) postAbortionCompMap.get("complicationValue")));
+
 					} else {
 						postAbortionComp.append(
 								String.valueOf(((Double) postAbortionCompMap.get("complicationID")).intValue()) + ",");
+						postAbortionCompValues
+								.append(String.valueOf((String) postAbortionCompMap.get("complicationValue")) + ",");
 					}
 					pointer++;
 				}
 
 				obj.setPostAbortionComplication_db(postAbortionComp.toString());
+				obj.setPostAbortionComplicationsValues(postAbortionCompValues.toString());
+			}
+
+			if (obj.getAbortionType() != null && obj.getAbortionType().containsKey("complicationID")
+					&& obj.getAbortionType().containsKey("complicationValue")) {
+				obj.setAbortionTypeID(((Double) obj.getAbortionType().get("complicationID")).intValue());
+				obj.setTypeOfAbortionValue((String) obj.getAbortionType().get("complicationValue"));
+			}
+
+			if (obj.getTypeofFacility() != null && obj.getTypeofFacility().containsKey("serviceFacilityID")
+					&& obj.getTypeofFacility().containsKey("facilityName")) {
+				obj.setTypeofFacilityID(((Double) obj.getTypeofFacility().get("serviceFacilityID")).intValue());
+				obj.setServiceFacilityValue((String) obj.getTypeofFacility().get("facilityName"));
 			}
 
 			// set pregnancy complication ID & Name (comma "," seperated)
@@ -1884,6 +1911,38 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 						popaList.add(posMap);
 					}
 
+				}
+
+				if (obj.getPostAbortionComplication_db() != null) {
+					ArrayList<Map<String, Object>> postAborCompList = new ArrayList<>();
+					Map<String, Object> postAborCompMap = new HashMap<>();
+
+					String[] idArr = obj.getPostAbortionComplication_db().split(",");
+					String[] valArr = obj.getPostAbortionComplicationsValues().split(",");
+
+					for (int i = 0; i < idArr.length; i++) {
+						postAborCompMap.put("complicationID", idArr[i]);
+						postAborCompMap.put("complicationValue", valArr[i]);
+					}
+
+					postAborCompList.add(postAborCompMap);
+					obj.setPostAbortionComplication(postAborCompList);
+				}
+
+				if (obj.getAbortionTypeID() != null && obj.getTypeOfAbortionValue() != null) {
+					Map<String, Object> aborTypeMap = new HashMap<>();
+					aborTypeMap.put("complicationID", obj.getAbortionTypeID());
+					aborTypeMap.put("complicationValue", obj.getTypeOfAbortionValue());
+
+					obj.setAbortionType(aborTypeMap);
+				}
+
+				if (obj.getServiceFacilityID() != null && obj.getServiceFacilityValue() != null) {
+					Map<String, Object> serFacilityMap = new HashMap<>();
+					serFacilityMap.put("serviceFacilityID", obj.getAbortionTypeID());
+					serFacilityMap.put("facilityName", obj.getTypeOfAbortionValue());
+
+					obj.setTypeofFacility(serFacilityMap);
 				}
 
 				obj.setPregComplicationList(pregList);
