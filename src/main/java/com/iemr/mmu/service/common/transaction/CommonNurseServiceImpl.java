@@ -1923,9 +1923,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					for (int i = 0; i < idArr.length; i++) {
 						postAborCompMap.put("complicationID", idArr[i]);
 						postAborCompMap.put("complicationValue", valArr[i]);
+						
+						postAborCompList.add(postAborCompMap);
 					}
 
-					postAborCompList.add(postAborCompMap);
+					
 					obj.setPostAbortionComplication(postAborCompList);
 				}
 
