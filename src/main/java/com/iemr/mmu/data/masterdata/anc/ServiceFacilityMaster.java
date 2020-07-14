@@ -3,7 +3,10 @@ package com.iemr.mmu.data.masterdata.anc;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 
 @Entity
 @Table(name = "m_servicefacility")

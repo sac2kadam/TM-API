@@ -223,8 +223,16 @@ public class FemaleObstetricHistory {
 	private Integer abortionTypeID;
 
 	@Expose
+	@Column(name = "typeOfAbortionValue")
+	private String typeOfAbortionValue;
+
+	@Expose
 	@Column(name = "PostAbortionComplications")
 	private String postAbortionComplication_db;
+
+	@Expose
+	@Column(name = "PostAbortionComplicationsValues")
+	private String postAbortionComplicationsValues;
 
 	@Expose
 	@Column(name = "CompletedWeeksofPregnancy")
@@ -235,8 +243,60 @@ public class FemaleObstetricHistory {
 	private Integer typeofFacilityID;
 
 	@Expose
+	@Column(name = "ServiceFacilityValue")
+	private String serviceFacilityValue;
+
+	@Expose
 	@Transient
 	private ArrayList<Map<String, Object>> postAbortionComplication;
+
+	@Expose
+	@Transient
+	private Map<String, Object> abortionType;
+
+	@Expose
+	@Transient
+	private Map<String, Object> typeofFacility;
+
+	public String getTypeOfAbortionValue() {
+		return typeOfAbortionValue;
+	}
+
+	public void setTypeOfAbortionValue(String typeOfAbortionValue) {
+		this.typeOfAbortionValue = typeOfAbortionValue;
+	}
+
+	public String getServiceFacilityValue() {
+		return serviceFacilityValue;
+	}
+
+	public void setServiceFacilityValue(String serviceFacilityValue) {
+		this.serviceFacilityValue = serviceFacilityValue;
+	}
+
+	public Map<String, Object> getAbortionType() {
+		return abortionType;
+	}
+
+	public void setAbortionType(Map<String, Object> abortionType) {
+		this.abortionType = abortionType;
+	}
+
+	public Map<String, Object> getTypeofFacility() {
+		return typeofFacility;
+	}
+
+	public void setTypeofFacility(Map<String, Object> typeofFacility) {
+		this.typeofFacility = typeofFacility;
+	}
+
+	public String getPostAbortionComplicationsValues() {
+		return postAbortionComplicationsValues;
+	}
+
+	public void setPostAbortionComplicationsValues(String postAbortionComplicationsValues) {
+		this.postAbortionComplicationsValues = postAbortionComplicationsValues;
+	}
 
 	public Integer getAbortionTypeID() {
 		return abortionTypeID;
@@ -680,7 +740,9 @@ public class FemaleObstetricHistory {
 			Short pregOutcomeID, String pregOutcome, String postpartumComplicationID, String postpartumComplicationType,
 			String otherPostpartumCompType, Short postNatalComplicationID, String postNatalComplication,
 			String otherPostNatalComplication, String congenitalAnomalies, Short newBornComplicationID,
-			String newBornComplication, String otherNewBornComplication, Long visitCode) {
+			String newBornComplication, String otherNewBornComplication, Long visitCode, Integer abortionTypeID,
+			String postAbortionComplication_db, Integer pregDuration, Integer typeofFacilityID,
+			String PostAbortionComplicationsValues, String typeOfAbortionVal, String serviceFacilityVal) {
 		super();
 		this.pregOrder = pregOrder;
 		this.pregComplicationID = pregComplicationID;
@@ -708,8 +770,16 @@ public class FemaleObstetricHistory {
 		this.newBornComplicationID = newBornComplicationID;
 		this.newBornComplication = newBornComplication;
 		this.otherNewBornComplication = otherNewBornComplication;
-
 		this.visitCode = visitCode;
+
+		this.abortionTypeID = abortionTypeID;
+		this.postAbortionComplication_db = postAbortionComplication_db;
+		this.pregDuration = pregDuration;
+		this.typeofFacilityID = typeofFacilityID;
+		this.postAbortionComplicationsValues = PostAbortionComplicationsValues;
+		this.typeOfAbortionValue = typeOfAbortionVal;
+		this.serviceFacilityValue = serviceFacilityVal;
+
 	}
 
 	public void setObstetricHistoryID(Long obstetricHistoryID) {
