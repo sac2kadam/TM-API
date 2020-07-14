@@ -1915,19 +1915,19 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 				if (obj.getPostAbortionComplication_db() != null) {
 					ArrayList<Map<String, Object>> postAborCompList = new ArrayList<>();
-					Map<String, Object> postAborCompMap = new HashMap<>();
+					Map<String, Object> postAborCompMap;
 
 					String[] idArr = obj.getPostAbortionComplication_db().split(",");
 					String[] valArr = obj.getPostAbortionComplicationsValues().split(",");
 
 					for (int i = 0; i < idArr.length; i++) {
+						postAborCompMap = new HashMap<>();
 						postAborCompMap.put("complicationID", idArr[i]);
 						postAborCompMap.put("complicationValue", valArr[i]);
-						
+
 						postAborCompList.add(postAborCompMap);
 					}
 
-					
 					obj.setPostAbortionComplication(postAborCompList);
 				}
 
