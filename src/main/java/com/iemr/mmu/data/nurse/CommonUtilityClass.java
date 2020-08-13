@@ -17,6 +17,16 @@ public class CommonUtilityClass {
 
 	private String createdBy;
 
+	private Boolean isMobile;
+
+	public Boolean getIsMobile() {
+		return isMobile;
+	}
+
+	public void setIsMobile(Boolean isMobile) {
+		this.isMobile = isMobile;
+	}
+
 	public Long getBenFlowID() {
 		return benFlowID;
 	}
