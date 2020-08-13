@@ -108,6 +108,17 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId,
 			@Param("tCSpecialistUserID") Integer tCSpecialistUserID, @Param("fromDate") Timestamp fromDate);
 
+	// TC Specialist work-list, patient app, 14-08-2020
+	@Query("SELECT t from BeneficiaryFlowStatus t WHERE  Date(t.benVisitDate) >= DATE(:fromDate) "
+			+ " AND t.specialist_flag NOT IN (0,4) AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
+			+ " AND t.tCSpecialistUserID =:tCSpecialistUserID AND DATE(t.tCRequestDate) <= curdate() "
+			+ " AND t.vanID =:vanID AND t.deleted = false AND t.providerServiceMapId = :providerServiceMapId "
+			+ " ORDER BY t.benVisitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getTCSpecialistWorkListNewPatientApp(
+			@Param("providerServiceMapId") Integer providerServiceMapId,
+			@Param("tCSpecialistUserID") Integer tCSpecialistUserID, @Param("fromDate") Timestamp fromDate,
+			@Param("vanID") Integer vanID);
+
 	// TC Specialist work-list, future scheduled, 13-12-2018
 	@Query("SELECT t from BeneficiaryFlowStatus t "
 			+ " WHERE t.specialist_flag NOT IN (0,4) AND t.tCRequestDate is not null AND t.tCSpecialistUserID is not null "
@@ -283,9 +294,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Query("SELECT  t.tCSpecialistUserID FROM BeneficiaryFlowStatus t "
 			+ " Where t.beneficiaryRegID = :benRegID AND t.benFlowID = :benFlowID ")
-	public Integer getTCspecialistID(@Param("benRegID") Long benRegID,
-			@Param("benFlowID") Long benFlowID);
-	
+	public Integer getTCspecialistID(@Param("benRegID") Long benRegID, @Param("benFlowID") Long benFlowID);
+
 	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
 
