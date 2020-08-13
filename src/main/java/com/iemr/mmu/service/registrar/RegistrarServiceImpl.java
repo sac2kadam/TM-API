@@ -319,9 +319,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 				districtID = v_BenAdvanceSearch.getDistrictID() + "";
 			}
 			/*
-			 * reistrarRepoBenSearch.getAdvanceBenSearchList(benID,
-			 * benFirstName, benLastName, benGenderID, fatherName, phoneNo,
-			 * aadharNo, govIDNo, districtID);
+			 * reistrarRepoBenSearch.getAdvanceBenSearchList(benID, benFirstName,
+			 * benLastName, benGenderID, fatherName, phoneNo, aadharNo, govIDNo,
+			 * districtID);
 			 */
 			ArrayList<Object[]> resList = reistrarRepoBenSearch.getAdvanceBenSearchList(benID, benFirstName,
 					benLastName, phoneNo, aadharNo, govIDNo, stateID, districtID);
@@ -695,14 +695,22 @@ public class RegistrarServiceImpl implements RegistrarService {
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
 			// System.out.println("hello");
 
-			int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID, beneficiaryID);
-			if (i > 0) {
-				if (i == 1)
-					response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
+				response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
 			} else {
-				response1.setError(5000, "Error in registration; please contact administrator");
-				// log error that beneficiaryID generated but flow part is not
-				// done successfully.
+				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
+						beneficiaryID);
+
+				if (i > 0) {
+					if (i == 1)
+						response1.setResponse(
+								"Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+				} else {
+					response1.setError(5000, "Error in registration; please contact administrator");
+					// log error that beneficiaryID generated but flow part is not
+					// done successfully.
+				}
 			}
 		} else {
 			// log error that registration failed.
