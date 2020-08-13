@@ -598,7 +598,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 		return resMap.toString();
 	}
 
-	private Integer saveCovidDetails(Covid19BenFeedback covid19BenFeedbackOBJ) {
+	public Integer saveCovidDetails(Covid19BenFeedback covid19BenFeedbackOBJ) {
 
 		if (covid19BenFeedbackOBJ != null && covid19BenFeedbackOBJ.getSymptoms() != null
 				&& covid19BenFeedbackOBJ.getSymptoms().length > 0) {
