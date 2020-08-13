@@ -344,6 +344,24 @@ public class CommonDoctorServiceImpl {
 	}
 
 	// New TC specialist work-list service
+	public String getTCSpecialistWorkListNewForTMPatientApp(Integer providerServiceMapId, Integer userID,
+			Integer serviceID, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		if (tcSpeclistWL != null && tcSpeclistWL > 0 && tcSpeclistWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -tcSpeclistWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
+		ArrayList<BeneficiaryFlowStatus> tcSpecialistWorkList = new ArrayList<>();
+		if (serviceID != null && serviceID == 4) {
+			tcSpecialistWorkList = beneficiaryFlowStatusRepo.getTCSpecialistWorkListNewPatientApp(providerServiceMapId,
+					userID, new Timestamp(sevenDaysAgo), vanID);
+		}
+		return new Gson().toJson(tcSpecialistWorkList);
+	}
+
+	// New TC specialist work-list service, patient App, 14-08-2020
 	public String getTCSpecialistWorkListNewForTM(Integer providerServiceMapId, Integer userID, Integer serviceID) {
 		Calendar cal = Calendar.getInstance();
 		if (tcSpeclistWL != null && tcSpeclistWL > 0 && tcSpeclistWL <= 30)
@@ -424,7 +442,7 @@ public class CommonDoctorServiceImpl {
 
 					if (referDetails.getRevisitDate() != null)
 						referDetailsTemp.setRevisitDate(referDetails.getRevisitDate());
-					
+
 					if (referDetails.getReferralReason() != null)
 						referDetailsTemp.setReferralReason(referDetails.getReferralReason());
 
@@ -432,7 +450,8 @@ public class CommonDoctorServiceImpl {
 				}
 			}
 		} else {
-			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null || referDetails.getReferralReason() != null)
+			if (referDetails.getReferredToInstituteName() != null || referDetails.getRevisitDate() != null
+					|| referDetails.getReferralReason() != null)
 				referDetailsList.add(referDetails);
 
 		}

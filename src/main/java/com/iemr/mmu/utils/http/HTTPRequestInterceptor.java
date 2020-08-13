@@ -74,7 +74,7 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 					if (remoteAddress == null || remoteAddress.trim().length() == 0) {
 						remoteAddress = request.getRemoteAddr();
 					}
-					//validator.checkKeyExists(authorization, remoteAddress);
+					validator.checkKeyExists(authorization, remoteAddress);
 					break;
 				}
 			} catch (Exception e) {

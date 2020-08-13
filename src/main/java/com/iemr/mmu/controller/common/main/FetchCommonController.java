@@ -764,6 +764,35 @@ public class FetchCommonController {
 		return response.toString();
 	}
 
+	// TC specialist worklist new, patient App, 14-08-2020
+	@CrossOrigin()
+	@ApiOperation(value = "TCSpecialist", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = {
+			"/getTCSpecialistWorklistPatientApp/{providerServiceMapID}/{serviceID}/{userID}/{vanID}" }, method = {
+					RequestMethod.GET })
+	public String getTCSpecialistWorkListNewPatientApp(
+			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
+			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			if (providerServiceMapID != null && userID != null) {
+				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTMPatientApp(providerServiceMapID,
+						userID, serviceID, vanID);
+				if (s != null)
+					response.setResponse(s);
+			} else {
+				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
+						+ providerServiceMapID + " SID = " + userID);
+				response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error in getTC_SpecialistWorkList:" + e);
+			response.setError(5000, "Error while getting TC specialist worklist");
+		}
+		return response.toString();
+	}
+
 	// TC specialist worklist new future scheduled
 	@CrossOrigin()
 	@ApiOperation(value = "TCSpecialist future scheduled", consumes = "application/json", produces = "application/json")
