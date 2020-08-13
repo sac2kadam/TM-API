@@ -278,6 +278,10 @@ public class BeneficiaryFlowStatus {
 	@Transient
 	private String bloodGroup;
 
+	// new variable added for patient app
+	@Transient
+	private Boolean isMobile;
+
 	public BeneficiaryFlowStatus() {
 	}
 
@@ -919,6 +923,14 @@ public class BeneficiaryFlowStatus {
 
 	public void setMasterVan(MasterVan masterVan) {
 		this.masterVan = masterVan;
+	}
+
+	public Boolean getIsMobile() {
+		return isMobile;
+	}
+
+	public void setIsMobile(Boolean isMobile) {
+		this.isMobile = isMobile;
 	}
 
 }
