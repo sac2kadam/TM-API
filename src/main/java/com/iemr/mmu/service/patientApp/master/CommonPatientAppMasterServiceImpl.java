@@ -9,10 +9,13 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -36,8 +39,21 @@ import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
-
+	
+	@Value("${servicePointID}")
+	private Integer servicePointID;
+	@Value("${parkingPlaceID}")
+	private Integer parkingPlaceID;
+	@Value("${providerServiceMapID}")
+	private Integer providerServiceMapID;
+	@Value("${vanID}")
+	private Integer vanID;
+	@Value("${serviceID}")
+	private Integer serviceID;
+	@Value("${providerID}")
+	private Integer providerID;
 	@Autowired
 	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
 	@Autowired
@@ -71,6 +87,19 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		resMap.put("covidSymptomsMaster", covidSymptomsMasterRepo.findByDeleted(false));
 		resMap.put("covidContactHistoryMaster", covidContactHistoryMasterRepo.findByDeleted(false));
 		resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
+		return new Gson().toJson(resMap);
+	}
+	
+	@Override
+	public String getMaster(Integer stateID ) {
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		resMap.put("servicePointID", servicePointID);
+		resMap.put("parkingPlaceID", parkingPlaceID);
+		resMap.put("vanID", vanID);
+    	resMap.put("providerServiceMapID", providerServiceMapID);
+    	resMap.put("serviceID", serviceID);
+    	resMap.put("providerID", providerID);
+		
 		return new Gson().toJson(resMap);
 	}
 
@@ -272,5 +301,41 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 			return 1;
 		else
 			return 0;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String getPatientEpisodeData(String requestObj) throws Exception {
+		Map<String, Object> responseMap = new HashMap<>();
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		if (nurseUtilityClass != null && nurseUtilityClass.getVisitCode() != null
+				&& nurseUtilityClass.getBeneficiaryRegID() != null) {
+			String benEpisodeDataMap = covid19ServiceImpl.getBenVisitDetailsFrmNurseCovid19(
+					nurseUtilityClass.getBeneficiaryRegID(), nurseUtilityClass.getVisitCode());
+
+			String chiefComplaints = commonNurseServiceImpl
+					.getBenChiefComplaints(nurseUtilityClass.getBeneficiaryRegID(), nurseUtilityClass.getVisitCode());
+
+			JsonObject covidDetailsMap = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(benEpisodeDataMap);
+			covidDetailsMap = jsnElmnt.getAsJsonObject();
+
+			JsonArray chiefComplaintsList = new JsonArray();
+			JsonParser jsnParser1 = new JsonParser();
+			JsonElement jsnElmnt1 = jsnParser1.parse(chiefComplaints);
+			chiefComplaintsList = jsnElmnt1.getAsJsonArray();
+
+			if (covidDetailsMap != null)
+				responseMap.put("covidDetails", covidDetailsMap);
+			if (chiefComplaintsList != null)
+				responseMap.put("chiefComplaints", chiefComplaintsList);
+
+		} else
+			throw new RuntimeException("Error in getting Beneficiary Details");
+
+		return new Gson().toJson(responseMap);
+
 	}
 }
