@@ -436,6 +436,7 @@ public class CommonServiceImpl implements CommonService {
 				tRequestModel.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
 				tRequestModel.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 				tRequestModel.setVisitCode(commonUtilityClass.getVisitCode());
+				if(commonUtilityClass.getBenVisitID() != null)
 				tRequestModel.setBenVisitID(commonUtilityClass.getBenVisitID());
 
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
