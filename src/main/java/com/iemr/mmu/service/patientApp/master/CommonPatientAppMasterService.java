@@ -10,4 +10,6 @@ public interface CommonPatientAppMasterService {
 	public String savechiefComplaintsData(String requestObj) throws Exception;
 
 	public Integer bookTCSlotData(String requestObj, String Authorization) throws Exception;
+
+	public String getPatientEpisodeData(String requestObj) throws Exception;
 }

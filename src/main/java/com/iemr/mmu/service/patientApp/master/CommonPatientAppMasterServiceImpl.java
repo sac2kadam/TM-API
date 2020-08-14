@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -272,5 +273,41 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 			return 1;
 		else
 			return 0;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String getPatientEpisodeData(String requestObj) throws Exception {
+		Map<String, Object> responseMap = new HashMap<>();
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		if (nurseUtilityClass != null && nurseUtilityClass.getVisitCode() != null
+				&& nurseUtilityClass.getBeneficiaryRegID() != null) {
+			String benEpisodeDataMap = covid19ServiceImpl.getBenVisitDetailsFrmNurseCovid19(
+					nurseUtilityClass.getBeneficiaryRegID(), nurseUtilityClass.getVisitCode());
+
+			String chiefComplaints = commonNurseServiceImpl
+					.getBenChiefComplaints(nurseUtilityClass.getBeneficiaryRegID(), nurseUtilityClass.getVisitCode());
+
+			JsonObject covidDetailsMap = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(benEpisodeDataMap);
+			covidDetailsMap = jsnElmnt.getAsJsonObject();
+
+			JsonArray chiefComplaintsList = new JsonArray();
+			JsonParser jsnParser1 = new JsonParser();
+			JsonElement jsnElmnt1 = jsnParser1.parse(chiefComplaints);
+			chiefComplaintsList = jsnElmnt1.getAsJsonArray();
+
+			if (covidDetailsMap != null)
+				responseMap.put("covidDetails", covidDetailsMap);
+			if (chiefComplaintsList != null)
+				responseMap.put("chiefComplaints", chiefComplaintsList);
+
+		} else
+			throw new RuntimeException("Error in getting Beneficiary Details");
+
+		return new Gson().toJson(responseMap);
+
 	}
 }

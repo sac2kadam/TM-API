@@ -125,4 +125,26 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "get Patient Episode data for specialist - mobile APP", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/getPatientEpisodeData" }, method = { RequestMethod.POST })
+	public String getPatientEpisodeDataMobileApp(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for patient episode data for diagnosis - patient APP :" + requestObj);
+
+			String s = commonPatientAppMasterService.getPatientEpisodeData(requestObj);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "error in getting beneficiary episode data");
+
+		} catch (Exception e) {
+			logger.error("error in getting beneficiary episode data - patient APP :" + e);
+			response.setError(5000, "error in . " + e.getMessage());
+		}
+		return response.toString();
+	}
+
 }
