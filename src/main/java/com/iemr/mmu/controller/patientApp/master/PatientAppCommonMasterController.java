@@ -124,5 +124,17 @@ public class PatientAppCommonMasterController {
 		}
 		return response.toString();
 	}
+	
+	@ApiOperation(value = "Master Data  for Patient", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value ={"/patientApp/details/{stateID}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public String patientAppMasterData(@PathVariable("stateID") Integer stateID) {
+		logger.info("master Data for beneficiary:" );
+		
+		OutputResponse response = new OutputResponse();
+		response.setResponse(
+				commonPatientAppMasterService.getMaster(stateID));
+		logger.info("Nurse master Data for beneficiary:" + response.toString());
+		return response.toString();
+	}
 
 }
