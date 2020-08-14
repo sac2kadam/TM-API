@@ -31,6 +31,16 @@ public class CommonUtilityClass {
 	private Integer districtID;
 	private String districtName;
 
+	private String specialistDiagnosis;
+
+	public String getSpecialistDiagnosis() {
+		return specialistDiagnosis;
+	}
+
+	public void setSpecialistDiagnosis(String specialistDiagnosis) {
+		this.specialistDiagnosis = specialistDiagnosis;
+	}
+
 	public String getLastName() {
 		return lastName;
 	}

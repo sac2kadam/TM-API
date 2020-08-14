@@ -181,4 +181,26 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "save specialist diagnosis data - mobile APP", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/saveSpecialistDiagnosisData" }, method = { RequestMethod.POST })
+	public String saveSpecialistDiagnosisData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for specialist diagnosis data - patient APP :" + requestObj);
+
+			Long pID = commonPatientAppMasterService.saveSpecialistDiagnosisData(requestObj);
+			if (pID != null)
+				response.setResponse("success");
+			else
+				response.setError(5000, "error in saving diagnosis data");
+
+		} catch (Exception e) {
+			logger.error("error in saving specialist diagnosis data - patient APP :" + e);
+			response.setError(5000, "error in . " + e.getMessage());
+		}
+		return response.toString();
+	}
+
 }
