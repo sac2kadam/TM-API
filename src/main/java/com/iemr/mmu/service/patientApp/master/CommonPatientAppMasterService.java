@@ -16,4 +16,6 @@ public interface CommonPatientAppMasterService {
 	public String getMaster(Integer stateID);
 
 	public String getPatientBookedSlots(String requestObj) throws Exception;
+
+	public Long saveSpecialistDiagnosisData(String requestObj) throws Exception;
 }

@@ -26,6 +26,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.patientApp.ChiefComplaintsPatientAPP;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
+import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
@@ -386,8 +387,46 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 				responseMap.put("isAnyActiveSlot", false);
 
 		} else
-			throw new RuntimeException("invalid request. beneficiary details missing in request");
+			throw new RuntimeException("invalid request. beneficiary details are missing");
 
 		return new Gson().toJson(responseMap);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Long saveSpecialistDiagnosisData(String requestObj) throws Exception {
+		Long response = null;
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+		if (nurseUtilityClass != null && nurseUtilityClass.getBeneficiaryRegID() != null
+				&& nurseUtilityClass.getVisitCode() != null && nurseUtilityClass.getVanID() != null
+				&& nurseUtilityClass.getCreatedBy() != null) {
+			prescriptionDetail.setBeneficiaryRegID(nurseUtilityClass.getBeneficiaryRegID());
+			prescriptionDetail.setVisitCode(nurseUtilityClass.getVisitCode());
+			prescriptionDetail.setVanID(nurseUtilityClass.getVanID());
+			prescriptionDetail.setProviderServiceMapID(nurseUtilityClass.getProviderServiceMapID());
+			if (nurseUtilityClass.getParkingPlaceID() != null)
+				prescriptionDetail.setParkingPlaceID(nurseUtilityClass.getParkingPlaceID());
+			if (nurseUtilityClass.getSpecialistDiagnosis() != null)
+				prescriptionDetail.setInstruction(nurseUtilityClass.getSpecialistDiagnosis());
+
+			prescriptionDetail.setCreatedBy(nurseUtilityClass.getCreatedBy());
+
+			Long pID = commonNurseServiceImpl.saveBenPrescription(prescriptionDetail);
+			if (pID != null && pID > 0) {
+				int i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterSpecialistMobileAPP(
+						nurseUtilityClass.getVisitCode(), nurseUtilityClass.getBeneficiaryRegID(), (short) 9);
+
+				if (i > 0)
+					response = pID;
+				else
+					throw new RuntimeException("error in saving diagnosis data - flow status change");
+			} else
+				throw new RuntimeException("error in saving diagnosis data");
+		} else
+			throw new RuntimeException("invalid request. beneficiary details are missing");
+
+		return response;
 	}
 }

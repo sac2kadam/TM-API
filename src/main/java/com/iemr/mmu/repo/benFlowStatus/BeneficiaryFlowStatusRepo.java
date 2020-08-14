@@ -303,4 +303,11 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " AND t.tCRequestDate >= curdate() AND t.specialist_flag IN (1) ")
 	public ArrayList<BeneficiaryFlowStatus> getBenSlotDetails(@Param("phoneNo") String phoneNo);
 
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set  t.processed = 'U', t.specialist_flag = :specialist_flag "
+			+ " WHERE t.beneficiaryRegID = :benRegID AND t.visitCode =:visitCode ")
+	public int updateBenFlowStatusAfterSpecialistMobileAPP(@Param("visitCode") Long visitCode,
+			@Param("benRegID") Long benRegID, @Param("specialist_flag") Short specialist_flag);
+
 }
