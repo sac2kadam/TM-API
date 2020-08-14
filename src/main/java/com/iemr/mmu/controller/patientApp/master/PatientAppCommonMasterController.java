@@ -83,4 +83,46 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
+	@CrossOrigin
+	@ApiOperation(value = "Save chief-Complaints  data.. patient app", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/chiefComplaintsDataPatientApp" }, method = { RequestMethod.POST })
+	public String saveBenChiefComplaintsDataPatientApp(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for chief-Complaints data saving - patient APP :" + requestObj);
+
+			String s = commonPatientAppMasterService.savechiefComplaintsData(requestObj);
+
+			response.setResponse(s);
+
+		} catch (Exception e) {
+			logger.error("Error while saving chief-Complaints data - patient APP :" + e);
+			response.setError(5000, "Unable to save data. " + e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save tele-consultation slot data.. patient app", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/tcSlotDetailsDataPatientApp" }, method = { RequestMethod.POST })
+	public String saveTCSlotDataPatientApp(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for TC slot data saving - patient APP :" + requestObj);
+
+			Integer i = commonPatientAppMasterService.bookTCSlotData(requestObj, Authorization);
+			if (i > 0)
+				response.setResponse("Teleconsultation slot booked successfully");
+			else
+				response.setError(5000, "Error in slot booking");
+
+		} catch (Exception e) {
+			logger.error("Error while booking TC slot - patient APP :" + e);
+			response.setError(5000, "error in . " + e.getMessage());
+		}
+		return response.toString();
+	}
+
 }

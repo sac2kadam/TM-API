@@ -18,6 +18,106 @@ public class CommonUtilityClass {
 	private String createdBy;
 
 	private Boolean isMobile;
+	private Boolean isCovidFlowDone;
+
+	private String firstName;
+	private String lastName;
+	private Short genderID;
+	private String genderName;
+	private Integer age;
+	private String ageUnits;
+	private Integer villageId;
+	private String villageName;
+	private Integer districtID;
+	private String districtName;
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public Short getGenderID() {
+		return genderID;
+	}
+
+	public void setGenderID(Short genderID) {
+		this.genderID = genderID;
+	}
+
+	public String getGenderName() {
+		return genderName;
+	}
+
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getAgeUnits() {
+		return ageUnits;
+	}
+
+	public void setAgeUnits(String ageUnits) {
+		this.ageUnits = ageUnits;
+	}
+
+	public Integer getVillageId() {
+		return villageId;
+	}
+
+	public void setVillageId(Integer villageId) {
+		this.villageId = villageId;
+	}
+
+	public String getVillageName() {
+		return villageName;
+	}
+
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+
+	public Integer getDistrictID() {
+		return districtID;
+	}
+
+	public void setDistrictID(Integer districtID) {
+		this.districtID = districtID;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public Boolean getIsCovidFlowDone() {
+		return isCovidFlowDone;
+	}
+
+	public void setIsCovidFlowDone(Boolean isCovidFlowDone) {
+		this.isCovidFlowDone = isCovidFlowDone;
+	}
 
 	public Boolean getIsMobile() {
 		return isMobile;
