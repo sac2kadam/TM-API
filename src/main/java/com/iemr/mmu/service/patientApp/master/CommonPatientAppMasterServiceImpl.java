@@ -37,6 +37,7 @@ import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
+import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -73,6 +74,8 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	private CommonServiceImpl commonServiceImpl;
 	@Autowired
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	@Autowired
+	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
 
 	@Override
 	public String getChiefComplaintsMaster(Integer visitCategoryID, Integer providerServiceMapID, String gender) {
@@ -428,5 +431,22 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 			throw new RuntimeException("invalid request. beneficiary details are missing");
 
 		return response;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String getSpecialistDiagnosisData(String requestObj) throws Exception {
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		if (nurseUtilityClass != null && nurseUtilityClass.getBeneficiaryRegID() != null
+				&& nurseUtilityClass.getVisitCode() != null) {
+			String diagnosis = generalOPDDoctorServiceImpl.getGeneralOPDDiagnosisDetails(
+					nurseUtilityClass.getBeneficiaryRegID(), nurseUtilityClass.getVisitCode());
+			if (diagnosis != null)
+				return diagnosis;
+			else
+				throw new RuntimeException("error in getting diagnosis data");
+		} else
+			throw new RuntimeException("invalid request. beneficiary details are missing");
 	}
 }

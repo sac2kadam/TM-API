@@ -18,4 +18,6 @@ public interface CommonPatientAppMasterService {
 	public String getPatientBookedSlots(String requestObj) throws Exception;
 
 	public Long saveSpecialistDiagnosisData(String requestObj) throws Exception;
+
+	public String getSpecialistDiagnosisData(String requestObj) throws Exception;
 }
