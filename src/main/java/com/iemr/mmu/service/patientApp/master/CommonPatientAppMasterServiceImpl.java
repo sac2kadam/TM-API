@@ -41,7 +41,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
-	
+
 	@Value("${servicePointID}")
 	private Integer servicePointID;
 	@Value("${parkingPlaceID}")
@@ -89,17 +89,17 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
 		return new Gson().toJson(resMap);
 	}
-	
+
 	@Override
-	public String getMaster(Integer stateID ) {
+	public String getMaster(Integer stateID) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		resMap.put("servicePointID", servicePointID);
 		resMap.put("parkingPlaceID", parkingPlaceID);
 		resMap.put("vanID", vanID);
-    	resMap.put("providerServiceMapID", providerServiceMapID);
-    	resMap.put("serviceID", serviceID);
-    	resMap.put("providerID", providerID);
-		
+		resMap.put("providerServiceMapID", providerServiceMapID);
+		resMap.put("serviceID", serviceID);
+		resMap.put("providerID", providerID);
+
 		return new Gson().toJson(resMap);
 	}
 
@@ -337,5 +337,57 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 
 		return new Gson().toJson(responseMap);
 
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String getPatientBookedSlots(String requestObj) throws Exception {
+		Map<String, Object> responseMap = new HashMap<>();
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		if (nurseUtilityClass != null && nurseUtilityClass.getBeneficiaryRegID() != null
+				&& nurseUtilityClass.getCreatedBy() != null) {
+
+			ArrayList<BeneficiaryFlowStatus> objLIst = beneficiaryFlowStatusRepo
+					.getBenSlotDetails(nurseUtilityClass.getCreatedBy());
+
+			if (objLIst.size() > 0) {
+				Boolean isAnySlotForthisPatient = false;
+				responseMap.put("isAnyActiveSlot", true);
+				Map<String, Object> objMap = new HashMap<>();
+
+				int pointer = 1;
+				for (BeneficiaryFlowStatus b : objLIst) {
+					if (b.getBeneficiaryRegID().equals(nurseUtilityClass.getBeneficiaryRegID())) {
+						isAnySlotForthisPatient = true;
+						objMap.put("benID", b.getBeneficiaryID());
+						objMap.put("benName", b.getBenName());
+						objMap.put("age", b.getAge());
+						objMap.put("gender", b.getGenderName());
+						objMap.put("tcDate", b.gettCRequestDate());
+
+						responseMap.put("patientDetails", objMap);
+						break;
+					} else {
+						if (pointer == objLIst.size()) {
+							objMap.put("benID", b.getBeneficiaryID());
+							objMap.put("benName", b.getBenName());
+							objMap.put("age", b.getAge());
+							objMap.put("gender", b.getGenderName());
+							objMap.put("tcDate", b.gettCRequestDate());
+
+							responseMap.put("patientDetails", objMap);
+						}
+					}
+					pointer++;
+				}
+				responseMap.put("isAnyActiveSlotForSameBen", isAnySlotForthisPatient);
+			} else
+				responseMap.put("isAnyActiveSlot", false);
+
+		} else
+			throw new RuntimeException("invalid request. beneficiary details missing in request");
+
+		return new Gson().toJson(responseMap);
 	}
 }

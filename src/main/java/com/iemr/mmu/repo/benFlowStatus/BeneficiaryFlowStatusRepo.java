@@ -299,4 +299,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query(" SELECT benName, Date(dOB), genderID FROM BeneficiaryFlowStatus WHERE benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDataForCareStream(@Param("benFlowID") Long benFlowID);
 
+	@Query(" SELECT t FROM BeneficiaryFlowStatus t WHERE t.preferredPhoneNum = :phoneNo "
+			+ " AND t.tCRequestDate >= curdate() AND t.specialist_flag IN (1) ")
+	public ArrayList<BeneficiaryFlowStatus> getBenSlotDetails(@Param("phoneNo") String phoneNo);
+
 }
