@@ -116,11 +116,11 @@ public class PatientAppCommonMasterController {
 			if (i > 0)
 				response.setResponse("Teleconsultation slot booked successfully");
 			else
-				response.setError(5000, "Error in slot booking");
+				response.setError(5000, "error in slot booking");
 
 		} catch (Exception e) {
 			logger.error("Error while booking TC slot - patient APP :" + e);
-			response.setError(5000, "error in . " + e.getMessage());
+			response.setError(5000, "error in slot booking : " + e.getMessage());
 		}
 		return response.toString();
 	}
@@ -154,7 +154,7 @@ public class PatientAppCommonMasterController {
 
 		} catch (Exception e) {
 			logger.error("error in getting beneficiary episode data - patient APP :" + e);
-			response.setError(5000, "error in . " + e.getMessage());
+			response.setError(5000, "error in getting beneficiary episode data : " + e.getMessage());
 		}
 		return response.toString();
 	}
@@ -176,7 +176,7 @@ public class PatientAppCommonMasterController {
 
 		} catch (Exception e) {
 			logger.error("error in getting beneficiary booked slot data - patient APP :" + e);
-			response.setError(5000, "error in . " + e.getMessage());
+			response.setError(5000, "error in getting beneficiary booked slot data : " + e.getMessage());
 		}
 		return response.toString();
 	}
@@ -198,7 +198,29 @@ public class PatientAppCommonMasterController {
 
 		} catch (Exception e) {
 			logger.error("error in saving specialist diagnosis data - patient APP :" + e);
-			response.setError(5000, "error in . " + e.getMessage());
+			response.setError(5000, "error in saving specialist diagnosis data : " + e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "get specialist diagnosis data - mobile APP", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/getSpecialistDiagnosisData" }, method = { RequestMethod.POST })
+	public String getSpecialistDiagnosisData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for getting specialist diagnosis data - patient APP :" + requestObj);
+
+			String s = commonPatientAppMasterService.getSpecialistDiagnosisData(requestObj);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "error in getting diagnosis data");
+
+		} catch (Exception e) {
+			logger.error("error in getting specialist diagnosis data - patient APP :" + e);
+			response.setError(5000, "error in getting specialist diagnosis data : " + e.getMessage());
 		}
 		return response.toString();
 	}
