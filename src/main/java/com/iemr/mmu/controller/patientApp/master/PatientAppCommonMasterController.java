@@ -124,15 +124,15 @@ public class PatientAppCommonMasterController {
 		}
 		return response.toString();
 	}
-	
+
 	@ApiOperation(value = "Master Data  for Patient", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value ={"/patientApp/details/{stateID}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = {
+			"/patientApp/details/{stateID}" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String patientAppMasterData(@PathVariable("stateID") Integer stateID) {
-		logger.info("master Data for beneficiary:" );
-		
+		logger.info("master Data for beneficiary:");
+
 		OutputResponse response = new OutputResponse();
-		response.setResponse(
-				commonPatientAppMasterService.getMaster(stateID));
+		response.setResponse(commonPatientAppMasterService.getMaster(stateID));
 		logger.info("Nurse master Data for beneficiary:" + response.toString());
 		return response.toString();
 	}
@@ -154,6 +154,28 @@ public class PatientAppCommonMasterController {
 
 		} catch (Exception e) {
 			logger.error("error in getting beneficiary episode data - patient APP :" + e);
+			response.setError(5000, "error in . " + e.getMessage());
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "get Patient booked slot data - mobile APP", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/get/getPatientBookedSlotDetails" }, method = { RequestMethod.POST })
+	public String getPatientBookedSlotDetails(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for patient booked slot data - patient APP :" + requestObj);
+
+			String s = commonPatientAppMasterService.getPatientBookedSlots(requestObj);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "error in getting beneficiary booked slot data");
+
+		} catch (Exception e) {
+			logger.error("error in getting beneficiary booked slot data - patient APP :" + e);
 			response.setError(5000, "error in . " + e.getMessage());
 		}
 		return response.toString();
