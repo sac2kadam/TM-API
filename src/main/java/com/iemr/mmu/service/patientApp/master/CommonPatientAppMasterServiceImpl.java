@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +39,21 @@ import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
-
+	
+	@Value("${servicePointID}")
+	private Integer servicePointID;
+	@Value("${parkingPlaceID}")
+	private Integer parkingPlaceID;
+	@Value("${providerServiceMapID}")
+	private Integer providerServiceMapID;
+	@Value("${vanID}")
+	private Integer vanID;
+	@Value("${serviceID}")
+	private Integer serviceID;
+	@Value("${providerID}")
+	private Integer providerID;
 	@Autowired
 	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
 	@Autowired
@@ -72,6 +87,19 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		resMap.put("covidSymptomsMaster", covidSymptomsMasterRepo.findByDeleted(false));
 		resMap.put("covidContactHistoryMaster", covidContactHistoryMasterRepo.findByDeleted(false));
 		resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
+		return new Gson().toJson(resMap);
+	}
+	
+	@Override
+	public String getMaster(Integer stateID ) {
+		Map<String, Object> resMap = new HashMap<String, Object>();
+		resMap.put("servicePointID", servicePointID);
+		resMap.put("parkingPlaceID", parkingPlaceID);
+		resMap.put("vanID", vanID);
+    	resMap.put("providerServiceMapID", providerServiceMapID);
+    	resMap.put("serviceID", serviceID);
+    	resMap.put("providerID", providerID);
+		
 		return new Gson().toJson(resMap);
 	}
 
