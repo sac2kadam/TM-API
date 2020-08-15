@@ -310,4 +310,8 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public int updateBenFlowStatusAfterSpecialistMobileAPP(@Param("visitCode") Long visitCode,
 			@Param("benRegID") Long benRegID, @Param("specialist_flag") Short specialist_flag);
 
+	@Query(value = " SELECT * FROM db_iemr.i_ben_flow_outreach t WHERE t.beneficiary_reg_id =:benRegID AND t.specialist_flag = 9 "
+			+ " ORDER BY t.created_date DESC limit 3", nativeQuery = true)
+	public ArrayList<BeneficiaryFlowStatus> getPatientLat_3_Episode(@Param("benRegID") Long benRegID);
+
 }
