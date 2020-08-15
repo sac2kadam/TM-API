@@ -449,4 +449,21 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		} else
 			throw new RuntimeException("invalid request. beneficiary details are missing");
 	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String getPatientsLast_3_Episode(String requestObj) throws Exception {
+		CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestObj, CommonUtilityClass.class);
+
+		if (nurseUtilityClass != null && nurseUtilityClass.getBeneficiaryRegID() != null) {
+			ArrayList<BeneficiaryFlowStatus> resultSet = beneficiaryFlowStatusRepo
+					.getPatientLat_3_Episode(nurseUtilityClass.getBeneficiaryRegID());
+
+			if (resultSet != null)
+				return new Gson().toJson(resultSet);
+			else
+				throw new RuntimeException("error in getting patient last 3 episode data data");
+		} else
+			throw new RuntimeException("invalid request. beneficiary details is/are missing");
+	}
 }
