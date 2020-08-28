@@ -369,6 +369,7 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 						objMap.put("age", b.getAge());
 						objMap.put("gender", b.getGenderName());
 						objMap.put("tcDate", b.gettCRequestDate());
+						objMap.put("benQuickbloxID", b.getBenQuickbloxID());
 
 						responseMap.put("patientDetails", objMap);
 						break;
@@ -379,6 +380,7 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 							objMap.put("age", b.getAge());
 							objMap.put("gender", b.getGenderName());
 							objMap.put("tcDate", b.gettCRequestDate());
+							objMap.put("benQuickbloxID", b.getBenQuickbloxID());
 
 							responseMap.put("patientDetails", objMap);
 						}
