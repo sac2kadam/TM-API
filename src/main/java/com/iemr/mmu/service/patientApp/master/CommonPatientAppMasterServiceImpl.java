@@ -11,8 +11,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,6 +31,7 @@ import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.patientApp.ChiefComplaintsPatientAPP;
+import com.iemr.mmu.data.quickBlox.QuickbloxRequest;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
@@ -39,7 +46,8 @@ import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
 import com.iemr.mmu.service.generalOPD.GeneralOPDDoctorServiceImpl;
 import com.iemr.mmu.utils.mapper.InputMapper;
-
+import com.iemr.mmu.utils.mapper.OutputMapper;
+import com.google.gson.JsonObject;
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
@@ -56,6 +64,8 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	private Integer serviceID;
 	@Value("${providerID}")
 	private Integer providerID;
+	@Value("${getQuickbloxIds}")
+	private String getQuickbloxIds;
 	@Autowired
 	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
 	@Autowired
@@ -245,7 +255,7 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 						Authorization);
 
 				if (tcRequestOBJ != null && tcRequestOBJ.getTmRequestID() != null) {
-					int i = creataAndUpdateBeneficairyFlowStatus(tcRequestOBJ, obj, nurseUtilityClass);
+					int i = creataAndUpdateBeneficairyFlowStatus(tcRequestOBJ, obj, nurseUtilityClass,Authorization);
 					if (i > 0) {
 						response = 1;
 					} else
@@ -261,9 +271,32 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	}
 
 	private Integer creataAndUpdateBeneficairyFlowStatus(TeleconsultationRequestOBJ tcRequestOBJ,
-			BeneficiaryVisitDetail obj, CommonUtilityClass nurseUtilityClass) {
+			BeneficiaryVisitDetail obj, CommonUtilityClass nurseUtilityClass,String Authorization) {
 		BeneficiaryFlowStatus benFlowOBJ = new BeneficiaryFlowStatus();
-
+		//for quickblox start
+		QuickbloxRequest reqObj= new QuickbloxRequest();
+		reqObj.setSpecialistUserID(Long.valueOf(tcRequestOBJ.getUserID()));
+		String requestOBJ = OutputMapper.gson().toJson(reqObj);
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
+		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+		ResponseEntity<String> response = restTemplate.exchange(getQuickbloxIds, HttpMethod.POST, request,
+				String.class);
+		// System.out.println(response.getBody());
+		String specialistBenQuickbloxID="";
+		if (response.getStatusCodeValue() == 200 && response.hasBody()) {
+			JsonObject jsnOBJ = new JsonObject();JsonObject check= new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(response.getBody());
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if (jsnOBJ.has("statusCode") && jsnOBJ.get("statusCode").getAsInt() == 200)
+				 check = jsnOBJ.getAsJsonObject("data");
+			 specialistBenQuickbloxID = check.get("specialistBenQuickbloxID").getAsString();
+		}
+		benFlowOBJ.setBenQuickbloxID(Long.parseLong(specialistBenQuickbloxID));
+//for quickblox end
 		benFlowOBJ.setBeneficiaryRegID(obj.getBeneficiaryRegID());
 		benFlowOBJ.setBenVisitID(obj.getBenVisitID());
 		benFlowOBJ.setVisitCode(obj.getVisitCode());
