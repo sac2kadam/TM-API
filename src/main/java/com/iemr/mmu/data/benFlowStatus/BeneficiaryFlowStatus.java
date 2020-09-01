@@ -145,20 +145,20 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "father_name")
 	private String fatherName;
-	@Expose
-	@Column(name = "benQuickbloxID")
-	private Long benQuickbloxID;
+//	@Expose
+//	@Column(name = "benQuickbloxID")
+//	private Long benQuickbloxID;
 	@Expose
 	@Column(name = "spouse_name")
 	private String spouseName;
 
-	public Long getBenQuickbloxID() {
-		return benQuickbloxID;
-	}
-
-	public void setBenQuickbloxID(Long benQuickbloxID) {
-		this.benQuickbloxID = benQuickbloxID;
-	}
+//	public Long getBenQuickbloxID() {
+//		return benQuickbloxID;
+//	}
+//
+//	public void setBenQuickbloxID(Long benQuickbloxID) {
+//		this.benQuickbloxID = benQuickbloxID;
+//	}
 
 	@Expose
 	@Column(name = "district")

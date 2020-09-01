@@ -13,14 +13,8 @@ import com.iemr.mmu.data.quickBlox.Quickblox;
 
 @Repository
 public interface QuickBloxRepo extends CrudRepository<Quickblox, Long> {
-	@Query(" SELECT specialistQuickbloxID, specialistBenQuickbloxID "
-			+ "from Quickblox ba WHERE ba.specialistUserID = :specialistUserID "
-			+ " AND ba.deleted = false")
-	public Quickblox getQuickbloxIds2(@Param("specialistUserID") Long specialistUserID
-			);
-	//List[] findAll(Long ids);
-
+	
 	//public List<Quickblox> findAll(Long specialistUserID);
 	@Query("SELECT t FROM Quickblox t WHERE t.specialistUserID = :specialistUserID")
-	Quickblox getQuickbloxIds(@Param("specialistUserID") Long specialistUserID);
+	Quickblox getQuickbloxIds(@Param("specialistUserID") Integer specialistUserID);
 }

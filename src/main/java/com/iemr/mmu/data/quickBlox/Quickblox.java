@@ -24,13 +24,19 @@ public class Quickblox {
 	private Integer quickbloxID;
 	@Expose
 	@Column(name = "specialistUserID")
-	private Long specialistUserID;
+	private Integer specialistUserID;
 	@Expose
 	@Column(name = "specialistQuickbloxID")
 	private Long specialistQuickbloxID;
 	@Expose
 	@Column(name = "specialistBenQuickbloxID")
 	private Long specialistBenQuickbloxID;
+	@Expose
+	@Column(name = "specialistBenQuickBloxPass")
+	private String specialistBenQuickBloxPass;
+	@Expose
+	@Column(name = "specialistQuickbloxpass")
+	private String specialistQuickbloxpass;
 	
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
@@ -52,10 +58,10 @@ public class Quickblox {
 	public void setQuickbloxID(Integer quickbloxID) {
 		this.quickbloxID = quickbloxID;
 	}
-	public Long getSpecialistUserID() {
+	public Integer getSpecialistUserID() {
 		return specialistUserID;
 	}
-	public void setSpecialistUserID(Long specialistUserID) {
+	public void setSpecialistUserID(Integer specialistUserID) {
 		this.specialistUserID = specialistUserID;
 	}
 	public Long getSpecialistQuickbloxID() {
@@ -69,6 +75,18 @@ public class Quickblox {
 	}
 	public void setSpecialistBenQuickbloxID(Long specialistBenQuickbloxID) {
 		this.specialistBenQuickbloxID = specialistBenQuickbloxID;
+	}
+	public String getSpecialistBenQuickBloxPass() {
+		return specialistBenQuickBloxPass;
+	}
+	public void setSpecialistBenQuickBloxPass(String specialistBenQuickBloxPass) {
+		this.specialistBenQuickBloxPass = specialistBenQuickBloxPass;
+	}
+	public String getSpecialistQuickbloxpass() {
+		return specialistQuickbloxpass;
+	}
+	public void setSpecialistQuickbloxpass(String specialistQuickbloxpass) {
+		this.specialistQuickbloxpass = specialistQuickbloxpass;
 	}
 	public Boolean getDeleted() {
 		return deleted;

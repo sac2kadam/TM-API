@@ -35,9 +35,12 @@ public class QuickbloxServiceImpl implements QuickbloxService {
 		//obj.setSpecialistBenQuickbloxID((Long) ids.get(1));
 		//}
 		obj = quickBloxRepo.getQuickbloxIds(obj.getSpecialistUserID());
-		//List<Quickblox> ids=quickBloxRepo.findAll(obj.getSpecialistUserID());
+		if(obj.getSpecialistBenQuickbloxID()!=null && obj.getSpecialistQuickbloxID()!=null) {
 		resMap.put("quickbloxIds", obj);
 		return new Gson().toJson(resMap);
+		}
+		else
+			 throw new IEMRException("quickblox user id not found for specialist");
 	}
 
 }
