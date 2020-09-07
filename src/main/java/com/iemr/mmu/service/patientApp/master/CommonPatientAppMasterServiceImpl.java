@@ -25,6 +25,7 @@ import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.patientApp.ChiefComplaintsPatientAPP;
+import com.iemr.mmu.data.quickBlox.Quickblox;
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
@@ -34,6 +35,7 @@ import com.iemr.mmu.repo.masterrepo.covid19.CovidContactHistoryMasterRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidRecommnedationMasterRepo;
 import com.iemr.mmu.repo.masterrepo.covid19.CovidSymptomsMasterRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.quickBlox.QuickBloxRepo;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
 import com.iemr.mmu.service.covid19.Covid19ServiceImpl;
@@ -56,6 +58,14 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	private Integer serviceID;
 	@Value("${providerID}")
 	private Integer providerID;
+	@Value("${appId}")
+    private Integer appId;
+    @Value("${authKey}")
+    private String authKey;
+    @Value("${authSecret}")
+    private String authSecret;
+    @Value("${scheduling-slotsize}")
+    private Integer schedulingSlotSize;
 	@Autowired
 	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
 	@Autowired
@@ -76,6 +86,8 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	@Autowired
 	private GeneralOPDDoctorServiceImpl generalOPDDoctorServiceImpl;
+	@Autowired
+	private QuickBloxRepo quickBloxRepo;
 
 	@Override
 	public String getChiefComplaintsMaster(Integer visitCategoryID, Integer providerServiceMapID, String gender) {
@@ -95,17 +107,20 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	}
 
 	@Override
-	public String getMaster(Integer stateID) {
-		Map<String, Object> resMap = new HashMap<String, Object>();
-		resMap.put("servicePointID", servicePointID);
-		resMap.put("parkingPlaceID", parkingPlaceID);
-		resMap.put("vanID", vanID);
-		resMap.put("providerServiceMapID", providerServiceMapID);
-		resMap.put("serviceID", serviceID);
-		resMap.put("providerID", providerID);
-
-		return new Gson().toJson(resMap);
-	}
+    public String getMaster(Integer stateID) {
+        Map<String, Object> resMap = new HashMap<String, Object>();
+        resMap.put("servicePointID", servicePointID);
+        resMap.put("parkingPlaceID", parkingPlaceID);
+        resMap.put("vanID", vanID);
+        resMap.put("providerServiceMapID", providerServiceMapID);
+        resMap.put("serviceID", serviceID);
+        resMap.put("providerID", providerID);
+        resMap.put("appId",appId);
+        resMap.put("authKey",authKey);
+        resMap.put("authSecret",authSecret);
+        resMap.put("schedulingSlotSize", schedulingSlotSize);
+        return new Gson().toJson(resMap);
+    }
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -261,8 +276,45 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 	}
 
 	private Integer creataAndUpdateBeneficairyFlowStatus(TeleconsultationRequestOBJ tcRequestOBJ,
-			BeneficiaryVisitDetail obj, CommonUtilityClass nurseUtilityClass) {
+			BeneficiaryVisitDetail obj, CommonUtilityClass nurseUtilityClass) throws Exception {
 		BeneficiaryFlowStatus benFlowOBJ = new BeneficiaryFlowStatus();
+//
+//		Quickblox qb;
+//		if (tcRequestOBJ.getUserID() != null)
+//		qb = quickBloxRepo.getQuickbloxIds(tcRequestOBJ.getUserID());
+//		else
+//			throw new RuntimeException("Quickblox user mapping not avaialble");
+
+//		//for quickblox start
+
+//		Map<String, Long> quickBlox = new HashMap<String, Long>();
+//		quickBlox.put("specialistUserID", Long.valueOf(tcRequestOBJ.getUserID()));
+//		RestTemplate restTemplate = new RestTemplate();
+//		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+//		headers.add("Content-Type", "application/json");
+//		headers.add("AUTHORIZATION", Authorization);
+//		HttpEntity<Object> request = new HttpEntity<Object>(quickBlox.toString(), headers);
+//		ResponseEntity<String> response = restTemplate.exchange(getQuickbloxIds, HttpMethod.POST, request,
+//				String.class);
+//
+//		String specialistBenQuickbloxID = "";
+//		if (response.getStatusCodeValue() == 200 && response.hasBody()) {
+//			JsonObject jsnOBJ = new JsonObject();
+//			JsonObject check = new JsonObject();
+//			JsonParser jsnParser = new JsonParser();
+//			JsonElement jsnElmnt = jsnParser.parse(response.getBody());
+//			jsnOBJ = jsnElmnt.getAsJsonObject();
+//			if (jsnOBJ.has("statusCode") && jsnOBJ.get("statusCode").getAsInt() == 200)
+//				check = jsnOBJ.getAsJsonObject("data");
+//			specialistBenQuickbloxID = check.getAsJsonObject("quickbloxIds").get("specialistBenQuickbloxID")
+//					.getAsString();
+//		}
+		// benFlowOBJ.setBenQuickbloxID(Long.parseLong(specialistBenQuickbloxID));
+
+		// for quickblox end
+
+//		if (qb != null && qb.getSpecialistBenQuickbloxID() != null)
+//			benFlowOBJ.setBenQuickbloxID(qb.getSpecialistBenQuickbloxID());
 
 		benFlowOBJ.setBeneficiaryRegID(obj.getBeneficiaryRegID());
 		benFlowOBJ.setBenVisitID(obj.getBenVisitID());
@@ -362,6 +414,9 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 
 				int pointer = 1;
 				for (BeneficiaryFlowStatus b : objLIst) {
+					// call quickblox repo for password
+					Quickblox qb = quickBloxRepo.getQuickbloxIds(b.gettCSpecialistUserID());
+
 					if (b.getBeneficiaryRegID().equals(nurseUtilityClass.getBeneficiaryRegID())) {
 						isAnySlotForthisPatient = true;
 						objMap.put("benID", b.getBeneficiaryID());
@@ -369,7 +424,8 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 						objMap.put("age", b.getAge());
 						objMap.put("gender", b.getGenderName());
 						objMap.put("tcDate", b.gettCRequestDate());
-
+						objMap.put("benQuickbloxID", qb.getSpecialistBenQuickbloxID());
+						objMap.put("benQuickbloxPass", qb.getSpecialistBenQuickBloxPass());
 						responseMap.put("patientDetails", objMap);
 						break;
 					} else {
@@ -379,6 +435,8 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 							objMap.put("age", b.getAge());
 							objMap.put("gender", b.getGenderName());
 							objMap.put("tcDate", b.gettCRequestDate());
+							objMap.put("benQuickbloxID", qb.getSpecialistBenQuickbloxID());
+							objMap.put("benQuickbloxPass", qb.getSpecialistBenQuickBloxPass());
 
 							responseMap.put("patientDetails", objMap);
 						}
