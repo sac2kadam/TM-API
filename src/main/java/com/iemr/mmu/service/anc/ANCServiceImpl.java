@@ -1538,6 +1538,13 @@ public class ANCServiceImpl implements ANCService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(4);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 				if (i > 0)
@@ -1560,6 +1567,7 @@ public class ANCServiceImpl implements ANCService {
 		} else {
 			// request OBJ is null.
 		}
+		
 		return updateSuccessFlag;
 	}
 

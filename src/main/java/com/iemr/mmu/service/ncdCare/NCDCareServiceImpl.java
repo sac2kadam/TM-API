@@ -802,6 +802,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(3);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 						isMedicinePrescribed, tcRequestOBJ);
 
@@ -1200,6 +1207,13 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(3);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 

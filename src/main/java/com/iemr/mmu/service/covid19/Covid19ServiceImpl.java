@@ -1034,6 +1034,13 @@ public class Covid19ServiceImpl implements Covid19Service {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(10);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 						isMedicinePrescribed, tcRequestOBJ);
 
@@ -1247,6 +1254,13 @@ public class Covid19ServiceImpl implements Covid19Service {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(10);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 
