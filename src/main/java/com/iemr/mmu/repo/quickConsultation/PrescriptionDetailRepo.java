@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -60,5 +61,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	// covid 19
 	// PrescriptionDetail findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long
 	// visitCode);
+	@Query("SELECT diagnosisProvided from PrescriptionDetail t where t.prescriptionID = :prescriptionID AND "
+			+ " t.deleted = false")
+	public List<Object> getProvisionalDiagnosis(@Param("prescriptionID") Long prescriptionID);
 
 }

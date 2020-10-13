@@ -1,5 +1,9 @@
 package com.iemr.mmu.data.tele_consultation;
 
+import java.util.List;
+
+import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
+
 public class SmsRequestOBJ {
 	private Long beneficiaryRegID;
 	private Integer smsTemplateID;
@@ -8,6 +12,32 @@ public class SmsRequestOBJ {
 	private String createdBy;
 	private String tcDate;
 	private String tcPreviousDate;
+    private List<PrescribedDrugDetail> presObj;
+	private List<Object> diagnosis;
+
+	public List<PrescribedDrugDetail> getPresObj() {
+		return presObj;
+	}
+
+	public void setPresObj(List<PrescribedDrugDetail> presObj) {
+		this.presObj = presObj;
+	}
+
+	public List<Object> getDiagnosis() {
+		return diagnosis;
+	}
+
+	public void setDiagnosis(List<Object> diagnosis) {
+		this.diagnosis = diagnosis;
+	}
+
+	public List<PrescribedDrugDetail> getObj() {
+		return presObj;
+	}
+
+	public void setObj(List<PrescribedDrugDetail> obj) {
+		this.presObj = obj;
+	}
 
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;

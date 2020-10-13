@@ -11,6 +11,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import com.iemr.mmu.repo.nurse.ncdcare.NCDCareDiagnosisRepo;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -46,10 +47,12 @@ import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.BenClinicalObservationsRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.tc_consultation.TCRequestModelRepo;
 import com.iemr.mmu.repo.tc_consultation.TeleconsultationStatsRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.snomedct.SnomedServiceImpl;
+import com.iemr.mmu.service.tele_consultation.SMSGatewayServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.mapper.OutputMapper;
@@ -85,7 +88,12 @@ public class CommonDoctorServiceImpl {
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	@Autowired
 	private TCRequestModelRepo tCRequestModelRepo;
-
+    @Autowired
+    private PrescriptionDetailRepo prescriptionDetailRepo;
+    @Autowired
+    private NCDCareDiagnosisRepo NCDCareDiagnosisRepo;
+    @Autowired
+	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
 	@Autowired
 	public void setSnomedServiceImpl(SnomedServiceImpl snomedServiceImpl) {
 		this.snomedServiceImpl = snomedServiceImpl;
@@ -700,6 +708,9 @@ public class CommonDoctorServiceImpl {
 				docFlag = (short) 2;
 			} else {
 				docFlag = (short) 9;
+				//SH20094090, 10-10-2020, For TM Prescription SMS
+//				if(commonUtilityClass.getPrescriptionID()!=null)
+//				createTMPrescriptionSms(commonUtilityClass);
 			}
 		}
 
@@ -883,5 +894,19 @@ public class CommonDoctorServiceImpl {
 		}
 		return successFlag;
 	}
-
+  public void createTMPrescriptionSms(CommonUtilityClass commonUtilityClass)
+  {
+	  List<Object> diagnosis=null;
+	  List<PrescribedDrugDetail> pres=prescribedDrugDetailRepo.getPrescriptionDetails(commonUtilityClass.getPrescriptionID());
+	  if(commonUtilityClass.getVisitCategoryID()!=4 && commonUtilityClass.getVisitCategoryID()!=3)
+	  {
+		  diagnosis=prescriptionDetailRepo.getProvisionalDiagnosis(commonUtilityClass.getPrescriptionID());//add visit code too
+	  }
+	  else if(commonUtilityClass.getVisitCategoryID()==3)
+	  {
+		  diagnosis=NCDCareDiagnosisRepo.getNCDcondition(commonUtilityClass.getPrescriptionID());//add visit code too
+	  }
+	  int k = sMSGatewayServiceImpl.smsSenderGateway2("prescription",pres ,commonUtilityClass.getAuthorization() ,commonUtilityClass.getBeneficiaryRegID(),commonUtilityClass.getCreatedBy()
+			  ,diagnosis);
+  }
 }

@@ -30,8 +30,33 @@ public class CommonUtilityClass {
 	private String villageName;
 	private Integer districtID;
 	private String districtName;
-
 	private String specialistDiagnosis;
+	private Long prescriptionID;
+	private Integer visitCategoryID;
+	public String getAuthorization() {
+		return authorization;
+	}
+
+	public void setAuthorization(String authorization) {
+		this.authorization = authorization;
+	}
+
+	private String authorization;
+	public Long getPrescriptionID() {
+		return prescriptionID;
+	}
+
+	public void setPrescriptionID(Long prescriptionID) {
+		this.prescriptionID = prescriptionID;
+	}
+
+	public Integer getVisitCategoryID() {
+		return visitCategoryID;
+	}
+
+	public void setVisitCategoryID(Integer visitCategoryID) {
+		this.visitCategoryID = visitCategoryID;
+	}
 
 	public String getSpecialistDiagnosis() {
 		return specialistDiagnosis;

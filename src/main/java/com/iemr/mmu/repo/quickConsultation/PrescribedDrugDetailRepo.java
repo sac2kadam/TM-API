@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.quickConsultation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -26,4 +27,8 @@ public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugD
 	@Transactional
 	@Query(" UPDATE  PrescribedDrugDetail set deleted = true where id =:id ")
 	public int deletePrescribedmedicine(@Param("id") Long id);
+	
+	@Query(" SELECT p FROM PrescribedDrugDetail  WHERE p.prescriptionID =:prescriptionID "
+			+ " AND p.deleted = false ")
+	public List<PrescribedDrugDetail> getPrescriptionDetails(@Param("prescriptionID") Long prescriptionID);
 }
