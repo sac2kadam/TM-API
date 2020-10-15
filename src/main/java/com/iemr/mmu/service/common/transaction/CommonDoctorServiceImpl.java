@@ -93,12 +93,13 @@ public class CommonDoctorServiceImpl {
 	private TCRequestModelRepo tCRequestModelRepo;
 	@Autowired
 	private PNCDiagnosisRepo pNCDiagnosisRepo;
-    @Autowired
-    private PrescriptionDetailRepo prescriptionDetailRepo;
-    @Autowired
-    private NCDCareDiagnosisRepo NCDCareDiagnosisRepo;
-    @Autowired
+	@Autowired
+	private PrescriptionDetailRepo prescriptionDetailRepo;
+	@Autowired
+	private NCDCareDiagnosisRepo NCDCareDiagnosisRepo;
+	@Autowired
 	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
+
 	@Autowired
 	public void setSnomedServiceImpl(SnomedServiceImpl snomedServiceImpl) {
 		this.snomedServiceImpl = snomedServiceImpl;
@@ -147,6 +148,7 @@ public class CommonDoctorServiceImpl {
 	@Autowired
 	private TeleconsultationStatsRepo teleconsultationStatsRepo;
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
 	public Integer saveFindings(JsonObject obj) throws Exception {
 		int i = 0;
 		BenClinicalObservations clinicalObservations = InputMapper.gson().fromJson(obj, BenClinicalObservations.class);
@@ -682,7 +684,7 @@ public class CommonDoctorServiceImpl {
 	 * @param testList
 	 * @param drugList
 	 * @return
-	 * @throws IEMRException 
+	 * @throws IEMRException
 	 */
 	/// ------Start of beneficiary flow table after doctor data save-------------
 
@@ -714,7 +716,7 @@ public class CommonDoctorServiceImpl {
 				docFlag = (short) 2;
 			} else {
 				docFlag = (short) 9;
-				//SH20094090, 10-10-2020, For TM Prescription SMS
+				// SH20094090, 10-10-2020, For TM Prescription SMS
 //				if(commonUtilityClass.getPrescriptionID()!=null)
 //				createTMPrescriptionSms(commonUtilityClass);
 			}
@@ -767,10 +769,18 @@ public class CommonDoctorServiceImpl {
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
 					tcDate);
-     if(docFlag ==9||tcSpecialistFlag==9 ) {
-    	 if(commonUtilityClass.getPrescriptionID()!=null)
-				createTMPrescriptionSms(commonUtilityClass);
-     }
+		if (commonUtilityClass.getIsSpecialist() == true) {
+			if (docFlag == 9 && tcSpecialistFlag == 9) {
+				if (commonUtilityClass.getPrescriptionID() != null)
+					createTMPrescriptionSms(commonUtilityClass);
+			}
+			
+		} else if (commonUtilityClass.getIsSpecialist() == false) {
+			if (docFlag == 9 && tcRequestOBJ==null) {
+				if (commonUtilityClass.getPrescriptionID() != null)
+					createTMPrescriptionSms(commonUtilityClass);
+			}
+		}
 		return i;
 	}
 
@@ -861,10 +871,17 @@ public class CommonDoctorServiceImpl {
 					tcDate);
 
 		}
-		if(docFlag ==9||tcSpecialistFlag==9 ) {
-	    	 if(commonUtilityClass.getPrescriptionID()!=null)
+		if (commonUtilityClass.getIsSpecialist() == true) {
+			if (docFlag == 9 && tcSpecialistFlag == 9) {
+				if (commonUtilityClass.getPrescriptionID() != null)
 					createTMPrescriptionSms(commonUtilityClass);
-	     }
+			}
+		} else if (commonUtilityClass.getIsSpecialist() == false) {
+			if (docFlag == 9 && tcRequestOBJ==null) {
+				if (commonUtilityClass.getPrescriptionID() != null)
+					createTMPrescriptionSms(commonUtilityClass);
+			}
+		}
 		return i;
 	}
 
@@ -908,44 +925,40 @@ public class CommonDoctorServiceImpl {
 		}
 		return successFlag;
 	}
-  public void createTMPrescriptionSms(CommonUtilityClass commonUtilityClass) throws IEMRException
-  {
-	  List<Object> diagnosis=null;
-	  List<PrescribedDrugDetail> prescriptionDetails=null;
-	  try {
-		  prescriptionDetails=prescribedDrugDetailRepo.getPrescriptionDetails(commonUtilityClass.getPrescriptionID());
-	 
-	  if(commonUtilityClass.getVisitCategoryID()==6 || commonUtilityClass.getVisitCategoryID()==7||commonUtilityClass.getVisitCategoryID()==10)
-	  {
-		  diagnosis=prescriptionDetailRepo.getProvisionalDiagnosis(commonUtilityClass.getVisitCode(),commonUtilityClass.getPrescriptionID());//add visit code too
-	  }
-	  else if(commonUtilityClass.getVisitCategoryID()==3)
-	  {
-		  diagnosis=NCDCareDiagnosisRepo.getNCDcondition(commonUtilityClass.getVisitCode(),commonUtilityClass.getPrescriptionID());//add visit code too
-	  }
-	  else if(commonUtilityClass.getVisitCategoryID()==5)
-	  {
-		  diagnosis=pNCDiagnosisRepo.getProvisionalDiagnosis(commonUtilityClass.getVisitCode(),commonUtilityClass.getPrescriptionID());
-	  }
-	  }
-	  catch(Exception e)
-	  {
-		  throw new IEMRException("Exception during fetching diagnosis and precription detail ");
-	  }
-	  int k=0;
-	  try
-	  {
-	  if(prescriptionDetails!=null)
-	  k = sMSGatewayServiceImpl.smsSenderGateway2("prescription",prescriptionDetails ,commonUtilityClass.getAuthorization() ,commonUtilityClass.getBeneficiaryRegID(),commonUtilityClass.getCreatedBy()
-			  ,diagnosis);
-	  }
-	  catch(Exception e)
-	  {
-		  throw new IEMRException("Exception during sending TM prescription SMS ");
-	  }
-	  if(k!=0)
-		  logger.info("SMS sent for TM Prescription");
-	  else
-		  logger.info("SMS not sent for TM Prescription");
-  }
+
+	public void createTMPrescriptionSms(CommonUtilityClass commonUtilityClass) throws IEMRException {
+		List<Object> diagnosis = null;
+		List<PrescribedDrugDetail> prescriptionDetails = null;
+		try {
+			prescriptionDetails = prescribedDrugDetailRepo
+					.getPrescriptionDetails(commonUtilityClass.getPrescriptionID());
+
+			if (commonUtilityClass.getVisitCategoryID() == 6 || commonUtilityClass.getVisitCategoryID() == 7
+					|| commonUtilityClass.getVisitCategoryID() == 10) {
+				diagnosis = prescriptionDetailRepo.getProvisionalDiagnosis(commonUtilityClass.getVisitCode(),
+						commonUtilityClass.getPrescriptionID());// add visit code too
+			} else if (commonUtilityClass.getVisitCategoryID() == 3) {
+				diagnosis = NCDCareDiagnosisRepo.getNCDcondition(commonUtilityClass.getVisitCode(),
+						commonUtilityClass.getPrescriptionID());// add visit code too
+			} else if (commonUtilityClass.getVisitCategoryID() == 5) {
+				diagnosis = pNCDiagnosisRepo.getProvisionalDiagnosis(commonUtilityClass.getVisitCode(),
+						commonUtilityClass.getPrescriptionID());
+			}
+		} catch (Exception e) {
+			throw new IEMRException("Exception during fetching diagnosis and precription detail ");
+		}
+		int k = 0;
+		try {
+			if (prescriptionDetails != null)
+				k = sMSGatewayServiceImpl.smsSenderGateway2("prescription", prescriptionDetails,
+						commonUtilityClass.getAuthorization(), commonUtilityClass.getBeneficiaryRegID(),
+						commonUtilityClass.getCreatedBy(), diagnosis);
+		} catch (Exception e) {
+			throw new IEMRException("Exception during sending TM prescription SMS ");
+		}
+		if (k != 0)
+			logger.info("SMS sent for TM Prescription");
+		else
+			logger.info("SMS not sent for TM Prescription");
+	}
 }
