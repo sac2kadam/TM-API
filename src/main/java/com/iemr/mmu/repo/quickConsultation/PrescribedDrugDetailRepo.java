@@ -28,7 +28,6 @@ public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugD
 	@Query(" UPDATE  PrescribedDrugDetail set deleted = true where id =:id ")
 	public int deletePrescribedmedicine(@Param("id") Long id);
 	
-	@Query(" SELECT p FROM PrescribedDrugDetail p WHERE p.prescriptionID =:prescriptionID "
-			+ " AND p.deleted = false ")
+	@Query(" SELECT p FROM PrescribedDrugDetail p WHERE p.prescriptionID =:prescriptionID ")
 	public List<PrescribedDrugDetail> getPrescriptionDetails(@Param("prescriptionID") Long prescriptionID);
 }

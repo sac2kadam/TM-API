@@ -56,7 +56,7 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long> {
 			@Param("confirmatoryDiagnosisSCTTerm") String confirmatoryDiagnosisSCTTerm,
 			@Param("prescriptionID") Long prescriptionID);
 	//shubham 13-10-2020,TM Prescription SMS
-	@Query("SELECT processed from PNCDiagnosis where deleted = false AND visitCode = :visitCode "
+	@Query("SELECT processed from PNCDiagnosis where visitCode = :visitCode "
 			+ " AND prescriptionID =:prescriptionID ")
 	public  List<Object>  getProvisionalDiagnosis(@Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
