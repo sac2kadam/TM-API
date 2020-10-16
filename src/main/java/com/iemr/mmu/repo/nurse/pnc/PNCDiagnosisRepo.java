@@ -2,6 +2,7 @@ package com.iemr.mmu.repo.nurse.pnc;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -53,6 +54,11 @@ public interface PNCDiagnosisRepo extends CrudRepository<PNCDiagnosis, Long> {
 			@Param("provisionalDiagnosisSCTTerm") String provisionalDiagnosisSCTTerm,
 			@Param("confirmatoryDiagnosisSCTCode") String confirmatoryDiagnosisSCTCode,
 			@Param("confirmatoryDiagnosisSCTTerm") String confirmatoryDiagnosisSCTTerm,
+			@Param("prescriptionID") Long prescriptionID);
+	//shubham 13-10-2020,TM Prescription SMS
+	@Query("SELECT processed from PNCDiagnosis where visitCode = :visitCode "
+			+ " AND prescriptionID =:prescriptionID ")
+	public  List<Object>  getProvisionalDiagnosis(@Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
 
 }

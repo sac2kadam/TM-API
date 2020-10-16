@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.nurse.ncdcare;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -34,5 +35,10 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 			@Param("ncdComplication") String ncdComplication, @Param("ncdCareType") String ncdCareType,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("prescriptionID") Long prescriptionID);
+	
+	@Query("SELECT ncdScreeningCondition from NCDCareDiagnosis where visitCode = :visitCode "
+			+ " AND prescriptionID =:prescriptionID ")
+	public List<Object> getNCDcondition(@Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
 }

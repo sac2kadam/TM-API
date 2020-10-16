@@ -785,6 +785,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(6);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 						isMedicinePrescribed, tcRequestOBJ);
 
@@ -1398,6 +1405,13 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
+				if(prescriptionID!=null)
+				{
+					commonUtilityClass.setPrescriptionID(prescriptionID);
+					commonUtilityClass.setVisitCategoryID(6);
+					commonUtilityClass.setAuthorization(Authorization);
+					
+				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
 

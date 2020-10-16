@@ -71,7 +71,7 @@ public class HTTPRequestInterceptor extends HandlerInterceptorAdapter {
 					break;
 				default:
 					String remoteAddress = request.getHeader("X-FORWARDED-FOR");
-					if (remoteAddress == null || remoteAddress.trim().length() == 0) {
+				if (remoteAddress == null || remoteAddress.trim().length() == 0) {
 						remoteAddress = request.getRemoteAddr();
 					}
 					validator.checkKeyExists(authorization, remoteAddress);
