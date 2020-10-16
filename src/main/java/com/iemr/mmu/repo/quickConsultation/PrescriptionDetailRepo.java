@@ -61,7 +61,8 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 	// covid 19
 	// PrescriptionDetail findByBeneficiaryRegIDAndVisitCode(Long benRegID, Long
 	// visitCode);
-	@Query("SELECT diagnosisProvided from PrescriptionDetail t where t.visitCode = :visitCode AND t.prescriptionID = :prescriptionID")
+	@Query("SELECT diagnosisProvided from PrescriptionDetail t where t.visitCode = :visitCode AND t.prescriptionID = :prescriptionID AND (t.deleted IS FALSE OR t.deleted IS NULL) ")
+	
 	public List<Object> getProvisionalDiagnosis(@Param("visitCode") Long visitCode,@Param("prescriptionID") Long prescriptionID);
 
 }

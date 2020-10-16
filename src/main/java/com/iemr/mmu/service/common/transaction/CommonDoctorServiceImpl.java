@@ -932,12 +932,15 @@ public class CommonDoctorServiceImpl {
 	public void createTMPrescriptionSms(CommonUtilityClass commonUtilityClass) throws IEMRException {
 		List<Object> diagnosis = null;
 		List<PrescribedDrugDetail> prescriptionDetails = null;
+		int k = 0;
+		prescriptionDetails = prescribedDrugDetailRepo
+				.getPrescriptionDetails(commonUtilityClass.getPrescriptionID());
+if(prescriptionDetails!=null && prescriptionDetails.size()>0) {
 		try {
-			prescriptionDetails = prescribedDrugDetailRepo
-					.getPrescriptionDetails(commonUtilityClass.getPrescriptionID());
-
+			
+	
 			if (commonUtilityClass.getVisitCategoryID() == 6 || commonUtilityClass.getVisitCategoryID() == 7
-					|| commonUtilityClass.getVisitCategoryID() == 10) {
+					|| commonUtilityClass.getVisitCategoryID() == 8) {
 				diagnosis = prescriptionDetailRepo.getProvisionalDiagnosis(commonUtilityClass.getVisitCode(),
 						commonUtilityClass.getPrescriptionID());// add visit code too
 			} else if (commonUtilityClass.getVisitCategoryID() == 3) {
@@ -950,7 +953,7 @@ public class CommonDoctorServiceImpl {
 		} catch (Exception e) {
 			throw new IEMRException("Exception during fetching diagnosis and precription detail ");
 		}
-		int k = 0;
+		
 		try {
 			if (prescriptionDetails != null)
 				k = sMSGatewayServiceImpl.smsSenderGateway2("prescription", prescriptionDetails,
@@ -959,6 +962,7 @@ public class CommonDoctorServiceImpl {
 		} catch (Exception e) {
 			throw new IEMRException("Exception during sending TM prescription SMS ");
 		}
+}
 		if (k != 0)
 			logger.info("SMS sent for TM Prescription");
 		else

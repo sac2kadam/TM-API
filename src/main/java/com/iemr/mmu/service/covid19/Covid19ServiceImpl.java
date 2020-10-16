@@ -1037,7 +1037,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 				if(prescriptionID!=null)
 				{
 					commonUtilityClass.setPrescriptionID(prescriptionID);
-					commonUtilityClass.setVisitCategoryID(10);
+					commonUtilityClass.setVisitCategoryID(8);
 					commonUtilityClass.setAuthorization(Authorization);
 					
 				}
@@ -1257,7 +1257,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 				if(prescriptionID!=null)
 				{
 					commonUtilityClass.setPrescriptionID(prescriptionID);
-					commonUtilityClass.setVisitCategoryID(10);
+					commonUtilityClass.setVisitCategoryID(8);
 					commonUtilityClass.setAuthorization(Authorization);
 					
 				}

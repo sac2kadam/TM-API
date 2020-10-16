@@ -38,7 +38,7 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 			@Param("prescriptionID") Long prescriptionID);
 	
 	@Query("SELECT ncdScreeningCondition from NCDCareDiagnosis where visitCode = :visitCode "
-			+ " AND prescriptionID =:prescriptionID ")
+			+ " AND prescriptionID =:prescriptionID AND (deleted <> true OR deleted IS NULL)")
 	public List<Object> getNCDcondition(@Param("visitCode") Long visitCode,
 			@Param("prescriptionID") Long prescriptionID);
 }
