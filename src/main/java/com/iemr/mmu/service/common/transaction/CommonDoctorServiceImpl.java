@@ -769,8 +769,9 @@ public class CommonDoctorServiceImpl {
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID,
 					tcDate);
+		//Shubham Shekhar,15-10-2020,TM Prescription SMS
 		if (commonUtilityClass.getIsSpecialist() == true) {
-			if (docFlag == 9 && tcSpecialistFlag == 9) {
+			if (tcSpecialistFlag == 9) {
 				if (commonUtilityClass.getPrescriptionID() != null)
 					createTMPrescriptionSms(commonUtilityClass);
 			}
@@ -871,8 +872,10 @@ public class CommonDoctorServiceImpl {
 					tcDate);
 
 		}
+		
+		//Shubham Shekhar,15-10-2020,TM Prescription SMS
 		if (commonUtilityClass.getIsSpecialist() == true) {
-			if (docFlag == 9 && tcSpecialistFlag == 9) {
+			if (tcSpecialistFlag == 9) {
 				if (commonUtilityClass.getPrescriptionID() != null)
 					createTMPrescriptionSms(commonUtilityClass);
 			}
@@ -925,7 +928,7 @@ public class CommonDoctorServiceImpl {
 		}
 		return successFlag;
 	}
-
+	//Shubham Shekhar,15-10-2020,TM Prescription SMS
 	public void createTMPrescriptionSms(CommonUtilityClass commonUtilityClass) throws IEMRException {
 		List<Object> diagnosis = null;
 		List<PrescribedDrugDetail> prescriptionDetails = null;
