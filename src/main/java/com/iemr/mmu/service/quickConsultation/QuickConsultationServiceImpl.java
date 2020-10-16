@@ -337,6 +337,15 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (prescriptionSuccessFlag != null && prescriptionSuccessFlag > 0)
 				&& (investigationSuccessFlag != null && investigationSuccessFlag > 0)) {
 
+
+			// call method to update beneficiary flow table
+			if(prescriptionID!=null)
+			{
+				commonUtilityClass.setPrescriptionID(prescriptionID);
+				commonUtilityClass.setVisitCategoryID(7);
+				commonUtilityClass.setAuthorization(Authorization);
+				
+			}
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 					isMedicinePrescribed, tcRequestOBJ);
@@ -502,13 +511,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				&& (null != labTestOrderSuccessFlag && labTestOrderSuccessFlag > 0)) {
 
 			// call method to update beneficiary flow table
-			if(prescriptionID!=null)
-			{
-				commonUtilityClass.setPrescriptionID(prescriptionID);
-				commonUtilityClass.setVisitCategoryID(7);
-				commonUtilityClass.setAuthorization(Authorization);
-				
-			}
+			
 			if(prescriptionID!=null)
 			{
 				commonUtilityClass.setPrescriptionID(prescriptionID);
