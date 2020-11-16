@@ -68,7 +68,9 @@ public class TestComponentMaster {
 	@Expose
 	@Column(name = "LastModDate", insertable = false)
 	private Timestamp lastModDate;
-
+	@Expose
+	@Column(name = "Loinc_Num")
+	private String lionicNum;
 	@Expose
 	@OneToMany(mappedBy = "testComponentMaster", cascade = CascadeType.ALL)
 	private Set<LabResultEntry> labResultEntry;
@@ -183,6 +185,14 @@ public class TestComponentMaster {
 
 	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getLionicNum() {
+		return lionicNum;
+	}
+
+	public void setLionicNum(String lionicNum) {
+		this.lionicNum = lionicNum;
 	}
 
 	public String getModifiedBy() {
