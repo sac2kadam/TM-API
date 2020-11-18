@@ -238,6 +238,8 @@ public class LabResultEntry {
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
+					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
@@ -267,10 +269,13 @@ public class LabResultEntry {
 					returnList.add(tmpOBJ);
 
 				} else {
-					compDetails = new HashMap<String, Object>();
+ 					compDetails = new HashMap<String, Object>();
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
+					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
+					
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
