@@ -100,7 +100,8 @@ public class WrapperImmunizationHistory {
 				for (Map<String, Object> vaccine : vaccinesList) {
 					ChildVaccineDetail1 vaccineDetail = new ChildVaccineDetail1(
 							childVaccineDetail.getDefaultReceivingAge(), vaccine.get("vaccine").toString(),
-							(Boolean) vaccine.get("status"));
+							(Boolean) vaccine.get("status"), vaccine.get("sctCode") == null ? null : vaccine.get("sctCode").toString(),
+									vaccine.get("sctTerm") == null ? null : vaccine.get("sctTerm").toString());
 					vaccineDetail.setBeneficiaryRegID(beneficiaryRegID);
 					vaccineDetail.setBenVisitID(benVisitID);
 					vaccineDetail.setVisitCode(visitCode);
@@ -156,6 +157,8 @@ public class WrapperImmunizationHistory {
 				vaccines = new HashMap<String, Object>();
 				vaccines.put("vaccine", (String) obj[4]);
 				vaccines.put("status", (Boolean) obj[5]);
+				vaccines.put("sctCode", (String) obj[7]);
+				vaccines.put("sctTerm", (String) obj[8]);
 				vaccinesList.add(vaccines);
 				childVaccine.setVaccines(vaccinesList);
 
