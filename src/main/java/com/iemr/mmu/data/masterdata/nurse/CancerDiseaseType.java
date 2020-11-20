@@ -36,17 +36,43 @@ public class CancerDiseaseType {
 	@Column(name = "Deleted")
 	private Boolean deleted;
 
-	public CancerDiseaseType(Short cancerDiseaseTypeID, String cancerDiseaseType, String gender) {
+	@Expose
+	@Column(name = "Sctcode")
+	private String snomedCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String snomedTerm;
+	
+	public String getSnomedCode() {
+		return snomedCode;
+	}
+
+	public void setSnomedCode(String snomedCode) {
+		this.snomedCode = snomedCode;
+	}
+
+	public String getSnomedTerm() {
+		return snomedTerm;
+	}
+
+	public void setSnomedTerm(String snomedTerm) {
+		this.snomedTerm = snomedTerm;
+	}
+
+	public CancerDiseaseType(Short cancerDiseaseTypeID, String cancerDiseaseType, String gender, String snomedCode, String snomedTerm) {
 		super();
 		this.cancerDiseaseTypeID = cancerDiseaseTypeID;
 		this.cancerDiseaseType = cancerDiseaseType;
 		this.gender = gender;
+		this.snomedCode = snomedCode;
+		this.snomedTerm = snomedTerm;
 	}
 	
 	public static ArrayList<CancerDiseaseType> getCancerDiseaseTypeMasterData(ArrayList<Object[]> resList) {
 		ArrayList<CancerDiseaseType> resArray = new ArrayList<>();
 		for (Object[] obj : resList) {
-			CancerDiseaseType cOBJ = new CancerDiseaseType((Short) obj[0], (String) obj[1],  (String) obj[2]);
+			CancerDiseaseType cOBJ = new CancerDiseaseType((Short) obj[0], (String) obj[1],  (String) obj[2], (String) obj[3], (String) obj[4]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
