@@ -57,6 +57,14 @@ public class OptionalVaccinations {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
 	public Short getVaccineID() {
 		return vaccineID;
@@ -138,19 +146,37 @@ public class OptionalVaccinations {
 		this.lastModDate = lastModDate;
 	}
 	
-	public OptionalVaccinations(Short vaccineID, String vaccineName) {
+	public OptionalVaccinations(Short vaccineID, String vaccineName,String sctCode,String sctTerm) {
 		super();
 		this.vaccineID = vaccineID;
 		this.vaccineName = vaccineName;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 
 	public static ArrayList<OptionalVaccinations> getOptionalVaccinations(ArrayList<Object[]> resList) {
 		ArrayList<OptionalVaccinations> resArray = new ArrayList<OptionalVaccinations>();
 		for (Object[] obj : resList) {
-			OptionalVaccinations cOBJ = new OptionalVaccinations((Short)obj[0], (String)obj[1]);
+			OptionalVaccinations cOBJ = new OptionalVaccinations((Short)obj[0], (String)obj[1],(String)obj[2],(String)obj[3]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 	
 }

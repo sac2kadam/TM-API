@@ -11,7 +11,7 @@ import com.iemr.mmu.data.masterdata.anc.OptionalVaccinations;
 @Repository
 public interface OptionalVaccinationsRepo extends CrudRepository<OptionalVaccinations, Short>{
 	
-	@Query("select vaccineID, vaccineName from OptionalVaccinations where deleted = false"
+	@Query("select vaccineID, vaccineName, sctCode, sctTerm from OptionalVaccinations where deleted = false"
 			+ " order by vaccineName")
 	public ArrayList<Object[]> getOptionalVaccinations();
 }

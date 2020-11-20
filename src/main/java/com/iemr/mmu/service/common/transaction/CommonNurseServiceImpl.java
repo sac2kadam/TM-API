@@ -2412,7 +2412,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
 						childVaccineDetail.getVisitCode(), childVaccineDetail.getDefaultReceivingAge(),
-						childVaccineDetail.getVaccineName());
+						childVaccineDetail.getVaccineName(),childVaccineDetail.getSctCode(),childVaccineDetail.getSctTerm());
 			}
 		}
 		return r;

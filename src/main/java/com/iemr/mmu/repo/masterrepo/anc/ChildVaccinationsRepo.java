@@ -11,6 +11,6 @@ import com.iemr.mmu.data.masterdata.anc.ChildVaccinations;
 @Repository
 public interface ChildVaccinationsRepo extends CrudRepository<ChildVaccinations, Short>{
 	
-	@Query("select vaccinationID, vaccinationTime, vaccineName from ChildVaccinations where deleted = false order by vaccineName")
+	@Query("select vaccinationID, vaccinationTime, vaccineName,sctCode,sctTerm from ChildVaccinations where deleted = false order by vaccineName")
 	public ArrayList<Object[]> getChildVaccinations();
 }

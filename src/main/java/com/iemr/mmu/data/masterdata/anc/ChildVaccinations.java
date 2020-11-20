@@ -52,18 +52,28 @@ public class ChildVaccinations {
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
+	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
-	public ChildVaccinations(Short vaccinationID, String vaccinationTime, String vaccineName) {
+	public ChildVaccinations(Short vaccinationID, String vaccinationTime, String vaccineName ,String sctCode, String sctTerm) {
 		super();
 		this.vaccinationID = vaccinationID;
 		this.vaccinationTime = vaccinationTime;
 		this.vaccineName = vaccineName;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 	
 	public static ArrayList<ChildVaccinations> getChildVaccinations(ArrayList<Object[]> resList) {
 		ArrayList<ChildVaccinations> resArray = new ArrayList<ChildVaccinations>();
 		for (Object[] obj : resList) {
-			ChildVaccinations cOBJ = new ChildVaccinations((Short)obj[0], (String)obj[1], (String)obj[2]);
+			ChildVaccinations cOBJ = new ChildVaccinations((Short)obj[0], (String)obj[1], (String)obj[2],(String)obj[3],(String)obj[4]);
 			resArray.add(cOBJ);
 		}
 		return resArray;
