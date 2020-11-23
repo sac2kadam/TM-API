@@ -10,7 +10,8 @@ import com.iemr.mmu.data.masterdata.nurse.CancerDiseaseType;
 @Repository
 public interface CancerDiseaseMasterRepo extends CrudRepository<CancerDiseaseType, Long>{
 	
-	@Query("select cancerDiseaseTypeID, cancerDiseaseType, gender from CancerDiseaseType where deleted = false order by cancerDiseaseType")
+	@Query("SELECT cancerDiseaseTypeID, cancerDiseaseType, gender, snomedCode, snomedTerm FROM CancerDiseaseType "
+			+ "WHERE deleted = false ORDER BY cancerDiseaseType")
 	public ArrayList<Object[]> getCancerDiseaseMaster();
 	
 }

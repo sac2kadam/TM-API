@@ -116,6 +116,14 @@ public class ChildOptionalVaccineDetail {
 
 	@Transient
 	private Date captureDate;
+	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
 	public Integer getVanID() {
 		return vanID;
@@ -314,7 +322,7 @@ public class ChildOptionalVaccineDetail {
 	}
 
 	public ChildOptionalVaccineDetail(String defaultReceivingAge, String vaccineName, String status,
-			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName) {
+			Timestamp receivedDate, String actualReceivingAge, String receivedFacilityName ,String sctCode, String sctTerm) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
@@ -322,6 +330,8 @@ public class ChildOptionalVaccineDetail {
 		this.receivedDate = receivedDate;
 		this.actualReceivingAge = actualReceivingAge;
 		this.receivedFacilityName = receivedFacilityName;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 
 	public ChildOptionalVaccineDetail(Date createdDate, String defaultReceivingAge, String vaccineName, String status,
@@ -343,6 +353,22 @@ public class ChildOptionalVaccineDetail {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 
 }

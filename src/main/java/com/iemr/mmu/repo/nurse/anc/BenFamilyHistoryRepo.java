@@ -21,7 +21,7 @@ public interface BenFamilyHistoryRepo extends CrudRepository<BenFamilyHistory, L
 	public ArrayList<Object[]> getBenFamilyHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, familyMember, diseaseTypeID, diseaseType, otherDiseaseType, "
-			+ "isGeneticDisorder, geneticDisorder, isConsanguineousMarrige, visitCode  FROM BenFamilyHistory "
+			+ "isGeneticDisorder, geneticDisorder, isConsanguineousMarrige, visitCode, snomedCode, snomedTerm  FROM BenFamilyHistory "
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenFamilyHistoryDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	

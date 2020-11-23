@@ -1012,6 +1012,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 			obstetricSuccessFlag = 1;
 		}
 
+		//update immunization history
 		if (historyOBJ != null && historyOBJ.has("immunizationHistory")
 				&& !historyOBJ.get("immunizationHistory").isJsonNull()) {
 

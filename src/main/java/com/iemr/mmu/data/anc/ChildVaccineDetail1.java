@@ -129,6 +129,14 @@ public class ChildVaccineDetail1 {
 
 	@Transient
 	private Date captureDate;
+	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
 	public Integer getVanID() {
 		return vanID;
@@ -351,11 +359,13 @@ public class ChildVaccineDetail1 {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status) {
+	public ChildVaccineDetail1(String defaultReceivingAge, String vaccineName, Boolean status, String sctCode, String sctTerm) {
 		super();
 		this.defaultReceivingAge = defaultReceivingAge;
 		this.vaccineName = vaccineName;
 		this.status = status;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 
 	public ChildVaccineDetail1(Date createdDate, String defaultReceivingAge, String vaccineName, Boolean status) {
@@ -376,6 +386,22 @@ public class ChildVaccineDetail1 {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 
 }
