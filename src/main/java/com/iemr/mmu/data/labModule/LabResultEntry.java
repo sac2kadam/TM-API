@@ -136,12 +136,12 @@ public class LabResultEntry {
 	@ManyToOne
 	@JoinColumn(name = "testComponentID", insertable = false)
 	private TestComponentMaster testComponentMaster;
-
+    
 	@Expose
 	@ManyToOne
 	@JoinColumn(name = "procedureID", insertable = false)
 	private ProcedureData procedureData;
-
+	
 	@Expose
 	@Transient
 	private String procedureName;
@@ -240,6 +240,8 @@ public class LabResultEntry {
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
+					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
+					
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
@@ -275,6 +277,7 @@ public class LabResultEntry {
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
 					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
+					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
 					
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());

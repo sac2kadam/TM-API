@@ -133,6 +133,14 @@ public class BenAllergyHistory {
 	@Transient
 	private Date captureDate;
 
+	@Expose
+	@Column(name = "Sctcode")
+	private String snomedCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String snomedTerm;
+	
 	public BenAllergyHistory() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -152,7 +160,7 @@ public class BenAllergyHistory {
 
 	public BenAllergyHistory(String allergyStatus, String allergyType, String allergenName,
 			String allergicReactionTypeID, String allergicReactionType, String otherAllergicReaction, String remarks,
-			Long visitCode) {
+			Long visitCode, String snomedCode, String snomedTerm) {
 		super();
 		this.allergyStatus = allergyStatus;
 		this.allergyType = allergyType;
@@ -162,6 +170,24 @@ public class BenAllergyHistory {
 		this.otherAllergicReaction = otherAllergicReaction;
 		this.remarks = remarks;
 		this.visitCode = visitCode;
+		this.snomedCode = snomedCode;
+		this.snomedTerm = snomedTerm;
+	}
+
+	public String getSnomedCode() {
+		return snomedCode;
+	}
+
+	public void setSnomedCode(String snomedCode) {
+		this.snomedCode = snomedCode;
+	}
+
+	public String getSnomedTerm() {
+		return snomedTerm;
+	}
+
+	public void setSnomedTerm(String snomedTerm) {
+		this.snomedTerm = snomedTerm;
 	}
 
 	public Integer getVanID() {
@@ -458,7 +484,7 @@ public class BenAllergyHistory {
 
 				BenAllergyHistory allergyHistory = new BenAllergyHistory((String) obj[3], (String) obj[4],
 						(String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (String) obj[9],
-						(Long) obj[10]);
+						(Long) obj[10], (String) obj[11], (String) obj[12]);
 
 				String allergicReactionTypeID = allergyHistory.getAllergicReactionTypeID();
 				String[] allergicReactionTypeIDs = null;

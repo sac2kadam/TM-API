@@ -12,7 +12,7 @@ import com.iemr.mmu.data.masterdata.anc.DiseaseType;
 @Repository
 public interface DiseaseTypeRepo extends CrudRepository<DiseaseType, Short> {
 
-	@Query(" SELECT diseaseTypeID, diseaseType FROM DiseaseType WHERE deleted = false "
+	@Query(" SELECT diseaseTypeID, diseaseType, snomedCode, snomedTerm FROM DiseaseType WHERE deleted = false "
 			+ " ORDER BY diseaseType")
 	public ArrayList<Object[]> getDiseaseTypes();
 }

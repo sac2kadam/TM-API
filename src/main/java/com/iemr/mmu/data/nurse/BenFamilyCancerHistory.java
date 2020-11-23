@@ -98,6 +98,14 @@ public class BenFamilyCancerHistory {
 	@Transient
 	private Date captureDate;
 
+	@Expose
+	@Column(name = "Sctcode")
+	private String snomedCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String snomedTerm;
+	
 	public BenFamilyCancerHistory() {
 	}
 
@@ -124,6 +132,22 @@ public class BenFamilyCancerHistory {
 		this.modifiedBy = modifiedBy;
 		this.lastModDate = lastModDate;
 		this.familyMemberList = familyMemberList;
+	}
+
+	public String getSnomedCode() {
+		return snomedCode;
+	}
+
+	public void setSnomedCode(String snomedCode) {
+		this.snomedCode = snomedCode;
+	}
+
+	public String getSnomedTerm() {
+		return snomedTerm;
+	}
+
+	public void setSnomedTerm(String snomedTerm) {
+		this.snomedTerm = snomedTerm;
 	}
 
 	public Long getID() {
