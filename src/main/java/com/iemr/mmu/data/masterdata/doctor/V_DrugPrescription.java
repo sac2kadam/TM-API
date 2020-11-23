@@ -38,6 +38,14 @@ public class V_DrugPrescription {
 	@Expose
 	@Column(name = "facilityID")
 	private Integer facilityID;
+	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
 
 	public V_DrugPrescription() {
 	}
@@ -126,6 +134,22 @@ public class V_DrugPrescription {
 
 	public void setFacilityID(Integer facilityID) {
 		this.facilityID = facilityID;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 
 }

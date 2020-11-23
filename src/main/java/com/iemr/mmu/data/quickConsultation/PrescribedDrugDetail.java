@@ -148,13 +148,21 @@ public class PrescribedDrugDetail {
 	@Column(name = "isEDL")
 	private Boolean isEDL;
 	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
+	
 	public PrescribedDrugDetail() {
 	}
 
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
 			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
-			String specialInstruction, Integer qtyPrescribed , Boolean isEDL) {
+			String specialInstruction, Integer qtyPrescribed , Boolean isEDL, String sctTerm, String sctCode) {
 		super();
 		this.id = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
@@ -172,6 +180,8 @@ public class PrescribedDrugDetail {
 		this.instructions = specialInstruction;
 		this.qtyPrescribed = qtyPrescribed;
 		this.isEDL = isEDL;
+		this.sctCode = sctCode;
+		this.sctTerm = sctTerm;
 	}
 
 	public static ArrayList<PrescribedDrugDetail> getprescribedDrugs(ArrayList<Object[]> resList) {
@@ -182,7 +192,7 @@ public class PrescribedDrugDetail {
 				cOBJ = new PrescribedDrugDetail((Long) obj[0], (Long) obj[1], (String) obj[2], (String) obj[3],
 						(Integer) obj[4], (String) obj[5], (String) obj[6], (String) obj[7], (String) obj[8],
 						(String) obj[9], (String) obj[10], (String) obj[11], (String) obj[12], (String) obj[13],
-						(Integer) obj[14], (Boolean)obj[15]);
+						(Integer) obj[14], (Boolean)obj[15], (String) obj[16], (String) obj[17]);
 				resArray.add(cOBJ);
 			}
 		}
@@ -443,6 +453,22 @@ public class PrescribedDrugDetail {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
 	}
 
 }
