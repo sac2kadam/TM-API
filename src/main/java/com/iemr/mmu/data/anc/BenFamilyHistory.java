@@ -131,8 +131,32 @@ public class BenFamilyHistory {
 	@Expose
 	private List<Map<String, Object>> familyDiseaseList;
 
+	@Expose
+	@Column(name = "Sctcode")
+	private String snomedCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String snomedTerm;
+	
 	@Transient
 	private Date captureDate;
+
+	public String getSnomedCode() {
+		return snomedCode;
+	}
+
+	public void setSnomedCode(String snomedCode) {
+		this.snomedCode = snomedCode;
+	}
+
+	public String getSnomedTerm() {
+		return snomedTerm;
+	}
+
+	public void setSnomedTerm(String snomedTerm) {
+		this.snomedTerm = snomedTerm;
+	}
 
 	public Integer getVanID() {
 		return vanID;
@@ -436,12 +460,15 @@ public class BenFamilyHistory {
 		this.visitCode = visitCode;
 	}
 
-	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType) {
+	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType, 
+			String snomedCode, String snomedTerm) {
 		super();
 		this.familyMember = familyMember;
 		this.diseaseTypeID = diseaseTypeID;
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
+		this.snomedCode = snomedCode;
+		this.snomedTerm =snomedTerm;
 	}
 
 	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory) {
@@ -456,12 +483,14 @@ public class BenFamilyHistory {
 
 			for (Object[] obj : familyHistory) {
 				BenFamilyHistory familyDetails = new BenFamilyHistory((String) obj[3], (Short) obj[4], (String) obj[5],
-						(String) obj[6]);
+						(String) obj[6], (String) obj[11], (String) obj[12]);
 
 				Map<String, Object> familyDisease = new HashMap<String, Object>();
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
+				familyDisease.put("snomedCode", familyDetails.getSnomedCode());
+				familyDisease.put("snomedTerm", familyDetails.getSnomedTerm());
 
 				if (null != familyDetails.getFamilyMember()) {
 					String[] familyMembers = familyDetails.getFamilyMember().split(",");
