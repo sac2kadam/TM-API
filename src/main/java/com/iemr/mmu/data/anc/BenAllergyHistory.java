@@ -414,6 +414,12 @@ public class BenAllergyHistory {
 				if (null != allergic.get("allergyType")) {
 					benAllergyHistory.setAllergyType(allergic.get("allergyType").toString());
 				}
+				if (null != allergic.get("snomedCode")) {
+					benAllergyHistory.setSnomedCode(allergic.get("snomedCode").toString());
+				}
+				if (null != allergic.get("snomedTerm")) {
+					benAllergyHistory.setSnomedTerm(allergic.get("snomedTerm").toString());
+				}
 
 				benAllergyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benAllergyHistory.setBenVisitID(benVisitID);
