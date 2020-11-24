@@ -422,6 +422,13 @@ public class BenFamilyHistory {
 					benFamilyHistory.setOtherDiseaseType(disease.get("otherDiseaseType").toString());
 				}
 
+				if (null != disease.get("snomedCode")) {
+					benFamilyHistory.setSnomedCode(disease.get("snomedCode").toString());
+				}
+				if (null != disease.get("snomedTerm")) {
+					benFamilyHistory.setSnomedTerm(disease.get("snomedTerm").toString());
+				}
+				
 				List<String> familyMemberList = (List<String>) disease.get("familyMembers");
 
 				String familyMembers = "";
