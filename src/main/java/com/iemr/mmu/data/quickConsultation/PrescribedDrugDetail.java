@@ -162,7 +162,7 @@ public class PrescribedDrugDetail {
 	public PrescribedDrugDetail(Long prescribedDrugID, Long prescriptionID, String drugForm,
 			String drugTradeOrBrandName, Integer drugID, String genericDrugName, String drugStrength, String dose,
 			String route, String frequency, String drugDuration, String drugDurationUnit, String relationToFood,
-			String specialInstruction, Integer qtyPrescribed , Boolean isEDL, String sctTerm, String sctCode) {
+			String specialInstruction, Integer qtyPrescribed , Boolean isEDL, String sctCode, String sctTerm) {
 		super();
 		this.id = prescribedDrugID;
 		this.prescriptionID = prescriptionID;
