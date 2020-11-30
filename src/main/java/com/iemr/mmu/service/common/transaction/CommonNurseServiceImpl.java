@@ -748,6 +748,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveAllergyHistory(BenAllergyHistory benAllergyHistory) {
 		Long allergyHistorySuccessFlag = null;
 
+		if (benAllergyHistory.getSnomedCode() == null)
+			benAllergyHistory.setSnomedTerm(null);
+
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 		if (allergyList.size() > 0) {
 			ArrayList<BenAllergyHistory> res = (ArrayList<BenAllergyHistory>) benAllergyHistoryRepo.save(allergyList);
@@ -2204,7 +2207,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public int updateBenAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
 		int delRes = 0;
+
 		if (null != benAllergyHistory) {
+
+			if (benAllergyHistory.getSnomedCode() == null)
+				benAllergyHistory.setSnomedTerm(null);
 
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
 					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getVisitCode());
@@ -2412,7 +2419,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
 						childVaccineDetail.getVisitCode(), childVaccineDetail.getDefaultReceivingAge(),
-						childVaccineDetail.getVaccineName(),childVaccineDetail.getSctCode(),childVaccineDetail.getSctTerm());
+						childVaccineDetail.getVaccineName(), childVaccineDetail.getSctCode(),
+						childVaccineDetail.getSctTerm());
 			}
 		}
 		return r;
