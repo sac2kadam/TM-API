@@ -748,8 +748,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public Long saveAllergyHistory(BenAllergyHistory benAllergyHistory) {
 		Long allergyHistorySuccessFlag = null;
 
-		if (benAllergyHistory.getSnomedCode() == null)
+		if (benAllergyHistory.getSnomedCode() == null) {
 			benAllergyHistory.setSnomedTerm(null);
+			benAllergyHistory.setAllergyName(null);
+		}
 
 		ArrayList<BenAllergyHistory> allergyList = benAllergyHistory.getBenAllergicHistory();
 		if (allergyList.size() > 0) {
@@ -2210,8 +2212,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		if (null != benAllergyHistory) {
 
-			if (benAllergyHistory.getSnomedCode() == null)
+			if (benAllergyHistory.getSnomedCode() == null) {
 				benAllergyHistory.setSnomedTerm(null);
+				benAllergyHistory.setAllergyName(null);
+			}
 
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
 					benAllergyHistory.getBeneficiaryRegID(), benAllergyHistory.getVisitCode());
