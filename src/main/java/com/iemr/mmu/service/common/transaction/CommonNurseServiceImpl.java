@@ -2204,6 +2204,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public int updateBenAllergicHistory(BenAllergyHistory benAllergyHistory) {
 		Integer r = 0;
 		int delRes = 0;
+
 		if (null != benAllergyHistory) {
 
 			ArrayList<Object[]> benAllergyHistoryStatuses = benAllergyHistoryRepo.getBenAllergyHistoryStatus(
@@ -2412,7 +2413,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				r = childVaccineDetail1Repo.updateChildANCImmunization(childVaccineDetail.getStatus(),
 						childVaccineDetail.getModifiedBy(), processed, childVaccineDetail.getBeneficiaryRegID(),
 						childVaccineDetail.getVisitCode(), childVaccineDetail.getDefaultReceivingAge(),
-						childVaccineDetail.getVaccineName(),childVaccineDetail.getSctCode(),childVaccineDetail.getSctTerm());
+						childVaccineDetail.getVaccineName(), childVaccineDetail.getSctCode(),
+						childVaccineDetail.getSctTerm());
 			}
 		}
 		return r;

@@ -408,6 +408,9 @@ public class BenAllergyHistory {
 			for (Map<String, Object> allergic : allergicList) {
 				BenAllergyHistory benAllergyHistory = new BenAllergyHistory();
 
+				if(allergic.get("snomedCode") == null) {
+					allergic.put("snomedTerm", null);
+				}
 				if (null != allergic.get("allergyName")) {
 					benAllergyHistory.setAllergyName(allergic.get("allergyName").toString());
 				}
