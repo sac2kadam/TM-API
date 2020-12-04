@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 import com.iemr.mmu.data.doctor.LabTestMaster;
 import com.iemr.mmu.data.masterdata.ncdscreening.BPAndDiabeticStatus;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
 import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningReason;
+import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.BPAndDiabeticStatusRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningConditionRepo;
@@ -25,6 +27,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
 	private BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo;
 	private LabTestMasterRepo labTestMasterRepo;
+	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
 	
 	@Autowired
 	public void setNcdScreeningConditionRepo(NCDScreeningConditionRepo ncdScreeningConditionRepo) {
@@ -44,6 +47,11 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	@Autowired
 	public void setLabTestMasterRepo(LabTestMasterRepo labTestMasterRepo) {
 		this.labTestMasterRepo = labTestMasterRepo;
+	}
+	
+	@Autowired
+	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
+		this.chiefComplaintMasterRepo = chiefComplaintMasterRepo;
 	}
 
 	@Override
@@ -90,6 +98,16 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		return labTests;
 	}
 
+	@Override
+	public List<Object[]> getChiefComplaintMaster() {
+		List<Object[]> ccList = null;
+		try {
+			ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ccList;
+	}
 	
 	@Override
 	public String getNCDScreeningMasterData() {
@@ -100,6 +118,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		resMap.put("bloodPressureStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(true)));
 		resMap.put("diabeticStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(false)));
 		resMap.put("ncdTests", LabTestMaster.getNCDScreeningTests(getNCDTest()));
+		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters((ArrayList<Object[]>) getChiefComplaintMaster()));
 		
 		return new Gson().toJson(resMap);
 	}
