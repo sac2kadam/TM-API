@@ -13,5 +13,7 @@ public interface NCDScreeningMasterService {
 	public List<Object[]> getNCDTest();
 	
 	public String getNCDScreeningMasterData();
+
+	public List<Object[]> getChiefComplaintMaster();
 	
 }
