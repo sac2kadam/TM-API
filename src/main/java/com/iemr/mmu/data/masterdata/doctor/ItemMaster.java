@@ -162,6 +162,14 @@ public class ItemMaster {
 	@Transient
 	private String unitOfMeasurement;
 	
+	@Expose
+	@Column(name = "Sctcode")
+	private String sctCode;
+	
+	@Expose
+	@Column(name = "SctTerm")
+	private String sctTerm;
+	
 //	@Transient
 //	private OutputMapper outputMapper = new OutputMapper();
 //
@@ -170,6 +178,22 @@ public class ItemMaster {
 //		return outputMapper.gson().toJson(this);
 //	}
 	
+	public String getSctCode() {
+		return sctCode;
+	}
+
+	public void setSctCode(String sctCode) {
+		this.sctCode = sctCode;
+	}
+
+	public String getSctTerm() {
+		return sctTerm;
+	}
+
+	public void setSctTerm(String sctTerm) {
+		this.sctTerm = sctTerm;
+	}
+
 	public Integer getItemID() {
 		return itemID;
 	}

@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,6 +90,91 @@ public class NCDFetchController {
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting NCD screening Visit Count");
 			logger.error("Error while getting NCD screening Visit Count" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Visit details from Nurse NCD Screening", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseNCDScreening" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenVisitDetailsFrmNurseGOPD(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Request obj to fetch NCD screening visit details :" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBenVisitDetailsFrmNurseNCDScreening(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenVisitDetailsFrmNurseNCDScreening response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary visit data");
+			logger.error("Error in getBenVisitDetailsFrmNurseNCDScreening:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary General OPD History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
+
+	public String getBenHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenHistoryDetails request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String s = ncdScreeningServiceImpl.getBenHistoryDetails(benRegID, visitCode);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenHistoryDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary history data");
+			logger.error("Error in getBenHistoryDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
+	public String getBenVitalDetailsFrmNurse(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenVitalDetailsFrmNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary vital data");
+			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
 		}
 		return response.toString();
 	}
