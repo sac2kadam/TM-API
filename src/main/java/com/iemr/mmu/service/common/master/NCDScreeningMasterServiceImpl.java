@@ -10,25 +10,36 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
-import com.iemr.mmu.data.doctor.LabTestMaster;
-import com.iemr.mmu.data.masterdata.ncdscreening.BPAndDiabeticStatus;
-import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningCondition;
-import com.iemr.mmu.data.masterdata.ncdscreening.NCDScreeningReason;
+import com.iemr.mmu.data.masterdata.anc.DiseaseType;
+import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.masterrepo.anc.DiseaseTypeRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.BPAndDiabeticStatusRepo;
+import com.iemr.mmu.repo.masterrepo.ncdScreening.IDRS_ScreenQuestionsRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningConditionRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningReasonRepo;
+import com.iemr.mmu.repo.masterrepo.ncdScreening.PhysicalActivityRepo;
+import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 
 @Service
 public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService {
-	
+
 	private NCDScreeningConditionRepo ncdScreeningConditionRepo;
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
 	private BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo;
 	private LabTestMasterRepo labTestMasterRepo;
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
-	
+
+	@Autowired
+	private IDRS_ScreenQuestionsRepo iDRS_ScreenQuestionsRepo;
+	@Autowired
+	private PhysicalActivityRepo physicalActivityRepo;
+	@Autowired
+	private DiseaseTypeRepo diseaseTypeRepo;
+	@Autowired
+	private FamilyMemberMasterRepo familyMemberMasterRepo;
+
 	@Autowired
 	public void setNcdScreeningConditionRepo(NCDScreeningConditionRepo ncdScreeningConditionRepo) {
 		this.ncdScreeningConditionRepo = ncdScreeningConditionRepo;
@@ -38,17 +49,17 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	public void setNcdScreeningReasonRepo(NCDScreeningReasonRepo ncdScreeningReasonRepo) {
 		this.ncdScreeningReasonRepo = ncdScreeningReasonRepo;
 	}
-	
+
 	@Autowired
 	public void setBpAndDiabeticStatusRepo(BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo) {
 		this.bpAndDiabeticStatusRepo = bpAndDiabeticStatusRepo;
 	}
-	
+
 	@Autowired
 	public void setLabTestMasterRepo(LabTestMasterRepo labTestMasterRepo) {
 		this.labTestMasterRepo = labTestMasterRepo;
 	}
-	
+
 	@Autowired
 	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
 		this.chiefComplaintMasterRepo = chiefComplaintMasterRepo;
@@ -56,7 +67,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 
 	@Override
 	public List<Object[]> getNCDScreeningConditions() {
-		List<Object[]> ncdScreeningConditions  = null;
+		List<Object[]> ncdScreeningConditions = null;
 		try {
 			ncdScreeningConditions = ncdScreeningConditionRepo.getNCDScreeningConditions();
 		} catch (Exception e) {
@@ -108,18 +119,35 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		}
 		return ccList;
 	}
-	
+
 	@Override
 	public String getNCDScreeningMasterData() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
-		
-		resMap.put("ncdScreeningConditions", NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) getNCDScreeningConditions()));
-		resMap.put("ncdScreeningReasons", NCDScreeningReason.getNCDScreeningReason((ArrayList<Object[]>) getNCDScreeningReasons()));
-		resMap.put("bloodPressureStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(true)));
-		resMap.put("diabeticStatus", BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(false)));
-		resMap.put("ncdTests", LabTestMaster.getNCDScreeningTests(getNCDTest()));
-		resMap.put("chiefComplaintMaster", ChiefComplaintMaster.getChiefComplaintMasters((ArrayList<Object[]>) getChiefComplaintMaster()));
-		
+
+//		resMap.put("ncdScreeningConditions",
+//				NCDScreeningCondition.getNCDScreeningCondition((ArrayList<Object[]>) getNCDScreeningConditions()));
+//		resMap.put("ncdScreeningReasons",
+//				NCDScreeningReason.getNCDScreeningReason((ArrayList<Object[]>) getNCDScreeningReasons()));
+//		resMap.put("bloodPressureStatus",
+//				BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(true)));
+//		resMap.put("diabeticStatus",
+//				BPAndDiabeticStatus.getBPAndDiabeticStatus((ArrayList<Object[]>) getBPAndDiabeticStatus(false)));
+//		resMap.put("ncdTests", LabTestMaster.getNCDScreeningTests(getNCDTest()));
+//		resMap.put("chiefComplaintMaster",
+//				ChiefComplaintMaster.getChiefComplaintMasters((ArrayList<Object[]>) getChiefComplaintMaster()));
+
+		resMap.put("chiefComplaintMaster",
+				ChiefComplaintMaster.getChiefComplaintMasters((ArrayList<Object[]>) getChiefComplaintMaster()));
+
+		ArrayList<Object[]> DiseaseTypes = diseaseTypeRepo.getDiseaseTypes();
+		resMap.put("DiseaseTypes", DiseaseType.getDiseaseTypes(DiseaseTypes));
+
+		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
+		resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
+
+		resMap.put("IDRSQuestions", iDRS_ScreenQuestionsRepo.findByDeleted(false));
+		resMap.put("physicalActivity", physicalActivityRepo.findByDeleted(false));
+
 		return new Gson().toJson(resMap);
 	}
 }
