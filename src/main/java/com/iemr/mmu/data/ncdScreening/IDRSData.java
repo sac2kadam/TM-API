@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 @Entity
@@ -41,8 +42,40 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Answer")
 	private String answer;
+	@Expose
+	@Column(name = "SuspectedDiseases")
+	private String suspectedDisease;
+	public String getSuspectedDisease() {
+		return suspectedDisease;
+	}
+
+	public void setSuspectedDisease(String suspectedDisease) {
+		this.suspectedDisease = suspectedDisease;
+	}
+
 	public String getAnswer() {
 		return answer;
+	}
+    @Transient
+    private IDRSData[] questionArray;
+    @Transient
+    private String[] suspectArray;
+	public IDRSData[] getQuestionArray() {
+		return questionArray;
+	}
+
+	public void setQuestionArray(IDRSData[] questionArray) {
+		this.questionArray = questionArray;
+	}
+
+	
+
+	public String[] getSuspectArray() {
+		return suspectArray;
+	}
+
+	public void setSuspectArray(String[] suspectArray) {
+		this.suspectArray = suspectArray;
 	}
 
 	public void setAnswer(String answer) {
@@ -51,7 +84,7 @@ public class IDRSData {
 
 	@Expose
 	@Column(name = "DiseaseQuestionType")
-	private String DiseaseQuestionType;
+	private String diseaseQuestionType;
 
 	@Expose
 	@Column(name = "VisitCode")
@@ -147,12 +180,13 @@ public class IDRSData {
 		this.question = question;
 	}
 
+	
 	public String getDiseaseQuestionType() {
-		return DiseaseQuestionType;
+		return diseaseQuestionType;
 	}
 
 	public void setDiseaseQuestionType(String diseaseQuestionType) {
-		DiseaseQuestionType = diseaseQuestionType;
+		this.diseaseQuestionType = diseaseQuestionType;
 	}
 
 	public Long getVisitCode() {
