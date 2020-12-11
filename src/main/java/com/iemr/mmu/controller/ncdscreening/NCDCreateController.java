@@ -47,7 +47,8 @@ public class NCDCreateController {
 	@ApiOperation(value = "save Beneficiary NCD Screening Detail", consumes = "application/json", produces = "application/json")
 
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj) {
+	public String saveBeneficiaryNCDScreeningDetails(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
 
 		logger.info("Request object for NCD Screening nurse data saving :" + requestObj);
 		OutputResponse response = new OutputResponse();
@@ -60,7 +61,7 @@ public class NCDCreateController {
 			jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject != null) {
-				Integer r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject);
+				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject,Authorization);
 				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {

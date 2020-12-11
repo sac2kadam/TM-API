@@ -94,6 +94,7 @@ public class NCDFetchController {
 		return response.toString();
 	}
 	
+
 	/**
 	 * @Objective Fetching beneficiary doctor details.
 	 * @param comingRequest
@@ -124,6 +125,123 @@ public class NCDFetchController {
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary doctor data");
 			logger.error("Error while getting beneficiary doctor data :" + e);
+		}
+		return response.toString();
+	}
+
+
+
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Visit details from Nurse NCD Screening", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseNCDScreening" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenVisitDetailsFrmNurseGOPD(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Request obj to fetch NCD screening visit details :" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.length() > 1) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBenVisitDetailsFrmNurseNCDScreening(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenVisitDetailsFrmNurseNCDScreening response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary visit data");
+			logger.error("Error in getBenVisitDetailsFrmNurseNCDScreening:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary General OPD History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
+
+	public String getBenHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenHistoryDetails request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String s = ncdScreeningServiceImpl.getBenHistoryDetails(benRegID, visitCode);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenHistoryDetails response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary history data");
+			logger.error("Error in getBenHistoryDetails:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
+	public String getBenVitalDetailsFrmNurse(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenVitalDetailsFrmNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary vital data");
+			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenIdrsDetailsFrmNurse" }, method = { RequestMethod.POST })
+	public String getBenIdrsDetailsFrmNurse(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenIdrsDetailsFrmNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBenIdrsDetailsFrmNurse(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenIdrsDetailsFrmNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary Idrs data");
+			logger.error("Error in getBenIdrsDetailsFrmNurse:" + e);
+
 		}
 		return response.toString();
 	}

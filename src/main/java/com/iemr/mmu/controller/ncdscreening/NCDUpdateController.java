@@ -77,4 +77,33 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		return response.toString();
 	}
 	
+	@CrossOrigin
+	@ApiOperation(value = "update NCD Screening Vital Data in Doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	public String updateVitalNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for vital data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ncdScreeningServiceImpl.updateBenVitalDetails(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("Vital data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating vital data :" + e);
+		}
+
+		return response.toString();
+	}
+	
 }

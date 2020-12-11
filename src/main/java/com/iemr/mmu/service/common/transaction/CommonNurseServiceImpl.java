@@ -46,6 +46,8 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.ncdScreening.IDRSData;
+import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenCancerVitalDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
@@ -83,6 +85,8 @@ import com.iemr.mmu.repo.nurse.anc.SysGastrointestinalExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysGenitourinarySystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysMusculoskeletalSystemExaminationRepo;
 import com.iemr.mmu.repo.nurse.anc.SysRespiratoryExaminationRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.PhysicalActivityTypeRepo;
 import com.iemr.mmu.repo.quickConsultation.BenChiefComplaintRepo;
 import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
@@ -138,7 +142,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private ChildFeedingDetailsRepo childFeedingDetailsRepo;
 	private PerinatalHistoryRepo perinatalHistoryRepo;
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
-
+	private PhysicalActivityTypeRepo physicalActivityTypeRepo;
+	private IDRSDataRepo iDRSDataRepo;
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
@@ -310,12 +315,26 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	public void setBenChiefComplaintRepo(BenChiefComplaintRepo benChiefComplaintRepo) {
 		this.benChiefComplaintRepo = benChiefComplaintRepo;
 	}
+	
+	@Autowired
+	public void setPhysicalActivityTypeRepo(PhysicalActivityTypeRepo physicalActivityTypeRepo) {
+		this.physicalActivityTypeRepo = physicalActivityTypeRepo;
+	}
+	
+	
+	@Autowired
+	public void setIDRSDataRepo(IDRSDataRepo iDRSDataRepo) {
+		this.iDRSDataRepo = iDRSDataRepo;
+	}
 
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
 		this.benVisitDetailRepo = benVisitDetailRepo;
 	}
-
+    @Autowired
+    private IDRSDataRepo iDrsDataRepo;
+    @Autowired
+    private PhysicalActivityTypeRepo physicalActivityaRepo;
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -795,7 +814,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
-
+	public Long saveIDRS(IDRSData idrsDetail) {
+		IDRSData response = iDrsDataRepo.save(idrsDetail);
+		if (response != null)
+			return response.getId();
+		else
+			return null;
+	}
+	public Long savePhysicalActivity(PhysicalActivityType physicalActivityDetail) {
+		PhysicalActivityType response = physicalActivityaRepo.save(physicalActivityDetail);
+		if (response != null)
+			return response.getpAID();
+		else
+			return null;
+	}
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
 		// ArrayList<Short> averageSystolicList = new ArrayList<>();
 		// ArrayList<Short> averageDiastolicList = new ArrayList<>();
@@ -1411,6 +1443,44 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(response);
 
 	}
+	
+	
+	public String fetchBenPhysicalHistory(Long beneficiaryRegID) {
+		ArrayList<Object[]> benPhysicalHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetail(beneficiaryRegID);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "captureDate");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Activity Type");
+		column.put("keyName", "activityType");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Physical Activity Type");
+		column.put("keyName", "physicalActivityType");
+		columns.add(column);
+		
+		ArrayList<PhysicalActivityType> familyHistory = new ArrayList<PhysicalActivityType>();
+		if (null != benPhysicalHistory) {
+			for (Object[] obj : benPhysicalHistory) {
+				PhysicalActivityType phyhistory = new PhysicalActivityType((Date) obj[0], (String) obj[1], (String) obj[2]);
+				familyHistory.add(phyhistory);
+			}
+		}
+		
+		response.put("columns", columns);
+		response.put("data", familyHistory);
+		return new Gson().toJson(response);
+
+	}
+	
 
 	public String fetchBenMenstrualHistory(Long beneficiaryRegID) {
 		ArrayList<Object[]> benMenstrualDetails = benMenstrualDetailsRepo.getBenMenstrualDetail(beneficiaryRegID);
@@ -1732,6 +1802,33 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<Object[]> resList = benChiefComplaintRepo.getBenChiefComplaints(beneficiaryRegID, visitCode);
 		ArrayList<BenChiefComplaint> benChiefComplaints = BenChiefComplaint.getBenChiefComplaints(resList);
 		return new Gson().toJson(benChiefComplaints);
+	}
+	
+	
+	public BenFamilyHistory getFamilyHistoryDetail(Long beneficiaryRegID, Long visitCode) {
+//		BenFamilyHistory familyHistory = benFamilyHistoryRepo.getBenFamilyHistoryDetails(beneficiaryRegID, visitCode);
+//		
+//
+//		return new Gson().toJson(familyHistory);
+		ArrayList<Object[]> familyHistory = benFamilyHistoryRepo.getBenFamilyHisDetail(beneficiaryRegID, visitCode);
+		BenFamilyHistory familyHistoryDetails = BenFamilyHistory.getBenFamilyHist(familyHistory);
+
+		return familyHistoryDetails;
+		
+	}
+	
+	public PhysicalActivityType getPhysicalActivityType(Long beneficiaryRegID, Long visitCode) {
+		PhysicalActivityType phyHistory = physicalActivityTypeRepo.getBenPhysicalHistoryDetails(beneficiaryRegID, visitCode);
+		return phyHistory;
+		
+	}
+	
+public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode) {
+		
+		
+		ArrayList<Object[]> idrsDetails = iDRSDataRepo.getBenIdrsDetail(beneficiaryRegID,visitCode);
+		IDRSData idrsDetail = IDRSData.getIDRSData(idrsDetails);
+		return idrsDetail;
 	}
 
 	public BenMedHistory getPastHistoryData(Long beneficiaryRegID, Long visitCode) {
