@@ -607,10 +607,31 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					IDRSData.class);
 
 			if (null != idrsDetail) {
-				idrsDetail.setBenVisitID(benVisitID);
-				idrsDetail.setVisitCode(benVisitCode);
-				idrsFlag = commonNurseServiceImpl
-						.saveIDRS(idrsDetail);
+				if(idrsDetail.getQuestionArray()!=null && idrsDetail.getQuestionArray().length>0)
+				{
+					IDRSData[] ar=idrsDetail.getQuestionArray();
+					for(int i=0;i<ar.length;i++)
+					{
+						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
+						idrsDetail.setAnswer(ar[i].getAnswer());
+						idrsDetail.setQuestion(ar[i].getQuestion());
+						idrsDetail.setDiseaseQuestionType(ar[i].getDiseaseQuestionType());
+						idrsDetail.setBenVisitID(benVisitID);
+						idrsDetail.setVisitCode(benVisitCode);
+						if(idrsDetail.getSuspectArray()!=null)
+						idrsDetail.setSuspectedDisease(idrsDetail.getSuspectArray().toString());
+						idrsFlag = commonNurseServiceImpl
+								.saveIDRS(idrsDetail);
+					}
+				}
+				else
+				{
+					idrsDetail.setBenVisitID(benVisitID);
+					idrsDetail.setVisitCode(benVisitCode);
+					idrsFlag = commonNurseServiceImpl
+							.saveIDRS(idrsDetail);
+				}
+				
 			}
 
 //			if (idrsFlag != null && idrsFlag > 0 ) {
