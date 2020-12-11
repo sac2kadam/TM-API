@@ -1,6 +1,10 @@
 package com.iemr.mmu.data.ncdScreening;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -123,6 +127,14 @@ public class IDRSData {
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
+	
+	@Transient
+	@Expose
+	private List<Map<String, Object>> idrsDetails;
+	
+	@Transient
+	@Expose
+	private List<Map<String, Object>> suspectDetails;
 
 	public Long getId() {
 		return id;
@@ -276,5 +288,94 @@ public class IDRSData {
 	public void setParkingPlaceID(Integer parkingPlaceID) {
 		this.parkingPlaceID = parkingPlaceID;
 	}
+	
+	
+	
+	public List<Map<String, Object>> getIdrsDetails() {
+		return idrsDetails;
+	}
+
+	public void setIdrsDetails(List<Map<String, Object>> idrsDetails) {
+		this.idrsDetails = idrsDetails;
+	}
+
+	public List<Map<String, Object>> getSuspectDetails() {
+		return suspectDetails;
+	}
+
+	public void setSuspectDetails(List<Map<String, Object>> suspectDetails) {
+		this.suspectDetails = suspectDetails;
+	}
+
+	public IDRSData() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public IDRSData(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,Integer idrsScore, String suspectedDisease,
+			 Long visitCode) {
+		super();
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benVisitID = benVisitID;
+		this.providerServiceMapID = providerServiceMapID;
+		this.idrsScore = idrsScore;
+		this.suspectedDisease = suspectedDisease;
+		this.visitCode = visitCode;
+		
+	}
+	
+	public IDRSData(Long ID, Integer idrsQuestionID, String question,
+			String answer, String suspectedDisease) {
+		super();
+		this.id =ID;
+		this.idrsQuestionID = idrsQuestionID;
+		
+		this.question = question;
+		this.answer = answer;
+		this.suspectedDisease = suspectedDisease;
+		
+		
+	}
+	
+	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
+		IDRSData benIdrsHistory = null;
+		if (null != idrsHistory && idrsHistory.size() > 0) {
+			Object[] obj1 = idrsHistory.get(0);
+
+			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],
+					 (Long) obj1[9]);
+
+			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
+
+			for (Object[] obj : idrsHistory) {
+				IDRSData idDetails = new IDRSData((Long) obj[0],(Integer) obj[4], (String) obj[6],
+						(String) obj[7], (String) obj[8]);
+
+				Map<String, Object> idrsData = new HashMap<String, Object>();
+				idrsData.put("ID", idDetails.getId());
+				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
+				
+				
+				idrsData.put("question", idDetails.getQuestion());
+				idrsData.put("answer", idDetails.getAnswer());
+
+				idrsDetails.add(idrsData);
+			}
+			
+//			for (Object[] obj : idrsHistory) {
+//				IDRSData idDetails = new IDRSData((String) obj[8]);
+//				if (idDetails.getSuspectedDisease() != null) {
+//					String[] susDisease = idDetails.getSuspectedDisease().split(",");
+//					if (susDisease != null)
+//						idDetails.setSuspectArray(susDisease);
+//				}
+//				
+//			}
+
+			benIdrsHistory.setIdrsDetails(idrsDetails);
+		}
+		return benIdrsHistory;
+	}
+
 
 }

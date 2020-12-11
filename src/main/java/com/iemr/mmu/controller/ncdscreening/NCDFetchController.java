@@ -178,5 +178,33 @@ public class NCDFetchController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary vital details from Nurse GeneralOPD", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenIdrsDetailsFrmNurse" }, method = { RequestMethod.POST })
+	public String getBenIdrsDetailsFrmNurse(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenIdrsDetailsFrmNurse request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = ncdScreeningServiceImpl.getBenIdrsDetailsFrmNurse(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenIdrsDetailsFrmNurse response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary Idrs data");
+			logger.error("Error in getBenIdrsDetailsFrmNurse:" + e);
+		}
+		return response.toString();
+	}
 
 }

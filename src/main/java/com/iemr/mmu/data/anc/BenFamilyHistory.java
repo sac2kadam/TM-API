@@ -477,6 +477,18 @@ public class BenFamilyHistory {
 		this.snomedCode = snomedCode;
 		this.snomedTerm =snomedTerm;
 	}
+	
+	public BenFamilyHistory(Long ID,String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType,
+			String snomedCode, String snomedTerm) {
+		super();
+		this.ID =ID;
+		this.familyMember = familyMember;
+		this.diseaseTypeID = diseaseTypeID;
+		this.diseaseType = diseaseType;
+		this.otherDiseaseType = otherDiseaseType;
+		this.snomedCode = snomedCode;
+		this.snomedTerm =snomedTerm;
+	}
 
 	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory) {
 		BenFamilyHistory benfamilyHistory = null;
@@ -493,6 +505,44 @@ public class BenFamilyHistory {
 						(String) obj[6], (String) obj[11], (String) obj[12]);
 
 				Map<String, Object> familyDisease = new HashMap<String, Object>();
+				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
+				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
+				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
+				familyDisease.put("snomedCode", familyDetails.getSnomedCode());
+				familyDisease.put("snomedTerm", familyDetails.getSnomedTerm());
+
+				if (null != familyDetails.getFamilyMember()) {
+					String[] familyMembers = familyDetails.getFamilyMember().split(",");
+
+					List<String> familyMembersList = new ArrayList<String>();
+					for (String familyMember : familyMembers) {
+						familyMembersList.add(familyMember);
+					}
+					familyDisease.put("familyMembers", familyMembersList);
+				}
+				familyDiseaseList.add(familyDisease);
+			}
+			benfamilyHistory.setFamilyDiseaseList(familyDiseaseList);
+		}
+		return benfamilyHistory;
+	}
+	
+	public static BenFamilyHistory getBenFamilyHist(ArrayList<Object[]> familyHistory) {
+		BenFamilyHistory benfamilyHistory = null;
+		if (null != familyHistory && familyHistory.size() > 0) {
+			Object[] obj1 = familyHistory.get(0);
+
+			benfamilyHistory = new BenFamilyHistory((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],
+					(Boolean) obj1[8], (String) obj1[9], (Boolean) obj1[10], (Long) obj1[11]);
+
+			List<Map<String, Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
+
+			for (Object[] obj : familyHistory) {
+				BenFamilyHistory familyDetails = new BenFamilyHistory((Long) obj[0],(String) obj[4], (Short) obj[5], (String) obj[6],
+						(String) obj[7], (String) obj[12], (String) obj[13]);
+
+				Map<String, Object> familyDisease = new HashMap<String, Object>();
+				familyDisease.put("ID", familyDetails.getID());
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
