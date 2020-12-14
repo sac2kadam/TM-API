@@ -1,10 +1,7 @@
 package com.iemr.mmu.service.ncdscreening;
 
 import java.sql.Timestamp;
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +15,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-<<<<<<< HEAD
 import com.iemr.mmu.data.anc.WrapperAncFindings;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.ncdcare.NCDCareDiagnosis;
-=======
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
 import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
@@ -43,19 +38,15 @@ import com.iemr.mmu.data.masterdata.ncdscreening.PhysicalActivity;
 import com.iemr.mmu.data.ncdScreening.IDRSData;
 import com.iemr.mmu.data.ncdScreening.NCDScreening;
 import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
-<<<<<<< HEAD
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TCRequestModel;
 import com.iemr.mmu.data.tele_consultation.TcSpecialistSlotBookingRequestOBJ;
-=======
 import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
@@ -65,15 +56,12 @@ import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
-<<<<<<< HEAD
 import com.iemr.mmu.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.mmu.service.ncdCare.NCDCareDoctorServiceImpl;
 import com.iemr.mmu.service.tele_consultation.SMSGatewayServiceImpl;
 import com.iemr.mmu.service.tele_consultation.TeleConsultationServiceImpl;
-=======
 import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.mmu.service.tele_consultation.SMSGatewayServiceImpl;
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -126,17 +114,14 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		this.ncdScreeningNurseServiceImpl = ncdScreeningNurseServiceImpl;
 	}
 	@Autowired
-<<<<<<< HEAD
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
 	}
 
 
-=======
-	private CommonServiceImpl commonServiceImpl;
-	@Autowired
-	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
+
+
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
@@ -866,7 +851,6 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return new Gson().toJson(returnMap);
 	}
 	
-<<<<<<< HEAD
 	
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
@@ -1027,54 +1011,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	
 	public String getBenCaseRecordFromDoctorNCDScreening(Long benRegID, Long visitCode) {
 		Map<String, Object> resMap = new HashMap<>();
-=======
-	/// --------------- Start of Fetching NCD Screening Nurse Data ----------------
-		public String getBenVisitDetailsFrmNurseNCDScreening(Long benRegID, Long visitCode) {
-			Map<String, Object> resMap = new HashMap<>();
-
-			BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
-
-			resMap.put("NCDScreeningNurseVisitDetail", new Gson().toJson(visitDetail));
-
-			resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, visitCode));
-
-			return resMap.toString();
-		}
 		
-		public String getBenHistoryDetails(Long benRegID, Long visitCode) {
-			
-			Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
-
-			
-			HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
-			HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
-			
-
-			return new Gson().toJson(HistoryDetailsMap);
-		}
-		
-		public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
-			Map<String, Object> resMap = new HashMap<>();
-
-			resMap.put("IDRSDetail",
-					commonNurseServiceImpl.getBeneficiaryIdrsDetails(beneficiaryRegID, benVisitID));
-			
-
-			return new Gson().toJson(resMap);
-		}
-		
-		public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
-			Map<String, Object> resMap = new HashMap<>();
-
-			resMap.put("benAnthropometryDetail",
-					commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
-			resMap.put("benPhysicalVitalDetail",
-					commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
-
-			return resMap.toString();
-		}
->>>>>>> b76c6fb426e45051a19fda9327a1b7cf8ab5625d
-
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
 
 //		resMap.put("diagnosis", ncdCareDoctorServiceImpl.getNCDCareDiagnosisDetails(benRegID, visitCode));
@@ -1125,4 +1062,53 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		}
 		return new Gson().toJson(diagnosisMap);
 	}
+
+	/// --------------- Start of Fetching NCD Screening Nurse Data ----------------
+		public String getBenVisitDetailsFrmNurseNCDScreening(Long benRegID, Long visitCode) {
+			Map<String, Object> resMap = new HashMap<>();
+
+			BeneficiaryVisitDetail visitDetail = commonNurseServiceImpl.getCSVisitDetails(benRegID, visitCode);
+
+			resMap.put("NCDScreeningNurseVisitDetail", new Gson().toJson(visitDetail));
+
+			resMap.put("BenChiefComplaints", commonNurseServiceImpl.getBenChiefComplaints(benRegID, visitCode));
+
+			return resMap.toString();
+		}
+		
+		public String getBenHistoryDetails(Long benRegID, Long visitCode) {
+			
+			Map<String, Object> HistoryDetailsMap = new HashMap<String, Object>();
+
+			
+			HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
+			HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+			
+
+			return new Gson().toJson(HistoryDetailsMap);
+		}
+		
+		public String getBenIdrsDetailsFrmNurse(Long beneficiaryRegID, Long benVisitID) {
+			Map<String, Object> resMap = new HashMap<>();
+
+			resMap.put("IDRSDetail",
+					commonNurseServiceImpl.getBeneficiaryIdrsDetails(beneficiaryRegID, benVisitID));
+			
+
+			return new Gson().toJson(resMap);
+		}
+		
+		public String getBeneficiaryVitalDetails(Long beneficiaryRegID, Long benVisitID) {
+			Map<String, Object> resMap = new HashMap<>();
+
+			resMap.put("benAnthropometryDetail",
+					commonNurseServiceImpl.getBeneficiaryPhysicalAnthropometryDetails(beneficiaryRegID, benVisitID));
+			resMap.put("benPhysicalVitalDetail",
+					commonNurseServiceImpl.getBeneficiaryPhysicalVitalDetails(beneficiaryRegID, benVisitID));
+
+			return resMap.toString();
+		}
+
+
+	
 }
