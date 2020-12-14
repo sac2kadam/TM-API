@@ -3810,4 +3810,46 @@ public IDRSData getBeneficiaryIdrsDetails(Long beneficiaryRegID, Long visitCode)
 
 		return returnOBJ;
 	}
+	
+	public int updateBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
+		// TODO Auto-generated method stub
+		int familyHistorySuccessFlag = 0;
+
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+		if (familyHistoryList.size() > 0) {
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
+			if (familyHistoryList.size() == res.size()) {
+				familyHistorySuccessFlag = 1;
+			}
+		} else {
+			familyHistorySuccessFlag = 0;
+		}
+		return familyHistorySuccessFlag;
+	}
+	public int updateBenPhysicalActivityHistoryNCDScreening(PhysicalActivityType physicalActivityType) {
+		// TODO Auto-generated method stub
+		int pysicalActivityHistorySuccessFlag = 0;
+
+//		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHistory();
+//		if (familyHistoryList.size() > 0) {
+//			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+//					.save(familyHistoryList);
+//			if (familyHistoryList.size() == res.size()) {
+//				familyHistorySuccessFlag = 1;
+//			}
+		if(physicalActivityType.getID() != null) 
+			physicalActivityType.setProcessed("U");
+		else
+			physicalActivityType.setProcessed("N");
+		physicalActivityType.setDeleted(false);
+		PhysicalActivityType physicalActivityTypeRes = physicalActivityTypeRepo
+				.save(physicalActivityType);
+		if(physicalActivityTypeRes != null) {
+			pysicalActivityHistorySuccessFlag = 1;
+		} else {
+			pysicalActivityHistorySuccessFlag = 0;
+		}
+		return pysicalActivityHistorySuccessFlag;
+	}
 }

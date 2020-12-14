@@ -11,4 +11,7 @@ public interface NCDScreeningService {
 
 	Integer updateNurseNCDScreeningDetails(JsonObject jsonObject) throws Exception;
 	
+	public Integer UpdateNCDScreeningHistory(JsonObject requestOBJ) throws Exception;
+	
+	public Long UpdateIDRSScreen(JsonObject requestOBJ) throws Exception;
 }

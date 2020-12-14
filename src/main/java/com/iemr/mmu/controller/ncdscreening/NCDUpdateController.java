@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iemr.mmu.service.ncdscreening.NCDScreeningService;
 import com.iemr.mmu.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -31,6 +32,10 @@ public class NCDUpdateController {
 private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
 	private NCDScreeningServiceImpl ncdScreeningServiceImpl;
+	
+	@Autowired
+	private NCDScreeningService ncdScreeningService;
+
 	
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
@@ -77,6 +82,40 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 		return response.toString();
 	}
 	
+
+	/*
+	 * Updating the history WDF requirement 9-12-2020
+	 */
+	@CrossOrigin
+	@ApiOperation(value = "update History Data in Doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	public String updateHistoryNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for history data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ncdScreeningService.UpdateNCDScreeningHistory(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("History data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating history data :" + e);
+		}
+
+		return response.toString();
+	}
+	
+	
 	@CrossOrigin
 	@ApiOperation(value = "update NCD Screening Vital Data in Doctor screen", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
@@ -105,5 +144,35 @@ private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName())
 
 		return response.toString();
 	}
+	
+	// Shubham Shekhar,11-12-2020,WDF
+		@CrossOrigin
+		@ApiOperation(value = "update History Data in Doctor screen", consumes = "application/json", produces = "application/json")
+		@RequestMapping(value = { "/update/idrsScreen" }, method = { RequestMethod.POST })
+		public String updateIDRSScreen(@RequestBody String requestObj) {
+
+			OutputResponse response = new OutputResponse();
+			logger.info("Request object for history data updating :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			try {
+				Long result = ncdScreeningService.UpdateIDRSScreen(jsnOBJ);
+				if (result != null && result > 0) {
+					response.setResponse("Data updated successfully");
+				} else {
+					response.setError(500, "Unable to modify data");
+				}
+				logger.info("IDRS data update Response:" + response);
+			} catch (Exception e) {
+				response.setError(5000, "Unable to modify data");
+				logger.error("Error while updating history data :" + e);
+			}
+
+			return response.toString();
+		}
 	
 }

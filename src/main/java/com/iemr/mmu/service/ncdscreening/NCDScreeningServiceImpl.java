@@ -851,6 +851,66 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		return new Gson().toJson(returnMap);
 	}
 	
+	@Override
+	public Long UpdateIDRSScreen(JsonObject idrsOBJ) throws Exception {
+		Long idrsFlag=null;
+		if (idrsOBJ != null && idrsOBJ.has("idrsDetails") && !idrsOBJ.get("idrsDetails").isJsonNull()) {
+			IDRSData idrsDetail1 = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"),
+					IDRSData.class);
+			String temp=""; 
+			if (null != idrsDetail1) {
+				if(idrsDetail1.getQuestionArray()!=null && idrsDetail1.getQuestionArray().length>0)
+				{
+					IDRSData[] ar=idrsDetail1.getQuestionArray();
+					for(int i=0;i<ar.length;i++)
+					{
+						IDRSData idrsDetail = InputMapper.gson().fromJson(idrsOBJ.get("idrsDetails"),
+								IDRSData.class);temp="";
+						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
+						idrsDetail.setId(ar[i].getId());
+						idrsDetail.setAnswer(ar[i].getAnswer());
+						idrsDetail.setQuestion(ar[i].getQuestion());
+						idrsDetail.setDiseaseQuestionType(ar[i].getDiseaseQuestionType());
+//						idrsDetail.setBenVisitID(idrsDetail1.getBenVisitID());
+//						idrsDetail.setVisitCode(idrsDetail1.getVisitCode());
+						
+						if(idrsDetail.getSuspectArray()!=null && idrsDetail.getSuspectArray().length >0)
+						{
+							for(int a=0;a<idrsDetail.getSuspectArray().length;a++)
+					    	{
+					    		if(a==idrsDetail.getSuspectArray().length-1)
+					    		temp+=idrsDetail.getSuspectArray()[a];
+					    		else
+					    		temp=temp+idrsDetail.getSuspectArray()[a]+",";
+					    	}
+							if(temp.equalsIgnoreCase(""))
+								temp=null;
+							idrsDetail.setSuspectedDisease(temp);
+						}
+						idrsFlag = commonNurseServiceImpl
+								.saveIDRS(idrsDetail);
+					}
+				}
+				else
+				{
+//					idrsDetail.setBenVisitID(benVisitID);
+//					idrsDetail.setVisitCode(benVisitCode);
+					idrsFlag = commonNurseServiceImpl
+							.saveIDRS(idrsDetail1);
+				}
+				
+			}
+
+//			if (idrsFlag != null && idrsFlag > 0 ) {
+//				vitalSuccessFlag = anthropometrySuccessFlag;
+//			}
+		}
+
+		return idrsFlag;
+
+        
+	}
+	
 	
 	@Transactional(rollbackFor = Exception.class)
 	public Long saveDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
@@ -1108,6 +1168,41 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			return resMap.toString();
 		}
+		
+		@Override
+		public Integer UpdateNCDScreeningHistory(JsonObject historyOBJ) throws Exception {
+
+			int familyHistorySuccessFlag = 0;
+			int historyUpdatedSuccessfully = 0;
+			int physicalActivitySuccessFlag = 0;
+
+			// Update Family History
+			if (historyOBJ != null && historyOBJ.has("familyHistory") && !historyOBJ.get("familyHistory").isJsonNull()) {
+				BenFamilyHistory benFamilyHistory = InputMapper.gson().fromJson(historyOBJ.get("familyHistory"),
+						BenFamilyHistory.class);
+
+				familyHistorySuccessFlag = commonNurseServiceImpl.updateBenFamilyHistoryNCDScreening(benFamilyHistory);
+			} else {
+				familyHistorySuccessFlag = 0;
+			}
+			
+			//Update Physical Activity
+			if (historyOBJ != null && historyOBJ.has("physicalActivityHistory") && !historyOBJ.get("physicalActivityHistory").isJsonNull()) {
+				PhysicalActivityType physicalActivityType = InputMapper.gson().fromJson(historyOBJ.get("physicalActivityHistory"),
+						PhysicalActivityType.class);
+				
+				physicalActivitySuccessFlag = commonNurseServiceImpl.updateBenPhysicalActivityHistoryNCDScreening(physicalActivityType);
+			}else {
+				physicalActivitySuccessFlag = 0;
+			}
+			
+
+			if(familyHistorySuccessFlag > 0 && physicalActivitySuccessFlag > 0) {
+				historyUpdatedSuccessfully = 1;
+			}
+			return historyUpdatedSuccessfully;
+		}
+
 
 
 	
