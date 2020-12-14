@@ -12,8 +12,10 @@ public interface NCDScreeningMasterService {
 	
 	public List<Object[]> getNCDTest();
 	
-	public String getNCDScreeningMasterData();
+//	public String getNCDScreeningMasterData();
 
 	public List<Object[]> getChiefComplaintMaster();
+
+	public String getNCDScreeningMasterData(Integer visitCategoryID, Integer providerServiceMapID, String gender);
 	
 }

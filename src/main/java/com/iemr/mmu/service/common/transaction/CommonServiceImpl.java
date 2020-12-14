@@ -335,6 +335,15 @@ public class CommonServiceImpl implements CommonService {
 		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Family history data ------
+	
+	
+	// ------- Fetch beneficiary all Physical history data ---------------
+		public String getBenPhysicalHistory(Long beneficiaryRegID) {
+			return commonNurseServiceImpl.fetchBenPhysicalHistory(beneficiaryRegID);
+	}
+	/// ------- End of Fetch beneficiary all Physical history data ------
+		
+		
 
 	// ------- Fetch beneficiary all Menstrual history data -----------
 	public String getMenstrualHistoryData(Long beneficiaryRegID) {

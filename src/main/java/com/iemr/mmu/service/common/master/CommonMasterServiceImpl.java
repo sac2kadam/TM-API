@@ -67,7 +67,7 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 				break;
 			case 2: {
 				// 2 : NCD screening
-				nurseMasterData = ncdScreeningServiceImpl.getNCDScreeningMasterData();
+				nurseMasterData = ncdScreeningServiceImpl.getNCDScreeningMasterData(visitCategoryID, providerServiceMapID, gender);
 			}
 				break;
 			case 3: {
@@ -139,7 +139,9 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 			case 2: {
 				// 2 : NCD screening
 				// TODO: NCD SCreening Master Data call
-				doctorMasterData = "No Master Data found for NCD SCreening";
+//				doctorMasterData = "No Master Data found for NCD SCreening";
+				doctorMasterData = ancMasterDataServiceImpl.getCommonDoctorMasterDataForGenopdAncNcdcarePnc(
+						visitCategoryID, providerServiceMapID, gender, facilityID, vanID);
 			}
 				break;
 			case 3: {

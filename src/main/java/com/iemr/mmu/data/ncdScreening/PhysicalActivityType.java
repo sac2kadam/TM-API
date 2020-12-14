@@ -1,4 +1,5 @@
 package com.iemr.mmu.data.ncdScreening;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -6,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -76,6 +78,9 @@ public class PhysicalActivityType {
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
+	
+	@Transient
+	private Date captureDate;
 
 	public Long getpAID() {
 		return pAID;
@@ -212,5 +217,37 @@ public class PhysicalActivityType {
 	public void setParkingPlaceID(Integer parkingPlaceID) {
 		this.parkingPlaceID = parkingPlaceID;
 	}
+	
+	
+	
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public Date getCaptureDate() {
+		return captureDate;
+	}
+
+	public void setCaptureDate(Date captureDate) {
+		this.captureDate = captureDate;
+	}
+
+	public PhysicalActivityType() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PhysicalActivityType(Date createdDate, String activityType, String physicalActivityType) {
+		super();
+		this.captureDate = createdDate;
+		this.activityType = activityType;
+		this.physicalActivityType = physicalActivityType;
+		
+	}
+
 
 }

@@ -843,4 +843,30 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Physical History", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPhysicalHistory" }, method = { RequestMethod.POST })
+	public String getBenPhysicalHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getBenPhysicalHistory request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenPhysicalHistory(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("getBenPhysicalHistory response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting Physical history");
+			logger.error("Error in getBenPhysicalHistory:" + e);
+		}
+		return response.toString();
+	}
 }

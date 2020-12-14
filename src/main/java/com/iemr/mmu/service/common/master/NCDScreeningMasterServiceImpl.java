@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
+import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.data.masterdata.anc.DiseaseType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
+import com.iemr.mmu.repo.labModule.ProcedureRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DiseaseTypeRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.BPAndDiabeticStatusRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.IDRS_ScreenQuestionsRepo;
@@ -30,6 +32,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	private BPAndDiabeticStatusRepo bpAndDiabeticStatusRepo;
 	private LabTestMasterRepo labTestMasterRepo;
 	private ChiefComplaintMasterRepo chiefComplaintMasterRepo;
+	private ProcedureRepo procedureRepo;
 
 	@Autowired
 	private IDRS_ScreenQuestionsRepo iDRS_ScreenQuestionsRepo;
@@ -63,6 +66,11 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	@Autowired
 	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
 		this.chiefComplaintMasterRepo = chiefComplaintMasterRepo;
+	}
+	
+	@Autowired
+	public void setProcedureRepo(ProcedureRepo procedureRepo) {
+		this.procedureRepo = procedureRepo;
 	}
 
 	@Override
@@ -121,7 +129,8 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	}
 
 	@Override
-	public String getNCDScreeningMasterData() {
+	public String getNCDScreeningMasterData(Integer visitCategoryID, Integer providerServiceMapID,
+			String gender) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 
 //		resMap.put("ncdScreeningConditions",
@@ -147,7 +156,11 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 
 		resMap.put("IDRSQuestions", iDRS_ScreenQuestionsRepo.findByDeleted(false));
 		resMap.put("physicalActivity", physicalActivityRepo.findByDeleted(false));
+		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID, gender);
+		resMap.put("procedures", ProcedureData.getProcedures(procedures));
 
 		return new Gson().toJson(resMap);
 	}
+
+	
 }
