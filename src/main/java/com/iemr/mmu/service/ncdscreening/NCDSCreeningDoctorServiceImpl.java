@@ -56,7 +56,7 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 
 			// teleconsultation request
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
-			if (tcRequestOBJ == null || tcRequestOBJ.getTmRequestID() == null || tcRequestOBJ.getTmRequestID() <= 0)
+			if (tcRequestOBJ != null && (tcRequestOBJ.getTmRequestID() == null || tcRequestOBJ.getTmRequestID() <= 0))
 				throw new RuntimeException("Error in creating TC request. Error occured while creating TC request ID");
 
 			JsonArray testList = null;
