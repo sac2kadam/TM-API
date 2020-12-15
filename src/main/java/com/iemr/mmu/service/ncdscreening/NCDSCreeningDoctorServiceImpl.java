@@ -56,7 +56,7 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 
 			// teleconsultation request
 			tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, commonUtilityClass, Authorization);
-			if (tcRequestOBJ == null || tcRequestOBJ.getTmRequestID() == null || tcRequestOBJ.getTmRequestID() <= 0)
+			if (tcRequestOBJ != null && (tcRequestOBJ.getTmRequestID() == null || tcRequestOBJ.getTmRequestID() <= 0))
 				throw new RuntimeException("Error in creating TC request. Error occured while creating TC request ID");
 
 			JsonArray testList = null;
@@ -96,6 +96,14 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
+			//save specialist diagnosis
+			String instruction = null;
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+			&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
+			&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
+				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
+			}
+			
 			// save doctor diagnosis
 			String doctorDiagnosis = null;
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
@@ -111,8 +119,15 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 				prescriptionID = prescriptionDetail.getPrescriptionID();
-				if (doctorDiagnosis != null)
-					prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+				;
+			    if (commonUtilityClass.getIsSpecialist() && instruction != null)
+			                    prescriptionDetail.setInstruction(instruction);
+
+			    if (!commonUtilityClass.getIsSpecialist() && doctorDiagnosis != null)
+			                    prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+
+//				if (doctorDiagnosis != null)
+//					prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
 				// ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
 				// NCDCareDiagnosis.class);
 			}

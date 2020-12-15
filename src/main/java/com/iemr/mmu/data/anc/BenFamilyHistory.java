@@ -399,6 +399,9 @@ public class BenFamilyHistory {
 		if (null != familyDiseaseList) {
 			for (Map<String, Object> disease : familyDiseaseList) {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
+				if(disease.get("ID") != null) {
+					benFamilyHistory.setID((new Double((Double) disease.get("ID"))).longValue());
+				}
 				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benFamilyHistory.setBenVisitID(benVisitID);
 				benFamilyHistory.setVisitCode(visitCode);
@@ -406,7 +409,16 @@ public class BenFamilyHistory {
 				benFamilyHistory.setVanID(vanID);
 				benFamilyHistory.setParkingPlaceID(parkingPlaceID);
 				benFamilyHistory.setCreatedBy(createdBy);
-
+				if(benFamilyHistory.getID() != null) 
+					benFamilyHistory.setProcessed("U");
+				else
+					benFamilyHistory.setProcessed("N");	
+				
+				if(disease.get("deleted").toString().equalsIgnoreCase("false"))
+					benFamilyHistory.setDeleted(false);
+				else if(disease.get("deleted").toString().equalsIgnoreCase("true"))					
+					benFamilyHistory.setDeleted(true);
+				
 				benFamilyHistory.setGeneticDisorder(geneticDisorder);
 				benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
 				benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
@@ -543,6 +555,7 @@ public class BenFamilyHistory {
 
 				Map<String, Object> familyDisease = new HashMap<String, Object>();
 				familyDisease.put("ID", familyDetails.getID());
+				familyDisease.put("deleted",false);
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());
