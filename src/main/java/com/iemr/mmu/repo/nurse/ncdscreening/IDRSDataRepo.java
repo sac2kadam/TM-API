@@ -27,4 +27,8 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 
 	@Query("select count(a.id) from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID and a.isDiabetic is true ")
 	public Integer isDiabeticCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
+
+	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
+			+ " ORDER BY Date(a.createdDate) DESC  ")
+	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 }
