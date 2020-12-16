@@ -869,4 +869,33 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	
+	
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary Symptomatic questionnaire answer details", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenSymptomaticQuestionnaireDetails" }, method = { RequestMethod.POST })
+	public String getBenSymptomaticQuestionnaireDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Get Beneficiary Symptomatic questionnaire answer details request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenSymptomaticQuestionnaireDetailsData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Get Beneficiary Symptomatic questionnaire answer details response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting details");
+			logger.error("Error in Get Beneficiary Symptomatic questionnaire answer details:" + e);
+		}
+		return response.toString();
+	}
+	
 }
