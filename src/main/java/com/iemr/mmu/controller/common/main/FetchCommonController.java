@@ -843,11 +843,12 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Physical History", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPhysicalHistory" }, method = { RequestMethod.POST })
-	public String getBenPhysicalHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenPhysicalHistory(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		logger.info("getBenPhysicalHistory request:" + comingRequest);
@@ -869,8 +870,7 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
-	
+
 	@CrossOrigin()
 	@ApiOperation(value = "Get Beneficiary Symptomatic questionnaire answer details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenSymptomaticQuestionnaireDetails" }, method = { RequestMethod.POST })
@@ -897,5 +897,31 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
-	
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary previous Diabetes history", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPreviousDiabetesHistoryDetails" }, method = { RequestMethod.POST })
+	public String getBenPreviousDiabetesHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Get Beneficiary previous Diabetes history request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenPreviousDiabetesData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Get Beneficiary previous Diabetes history response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting details");
+			logger.error("Error in Get Beneficiary previous Diabetes history:" + e);
+		}
+		return response.toString();
+	}
 }

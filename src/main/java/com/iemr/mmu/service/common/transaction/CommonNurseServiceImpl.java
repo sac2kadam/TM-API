@@ -3897,4 +3897,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		return new Gson().toJson(responseMap);
 	}
+
+	@Override
+	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+		ArrayList<IDRSData> resultSet = new ArrayList<>();
+		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
+		return new Gson().toJson(resultSet);
+	}
 }
