@@ -1051,7 +1051,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				if(prescriptionID!=null)
 				{
 					commonUtilityClass.setPrescriptionID(prescriptionID);
-					commonUtilityClass.setVisitCategoryID(3);
+					commonUtilityClass.setVisitCategoryID(2);
 					commonUtilityClass.setAuthorization(Authorization);
 					
 				}
