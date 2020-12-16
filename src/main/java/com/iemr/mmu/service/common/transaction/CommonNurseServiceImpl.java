@@ -3900,8 +3900,37 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	@Override
 	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+		Map<String, Object> response = new HashMap<String, Object>();
+
 		ArrayList<IDRSData> resultSet = new ArrayList<>();
+
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Capture");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Question");
+		column.put("keyName", "question");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Answer");
+		column.put("keyName", "answer");
+		columns.add(column);
+
 		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
-		return new Gson().toJson(resultSet);
+
+		response.put("columns", columns);
+		response.put("data", resultSet);
+		return new Gson().toJson(response);
 	}
 }
