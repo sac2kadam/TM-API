@@ -49,42 +49,12 @@ public class IDRSData {
 	@Expose
 	@Column(name = "SuspectedDiseases")
 	private String suspectedDisease;
-	public String getSuspectedDisease() {
-		return suspectedDisease;
-	}
-
-	public void setSuspectedDisease(String suspectedDisease) {
-		this.suspectedDisease = suspectedDisease;
-	}
-
-	public String getAnswer() {
-		return answer;
-	}
+	
     @Transient
     private IDRSData[] questionArray;
     @Transient
     private String[] suspectArray;
-	public IDRSData[] getQuestionArray() {
-		return questionArray;
-	}
-
-	public void setQuestionArray(IDRSData[] questionArray) {
-		this.questionArray = questionArray;
-	}
-
 	
-
-	public String[] getSuspectArray() {
-		return suspectArray;
-	}
-
-	public void setSuspectArray(String[] suspectArray) {
-		this.suspectArray = suspectArray;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
 
 	@Expose
 	@Column(name = "DiseaseQuestionType")
@@ -127,11 +97,12 @@ public class IDRSData {
 	@Expose
 	@Column(name = "ParkingPlaceID")
 	private Integer parkingPlaceID;
-	
+	@Expose
+	@Column(name = "isDiabetic")
+	private Boolean isDiabetic;
 	@Transient
 	@Expose
 	private List<Map<String, Object>> idrsDetails;
-	
 	@Transient
 	@Expose
 	private List<Map<String, Object>> suspectDetails;
@@ -142,6 +113,13 @@ public class IDRSData {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Boolean getIsDiabetic() {
+		return isDiabetic;
+	}
+
+	public void setIsDiabetic(Boolean isDiabetic) {
+		this.isDiabetic = isDiabetic;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -187,7 +165,17 @@ public class IDRSData {
 	public String getQuestion() {
 		return question;
 	}
+	public String getSuspectedDisease() {
+		return suspectedDisease;
+	}
 
+	public void setSuspectedDisease(String suspectedDisease) {
+		this.suspectedDisease = suspectedDisease;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
 	public void setQuestion(String question) {
 		this.question = question;
 	}
@@ -216,7 +204,27 @@ public class IDRSData {
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
+	public IDRSData[] getQuestionArray() {
+		return questionArray;
+	}
 
+	public void setQuestionArray(IDRSData[] questionArray) {
+		this.questionArray = questionArray;
+	}
+
+	
+
+	public String[] getSuspectArray() {
+		return suspectArray;
+	}
+
+	public void setSuspectArray(String[] suspectArray) {
+		this.suspectArray = suspectArray;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 	public String getProcessed() {
 		return processed;
 	}
