@@ -88,6 +88,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	@Autowired
 	private PrescriptionDetailRepo prescriptionDetailRepo;
 	
+	
+	
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
@@ -1216,7 +1218,17 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			return historyUpdatedSuccessfully;
 		}
 
+		public String getBenNCDScreeningNurseData(Long benRegID, Long visitCode) {
+			Map<String, Object> resMap = new HashMap<>();
 
+			resMap.put("vitals", getBeneficiaryVitalDetails(benRegID, visitCode));
+
+			resMap.put("history", getBenHistoryDetails(benRegID, visitCode));
+			
+			resMap.put("idrs", getBenIdrsDetailsFrmNurse(benRegID, visitCode));
+
+			return resMap.toString();
+		}
 
 	
 }
