@@ -14,7 +14,7 @@ import com.iemr.mmu.data.ncdScreening.IDRSData;
 public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 
 	@Query(" SELECT id,beneficiaryRegID, benVisitID, providerServiceMapID, idrsQuestionID, idrsScore, question, answer, "
-			+ "suspectedDisease, visitCode FROM IDRSData "
+			+ "suspectedDisease, visitCode, diseaseQuestionType FROM IDRSData "
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
