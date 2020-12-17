@@ -399,6 +399,68 @@ public class BenFamilyHistory {
 		if (null != familyDiseaseList) {
 			for (Map<String, Object> disease : familyDiseaseList) {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
+				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
+				benFamilyHistory.setBenVisitID(benVisitID);
+				benFamilyHistory.setVisitCode(visitCode);
+				benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
+				benFamilyHistory.setVanID(vanID);
+				benFamilyHistory.setParkingPlaceID(parkingPlaceID);
+				benFamilyHistory.setCreatedBy(createdBy);				
+				
+				benFamilyHistory.setGeneticDisorder(geneticDisorder);
+				benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
+				benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
+
+				if (null != disease.get("diseaseTypeID")) {
+					benFamilyHistory.setDiseaseTypeID(new Short(disease.get("diseaseTypeID").toString()));
+				}
+				if (null != disease.get("diseaseType")) {
+					benFamilyHistory.setDiseaseType(disease.get("diseaseType").toString());
+				}
+
+				if (null != disease.get("otherDiseaseType")) {
+					benFamilyHistory.setOtherDiseaseType(disease.get("otherDiseaseType").toString());
+				}
+
+				if (null != disease.get("snomedCode")) {
+					benFamilyHistory.setSnomedCode(disease.get("snomedCode").toString());
+				}
+				if (null != disease.get("snomedTerm")) {
+					benFamilyHistory.setSnomedTerm(disease.get("snomedTerm").toString());
+				}
+				
+				List<String> familyMemberList = (List<String>) disease.get("familyMembers");
+
+				String familyMembers = "";
+				if (null != familyMemberList) {
+					int length = familyMemberList.size();
+					for (int i = 0; i < length; i++) {
+						if (i == length - 1)
+							familyMembers += familyMemberList.get(i);
+						else
+							familyMembers += familyMemberList.get(i) + ",";
+					}
+
+					// for (String familyMember : familyMemberList) {
+					// familyMembers += familyMember + ",";
+					// }
+				}
+				benFamilyHistory.setFamilyMember(familyMembers);
+				// code changed by Neeraj on 18-05-2018
+				if (benFamilyHistory.getDiseaseTypeID() != null || benFamilyHistory.getFamilyMember() != null
+						|| geneticDisorder != null || isGeneticDisorder != null || isConsanguineousMarrige != null)
+					benFamilyHistoryList.add(benFamilyHistory);
+			}
+		}
+		return benFamilyHistoryList;
+	}
+	
+	public ArrayList<BenFamilyHistory> getBenFamilyHist() {
+
+		ArrayList<BenFamilyHistory> benFamilyHistoryList = new ArrayList<BenFamilyHistory>();
+		if (null != familyDiseaseList) {
+			for (Map<String, Object> disease : familyDiseaseList) {
+				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
 				if(disease.get("ID") != null) {
 					benFamilyHistory.setID((new Double((Double) disease.get("ID"))).longValue());
 				}
