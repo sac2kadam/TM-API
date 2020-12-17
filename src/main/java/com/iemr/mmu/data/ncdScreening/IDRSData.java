@@ -333,14 +333,14 @@ public class IDRSData {
 	}
 	
 	public IDRSData(Long ID, Integer idrsQuestionID, String question,
-			String answer, String suspectedDisease) {
+			String answer, String diseaseQuestionType) {
 		super();
 		this.id =ID;
 		this.idrsQuestionID = idrsQuestionID;
 		
 		this.question = question;
 		this.answer = answer;
-		this.suspectedDisease = suspectedDisease;
+		this.diseaseQuestionType = diseaseQuestionType;
 		
 		
 	}
@@ -357,7 +357,7 @@ public class IDRSData {
 
 			for (Object[] obj : idrsHistory) {
 				IDRSData idDetails = new IDRSData((Long) obj[0],(Integer) obj[4], (String) obj[6],
-						(String) obj[7], (String) obj[8]);
+						(String) obj[7], (String) obj[10]);
 
 				Map<String, Object> idrsData = new HashMap<String, Object>();
 				idrsData.put("ID", idDetails.getId());
@@ -366,6 +366,7 @@ public class IDRSData {
 				
 				idrsData.put("question", idDetails.getQuestion());
 				idrsData.put("answer", idDetails.getAnswer());
+				idrsData.put("suspectDisease", idDetails.getDiseaseQuestionType());
 
 				idrsDetails.add(idrsData);
 			}

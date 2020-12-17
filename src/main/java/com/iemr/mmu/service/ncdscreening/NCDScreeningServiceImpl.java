@@ -503,7 +503,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			if (null != benFamilyHistory) {
 				benFamilyHistory.setBenVisitID(benVisitID);
 				benFamilyHistory.setVisitCode(benVisitCode);
-				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistory(benFamilyHistory);
+				familyHistorySuccessFlag = commonNurseServiceImpl.saveBenFamilyHistoryNCDScreening(benFamilyHistory);
 			}
 		} else {
 			familyHistorySuccessFlag = new Long(1);
