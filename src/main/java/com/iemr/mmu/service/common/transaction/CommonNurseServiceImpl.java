@@ -831,6 +831,21 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
+	public Long saveBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
+		Long familyHistorySuccessFlag = null;
+
+		ArrayList<BenFamilyHistory> familyHistoryList = benFamilyHistory.getBenFamilyHist();
+		if (familyHistoryList.size() > 0) {
+			ArrayList<BenFamilyHistory> res = (ArrayList<BenFamilyHistory>) benFamilyHistoryRepo
+					.save(familyHistoryList);
+			if (familyHistoryList.size() == res.size()) {
+				familyHistorySuccessFlag = new Long(1);
+			}
+		} else {
+			familyHistorySuccessFlag = new Long(1);
+		}
+		return familyHistorySuccessFlag;
+	}
 
 	public Long saveBeneficiaryPhysicalVitalDetails(BenPhysicalVitalDetail benPhysicalVitalDetail) {
 		// ArrayList<Short> averageSystolicList = new ArrayList<>();
