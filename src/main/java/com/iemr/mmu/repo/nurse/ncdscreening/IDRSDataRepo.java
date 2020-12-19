@@ -3,6 +3,9 @@ package com.iemr.mmu.repo.nurse.ncdscreening;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +34,10 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE IDRSData SET idrsScore = :idrsScore WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
+	public int updateIdrsScore(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode, @Param("idrsScore") Integer idrsScore);
 }

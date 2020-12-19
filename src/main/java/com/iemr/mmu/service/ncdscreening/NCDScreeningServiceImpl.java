@@ -50,6 +50,7 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.nurse.BenVisitDetailRepo;
+import com.iemr.mmu.repo.nurse.ncdscreening.IDRSDataRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.anc.Utility;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -87,6 +88,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 	
 	@Autowired
 	private PrescriptionDetailRepo prescriptionDetailRepo;
+	
+	@Autowired
+	private IDRSDataRepo iDrsDataRepo;
 	
 	
 	
@@ -910,8 +914,14 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				{
 //					idrsDetail.setBenVisitID(benVisitID);
 //					idrsDetail.setVisitCode(benVisitCode);
-					idrsFlag = commonNurseServiceImpl
-							.saveIDRS(idrsDetail1);
+					if(idrsDetail1.getIdrsScore() != null) {
+						int success = iDrsDataRepo.updateIdrsScore(idrsDetail1.getBeneficiaryRegID(), idrsDetail1.getVisitCode(), idrsDetail1.getIdrsScore());
+						if(success > 0) {
+							idrsFlag = new Long(1);
+						}
+					}
+//					idrsFlag = commonNurseServiceImpl
+//							.saveIDRS(idrsDetail1);
 				}
 				
 			}
