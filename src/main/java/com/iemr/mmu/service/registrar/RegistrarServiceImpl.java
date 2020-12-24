@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.ws.rs.core.MediaType;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -683,7 +685,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
+		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
 		headers.add("AUTHORIZATION", Authorization);
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
@@ -723,7 +726,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Integer returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
+		// headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
 		headers.add("AUTHORIZATION", Authorization);
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
