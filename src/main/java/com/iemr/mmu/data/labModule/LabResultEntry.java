@@ -162,6 +162,18 @@ public class LabResultEntry {
 	@Transient
 	private Integer[] fileIDs;
 
+	@Expose
+	@Column(name = "stripsNotAvailable")
+	private Boolean stripsNotAvailable;
+	
+	public Boolean getStripsNotAvailable() {
+		return stripsNotAvailable;
+	}
+
+	public void setStripsNotAvailable(Boolean stripsNotAvailable) {
+		this.stripsNotAvailable = stripsNotAvailable;
+	}
+
 	public Date getDate() {
 		return date;
 	}

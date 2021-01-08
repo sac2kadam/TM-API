@@ -115,6 +115,18 @@ public class V_benLabTestOrderedDetails {
 	@Column(name = "ComponentUnit")
 	private String ComponentUnit;
 
+	@Expose
+	@Column(name = "isMandatory")
+	private Boolean isMandatory;
+	
+	public Boolean getIsMandatory() {
+		return isMandatory;
+	}
+
+	public void setIsMandatory(Boolean isMandatory) {
+		this.isMandatory = isMandatory;
+	}
+
 	public String getId() {
 		return id;
 	}
