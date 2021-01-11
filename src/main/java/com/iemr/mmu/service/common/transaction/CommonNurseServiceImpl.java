@@ -2701,8 +2701,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	// prescription for covid diagnosis
 	public Long savePrescriptionCovid(Long benRegID, Long benVisitID, Integer psmID, String createdBy,
-			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction,
-			String doctorDiagnosis) {
+			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction, String doctorDiagnosis) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(benRegID);
 		prescriptionDetail.setBenVisitID(benVisitID);
