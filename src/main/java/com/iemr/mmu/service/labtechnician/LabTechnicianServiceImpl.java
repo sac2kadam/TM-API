@@ -98,7 +98,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureDesc", obj.getProcedureDesc());
 					procDetails.put("procedureType", "Laboratory");
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
-
+					procDetails.put("isMandatory", obj.getIsMandatory());
+					
+					System.out.println("obj.getIsMandatory(): "+obj.getIsMandatory());
+					
 					procDetails.put("iotProcedureName", obj.getIotProcedureName());
 					procDetails.put("procedureCode", obj.getProcedureCode());
 					procDetails.put("procedureStartAPI", obj.getProcedureStartAPI());
@@ -386,6 +389,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
+						labCompResult.setStripsNotAvailable(labResult.getStripsNotAvailable());
 
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
 								&& null != comp.get("testResultValue")
