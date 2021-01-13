@@ -257,6 +257,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 					// file id array from string
 					Integer fileIds[];
 					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
@@ -294,6 +295,7 @@ public class LabResultEntry {
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
+					compDetails.put("stripsNotAvailable", obj.getStripsNotAvailable());
 					// file id array from string
 					Integer fileIds[];
 					if (obj.getTestReportFilePath() != null && obj.getTestReportFilePath().trim().length() > 0) {
