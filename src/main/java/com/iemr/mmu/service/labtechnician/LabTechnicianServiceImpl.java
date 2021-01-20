@@ -98,6 +98,9 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureDesc", obj.getProcedureDesc());
 					procDetails.put("procedureType", "Laboratory");
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
+					procDetails.put("isMandatory", obj.getIsMandatory());
+
+					System.out.println("obj.getIsMandatory(): "+obj.getIsMandatory());
 
 					procDetails.put("iotProcedureName", obj.getIotProcedureName());
 					procDetails.put("procedureCode", obj.getProcedureCode());
@@ -377,7 +380,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 		if ((null != labResultsList && labResultsList.size() > 0)
 				|| (null != wrapperLabResults.getRadiologyTestResults()
-						&& wrapperLabResults.getRadiologyTestResults().size() > 0)) {
+				&& wrapperLabResults.getRadiologyTestResults().size() > 0)) {
 			List<LabResultEntry> labResultsListNew = new ArrayList<LabResultEntry>();
 			for (LabResultEntry labResult : labResultsList) {
 				List<Map<String, String>> compResult = labResult.getCompList();
@@ -388,9 +391,12 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						labCompResult.setProcedureID(labResult.getProcedureID());
 
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
-								&& null != comp.get("testResultValue")
-								&& !comp.get("testResultValue").toString().isEmpty()) {
+								&& ((null != comp.get("testResultValue") && !comp.get("testResultValue").toString().isEmpty())
+										|| (null != comp.get("stripsNotAvailable") && comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true")))) {
 							labCompResult.setTestComponentID(Integer.parseInt(comp.get("testComponentID")));
+							
+							if (comp.containsKey("testResultValue") && comp.get("testResultValue") != null
+									&& !comp.get("testResultValue").isEmpty())
 							labCompResult.setTestResultValue(comp.get("testResultValue").toString());
 
 							if (comp.containsKey("testResultUnit") && comp.get("testResultUnit") != null
@@ -399,9 +405,12 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 							if (comp.containsKey("remarks") && comp.get("remarks") != null
 									&& !comp.get("remarks").isEmpty())
-
 								labCompResult.setRemarks(comp.get("remarks"));
 
+							if (comp.containsKey("stripsNotAvailable") && comp.get("stripsNotAvailable") != null
+									&& comp.get("stripsNotAvailable").toString().equalsIgnoreCase("true"))
+								labCompResult.setStripsNotAvailable(Boolean.valueOf(comp.get("stripsNotAvailable")));
+							
 							labCompResult.setBeneficiaryRegID(wrapperLabResults.getBeneficiaryRegID());
 							labCompResult.setBenVisitID(wrapperLabResults.getVisitID());
 							labCompResult.setVisitCode(wrapperLabResults.getVisitCode());
@@ -410,7 +419,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 
 							labCompResult.setVanID(wrapperLabResults.getVanID());
 							labCompResult.setParkingPlaceID(wrapperLabResults.getParkingPlaceID());
-
+							
 							labResultsListNew.add(labCompResult);
 						}
 

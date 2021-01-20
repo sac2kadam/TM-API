@@ -1,12 +1,15 @@
 package com.iemr.mmu.service.ncdscreening;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.WrapperAncFindings;
@@ -15,7 +18,9 @@ import com.iemr.mmu.data.ncdcare.NCDCareDiagnosis;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonServiceImpl;
@@ -25,7 +30,14 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService {
+    
+	private PrescriptionDetailRepo prescriptionDetailRepo;
 
+	@Autowired
+	public void setPrescriptionDetailRepo(PrescriptionDetailRepo prescriptionDetailRepo) {
+		this.prescriptionDetailRepo = prescriptionDetailRepo;
+	}
+	
 	@Autowired
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
@@ -91,45 +103,57 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 			} else {
 				findingSuccessFlag = 1;
 			}
+			
+			// creating prescription OBJ
+						PrescriptionDetail prescriptionDetail = null;
+						if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+							// JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+							prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+						}			
 
 			// generate WrapperBenInvestigationANC OBJ
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
 					.fromJson(requestOBJ.get("investigation"), WrapperBenInvestigationANC.class);
 
-			//save specialist diagnosis
-			String instruction = null;
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
-			&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
-			&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
-				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
-			}
-			
-			// save doctor diagnosis
-			String doctorDiagnosis = null;
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
-					&& requestOBJ.get("diagnosis").getAsJsonObject().has("doctorDiagnosis")
-					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").isJsonNull()) {
-				doctorDiagnosis = requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").getAsString();
-			}
+//			//save specialist diagnosis
+//			String instruction = null;
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+//			&& requestOBJ.get("diagnosis").getAsJsonObject().has("specialistDiagnosis")
+//			&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
+//				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
+//			}
+//			
+//			// save doctor diagnosis
+//			String doctorDiagnosis = null;
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()
+//					&& requestOBJ.get("diagnosis").getAsJsonObject().has("doctorDiagnosis")
+//					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").isJsonNull()) {
+//				doctorDiagnosis = requestOBJ.get("diagnosis").getAsJsonObject().get("doctorDiagnosis").getAsString();
+//			}
 
-			// generate prescription OBJ & diagnosis OBJ
-			PrescriptionDetail prescriptionDetail = null;
-			NCDCareDiagnosis ncdCareDiagnosis = null;
-			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
-				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+//			// generate prescription OBJ & diagnosis OBJ
+//			PrescriptionDetail prescriptionDetail = null;
+//			NCDCareDiagnosis ncdCareDiagnosis = null;
+//			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+//				prescriptionDetail = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"), PrescriptionDetail.class);
+//				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
+//				prescriptionID = prescriptionDetail.getPrescriptionID();
+//				;
+//			    if (commonUtilityClass.getIsSpecialist() && instruction != null)
+//			                    prescriptionDetail.setInstruction(instruction);
+//
+//			    if (!commonUtilityClass.getIsSpecialist() && doctorDiagnosis != null)
+//			                    prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+//
+////				if (doctorDiagnosis != null)
+////					prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
+//				// ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
+//				// NCDCareDiagnosis.class);
+//			}
+			
+			if (prescriptionDetail != null) {
 				prescriptionDetail.setExternalInvestigation(wrapperBenInvestigationANC.getExternalInvestigations());
 				prescriptionID = prescriptionDetail.getPrescriptionID();
-				;
-			    if (commonUtilityClass.getIsSpecialist() && instruction != null)
-			                    prescriptionDetail.setInstruction(instruction);
-
-			    if (!commonUtilityClass.getIsSpecialist() && doctorDiagnosis != null)
-			                    prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
-
-//				if (doctorDiagnosis != null)
-//					prescriptionDetail.setDiagnosisProvided(doctorDiagnosis);
-				// ncdCareDiagnosis = InputMapper.gson().fromJson(requestOBJ.get("diagnosis"),
-				// NCDCareDiagnosis.class);
 			}
 
 			// update prescription
@@ -205,5 +229,48 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 			// request OBJ is null.
 		}
 		return updateSuccessFlag;
+	}
+	
+	public String getNCDDiagnosisData(Long beneficiaryRegID, Long visitCode) {
+		PrescriptionDetail obj;
+		SCTDescription sctOBJ;
+		ArrayList<SCTDescription> sctOBJList = new ArrayList<>();
+		// ArrayList<Object[]> diagnosisDetails =
+		// prescriptionDetailRepo.getBenPrescription(beneficiaryRegID, visitCode);
+		// PrescriptionDetail diagnosisList =
+		// PrescriptionDetail.getPrescriptions(diagnosisDetails);
+
+		ArrayList<PrescriptionDetail> prescriptionDetailRS = prescriptionDetailRepo
+				.findByBeneficiaryRegIDAndVisitCode(beneficiaryRegID, visitCode);
+
+		if (prescriptionDetailRS != null && prescriptionDetailRS.size() > 0) {
+			obj = prescriptionDetailRS.get(0);
+			if (obj != null && obj.getDiagnosisProvided_SCTCode() != null && obj.getDiagnosisProvided() != null) {
+				String[] conceptIDArr = obj.getDiagnosisProvided_SCTCode().split(Pattern.quote("  ||  "));
+				String[] termArr = obj.getDiagnosisProvided().split(Pattern.quote("  ||  "));
+
+				// StringBuilder pd = new StringBuilder();
+				int pointer = 0;
+				for (String s : termArr) {
+					// if (termArr.length == (pointer + 1))
+					// pd.append(s);
+					// else
+					// pd.append(s).append(" || ");
+					sctOBJ = new SCTDescription();
+					sctOBJ.setConceptID(conceptIDArr[pointer]);
+					sctOBJ.setTerm(s);
+					sctOBJList.add(sctOBJ);
+
+					pointer++;
+				}
+
+				obj.setProvisionalDiagnosisList(sctOBJList);
+				// obj.setDiagnosisProvided(pd.toString());
+			}
+		} else {
+			obj = new PrescriptionDetail();
+		}
+
+		return new Gson().toJson(obj);
 	}
 }
