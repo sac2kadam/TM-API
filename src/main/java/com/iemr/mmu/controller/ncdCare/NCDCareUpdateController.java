@@ -123,5 +123,35 @@ public class NCDCareUpdateController {
 	 * @return success or failure response
 	 * @objective Replace NCD Care doctor data for the doctor next visit
 	 */
+	@CrossOrigin
+	@ApiOperation(value = "update NCDCare Doctor Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updateNCDCareDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for doctor data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = ncdCareServiceImpl.updateNCDCareDoctorData(jsnOBJ, Authorization);
+			if (null != result && result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("Doctor data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(500, "Unable to modify data. " + e.getMessage());
+			logger.error("Error while updating doctor data :" + e);
+		}
+
+		return response.toString();
+	}
 	
+
 }
