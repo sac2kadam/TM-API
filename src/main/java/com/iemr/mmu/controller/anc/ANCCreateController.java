@@ -61,13 +61,13 @@ public class ANCCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ, Authorization);
-				if (null != ancRes && ancRes > 0) {
-					response.setResponse("Data saved successfully");
-				} else {
-					response.setError(5000, "Unable to save data");
-				}
-
+				String ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ, Authorization);
+//				if (null != ancRes && ancRes > 0) {
+//					response.setResponse("Data saved successfully");
+//				} else {
+//					response.setError(5000, "Unable to save data");
+//				}
+				response.setResponse(ancRes);
 			} else {
 				response.setError(5000, "Invalid request");
 			}

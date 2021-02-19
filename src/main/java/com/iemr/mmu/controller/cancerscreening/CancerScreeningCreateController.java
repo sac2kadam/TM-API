@@ -60,18 +60,19 @@ public class CancerScreeningCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ, Authorization);
-				if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
-					if (nurseDataSaveSuccessFlag == 1)
-						response.setResponse("Data saved successfully");
-					else if (nurseDataSaveSuccessFlag == 2)
-						response.setResponse("Data saved and MAMMOGRAM order created successfully");
-					else
-						response.setError(9999,
-								"Data saved successfully but 'error in MAMMOGRAM order creation';please contact administrator");
-				} else {
-					response.setError(5000, "Unable to save data");
-				}
+				String nurseDataSaveSuccessFlag = cSServiceImpl.saveCancerScreeningNurseData(jsnOBJ, Authorization);
+				response.setResponse(nurseDataSaveSuccessFlag);
+				//if (nurseDataSaveSuccessFlag != null && nurseDataSaveSuccessFlag > 0) {
+//					if (nurseDataSaveSuccessFlag == 1)
+//						response.setResponse("Data saved successfully");
+//					else if (nurseDataSaveSuccessFlag == 2)
+//						response.setResponse("Data saved and MAMMOGRAM order created successfully");
+//					else
+//						response.setError(9999,
+//								"Data saved successfully but 'error in MAMMOGRAM order creation';please contact administrator");
+//				} else {
+//					response.setError(5000, "Unable to save data");
+//				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}

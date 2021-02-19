@@ -134,7 +134,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 
 //		Integer result = null;
 //
@@ -189,6 +189,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		//Shubham Shekhar,8-12-2020,WDF
 		Long saveSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		Long benVisitCode = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -198,7 +199,6 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			// 07-06-2018 visit code
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -273,7 +273,17 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return saveSuccessFlag;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);		
 
 	}
 	// method for updating ben flow status flag for nurse

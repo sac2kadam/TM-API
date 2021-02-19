@@ -64,13 +64,14 @@ public class QuickConsultCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Integer r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ, Authorization);
-				if (r == 1) {
-					response.setResponse("Data saved successfully");
-				} else {
-					// Handle error and required msg...
-					response.setError(500, "Unable to save data");
-				}
+				String r = quickConsultationServiceImpl.quickConsultNurseDataInsert(jsnOBJ, Authorization);
+				response.setResponse(r);
+//				if (r == 1) {
+//					response.setResponse("Data saved successfully");
+//				} else {
+//					// Handle error and required msg...
+//					response.setError(500, "Unable to save data");
+//				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}

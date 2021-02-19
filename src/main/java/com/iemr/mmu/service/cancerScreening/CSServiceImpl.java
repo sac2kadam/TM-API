@@ -123,9 +123,10 @@ public class CSServiceImpl implements CSService {
 	 * @throws Exception
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveCancerScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveCancerScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long nurseDataSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		Long benVisitCode = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			// Call method to save visit details data
@@ -137,7 +138,6 @@ public class CSServiceImpl implements CSService {
 			Map<String, Long> visitIdAndCodeMap = saveBenVisitDetails(benVisitDetailsOBJ, nurseUtilityClass);
 
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -237,7 +237,22 @@ public class CSServiceImpl implements CSService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return nurseDataSuccessFlag;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != nurseDataSuccessFlag && nurseDataSuccessFlag > 0) {
+			if (nurseDataSuccessFlag == 1)
+				responseMap.put("response", "Data saved successfully");
+			else if (nurseDataSuccessFlag == 2)
+				responseMap.put("response", "Data saved and MAMMOGRAM order created successfully");
+			else
+				responseMap.put("response", "Data saved successfully but 'error in MAMMOGRAM order creation';please contact administrator");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);			
 	}
 
 	// method for updating ben flow status flag for nurse

@@ -4,6 +4,6 @@ import com.google.gson.JsonObject;
 
 public interface NCDCareService {
 
-	Long saveNCDCareNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
+	String saveNCDCareNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
 
 }
