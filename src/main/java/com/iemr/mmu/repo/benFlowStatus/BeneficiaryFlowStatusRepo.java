@@ -315,7 +315,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	public ArrayList<BeneficiaryFlowStatus> getPatientLat_3_Episode(@Param("benRegID") Long benRegID);
 
 	// nurse worklist coming from MMU
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.specialist_flag = 100 AND t.deleted = false "
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.specialist_flag = 100 AND t.deleted = false AND t.referredVisitCode IS NOT NULL "
 			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
 			+ " AND t.vanID = :vanID  ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getMmuNurseWorklistNew(
