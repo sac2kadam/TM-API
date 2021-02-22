@@ -8,4 +8,6 @@ public interface CommonNurseService {
 	public String getBenSymptomaticData(Long benRegID) throws Exception;
 
 	public String getBenPreviousDiabetesData(Long benRegID) throws Exception;
+
+	public String getBenPreviousReferralData(Long benRegID) throws Exception;
 }

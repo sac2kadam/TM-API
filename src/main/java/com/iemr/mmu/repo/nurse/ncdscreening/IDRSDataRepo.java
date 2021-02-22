@@ -35,6 +35,10 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
+	@Query(nativeQuery = true, value = " SELECT * from t_idrsdetails t where t.beneficiaryRegID =:beneficiaryRegID and t.deleted is false"
+			+ " ORDER BY t.createdDate DESC LIMIT 1; ")
+	public ArrayList<IDRSData> getBenPreviousReferredDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
 	@Transactional
 	@Modifying
 	@Query("UPDATE IDRSData SET idrsScore = :idrsScore WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")

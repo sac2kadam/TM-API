@@ -548,5 +548,13 @@ public class CommonServiceImpl implements CommonService {
 		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
 
 	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
+
+	}
+	
+	
 
 }

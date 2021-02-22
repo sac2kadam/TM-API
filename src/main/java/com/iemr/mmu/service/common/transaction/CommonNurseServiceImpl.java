@@ -831,6 +831,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
+
 	public Long saveBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
 		Long familyHistorySuccessFlag = null;
 
@@ -2716,7 +2717,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	// prescription for covid diagnosis
 	public Long savePrescriptionCovid(Long benRegID, Long benVisitID, Integer psmID, String createdBy,
-			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction, String doctorDiagnosis) {
+			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction,
+			String doctorDiagnosis) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(benRegID);
 		prescriptionDetail.setBenVisitID(benVisitID);
@@ -3953,6 +3955,46 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		resultSet = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
+
+		response.put("columns", columns);
+		response.put("data", resultSet);
+		return new Gson().toJson(response);
+	}
+
+	// New Nurse worklist coming from MMU.... 16-02-2021
+	public String getMmuNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getMmuNurseWorklistNew(providerServiceMapId,
+				vanID);
+
+		return new Gson().toJson(obj);
+	}
+
+	@Override
+	public String getBenPreviousReferralData(Long benRegID) throws Exception {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<IDRSData> resultSet = new ArrayList<>();
+
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Suspected Diseases");
+		column.put("keyName", "suspectedDisease");
+		columns.add(column);
+
+		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
 
 		response.put("columns", columns);
 		response.put("data", resultSet);

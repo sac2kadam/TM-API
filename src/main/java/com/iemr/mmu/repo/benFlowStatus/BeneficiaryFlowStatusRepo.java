@@ -314,4 +314,11 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " ORDER BY t.created_date DESC limit 3", nativeQuery = true)
 	public ArrayList<BeneficiaryFlowStatus> getPatientLat_3_Episode(@Param("benRegID") Long benRegID);
 
+	// nurse worklist coming from MMU
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.specialist_flag = 100 AND t.deleted = false "
+			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
+			+ " AND t.vanID = :vanID  ORDER BY t.visitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getMmuNurseWorklistNew(
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
+
 }
