@@ -38,7 +38,11 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query(nativeQuery = true, value = " SELECT * from t_idrsdetails t where t.beneficiaryRegID =:beneficiaryRegID and t.deleted is false"
 			+ " ORDER BY t.createdDate DESC LIMIT 1; ")
 	public ArrayList<IDRSData> getBenPreviousReferredDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	@Query(value="select count(a.idrsid) from t_idrsdetails a where BeneficiaryRegID= :beneficiaryRegID and SuspectedDiseases like '%vision%' ",nativeQuery=true)
+	public Integer isDefectiveVisionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
+	@Query(value="select count(a.idrsid) from t_idrsdetails a where BeneficiaryRegID= :beneficiaryRegID and SuspectedDiseases like '%epilepsy%' ",nativeQuery=true)
+	public Integer isEpilepsyCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	@Transactional
 	@Modifying
 	@Query("UPDATE IDRSData SET idrsScore = :idrsScore WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
