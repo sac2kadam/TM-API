@@ -22,8 +22,8 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
 
 	// nurse worklist
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
-			+ " AND t.specialist_flag != 100 AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND (t.specialist_flag <> 100 OR t.specialist_flag is null) AND t.deleted = false "
+			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
 			+ " AND t.vanID = :vanID  ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
