@@ -23,7 +23,7 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
 			+ " AND a.diseaseQuestionType "
-			+ " IN ('Epilepsy', 'Asthma', 'Malaria Screening', 'Vision Screening', 'Tuberculosis Screening') "
+			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') "
 			+ " ORDER BY Date(a.createdDate) DESC, a.visitCode ")
 	public ArrayList<IDRSData> getBenIdrsDetailsLast_3_Month(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("tDate") Timestamp tDate);
