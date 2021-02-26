@@ -973,4 +973,27 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	/**
+	 * Author SH20094090
+	 * @param comingRequest
+	 * @return ProviderSpecificMasterData
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Provider Specific Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getProviderSpecificData" }, method = { RequestMethod.POST })
+	public String getProviderSpecificData(@ApiParam(value = "{\"benvisitID\":\"Long\",\"benvisitCode\":\"Long\",\"fetchMMUDataFor\":\"String\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getProviderSpecificData request:" + comingRequest);
+		try {
+				String s = commonServiceImpl.getProviderSpecificData(comingRequest);
+				response.setResponse(s);
+			logger.info("getProviderSpecificData response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, e.getMessage());
+			logger.error("Error in getProviderSpecificData:" + e);
+		}
+		return response.toString();
+	}
+
 }

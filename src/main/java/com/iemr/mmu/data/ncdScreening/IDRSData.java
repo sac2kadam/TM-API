@@ -8,12 +8,17 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.swymed.UserSwymed;
 @Entity
 @Table(name = "t_idrsDetails")
 public class IDRSData {
@@ -55,7 +60,10 @@ public class IDRSData {
     @Transient
     private String[] suspectArray;
 	
-
+    @OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "visitCode", insertable = false, updatable = false)
+	@Expose
+	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	@Expose
 	@Column(name = "DiseaseQuestionType")
 	private String diseaseQuestionType;

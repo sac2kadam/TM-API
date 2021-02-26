@@ -22,7 +22,11 @@ public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugD
 			+ " AND visitCode=:visitCode AND deleted = false ")
 	public ArrayList<Object[]> getBenPrescribedDrugDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
-
+	
+	@Query(" SELECT a FROM PrescribedDrugDetail a WHERE a.beneficiaryRegID =:beneficiaryRegID "
+			+ " AND a.visitCode=:visitCode AND a.deleted = false ")
+	public ArrayList<PrescribedDrugDetail> getBenPrescribedDrugDetails2(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
 	@Modifying
 	@Transactional
 	@Query(" UPDATE  PrescribedDrugDetail set deleted = true where id =:id ")
