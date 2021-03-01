@@ -113,6 +113,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer radioWL;
 	@Value("${oncoWL}")
 	private Integer oncoWL;
+	@Value("${TMReferredWL}")
+	private Integer TMReferredWL;
+	
 
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
@@ -3977,8 +3980,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	// New Nurse worklist coming from MMU.... 16-02-2021
 	public String getMmuNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -TMReferredWL);
+		long startTime = cal.getTimeInMillis();
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getMmuNurseWorklistNew(providerServiceMapId,
-				vanID);
+				vanID,new Timestamp(startTime));
 
 		return new Gson().toJson(obj);
 	}
