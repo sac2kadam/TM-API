@@ -3994,8 +3994,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		Map<String, Object> response = new HashMap<String, Object>();
 
-		ArrayList<IDRSData> resultSet = new ArrayList<>();
-
+		ArrayList<Object[]> resultSet = new ArrayList<>();
+		ArrayList<IDRSData> resultSet1 = new ArrayList<>();
+        IDRSData idrs=new IDRSData();
 		Map<String, String> column;
 		ArrayList<Map<String, String>> columns = new ArrayList<>();
 
@@ -4015,9 +4016,17 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
-
+		
+        if(resultSet !=null )
+        {
+        	for(Object[] obj :resultSet)
+        	{
+        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2]);
+        		resultSet1.add(idrs);
+        	}
+        }
+        	response.put("data", resultSet1);
 		response.put("columns", columns);
-		response.put("data", resultSet);
 		return new Gson().toJson(response);
 	}
 

@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -61,7 +62,7 @@ public class IDRSData {
     private String[] suspectArray;
 	
     @OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "visitCode", insertable = false, updatable = false)
+	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
 	@Expose
 	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	@Expose
@@ -352,7 +353,13 @@ public class IDRSData {
 		
 		
 	}
-	
+	public IDRSData(Long visitCode,Timestamp createdDate,String suspected)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.suspectedDisease=suspected;
+	}
 	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
 		IDRSData benIdrsHistory = null;
 		if (null != idrsHistory && idrsHistory.size() > 0) {
