@@ -4073,13 +4073,13 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 		response.put("columns", columns);
 		try {
-			ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
-            
-			//BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
-			value.put("data",
-					commonDoctorServiceImpl.getReferralDetails(request.getBenRegID(), request.getVisitCode()));
+			//ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(request.getBenRegID(), request.getVisitCode());
+			BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
+//			value.put("data",
+//					commonDoctorServiceImpl.getReferralDetails(request.getBenRegID(), request.getVisitCode()));
 			//values.add(value);
-			response.put("data", resList);
+			response.put("data", referDetails);
 			
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Referral data");
@@ -4128,9 +4128,12 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		response.put("columns", columns);
 		try {
-			ArrayList<PrescribedDrugDetail> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails2(request.getBenRegID(), request.getVisitCode());
+			//ArrayList<PrescribedDrugDetail> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(request.getBenRegID(), request.getVisitCode());
+
+			ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
 			response.put("data",
-					resList);
+					prescribedDrugs);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching prescription data");
 		}
@@ -4148,9 +4151,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		response.put("columns", columns);
 		try {
-			ArrayList<LabTestOrderDetail> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails2(request.getBenRegID(), request.getVisitCode());
+//			ArrayList<LabTestOrderDetail> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(), request.getVisitCode());
+			WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
 			response.put("data",
-					labTestOrders);
+					labTestOrdersList);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Investigation data");
 		}
