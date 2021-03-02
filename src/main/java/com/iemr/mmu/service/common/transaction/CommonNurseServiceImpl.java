@@ -3942,8 +3942,52 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		return new Gson().toJson(responseMap);
 	}
 
+//	@Override
+//	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+//		Map<String, Object> response = new HashMap<String, Object>();
+//
+//		ArrayList<IDRSData> resultSet = new ArrayList<>();
+//		ArrayList<Object[]> resultSet1 = new ArrayList<>();
+//		Map<String, String> column;
+//		ArrayList<Map<String, String>> columns = new ArrayList<>();
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Date of Capture");
+//		column.put("keyName", "createdDate");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Visit Code");
+//		column.put("keyName", "visitCode");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Question");
+//		column.put("keyName", "question");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Answer");
+//		column.put("keyName", "answer");
+//		columns.add(column);
+//		IDRSData idrs=new IDRSData();
+//		resultSet1 = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
+//        if(resultSet1 !=null && resultSet1.size()>0)
+//        {
+//        	for(Object[] obj:resultSet1)
+//        	{
+//        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2],(String)obj[3],((BigInteger) obj[4]).longValue(),((Integer) obj[5])
+//        				,(String)obj[6]);
+//        		resultSet.add(idrs);
+//        	}
+//        }
+//		response.put("columns", columns);
+//		response.put("data", resultSet);
+//		return new Gson().toJson(response);
+//	}
 	@Override
 	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+
 		Map<String, Object> response = new HashMap<String, Object>();
 
 		ArrayList<IDRSData> resultSet = new ArrayList<>();
@@ -3977,7 +4021,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response.put("data", resultSet);
 		return new Gson().toJson(response);
 	}
-
 	// New Nurse worklist coming from MMU.... 16-02-2021
 	public String getMmuNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();

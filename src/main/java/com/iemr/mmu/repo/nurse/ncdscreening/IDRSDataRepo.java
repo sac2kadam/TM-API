@@ -21,10 +21,10 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
-	@Query("select a from IDRSData a left join  a.beneficiaryFlowStatus b where (b.specialist_flag=9 OR b.doctorFlag=9)  AND a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
+	@Query(value="select a.* from t_idrsDetails a inner join i_ben_flow_outreach b on  a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_Flag=9)  AND a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
 			+ " AND a.diseaseQuestionType "
 			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') "
-			+ " ORDER BY Date(a.createdDate) DESC, a.visitCode ")
+			+ " ORDER BY createddate DESC, a.visitCode ",nativeQuery=true)
 	public ArrayList<IDRSData> getBenIdrsDetailsLast_3_Month(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("tDate") Timestamp tDate);
 
@@ -32,6 +32,9 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			,nativeQuery=true)
 	public Integer isDiabeticCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
+//	@Query( value=" SELECT visitcode,createddate,question,answer,idrsid,idrsquestionid,diseasequestiontype from t_idrsdetails t where t.beneficiaryRegID = :beneficiaryRegID and t.deleted is false and t.DiseaseQuestionType like '%Diabetes%' " + 
+//			" ORDER BY t.createddate DESC ",nativeQuery=true)
+//	public ArrayList<Object[]> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);

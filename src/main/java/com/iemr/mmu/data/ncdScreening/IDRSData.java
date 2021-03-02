@@ -61,10 +61,10 @@ public class IDRSData {
     @Transient
     private String[] suspectArray;
 	
-    @OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
-	@Expose
-	private BeneficiaryFlowStatus beneficiaryFlowStatus;
+//    @OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
+//	@Expose
+//	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	@Expose
 	@Column(name = "DiseaseQuestionType")
 	private String diseaseQuestionType;
@@ -346,7 +346,6 @@ public class IDRSData {
 		super();
 		this.id =ID;
 		this.idrsQuestionID = idrsQuestionID;
-		
 		this.question = question;
 		this.answer = answer;
 		this.diseaseQuestionType = diseaseQuestionType;
@@ -359,6 +358,17 @@ public class IDRSData {
 		this.visitCode=visitCode;
 		this.createdDate=createdDate;
 		this.suspectedDisease=suspected;
+	}
+	public IDRSData(Long visitCode,Timestamp createdDate,String question,String answer,Long idrsID,Integer idrsQuestionID,String diseaseQuestionType)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.question=question;
+		this.answer=answer;
+		this.id=idrsID;
+		this.idrsQuestionID=idrsQuestionID;
+		this.diseaseQuestionType=diseaseQuestionType;
 	}
 	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
 		IDRSData benIdrsHistory = null;
