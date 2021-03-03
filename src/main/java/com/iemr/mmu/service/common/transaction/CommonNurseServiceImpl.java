@@ -46,6 +46,8 @@ import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.doctor.BenReferDetails;
+import com.iemr.mmu.data.doctor.ProviderSpecificRequest;
 import com.iemr.mmu.data.ncdScreening.IDRSData;
 import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
@@ -59,6 +61,7 @@ import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.registrar.WrapperRegWorklist;
 import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.doctor.BenReferDetailsRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.BenCancerVitalDetailRepo;
 import com.iemr.mmu.repo.nurse.BenPhysicalVitalRepo;
@@ -93,6 +96,7 @@ import com.iemr.mmu.repo.quickConsultation.PrescribedDrugDetailRepo;
 import com.iemr.mmu.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.mmu.repo.registrar.RegistrarRepoBenData;
 import com.iemr.mmu.repo.registrar.ReistrarRepoBenSearch;
+import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
@@ -109,6 +113,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer radioWL;
 	@Value("${oncoWL}")
 	private Integer oncoWL;
+	@Value("${TMReferredWL}")
+	private Integer TMReferredWL;
+	
 
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
@@ -147,7 +154,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private BenCancerVitalDetailRepo benCancerVitalDetailRepo;
 
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
-
+	@Autowired
+	private BenReferDetailsRepo benReferDetailsRepo;
+	
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
@@ -831,6 +840,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		else
 			return null;
 	}
+
 	public Long saveBenFamilyHistoryNCDScreening(BenFamilyHistory benFamilyHistory) {
 		Long familyHistorySuccessFlag = null;
 
@@ -2716,7 +2726,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	// prescription for covid diagnosis
 	public Long savePrescriptionCovid(Long benRegID, Long benVisitID, Integer psmID, String createdBy,
-			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction, String doctorDiagnosis) {
+			String externalInvestigation, Long benVisitCode, Integer vanID, Integer parkingPlaceID, String instruction,
+			String doctorDiagnosis) {
 		PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 		prescriptionDetail.setBeneficiaryRegID(benRegID);
 		prescriptionDetail.setBenVisitID(benVisitID);
@@ -3910,21 +3921,73 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		// is diabetic check for ben
 		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
-
+		Integer epilepsy = iDRSDataRepo.isEpilepsyCheck(benRegID);
+		Integer vision = iDRSDataRepo.isDefectiveVisionCheck(benRegID);
 		responseMap.put("questionariesData", ansList);
 		if (i != null && i > 0)
 			responseMap.put("isDiabetic", true);
 		else
 			responseMap.put("isDiabetic", false);
-
+		if (epilepsy != null && epilepsy > 0)
+			responseMap.put("isEpilepsy", true);
+		else
+			responseMap.put("isEpilepsy", false);
+		if (vision != null && vision > 0)
+			responseMap.put("isDefectiveVision", true);
+		else
+			responseMap.put("isDefectiveVision", false);
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
 
 		return new Gson().toJson(responseMap);
 	}
 
+//	@Override
+//	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+//		Map<String, Object> response = new HashMap<String, Object>();
+//
+//		ArrayList<IDRSData> resultSet = new ArrayList<>();
+//		ArrayList<Object[]> resultSet1 = new ArrayList<>();
+//		Map<String, String> column;
+//		ArrayList<Map<String, String>> columns = new ArrayList<>();
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Date of Capture");
+//		column.put("keyName", "createdDate");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Visit Code");
+//		column.put("keyName", "visitCode");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Question");
+//		column.put("keyName", "question");
+//		columns.add(column);
+//
+//		column = new HashMap<>();
+//		column.put("columnName", "Answer");
+//		column.put("keyName", "answer");
+//		columns.add(column);
+//		IDRSData idrs=new IDRSData();
+//		resultSet1 = iDRSDataRepo.getBenPreviousDiabetesDetails(benRegID);
+//        if(resultSet1 !=null && resultSet1.size()>0)
+//        {
+//        	for(Object[] obj:resultSet1)
+//        	{
+//        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2],(String)obj[3],((BigInteger) obj[4]).longValue(),((Integer) obj[5])
+//        				,(String)obj[6]);
+//        		resultSet.add(idrs);
+//        	}
+//        }
+//		response.put("columns", columns);
+//		response.put("data", resultSet);
+//		return new Gson().toJson(response);
+//	}
 	@Override
 	public String getBenPreviousDiabetesData(Long benRegID) throws Exception {
+
 		Map<String, Object> response = new HashMap<String, Object>();
 
 		ArrayList<IDRSData> resultSet = new ArrayList<>();
@@ -3956,6 +4019,198 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		response.put("columns", columns);
 		response.put("data", resultSet);
+		return new Gson().toJson(response);
+	}
+	// New Nurse worklist coming from MMU.... 16-02-2021
+	public String getMmuNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -TMReferredWL);
+		long startTime = cal.getTimeInMillis();
+		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getMmuNurseWorklistNew(providerServiceMapId,
+				vanID,new Timestamp(startTime));
+
+		return new Gson().toJson(obj);
+	}
+
+	@Override
+	public String getBenPreviousReferralData(Long benRegID) throws Exception {
+
+		Map<String, Object> response = new HashMap<String, Object>();
+
+		ArrayList<Object[]> resultSet = new ArrayList<>();
+		ArrayList<IDRSData> resultSet1 = new ArrayList<>();
+        IDRSData idrs=new IDRSData();
+		Map<String, String> column;
+		ArrayList<Map<String, String>> columns = new ArrayList<>();
+
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Visit Code");
+		column.put("keyName", "visitCode");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Suspected Diseases");
+		column.put("keyName", "suspectedDisease");
+		columns.add(column);
+
+		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
+		
+        if(resultSet !=null )
+        {
+        	for(Object[] obj :resultSet)
+        	{
+        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2]);
+        		resultSet1.add(idrs);
+        	}
+        }
+        	response.put("data", resultSet1);
+		response.put("columns", columns);
+		return new Gson().toJson(response);
+	}
+
+	/**
+	 * Author SH20094090
+	 * 
+	 * @throws IEMRException
+	 */
+	public String fetchProviderSpecificdata(String request) throws IEMRException {
+		String res = "";
+		try {
+			ProviderSpecificRequest detail = InputMapper.gson().fromJson(request, ProviderSpecificRequest.class);
+			switch (detail.getFetchMMUDataFor().toLowerCase()) {
+			case "prescription":
+				res = getPrescriptionData(detail);
+				break;
+			case "investigation":
+				res = getInvestigationData(detail);
+				break;
+			case "referral":
+				res = getReferralData(detail);
+				break;
+			default:
+				res = "Invalid master param to fetch data";
+			}
+		} catch (Exception e) {
+			throw new IEMRException(e.getMessage());
+		}
+		return res;
+	}
+
+	private String getReferralData(ProviderSpecificRequest request) throws IEMRException {
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> values = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+		Map<String, String> value = new HashMap<String, String>();
+		column = new HashMap<>();
+		column.put("columnName", "Higher Healthcare Centre");
+		column.put("keyName", "referredToInstituteName");
+		columns.add(column);
+		column = new HashMap<>();
+		column.put("columnName", "Additional Services");
+		column.put("keyName", "refrredToAdditionalServiceList");
+		columns.add(column);
+		column = new HashMap<>();
+		column.put("columnName", "Referral Reason");
+		column.put("keyName", "referralReason");
+		columns.add(column);
+		column = new HashMap<>();
+		column.put("columnName", "Revisit Date");
+		column.put("keyName", "revisitDate");
+		columns.add(column);
+		response.put("columns", columns);
+		try {
+			//ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(request.getBenRegID(), request.getVisitCode());
+			BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
+//			value.put("data",
+//					commonDoctorServiceImpl.getReferralDetails(request.getBenRegID(), request.getVisitCode()));
+			//values.add(value);
+			response.put("data", referDetails);
+			
+		} catch (Exception e) {
+			throw new IEMRException("Error while fetching Referral data");
+		}
+		return new Gson().toJson(response);
+	}
+
+	private String getPrescriptionData(ProviderSpecificRequest request) throws IEMRException {
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+		column = new HashMap<>();
+		column.put("columnName", "Drug Name");
+		column.put("keyName", "drugName");
+		columns.add(column);
+
+		column = new HashMap<>();
+		column.put("columnName", "Strength");
+		column.put("keyName", "drugStrength");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Duration");
+		column.put("keyName", "duration");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Unit of duration");
+		column.put("keyName", "unit");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Form");
+		column.put("keyName", "formName");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Frequency");
+		column.put("keyName", "frequency");
+		columns.add(column);
+
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Quantity Prescribed");
+		column.put("keyName", "qtyPrescribed");
+		columns.add(column);
+
+		response.put("columns", columns);
+		try {
+			//ArrayList<PrescribedDrugDetail> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(request.getBenRegID(), request.getVisitCode());
+
+			ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
+			response.put("data",
+					prescribedDrugs);
+		} catch (Exception e) {
+			throw new IEMRException("Error while fetching prescription data");
+		}
+		return new Gson().toJson(response);
+	}
+
+	String getInvestigationData(ProviderSpecificRequest request) throws IEMRException {
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Map<String, Object>> columns = new ArrayList<Map<String, Object>>();
+		Map<String, Object> column = new HashMap<String, Object>();
+		column = new HashMap<>();
+		column.put("columnName", "Test Name");
+		column.put("keyName", "procedureName");
+		columns.add(column);
+
+		response.put("columns", columns);
+		try {
+//			ArrayList<LabTestOrderDetail> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails2(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(), request.getVisitCode());
+			WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
+			response.put("data",
+					labTestOrdersList);
+		} catch (Exception e) {
+			throw new IEMRException("Error while fetching Investigation data");
+		}
 		return new Gson().toJson(response);
 	}
 }

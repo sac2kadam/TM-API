@@ -924,4 +924,76 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+
+	// nurse worklist coming from MMU application
+	@CrossOrigin()
+	@ApiOperation(value = "Get MMU Nurse worklist new", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getMmuNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
+			RequestMethod.GET })
+	public String getMmuNurseWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
+			@PathVariable("vanID") Integer vanID) {
+		OutputResponse response = new OutputResponse();
+		try {
+			String s = commonNurseServiceImpl.getMmuNurseWorkListNew(providerServiceMapID, vanID);
+			if (s != null)
+				response.setResponse(s);
+			else
+				response.setError(5000, "Error while getting MMU Nurse Worklist");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in getNurseWorklist:" + e);
+			response.setError(5000, "Error while getting MMU Nurse Worklist");
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin()
+	@ApiOperation(value = "Get Beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
+	public String getBenPreviousReferralHistoryDetails(
+			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("Get Beneficiary previous Referral history request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID")) {
+				Long benRegID = obj.getLong("benRegID");
+				String s = commonServiceImpl.getBenPreviousReferralData(benRegID);
+				response.setResponse(s);
+
+			} else {
+				logger.info("Invalid Request Data.");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Get Beneficiary previous Referral history response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting details");
+			logger.error("Error in Get Beneficiary previous Referral history:" + e);
+		}
+		return response.toString();
+	}
+	/**
+	 * Author SH20094090
+	 * @param comingRequest
+	 * @return ProviderSpecificMasterData
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get Provider Specific Data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getProviderSpecificData" }, method = { RequestMethod.POST })
+	public String getProviderSpecificData(@ApiParam(value = "{\"benvisitID\":\"Long\",\"benvisitCode\":\"Long\",\"fetchMMUDataFor\":\"String\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("getProviderSpecificData request:" + comingRequest);
+		try {
+				String s = commonServiceImpl.getProviderSpecificData(comingRequest);
+				response.setResponse(s);
+			logger.info("getProviderSpecificData response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, e.getMessage());
+			logger.error("Error in getProviderSpecificData:" + e);
+		}
+		return response.toString();
+	}
+
 }

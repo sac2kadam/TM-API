@@ -265,6 +265,14 @@ public class BeneficiaryFlowStatus {
 	@Column(name = "TCRequestDate")
 	private Timestamp tCRequestDate;
 
+	@Expose
+	@Column(name = "referred_visitcode")
+	private Long referredVisitCode;
+	
+	@Expose
+	@Column(name = "referred_visit_id")
+	private Long referred_visit_id;
+	
 	@Transient
 	private I_bendemographics i_bendemographics;
 	@Transient
@@ -942,5 +950,25 @@ public class BeneficiaryFlowStatus {
 	public void setIsMobile(Boolean isMobile) {
 		this.isMobile = isMobile;
 	}
+
+	public Long getReferredVisitCode() {
+		return referredVisitCode;
+	}
+
+	public void setReferredVisitCode(Long referredVisitCode) {
+		this.referredVisitCode = referredVisitCode;
+	}
+
+	public Long getReferred_visit_id() {
+		return referred_visit_id;
+	}
+
+	public void setReferred_visit_id(Long referred_visit_id) {
+		this.referred_visit_id = referred_visit_id;
+	}
+	
+	
+	
+	
 
 }

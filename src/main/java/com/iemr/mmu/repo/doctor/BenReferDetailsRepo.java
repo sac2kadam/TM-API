@@ -18,7 +18,9 @@ public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Lon
 			+ "referredToInstituteName, serviceID, serviceName, visitCode, revisitDate , referralReason "
 			+ "from BenReferDetails ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
 	public ArrayList<Object[]> getBenReferDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
-
+	@Query(" SELECT ba "
+			+ "from BenReferDetails ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
+	public ArrayList<BenReferDetails> getBenReferDetails2(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	/*
 	 * @Query("SELECT processed from BenReferDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID"
 	 * ) public String getBenReferDetailsStatus(@Param("benRegID") Long benRegID,

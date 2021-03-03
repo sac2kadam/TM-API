@@ -364,7 +364,9 @@ public class CommonServiceImpl implements CommonService {
 	}
 	/// ------- End of Fetch beneficiary all Family history data ------
 	
-	
+	public String getProviderSpecificData(String request) throws IEMRException {
+		return commonNurseServiceImpl.fetchProviderSpecificdata(request);
+	}
 	// ------- Fetch beneficiary all Physical history data ---------------
 		public String getBenPhysicalHistory(Long beneficiaryRegID) {
 			return commonNurseServiceImpl.fetchBenPhysicalHistory(beneficiaryRegID);
@@ -548,5 +550,13 @@ public class CommonServiceImpl implements CommonService {
 		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
 
 	}
+	
+	@Override
+	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
+		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
+
+	}
+	
+	
 
 }

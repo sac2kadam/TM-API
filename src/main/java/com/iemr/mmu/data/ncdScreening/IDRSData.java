@@ -8,12 +8,18 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.swymed.UserSwymed;
 @Entity
 @Table(name = "t_idrsDetails")
 public class IDRSData {
@@ -55,7 +61,10 @@ public class IDRSData {
     @Transient
     private String[] suspectArray;
 	
-
+//    @OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
+//	@Expose
+//	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	@Expose
 	@Column(name = "DiseaseQuestionType")
 	private String diseaseQuestionType;
@@ -337,14 +346,30 @@ public class IDRSData {
 		super();
 		this.id =ID;
 		this.idrsQuestionID = idrsQuestionID;
-		
 		this.question = question;
 		this.answer = answer;
 		this.diseaseQuestionType = diseaseQuestionType;
 		
 		
 	}
-	
+	public IDRSData(Long visitCode,Timestamp createdDate,String suspected)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.suspectedDisease=suspected;
+	}
+	public IDRSData(Long visitCode,Timestamp createdDate,String question,String answer,Long idrsID,Integer idrsQuestionID,String diseaseQuestionType)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.question=question;
+		this.answer=answer;
+		this.id=idrsID;
+		this.idrsQuestionID=idrsQuestionID;
+		this.diseaseQuestionType=diseaseQuestionType;
+	}
 	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
 		IDRSData benIdrsHistory = null;
 		if (null != idrsHistory && idrsHistory.size() > 0) {

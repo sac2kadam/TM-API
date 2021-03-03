@@ -21,20 +21,32 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			+ " WHERE beneficiaryRegID = :benRegID AND deleted = false AND visitCode = :visitCode")
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
-	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
+	@Query(value="select a.* from t_idrsDetails a inner join i_ben_flow_outreach b on  a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_Flag=9)  AND a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
 			+ " AND a.diseaseQuestionType "
-			+ " IN ('Epilepsy', 'Asthma', 'Malaria Screening', 'Vision Screening', 'Tuberculosis Screening') "
-			+ " ORDER BY Date(a.createdDate) DESC, a.visitCode ")
+			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') "
+			+ " ORDER BY createddate DESC, a.visitCode ",nativeQuery=true)
 	public ArrayList<IDRSData> getBenIdrsDetailsLast_3_Month(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("tDate") Timestamp tDate);
 
-	@Query("select count(a.id) from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID and a.isDiabetic is true ")
+	@Query(value="select count(a.idrsid) from t_idrsDetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID = :beneficiaryRegID and a.isDiabetic is true "
+			,nativeQuery=true)
 	public Integer isDiabeticCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
+//	@Query( value=" SELECT visitcode,createddate,question,answer,idrsid,idrsquestionid,diseasequestiontype from t_idrsdetails t where t.beneficiaryRegID = :beneficiaryRegID and t.deleted is false and t.DiseaseQuestionType like '%Diabetes%' " + 
+//			" ORDER BY t.createddate DESC ",nativeQuery=true)
+//	public ArrayList<Object[]> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	@Query("select a from IDRSData a where a.beneficiaryRegID = :beneficiaryRegID AND a.diseaseQuestionType = 'Diabetes' "
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
+	@Query( value=" SELECT visitcode,createddate,SuspectedDiseases from t_idrsdetails t where t.beneficiaryRegID = :beneficiaryRegID and t.deleted is false and t.SuspectedDiseases is not null " + 
+			" group by t.visitcode ORDER BY t.createddate DESC ",nativeQuery=true)
+	public ArrayList<Object[]> getBenPreviousReferredDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	@Query(value="select count(a.idrsid) from t_idrsdetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code  where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID= :beneficiaryRegID and a.SuspectedDiseases like '%vision%' ",nativeQuery=true)
+	public Integer isDefectiveVisionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
+	@Query(value="select count(a.idrsid) from t_idrsdetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID= :beneficiaryRegID and a.SuspectedDiseases like '%epilepsy%' ",nativeQuery=true)
+	public Integer isEpilepsyCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	@Transactional
 	@Modifying
 	@Query("UPDATE IDRSData SET idrsScore = :idrsScore WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")

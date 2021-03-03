@@ -22,14 +22,14 @@ import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
 
 	// nurse worklist
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND t.deleted = false "
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND (t.specialist_flag <> 100 OR t.specialist_flag is null) AND t.deleted = false "
 			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
 			+ " AND t.vanID = :vanID  ORDER BY t.visitDate DESC ")
 	public ArrayList<BeneficiaryFlowStatus> getNurseWorklistNew(
 			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
 
 	// nurse worklist TC current date
-	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag != 0 AND t.specialist_flag is not null)"
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.specialist_flag != 0 AND t.specialist_flag != 100 AND t.specialist_flag is not null)"
 			+ " AND t.deleted = false AND DATE(t.benVisitDate) >= DATE(:fromDate) "
 			+ " AND (Date(t.tCRequestDate)  <= curdate() OR Date(t.tCRequestDate) = null) "
 			+ " AND t.providerServiceMapId = :providerServiceMapId "
@@ -313,5 +313,13 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query(value = " SELECT * FROM db_iemr.i_ben_flow_outreach t WHERE t.beneficiary_reg_id =:benRegID AND t.specialist_flag = 9 "
 			+ " ORDER BY t.created_date DESC limit 3", nativeQuery = true)
 	public ArrayList<BeneficiaryFlowStatus> getPatientLat_3_Episode(@Param("benRegID") Long benRegID);
+
+	// nurse worklist coming from MMU
+	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE t.specialist_flag = 100 AND t.deleted = false AND t.referredVisitCode IS NOT NULL "
+			+ " AND t.processed = 'M' AND t.providerServiceMapId = :providerServiceMapId AND t.visitDate >= Date(:fromDate) "
+			+ " AND t.vanID = :vanID  ORDER BY t.visitDate DESC ")
+	public ArrayList<BeneficiaryFlowStatus> getMmuNurseWorklistNew(
+			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,
+			@Param("fromDate") Timestamp fromDate);
 
 }

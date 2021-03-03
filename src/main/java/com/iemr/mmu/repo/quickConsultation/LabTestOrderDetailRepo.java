@@ -20,7 +20,10 @@ public interface LabTestOrderDetailRepo extends CrudRepository<LabTestOrderDetai
 			+ "AND ba.visitCode= :visitCode")
 	public ArrayList<Object[]> getLabTestOrderDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
-	
+	@Query(" SELECT ba  from LabTestOrderDetail ba WHERE ba.beneficiaryRegID = :benRegID "
+			+ "AND ba.visitCode= :visitCode")
+	public ArrayList<LabTestOrderDetail> getLabTestOrderDetails2(@Param("benRegID") Long benRegID,
+			@Param("visitCode") Long visitCode);
 	@Modifying
 	@Transactional
 	@Query(" Delete from LabTestOrderDetail WHERE beneficiaryRegID = :benRegID AND benVisitID = :benVisitID ")
