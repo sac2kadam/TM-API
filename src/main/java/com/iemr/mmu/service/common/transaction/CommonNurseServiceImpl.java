@@ -4123,6 +4123,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Revisit Date");
 		column.put("keyName", "revisitDate");
 		columns.add(column);
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
 		response.put("columns", columns);
 		try {
 			//ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
