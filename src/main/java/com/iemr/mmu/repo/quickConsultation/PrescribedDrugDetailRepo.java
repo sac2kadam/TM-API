@@ -18,7 +18,7 @@ public interface PrescribedDrugDetailRepo extends CrudRepository<PrescribedDrugD
 
 	@Query(" SELECT id, prescriptionID, formName, drugTradeOrBrandName, drugID, drugName, "
 			+ " drugStrength, dose, route, frequency, duration, unit, relationToFood, instructions, qtyPrescribed, isEDL, "
-			+ " sctCode, sctTerm FROM PrescribedDrugDetail  WHERE beneficiaryRegID =:beneficiaryRegID "
+			+ " sctCode, sctTerm, createdDate FROM PrescribedDrugDetail  WHERE beneficiaryRegID =:beneficiaryRegID "
 			+ " AND visitCode=:visitCode AND deleted = false ")
 	public ArrayList<Object[]> getBenPrescribedDrugDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);

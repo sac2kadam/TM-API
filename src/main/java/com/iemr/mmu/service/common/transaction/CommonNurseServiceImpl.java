@@ -4181,6 +4181,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Quantity Prescribed");
 		column.put("keyName", "qtyPrescribed");
 		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Prescribed Date");
+		column.put("keyName", "createdDate");
+		columns.add(column);
 
 		response.put("columns", columns);
 		try {
