@@ -39,9 +39,11 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 			+ " ORDER BY Date(a.createdDate) DESC  ")
 	public ArrayList<IDRSData> getBenPreviousDiabetesDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
-	@Query( value=" SELECT visitcode,createddate,SuspectedDiseases from t_idrsdetails t where t.beneficiaryRegID = :beneficiaryRegID and t.deleted is false and t.SuspectedDiseases is not null " + 
-			" group by t.visitcode ORDER BY t.createddate DESC ",nativeQuery=true)
+	@Query( value=" SELECT t.VisitCode,r.CreatedDate,t.SuspectedDiseases from db_iemr.t_idrsdetails t " + 
+			" inner join db_iemr.t_benreferdetails r on r.VisitCode = t.VisitCode where t.beneficiaryRegID = :beneficiaryRegID " + 
+			" and t.deleted is false  and  t.SuspectedDiseases is not null group by t.visitcode ORDER BY t.createddate DESC ",nativeQuery=true)
 	public ArrayList<Object[]> getBenPreviousReferredDetails(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	
 	@Query(value="select count(a.idrsid) from t_idrsdetails a inner join i_ben_flow_outreach b on a.visitcode=b.beneficiary_visit_code  where (b.specialist_flag=9 OR b.doctor_flag=9) and a.BeneficiaryRegID= :beneficiaryRegID and a.SuspectedDiseases like '%vision%' ",nativeQuery=true)
 	public Integer isDefectiveVisionCheck(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
