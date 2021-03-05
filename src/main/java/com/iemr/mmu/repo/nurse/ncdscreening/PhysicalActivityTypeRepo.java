@@ -15,7 +15,7 @@ import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
 public interface PhysicalActivityTypeRepo extends CrudRepository<PhysicalActivityType, Long> {
 	
 	@Query("select Date(createdDate), activityType, physicalActivityType "
-			+ "from PhysicalActivityType a where a.beneficiaryRegID = :beneficiaryRegID  AND deleted = false "
+			+ "from PhysicalActivityType a where a.beneficiaryRegID = :beneficiaryRegID  AND (deleted = false or deleted is null)  "
 			+ "order by createdDate DESC")
 	public ArrayList<Object[]> getBenPhysicalHistoryDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
