@@ -4123,6 +4123,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Revisit Date");
 		column.put("keyName", "revisitDate");
 		columns.add(column);
+		column = new HashMap<>();
+		column.put("columnName", "Date of Referral");
+		column.put("keyName", "createdDate");
+		columns.add(column);
 		response.put("columns", columns);
 		try {
 			//ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
@@ -4176,6 +4180,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Quantity Prescribed");
 		column.put("keyName", "qtyPrescribed");
+		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Prescribed Date");
+		column.put("keyName", "createdDate");
 		columns.add(column);
 
 		response.put("columns", columns);

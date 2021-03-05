@@ -49,7 +49,7 @@ public class PhysicalActivityType {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private String processed="N";
 	@Expose
 	@Column(name = "CreatedBy")
 	private String createdBy;
