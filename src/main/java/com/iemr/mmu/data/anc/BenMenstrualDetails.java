@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_BenMenstrualDetails")
@@ -23,7 +24,7 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "BenMenstrualID")
 	private Integer benMenstrualID;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

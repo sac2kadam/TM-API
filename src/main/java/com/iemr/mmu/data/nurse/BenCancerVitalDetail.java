@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_cancervitals")
@@ -38,7 +39,7 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "Height_cm")
 	private Double height_cm;

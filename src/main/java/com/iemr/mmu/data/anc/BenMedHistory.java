@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.service.anc.Utility;
 
 @Entity
@@ -25,7 +26,7 @@ public class BenMedHistory {
 	@Expose
 	@Column(name = "BenMedHistoryID")
 	private Long benMedHistoryID;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

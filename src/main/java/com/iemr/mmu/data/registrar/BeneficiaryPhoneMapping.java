@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "i_benphonemap")
@@ -27,6 +28,7 @@ public class BeneficiaryPhoneMapping {
 	private Long parentBenRegID;
 	@Column(name = "BenRelationshipID")
 	private Short benRelationshipID;
+	@SQLInjectionSafe
 	@Column(name = "PhoneNo")
 	private String phoneNo;
 	@Column(name = "PhoneTypeID")

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "m_country")
@@ -17,7 +18,7 @@ public class Country {
 	@Column(name = "CountryID")
 	@Expose
 	private Integer countryID;
-
+	@SQLInjectionSafe
 	@Column(name = "CountryName")
 	@Expose
 
