@@ -39,7 +39,7 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "Height_cm")
 	private Double height_cm;

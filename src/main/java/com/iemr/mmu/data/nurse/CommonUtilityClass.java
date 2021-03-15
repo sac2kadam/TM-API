@@ -7,11 +7,11 @@ public class CommonUtilityClass {
 	private Long beneficiaryID;
 	private Integer sessionID;
 	private Integer parkingPlaceID;
-	@SQLInjectionSafe
+	
 	private Integer vanID;
 
 	private Long beneficiaryRegID;
-	@SQLInjectionSafe
+
 	private Integer providerServiceMapID;
 	private Long benVisitID;
 	private Long visitCode;

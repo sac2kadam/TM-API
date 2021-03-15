@@ -33,7 +33,7 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "ben_flow_id")
 	private Long benFlowID;
-    @SQLInjectionSafe
+   
 	@Expose
 	@Column(name = "beneficiary_reg_id")
 	private Long beneficiaryRegID;

@@ -22,7 +22,7 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ID")
 	private Long benChiefComplaintID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

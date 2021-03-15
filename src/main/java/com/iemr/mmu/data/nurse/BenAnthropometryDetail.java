@@ -19,7 +19,7 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -39,7 +39,7 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "Height_cm")
 	private Double height_cm;

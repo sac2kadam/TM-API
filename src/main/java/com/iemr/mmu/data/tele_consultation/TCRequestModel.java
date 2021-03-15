@@ -19,7 +19,7 @@ public class TCRequestModel {
 	@Expose
 	@Column(name = "TMRequestID")
 	private Long tMRequestID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

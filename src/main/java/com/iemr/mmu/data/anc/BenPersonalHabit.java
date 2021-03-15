@@ -27,7 +27,7 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "BenPersonalHabitID")
 	private Integer benPersonalHabitID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

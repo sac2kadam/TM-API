@@ -24,7 +24,7 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "BenMenstrualID")
 	private Integer benMenstrualID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

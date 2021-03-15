@@ -26,7 +26,7 @@ public class Covid19BenFeedback {
 	@Expose
 	@Column(name = "BenCallID")
 	private Long benCallID = 0L;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

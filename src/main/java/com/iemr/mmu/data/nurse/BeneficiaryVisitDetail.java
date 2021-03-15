@@ -24,7 +24,7 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
