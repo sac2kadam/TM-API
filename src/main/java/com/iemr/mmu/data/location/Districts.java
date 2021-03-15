@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.repo.location.ZoneDistrictMapping;
 
 @Entity
@@ -26,6 +27,7 @@ public class Districts {
 	@Expose
 	private Integer districtID;
 	@Column(name = "StateID")
+	@SQLInjectionSafe
 	@Expose
 	private Integer stateID;
 	@Column(name = "DistrictName")

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.swymed.UserSwymed;
 @Entity
@@ -28,7 +29,7 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Idrsid")
 	private Long id;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

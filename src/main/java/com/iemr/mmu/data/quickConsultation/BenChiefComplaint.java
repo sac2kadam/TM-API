@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_benchiefcomplaint")
@@ -21,7 +22,7 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ID")
 	private Long benChiefComplaintID;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
