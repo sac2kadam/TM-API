@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.data.masterdata.registrar.GenderMaster;
 
@@ -32,7 +33,7 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "ben_flow_id")
 	private Long benFlowID;
-
+   
 	@Expose
 	@Column(name = "beneficiary_reg_id")
 	private Long beneficiaryRegID;
@@ -133,15 +134,15 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "ben_gender_val")
 	private Short genderID;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "ben_gender")
 	private String genderName;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "ben_phone_no")
 	private String preferredPhoneNum;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "father_name")
 	private String fatherName;
@@ -159,11 +160,11 @@ public class BeneficiaryFlowStatus {
 //	public void setBenQuickbloxID(Long benQuickbloxID) {
 //		this.benQuickbloxID = benQuickbloxID;
 //	}
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "district")
 	private String districtName;
-
+	@SQLInjectionSafe
 	@Expose
 	@Column(name = "servicePoint")
 	private String servicePointName;
