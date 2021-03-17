@@ -2,11 +2,13 @@ package com.iemr.mmu.data.tele_consultation;
 
 import java.sql.Timestamp;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+
 public class TeleconsultationRequestOBJ {
 	private Integer userID;
 	private Timestamp allocationDate;
-	private String fromTime;
-	private String toTime;
+	private @SQLInjectionSafe String fromTime;
+	private @SQLInjectionSafe String toTime;
 	private Integer specializationID;
 
 	private Long tmRequestID;

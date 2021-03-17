@@ -102,7 +102,7 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "AlcoholDuration")
-	private @SQLInjectionSafe Timestamp alcoholDuration;
+	private Timestamp alcoholDuration;
 
 	@Expose
 	@Column(name = "RiskySexualPracticesStatus")
