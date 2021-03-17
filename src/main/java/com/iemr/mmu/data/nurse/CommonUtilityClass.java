@@ -18,8 +18,8 @@ public class CommonUtilityClass {
 	private Integer facilityID;
 	private Boolean isSpecialist;
 	private Short serviceID;
-	@SQLInjectionSafe
-	private String createdBy;
+	
+	private @SQLInjectionSafe String createdBy;
 
 	private Boolean isMobile;
 	private Boolean isCovidFlowDone;

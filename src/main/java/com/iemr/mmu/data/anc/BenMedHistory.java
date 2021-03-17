@@ -53,11 +53,11 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "IllnessType")
-	private String illnessType;
+	private @SQLInjectionSafe String illnessType;
 
 	@Expose
 	@Column(name = "OtherIllnessType")
-	private String otherIllnessType;
+	private @SQLInjectionSafe String otherIllnessType;
 
 	@Expose
 	@Column(name = "SurgeryID")
@@ -65,7 +65,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "SurgeryType")
-	private String surgeryType;
+	private @SQLInjectionSafe String surgeryType;
 
 	@Expose
 	@Column(name = "YearofSurgery")
@@ -73,7 +73,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "OtherSurgeryType")
-	private String otherSurgeryType;
+	private @SQLInjectionSafe String otherSurgeryType;
 
 	@Expose
 	@Column(name = "DrugComplianceID")
@@ -85,11 +85,11 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -97,7 +97,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -109,7 +109,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -121,7 +121,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -129,7 +129,7 @@ public class BenMedHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	public BenMedHistory() {
 	}
@@ -139,13 +139,13 @@ public class BenMedHistory {
 	@Transient
 	private Date Year_Of_Surgery;
 	@Transient
-	private String Illness_Type;
+	private @SQLInjectionSafe String Illness_Type;
 	@Transient
-	private String Surgery_Type;
+	private @SQLInjectionSafe String Surgery_Type;
 	@Transient
-	private String Other_Illness_Type;
+	private @SQLInjectionSafe String Other_Illness_Type;
 	@Transient
-	private String Other_Surgery_Type;
+	private @SQLInjectionSafe String Other_Surgery_Type;
 
 	@Transient
 	private Date captureDate;
