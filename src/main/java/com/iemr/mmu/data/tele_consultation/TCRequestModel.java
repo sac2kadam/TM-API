@@ -43,10 +43,10 @@ public class TCRequestModel {
 	private Long duration_minute;
 	@Expose
 	@Column(name = "Status", insertable = false)
-	private String status;
+	private @SQLInjectionSafe String status;
 	@Expose
 	@Column(name = "ConsultationStats")
-	private String consultationStats;
+	private @SQLInjectionSafe String consultationStats;
 	@Expose
 	@Column(name = "BeneficiaryArrivalTime")
 	private Timestamp beneficiaryArrivalTime;
@@ -67,16 +67,16 @@ public class TCRequestModel {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;

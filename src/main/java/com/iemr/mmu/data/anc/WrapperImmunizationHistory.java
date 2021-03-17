@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+
 public class WrapperImmunizationHistory {
 	private Long beneficiaryRegID;
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
-	private String createdBy;
-	private String modifiedBy;
+	private @SQLInjectionSafe String createdBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	private Integer vanID;
 	private Integer parkingPlaceID;

@@ -3,13 +3,15 @@ package com.iemr.mmu.data.anc;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+
 public class WrapperChildOptionalVaccineDetail {
 
 	private Long beneficiaryRegID;
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	private Integer vanID;
 	private Integer parkingPlaceID;

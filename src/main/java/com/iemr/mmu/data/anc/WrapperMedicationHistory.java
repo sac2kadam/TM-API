@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.service.anc.Utility;
 
 public class WrapperMedicationHistory {
@@ -12,7 +13,7 @@ public class WrapperMedicationHistory {
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	private Integer vanID;
 	private Integer parkingPlaceID;
