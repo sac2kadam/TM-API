@@ -24,7 +24,7 @@ public class FemaleObstetricHistory {
 	@Expose
 	@Column(name = "ObstetricHistoryID")
 	private Long obstetricHistoryID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -51,11 +51,11 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "PregComplicationID")
-	private String pregComplicationID;
+	private @SQLInjectionSafe String pregComplicationID;
 
 	@Expose
 	@Column(name = "PregComplicationType")
-	private String pregComplicationType;
+	private @SQLInjectionSafe String pregComplicationType;
 
 	// CR, 30-10-2018, multiple selection
 	@Expose
@@ -64,7 +64,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "OtherPregComplication")
-	private String otherPregComplication;
+	private @SQLInjectionSafe String otherPregComplication;
 
 	@Expose
 	@Column(name = "PregDurationID")
@@ -72,7 +72,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "DurationType")
-	private String durationType;
+	private @SQLInjectionSafe String durationType;
 
 	@Expose
 	@Column(name = "DeliveryTypeID")
@@ -80,7 +80,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "DeliveryType")
-	private String deliveryType;
+	private @SQLInjectionSafe String deliveryType;
 
 	@Expose
 	@Column(name = "DeliveryPlaceID")
@@ -88,19 +88,19 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "DeliveryPlace")
-	private String deliveryPlace;
+	private @SQLInjectionSafe String deliveryPlace;
 
 	@Expose
 	@Column(name = "OtherDeliveryPlace")
-	private String otherDeliveryPlace;
+	private @SQLInjectionSafe String otherDeliveryPlace;
 
 	@Expose
 	@Column(name = "DeliveryComplicationID")
-	private String deliveryComplicationID;
+	private @SQLInjectionSafe String deliveryComplicationID;
 
 	@Expose
 	@Column(name = "DeliveryComplicationType")
-	private String deliveryComplicationType;
+	private @SQLInjectionSafe String deliveryComplicationType;
 
 	// CR, 30-10-2018, multiple selection
 	@Expose
@@ -109,7 +109,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "OtherDeliveryComplication")
-	private String otherDeliveryComplication;
+	private @SQLInjectionSafe String otherDeliveryComplication;
 
 	@Expose
 	@Column(name = "PregOutcomeID")
@@ -117,15 +117,15 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "PregOutcome")
-	private String pregOutcome;
+	private @SQLInjectionSafe String pregOutcome;
 
 	@Expose
 	@Column(name = "PostpartumComplicationID")
-	private String postpartumComplicationID;
+	private @SQLInjectionSafe String postpartumComplicationID;
 
 	@Expose
 	@Column(name = "PostpartumComplicationType")
-	private String postpartumComplicationType;
+	private @SQLInjectionSafe String postpartumComplicationType;
 
 	// CR, 30-10-2018, multiple selection
 	@Expose
@@ -134,7 +134,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "OtherPostpartumCompType")
-	private String otherPostpartumCompType;
+	private @SQLInjectionSafe String otherPostpartumCompType;
 
 	@Expose
 	@Column(name = "PostNatalComplicationID")
@@ -142,15 +142,15 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "PostNatalComplication")
-	private String postNatalComplication;
+	private @SQLInjectionSafe String postNatalComplication;
 
 	@Expose
 	@Column(name = "OtherPostNatalComplication")
-	private String otherPostNatalComplication;
+	private @SQLInjectionSafe String otherPostNatalComplication;
 
 	@Expose
 	@Column(name = "CongenitalAnomalies")
-	private String congenitalAnomalies;
+	private @SQLInjectionSafe String congenitalAnomalies;
 
 	@Expose
 	@Column(name = "NewBornComplicationID")
@@ -158,11 +158,11 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "NewBornComplication")
-	private String newBornComplication;
+	private @SQLInjectionSafe String newBornComplication;
 
 	@Expose
 	@Column(name = "OtherNewBornComplication")
-	private String otherNewBornComplication;
+	private @SQLInjectionSafe String otherNewBornComplication;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -170,11 +170,11 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -182,7 +182,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -194,7 +194,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -206,7 +206,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -214,7 +214,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	private Date captureDate;
@@ -225,15 +225,15 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "typeOfAbortionValue")
-	private String typeOfAbortionValue;
+	private @SQLInjectionSafe String typeOfAbortionValue;
 
 	@Expose
 	@Column(name = "PostAbortionComplications")
-	private String postAbortionComplication_db;
+	private @SQLInjectionSafe String postAbortionComplication_db;
 
 	@Expose
 	@Column(name = "PostAbortionComplicationsValues")
-	private String postAbortionComplicationsValues;
+	private @SQLInjectionSafe String postAbortionComplicationsValues;
 
 	@Expose
 	@Column(name = "CompletedWeeksofPregnancy")
@@ -245,7 +245,7 @@ public class FemaleObstetricHistory {
 
 	@Expose
 	@Column(name = "ServiceFacilityValue")
-	private String serviceFacilityValue;
+	private @SQLInjectionSafe String serviceFacilityValue;
 
 	@Expose
 	@Transient

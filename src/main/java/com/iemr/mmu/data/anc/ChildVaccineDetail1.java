@@ -23,7 +23,7 @@ public class ChildVaccineDetail1 {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -42,15 +42,15 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "DefaultReceivingAge")
-	private String defaultReceivingAge;
+	private @SQLInjectionSafe String defaultReceivingAge;
 
 	@Expose
 	@Column(name = "VaccineName")
-	private String vaccineName;
+	private @SQLInjectionSafe String vaccineName;
 
 	@Expose
 	@Column(name = "ActualReceivingAge")
-	private String actualReceivingAge;
+	private @SQLInjectionSafe String actualReceivingAge;
 
 	@Expose
 	@Column(name = "Status")
@@ -58,7 +58,7 @@ public class ChildVaccineDetail1 {
 
 	@Transient
 	@Expose
-	private String Status;
+	private @SQLInjectionSafe String Status;
 
 	@Transient
 	@Expose
@@ -70,7 +70,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "ReceivedFacilityName")
-	private String receivedFacilityName;
+	private @SQLInjectionSafe String receivedFacilityName;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -78,11 +78,11 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -90,7 +90,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -102,7 +102,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -114,7 +114,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -122,7 +122,7 @@ public class ChildVaccineDetail1 {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	@Expose
@@ -133,11 +133,11 @@ public class ChildVaccineDetail1 {
 	
 	@Expose
 	@Column(name = "Sctcode")
-	private String sctCode;
+	private @SQLInjectionSafe String sctCode;
 	
 	@Expose
 	@Column(name = "SctTerm")
-	private String sctTerm;
+	private @SQLInjectionSafe String sctTerm;
 
 	public Integer getVanID() {
 		return vanID;

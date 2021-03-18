@@ -25,7 +25,7 @@ public class BenFamilyHistory {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -44,7 +44,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "FamilyMember")
-	private String familyMember;
+	private @SQLInjectionSafe String familyMember;
 
 	@Expose
 	@Column(name = "DiseaseTypeID")
@@ -52,7 +52,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "DiseaseType")
-	private String diseaseType;
+	private @SQLInjectionSafe String diseaseType;
 
 	@Expose
 	@Column(name = "OtherDiseaseType")
@@ -63,18 +63,18 @@ public class BenFamilyHistory {
 	private Boolean isGeneticDisorder;
 
 	@Transient
-	private String IsGeneticDisorder;
+	private @SQLInjectionSafe String IsGeneticDisorder;
 
 	@Expose
 	@Column(name = "GeneticDisorder")
-	private String geneticDisorder;
+	private @SQLInjectionSafe String geneticDisorder;
 
 	@Expose
 	@Column(name = "IsConsanguineousMarrige")
 	private Boolean isConsanguineousMarrige;
 
 	@Transient
-	private String IsConsanguineousMarrige;
+	private @SQLInjectionSafe String IsConsanguineousMarrige;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -82,11 +82,11 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -94,7 +94,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -106,7 +106,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -118,7 +118,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -126,7 +126,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	@Expose
@@ -134,11 +134,11 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "Sctcode")
-	private String snomedCode;
+	private @SQLInjectionSafe String snomedCode;
 	
 	@Expose
 	@Column(name = "SctTerm")
-	private String snomedTerm;
+	private @SQLInjectionSafe String snomedTerm;
 	
 	@Transient
 	private Date captureDate;

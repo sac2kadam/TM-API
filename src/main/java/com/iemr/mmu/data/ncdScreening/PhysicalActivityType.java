@@ -24,7 +24,7 @@ public class PhysicalActivityType {
 	@Expose
 	@Column(name = "PAID")
 	private Long pAID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

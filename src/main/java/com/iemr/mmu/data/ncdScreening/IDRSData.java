@@ -29,7 +29,7 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Idrsid")
 	private Long id;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;

@@ -7,19 +7,19 @@ public class CommonUtilityClass {
 	private Long beneficiaryID;
 	private Integer sessionID;
 	private Integer parkingPlaceID;
-	@SQLInjectionSafe
+	
 	private Integer vanID;
 
 	private Long beneficiaryRegID;
-	@SQLInjectionSafe
+
 	private Integer providerServiceMapID;
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer facilityID;
 	private Boolean isSpecialist;
 	private Short serviceID;
-	@SQLInjectionSafe
-	private String createdBy;
+	
+	private @SQLInjectionSafe String createdBy;
 
 	private Boolean isMobile;
 	private Boolean isCovidFlowDone;

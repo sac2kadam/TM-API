@@ -22,7 +22,7 @@ public class BenMedicationHistory {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -41,7 +41,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "CurrentMedication")
-	private String currentMedication;
+	private @SQLInjectionSafe String currentMedication;
 
 	@Expose
 	@Column(name = "Year")
@@ -57,7 +57,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -65,7 +65,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy", insertable = false, updatable = true)
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -77,7 +77,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -89,7 +89,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -97,7 +97,7 @@ public class BenMedicationHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	@Expose
@@ -105,7 +105,7 @@ public class BenMedicationHistory {
 
 	@Transient
 	@Expose
-	private String timePeriodUnit;
+	private @SQLInjectionSafe String timePeriodUnit;
 
 	@Transient
 	private Date captureDate;

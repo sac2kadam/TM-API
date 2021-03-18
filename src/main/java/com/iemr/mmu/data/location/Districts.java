@@ -27,7 +27,7 @@ public class Districts {
 	@Expose
 	private Integer districtID;
 	@Column(name = "StateID")
-	@SQLInjectionSafe
+	
 	@Expose
 	private Integer stateID;
 	@Column(name = "DistrictName")

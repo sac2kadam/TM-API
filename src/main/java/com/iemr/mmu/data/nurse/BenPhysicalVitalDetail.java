@@ -20,7 +20,7 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -79,7 +79,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "BloodPressureStatus")
-	private String bloodPressureStatus;
+	private @SQLInjectionSafe String bloodPressureStatus;
 
 	@Expose
 	@Column(name = "BloodGlucose_Fasting")
@@ -103,7 +103,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "DiabeticStatus")
-	private String diabeticStatus;
+	private @SQLInjectionSafe String diabeticStatus;
 
 	@Expose
 	@Column(name = "AverageSystolicBP")
@@ -115,7 +115,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "CapillaryRefillTime")
-	private String capillaryRefillTime;
+	private @SQLInjectionSafe String capillaryRefillTime;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -123,11 +123,11 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -135,7 +135,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -147,7 +147,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -159,7 +159,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -167,7 +167,7 @@ public class BenPhysicalVitalDetail {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	public BenPhysicalVitalDetail() {
 		super();

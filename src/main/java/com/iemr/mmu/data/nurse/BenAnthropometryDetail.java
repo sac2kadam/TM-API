@@ -19,7 +19,7 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -39,7 +39,7 @@ public class BenAnthropometryDetail {
 	@Expose
 	@Column(name = "Weight_Kg")
 	private Double weight_Kg;
-	@SQLInjectionSafe
+	
 	@Expose
 	@Column(name = "Height_cm")
 	private Double height_cm;
@@ -66,16 +66,16 @@ public class BenAnthropometryDetail {
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
 	private Timestamp lastModDate;
@@ -86,7 +86,7 @@ public class BenAnthropometryDetail {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -98,7 +98,7 @@ public class BenAnthropometryDetail {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -106,7 +106,7 @@ public class BenAnthropometryDetail {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	public BenAnthropometryDetail() {
 		super();

@@ -3,6 +3,7 @@ package com.iemr.mmu.data.tele_consultation;
 import java.sql.Timestamp;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 public class TcSpecialistSlotBookingRequestOBJ {
 	@Expose
@@ -10,15 +11,15 @@ public class TcSpecialistSlotBookingRequestOBJ {
 	@Expose
 	private Timestamp date;
 	@Expose
-	private String fromTime;
+	private @SQLInjectionSafe String fromTime;
 	@Expose
-	private String toTime;
+	private @SQLInjectionSafe String toTime;
 	@Expose
 	private Long duration;
 	@Expose
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 	@Expose
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	public Integer getUserID() {
 		return userID;
