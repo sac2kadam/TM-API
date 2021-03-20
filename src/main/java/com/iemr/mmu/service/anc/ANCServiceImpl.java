@@ -2,6 +2,7 @@ package com.iemr.mmu.service.anc;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.iemr.mmu.data.anc.BenFamilyHistory;
 import com.iemr.mmu.data.anc.BenMedHistory;
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 import com.iemr.mmu.data.anc.BenPersonalHabit;
+import com.iemr.mmu.data.anc.FemaleObstetricHistory;
 import com.iemr.mmu.data.anc.PhyGeneralExamination;
 import com.iemr.mmu.data.anc.PhyHeadToToeExamination;
 import com.iemr.mmu.data.anc.SysCardiovascularExamination;
@@ -46,6 +48,9 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
+import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
+import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -69,6 +74,12 @@ public class ANCServiceImpl implements ANCService {
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 	@Autowired
 	private CommonServiceImpl commonServiceImpl;
+	@Autowired
+	private ANCCareRepo ancCareRepo;
+	@Autowired
+	private FemaleObstetricHistoryRepo femaleObstetricHistoryRepo;
+	@Autowired
+	private ANCDiagnosisRepo aNCDiagnosisRepo;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -271,7 +282,7 @@ public class ANCServiceImpl implements ANCService {
 				drugList = requestOBJ.getAsJsonArray("prescription");
 				if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0) {
 					isMedicinePrescribed = true;
-					
+
 				}
 			}
 
@@ -354,12 +365,11 @@ public class ANCServiceImpl implements ANCService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				if(prescriptionID!=null)
-				{
+				if (prescriptionID != null) {
 					commonUtilityClass.setPrescriptionID(prescriptionID);
 					commonUtilityClass.setVisitCategoryID(4);
 					commonUtilityClass.setAuthorization(Authorization);
-					
+
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 						isMedicinePrescribed, tcRequestOBJ);
@@ -1538,12 +1548,11 @@ public class ANCServiceImpl implements ANCService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				if(prescriptionID!=null)
-				{
+				if (prescriptionID != null) {
 					commonUtilityClass.setPrescriptionID(prescriptionID);
 					commonUtilityClass.setVisitCategoryID(4);
 					commonUtilityClass.setAuthorization(Authorization);
-					
+
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
@@ -1567,8 +1576,40 @@ public class ANCServiceImpl implements ANCService {
 		} else {
 			// request OBJ is null.
 		}
-		
+
 		return updateSuccessFlag;
 	}
 
+	// check for HRP identification, all visits will be considered
+	@Override
+	public String getHRPStatus(Long benRegID, Long visitCode) {
+		Boolean isHRP = false;
+		Map<String, Boolean> responseMap = new HashMap<>();
+		// check with ANC care details screen-table, if result-set > 0 => confirm HRP
+		ArrayList<ANCCareDetails> ancCareList = ancCareRepo.getANCCareDataForHRP(benRegID);
+		if (ancCareList != null && ancCareList.size() > 0) {
+			isHRP = true;
+		} else {
+			// check with Obestetric history data
+			List<Short> ids = new ArrayList<>();
+			ids.add((short) 2);
+			ids.add((short) 3);
+
+			ArrayList<FemaleObstetricHistory> obestetricList = femaleObstetricHistoryRepo
+					.getPastObestetricDataForHRP(benRegID, "Hypothyroidism", ids);
+			if (obestetricList != null && obestetricList.size() > 0) {
+				isHRP = true;
+			} else {
+				// check with diagnosis data for HRP
+				ArrayList<Long> diagnosisPregCompList = aNCDiagnosisRepo.getANCDiagnosisDataForHRP(benRegID,
+						"Hypothyroidism");
+				if (diagnosisPregCompList != null && diagnosisPregCompList.size() > 0) {
+					isHRP = true;
+				}
+			}
+
+		}
+		responseMap.put("isHRP", isHRP);
+		return new Gson().toJson(responseMap);
+	}
 }

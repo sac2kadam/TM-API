@@ -18,4 +18,6 @@ public interface ANCService {
 
 	String getBenANCDetailsFrmNurseANC(Long benRegID, Long visitCode);
 
+	String getHRPStatus(Long benRegID, Long visitCode) throws Exception;
+
 }

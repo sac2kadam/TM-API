@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.nurse.anc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -86,5 +87,11 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 
 			@Param("modifiedBy") String modifiedBy, @Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
+
+	@Query("SELECT f FROM FemaleObstetricHistory f WHERE f.beneficiaryRegID=:benRegID AND "
+			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND f.pregDurationID = 1)) "
+			+ " AND f.pregComplicationType like %:pregComp% AND f.deleted is false ")
+	public ArrayList<FemaleObstetricHistory> getPastObestetricDataForHRP(@Param("benRegID") Long benRegID,
+			@Param("pregComp") String pregComp, @Param("ids") List<Short> ids);
 
 }
