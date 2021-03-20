@@ -45,4 +45,9 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long> {
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
 			@Param("othrPrgComp") String othrPrgComp);
+
+	@Query(" SELECT ID FROM ANCDiagnosis WHERE beneficiaryRegID = :benRegID "
+			+ " AND complicationOfCurrentPregnancy like %:pregComp%  AND deleted = false ")
+	public ArrayList<Long> getANCDiagnosisDataForHRP(@Param("benRegID") Long benRegID,
+			@Param("pregComp") String pregComp);
 }
