@@ -1582,7 +1582,7 @@ public class ANCServiceImpl implements ANCService {
 
 	// check for HRP identification, all visits will be considered
 	@Override
-	public String getHRPStatus(Long benRegID, Long visitCode) {
+	public String getHRPStatus(Long benRegID, Long visitCode) throws Exception {
 		Boolean isHRP = false;
 		Map<String, Boolean> responseMap = new HashMap<>();
 		// check with ANC care details screen-table, if result-set > 0 => confirm HRP
