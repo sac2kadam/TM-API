@@ -89,8 +89,8 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			@Param("benVisitID") Long benVisitID);
 
 	@Query("SELECT f FROM FemaleObstetricHistory f WHERE f.beneficiaryRegID=:benRegID AND "
-			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND f.pregDurationID = 1)) "
-			+ " OR (f.pregComplicationType like %:pregComp%) AND f.deleted is false ")
+			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND f.pregDurationID = 1) "
+			+ " OR (f.pregComplicationType like %:pregComp%)) AND f.deleted is false ")
 	public ArrayList<FemaleObstetricHistory> getPastObestetricDataForHRP(@Param("benRegID") Long benRegID,
 			@Param("pregComp") String pregComp, @Param("ids") List<Short> ids);
 
