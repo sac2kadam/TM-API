@@ -89,7 +89,7 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 			@Param("benVisitID") Long benVisitID);
 
 	@Query("SELECT f FROM FemaleObstetricHistory f WHERE f.beneficiaryRegID=:benRegID AND "
-			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND f.pregDurationID = 1) "
+			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND (f.pregDurationID = 1 OR f.pregDurationID = 3)) "
 			+ " OR (f.pregComplicationType like %:pregCompHypo%) OR (f.pregComplicationType like %:pregCompObst%) "
 			+ " OR (f.pregComplicationType like %:pregCompSeve%) OR (f.pregComplicationType like %:pregCompPih%) "
 			+ " OR (f.pregComplicationType like %:pregCompEcla%) OR (f.pregComplicationType like %:pregCompSyph%) "
