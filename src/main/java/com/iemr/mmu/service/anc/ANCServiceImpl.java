@@ -1,9 +1,12 @@
 package com.iemr.mmu.service.anc;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +51,12 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
+import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
 import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -1580,35 +1587,104 @@ public class ANCServiceImpl implements ANCService {
 		return updateSuccessFlag;
 	}
 
+	@Autowired
+	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
+	@Autowired
+	private BenAnthropometryRepo benAnthropometryRepo;
+	@Autowired
+	private BenMedHistoryRepo benMedHistoryRepo;
+	@Autowired
+	private BencomrbidityCondRepo bencomrbidityCondRepo;
+
 	// check for HRP identification, all visits will be considered
 	@Override
 	public String getHRPStatus(Long benRegID, Long visitCode) throws Exception {
 		Boolean isHRP = false;
 		Map<String, Boolean> responseMap = new HashMap<>();
+
+		// check with beneficiary latest captured age/DOB
+		Timestamp dob = beneficiaryFlowStatusRepo.getBenAgeVal(benRegID);
+		if (dob != null) {
+			Date date = new Date(dob.getTime());
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+
+			java.time.LocalDate todayDate = java.time.LocalDate.now();
+			java.time.LocalDate birthdate = java.time.LocalDate.of(year, month, day);
+			Period p = Period.between(birthdate, todayDate);
+
+			int y = p.getYears();
+			if (y < 20 || y > 35) {
+				isHRP = true;
+				responseMap.put("isHRP", isHRP);
+				return new Gson().toJson(responseMap);
+			}
+		}
+
+		// check with latest height
+		Double d = benAnthropometryRepo.getBenLatestHeight(benRegID);
+		if (d != null && d < 145) {
+			isHRP = true;
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
+		}
+
 		// check with ANC care details screen-table, if result-set > 0 => confirm HRP
 		ArrayList<ANCCareDetails> ancCareList = ancCareRepo.getANCCareDataForHRP(benRegID);
 		if (ancCareList != null && ancCareList.size() > 0) {
 			isHRP = true;
-		} else {
-			// check with Obestetric history data
-			List<Short> ids = new ArrayList<>();
-			ids.add((short) 2);
-			ids.add((short) 3);
-
-			ArrayList<FemaleObstetricHistory> obestetricList = femaleObstetricHistoryRepo
-					.getPastObestetricDataForHRP(benRegID, "Hypothyroidism", ids);
-			if (obestetricList != null && obestetricList.size() > 0) {
-				isHRP = true;
-			} else {
-				// check with diagnosis data for HRP
-				ArrayList<Long> diagnosisPregCompList = aNCDiagnosisRepo.getANCDiagnosisDataForHRP(benRegID,
-						"Hypothyroidism");
-				if (diagnosisPregCompList != null && diagnosisPregCompList.size() > 0) {
-					isHRP = true;
-				}
-			}
-
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
 		}
+
+		// check with past illness/med history
+		List<Long> resultSet = benMedHistoryRepo.getHRPStatus(benRegID);
+		if (resultSet != null && resultSet.size() > 0) {
+			isHRP = true;
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
+		}
+
+		// check with comorbidity
+		List<Long> resultList = bencomrbidityCondRepo.getHRPStatus(benRegID);
+		if (resultList != null && resultList.size() > 0) {
+			isHRP = true;
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
+		}
+
+		// check with Obestetric history data
+		List<Short> ids = new ArrayList<>();
+		ids.add((short) 2);
+		ids.add((short) 3);
+
+		ArrayList<FemaleObstetricHistory> obestetricList = femaleObstetricHistoryRepo.getPastObestetricDataForHRP(
+				benRegID, "Hypothyroidism", "Obstructed Labor", "Severe anemia", "Pih-preeclampsia", "Eclampsia",
+				"Syphilis in pregnancy", "HIV Complicating Pregnancy", "Gestational diabetes", "Multiple pregnancy",
+				"Breech presentation", "Transverse lie", "APH-placenta previa", "Prolonged Labor", "Precipitate Labor",
+				ids);
+		if (obestetricList != null && obestetricList.size() > 0) {
+			isHRP = true;
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
+		}
+
+		// check with diagnosis data for HRP
+		ArrayList<Long> diagnosisPregCompList = aNCDiagnosisRepo.getANCDiagnosisDataForHRP(benRegID, "Hypothyroidism",
+				"Obstructed Labor", "Severe anemia", "Pih-preeclampsia", "Eclampsia", "Syphilis in pregnancy",
+				"HIV Complicating Pregnancy", "Gestational diabetes", "Multiple pregnancy", "Breech presentation",
+				"Transverse lie", "APH-placenta previa");
+		if (diagnosisPregCompList != null && diagnosisPregCompList.size() > 0) {
+			isHRP = true;
+			responseMap.put("isHRP", isHRP);
+			return new Gson().toJson(responseMap);
+		}
+
 		responseMap.put("isHRP", isHRP);
 		return new Gson().toJson(responseMap);
 	}
