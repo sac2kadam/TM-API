@@ -322,4 +322,9 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID,
 			@Param("fromDate") Timestamp fromDate);
 
+	// get ben age, HRP
+	@Query(nativeQuery = true, value = " SELECT ben_dob FROM i_ben_flow_outreach WHERE beneficiary_reg_id = :benRegID "
+			+ " AND ben_gender_val = 2 AND ben_dob is not null order by ben_flow_id DESC LIMIT 1 ")
+	public Timestamp getBenAgeVal(@Param("benRegID") Long benRegID);
+
 }

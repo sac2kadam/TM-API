@@ -40,4 +40,8 @@ public interface BenAnthropometryRepo extends CrudRepository<BenAnthropometryDet
 	public ArrayList<Object[]> getBenAnthropometryDetailForGraphtrends(
 			@Param("visitCodeList") ArrayList<Long> visitCodeList);
 
+	@Query(nativeQuery = true, value = " SELECT height_cm FROM t_phy_anthropometry "
+			+ " WHERE beneficiaryRegID=:benRegID ORDER By ID DESC LIMIT 1 ")
+	public Double getBenLatestHeight(@Param("benRegID") Long benRegID);
+
 }
