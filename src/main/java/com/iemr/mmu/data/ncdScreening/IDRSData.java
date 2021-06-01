@@ -57,10 +57,17 @@ public class IDRSData {
 	@Column(name = "SuspectedDiseases")
 	private String suspectedDisease;
 	
+	@Expose
+	@Column(name = "ConfirmedDiseases")
+	private String confirmedDisease;
+	
     @Transient
     private IDRSData[] questionArray;
     @Transient
     private String[] suspectArray;
+    
+    @Transient
+    private String[] confirmArray;
 	
 //    @OneToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
@@ -116,6 +123,22 @@ public class IDRSData {
 	@Transient
 	@Expose
 	private List<Map<String, Object>> suspectDetails;
+	
+	public String getConfirmedDisease() {
+		return confirmedDisease;
+	}
+
+	public void setConfirmedDisease(String confirmedDisease) {
+		this.confirmedDisease = confirmedDisease;
+	}
+
+	public String[] getConfirmArray() {
+		return confirmArray;
+	}
+
+	public void setConfirmArray(String[] confirmArray) {
+		this.confirmArray = confirmArray;
+	}
 
 	public Long getId() {
 		return id;

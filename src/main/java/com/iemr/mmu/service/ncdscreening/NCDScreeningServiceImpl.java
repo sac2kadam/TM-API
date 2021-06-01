@@ -605,7 +605,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		if (idrsDetailsOBJ != null) {
 			IDRSData idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
 					IDRSData.class);
-            String temp=""; 
+            String temp="", temp1=""; 
 			if (null != idrsDetail) {
 				if(idrsDetail.getQuestionArray()!=null && idrsDetail.getQuestionArray().length>0)
 				{
@@ -613,7 +613,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					for(int i=0;i<ar.length;i++)
 					{
 						 idrsDetail = InputMapper.gson().fromJson(idrsDetailsOBJ,
-								IDRSData.class);temp="";
+								IDRSData.class);temp="";temp1="";
 						idrsDetail.setIdrsQuestionID(ar[i].getIdrsQuestionID());
 						idrsDetail.setAnswer(ar[i].getAnswer());
 						idrsDetail.setQuestion(ar[i].getQuestion());
@@ -633,6 +633,21 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 								temp=null;
 							idrsDetail.setSuspectedDisease(temp);
 						}
+						
+						if(idrsDetail.getConfirmArray()!=null && idrsDetail.getConfirmArray().length >0)
+						{
+							for(int a=0;a<idrsDetail.getConfirmArray().length;a++)
+					    	{
+					    		if(a==idrsDetail.getConfirmArray().length-1)
+					    		temp1+=idrsDetail.getConfirmArray()[a];
+					    		else
+					    		temp1=temp1+idrsDetail.getConfirmArray()[a]+",";
+					    	}
+							if(temp1.equalsIgnoreCase(""))
+								temp1=null;
+							idrsDetail.setConfirmedDisease(temp1);
+						}
+						
 						idrsFlag = commonNurseServiceImpl
 								.saveIDRS(idrsDetail);
 					}
@@ -641,6 +656,21 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				{
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
+					
+					if(idrsDetail.getConfirmArray()!=null && idrsDetail.getConfirmArray().length >0)
+					{
+						for(int a=0;a<idrsDetail.getConfirmArray().length;a++)
+				    	{
+				    		if(a==idrsDetail.getConfirmArray().length-1)
+				    		temp1+=idrsDetail.getConfirmArray()[a];
+				    		else
+				    		temp1=temp1+idrsDetail.getConfirmArray()[a]+",";
+				    	}
+						if(temp1.equalsIgnoreCase(""))
+							temp1=null;
+						idrsDetail.setConfirmedDisease(temp1);
+					}
+					
 					idrsFlag = commonNurseServiceImpl
 							.saveIDRS(idrsDetail);
 				}
