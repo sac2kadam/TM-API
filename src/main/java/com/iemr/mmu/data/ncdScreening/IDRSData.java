@@ -411,8 +411,7 @@ public class IDRSData {
 
 				Map<String, Object> idrsData = new HashMap<String, Object>();
 				idrsData.put("ID", idDetails.getId());
-				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
-				
+				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());		
 				
 				idrsData.put("question", idDetails.getQuestion());
 				idrsData.put("answer", idDetails.getAnswer());
