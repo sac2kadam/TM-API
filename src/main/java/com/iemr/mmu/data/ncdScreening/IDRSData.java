@@ -354,13 +354,14 @@ public class IDRSData {
 	}
 	
 	public IDRSData(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,Integer idrsScore, String suspectedDisease,
-			 Long visitCode) {
+			 String confirmedDisease, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.idrsScore = idrsScore;
 		this.suspectedDisease = suspectedDisease;
+		this.confirmedDisease = confirmedDisease;
 		this.visitCode = visitCode;
 		
 	}
@@ -399,7 +400,7 @@ public class IDRSData {
 		if (null != idrsHistory && idrsHistory.size() > 0) {
 			Object[] obj1 = idrsHistory.get(0);
 
-			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],
+			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],(String)obj1[11],
 					 (Long) obj1[9]);
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
