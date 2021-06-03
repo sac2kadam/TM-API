@@ -3893,6 +3893,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Timestamp t = new Timestamp(c.getTimeInMillis());
 
 		Map<String, Object> questionAnsMap;
+		String confirmedDisease = null;
 		String suspectedDisease = null;
 		;
 		ArrayList<IDRSData> resultSet = iDRSDataRepo.getBenIdrsDetailsLast_3_Month(benRegID, t);
@@ -3910,6 +3911,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 					if (pointer == 0)
 						suspectedDisease = i.getSuspectedDisease();
+					    confirmedDisease = i.getConfirmedDisease();
 
 					ansList.add(questionAnsMap);
 					pointer++;
@@ -3923,6 +3925,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Integer i = iDRSDataRepo.isDiabeticCheck(benRegID);
 		Integer epilepsy = iDRSDataRepo.isEpilepsyCheck(benRegID);
 		Integer vision = iDRSDataRepo.isDefectiveVisionCheck(benRegID);
+		Integer hypertension = iDRSDataRepo.isHypertensionCheck(benRegID);
 		responseMap.put("questionariesData", ansList);
 		if (i != null && i > 0)
 			responseMap.put("isDiabetic", true);
@@ -3936,8 +3939,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			responseMap.put("isDefectiveVision", true);
 		else
 			responseMap.put("isDefectiveVision", false);
+		if (hypertension != null && hypertension > 0)
+			responseMap.put("isHypertension", true);
+		else
+			responseMap.put("isHypertension", false);
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
+		
+		if (confirmedDisease != null)
+			responseMap.put("confirmedDisease", confirmedDisease);
 
 		return new Gson().toJson(responseMap);
 	}
