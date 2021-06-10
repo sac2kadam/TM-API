@@ -3895,7 +3895,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		Map<String, Object> questionAnsMap;
 		String confirmedDisease = null;
 		String suspectedDisease = null;
-		;
 		ArrayList<IDRSData> resultSet = iDRSDataRepo.getBenIdrsDetailsLast_3_Month(benRegID, t);
 
 		if (resultSet != null && resultSet.size() > 0) {
@@ -3910,9 +3909,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					questionAnsMap.put("qANS", i.getAnswer());
 
 					if (pointer == 0)
+					{
 						suspectedDisease = i.getSuspectedDisease();
 					    confirmedDisease = i.getConfirmedDisease();
-
+					}
 					ansList.add(questionAnsMap);
 					pointer++;
 				} else

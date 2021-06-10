@@ -22,8 +22,8 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	public ArrayList<Object[]> getBenIdrsDetail(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Query(value="select a.* from t_idrsDetails a inner join i_ben_flow_outreach b on  a.visitcode=b.beneficiary_visit_code where (b.specialist_flag=9 OR b.doctor_Flag=9)  AND a.beneficiaryRegID = :beneficiaryRegID AND a.createdDate >= :tDate "
-			+ " AND a.diseaseQuestionType "
-			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') "
+			+ " AND (a.diseaseQuestionType "
+			+ " IN ('Asthma', 'Malaria Screening', 'Tuberculosis Screening') OR a.diseaseQuestionType is null) "
 			+ " ORDER BY createddate DESC, a.visitCode ",nativeQuery=true)
 	public ArrayList<IDRSData> getBenIdrsDetailsLast_3_Month(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("tDate") Timestamp tDate);
