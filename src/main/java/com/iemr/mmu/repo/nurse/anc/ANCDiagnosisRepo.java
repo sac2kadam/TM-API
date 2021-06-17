@@ -45,4 +45,20 @@ public interface ANCDiagnosisRepo extends CrudRepository<ANCDiagnosis, Long> {
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
 			@Param("othrPrgComp") String othrPrgComp);
+
+	@Query(" SELECT ID FROM ANCDiagnosis WHERE beneficiaryRegID = :benRegID "
+			+ " AND ((complicationOfCurrentPregnancy like %:pregCompHypo%) OR (complicationOfCurrentPregnancy like %:pregCompObst%) "
+			+ " OR (complicationOfCurrentPregnancy like %:pregCompSeve%) OR (complicationOfCurrentPregnancy like %:pregCompPih%) "
+			+ " OR (complicationOfCurrentPregnancy like %:pregCompEcla%) OR (complicationOfCurrentPregnancy like %:pregCompSyph%) "
+			+ " OR (complicationOfCurrentPregnancy like %:pregCompHiv%) OR (complicationOfCurrentPregnancy like %:pregCompGest%) "
+			+ " OR (complicationOfCurrentPregnancy like %:pregCompMult%) OR (complicationOfCurrentPregnancy like %:pregCompBree%) "
+			+ " OR (complicationOfCurrentPregnancy like %:pregCompTran%) OR (complicationOfCurrentPregnancy like %:pregCompAphP%) ) "
+			+ " AND deleted = false ")
+	public ArrayList<Long> getANCDiagnosisDataForHRP(@Param("benRegID") Long benRegID,
+			@Param("pregCompHypo") String pregCompHypo, @Param("pregCompObst") String pregCompObst,
+			@Param("pregCompSeve") String pregCompSeve, @Param("pregCompPih") String pregCompPih,
+			@Param("pregCompEcla") String pregCompEcla, @Param("pregCompSyph") String pregCompSyph,
+			@Param("pregCompHiv") String pregCompHiv, @Param("pregCompGest") String pregCompGest,
+			@Param("pregCompMult") String pregCompMult, @Param("pregCompBree") String pregCompBree,
+			@Param("pregCompTran") String pregCompTran, @Param("pregCompAphP") String pregCompAphP);
 }

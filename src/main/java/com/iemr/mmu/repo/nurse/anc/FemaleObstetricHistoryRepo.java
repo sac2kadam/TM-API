@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.nurse.anc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -86,5 +87,26 @@ public interface FemaleObstetricHistoryRepo extends CrudRepository<FemaleObstetr
 
 			@Param("modifiedBy") String modifiedBy, @Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("benVisitID") Long benVisitID);
+
+	@Query("SELECT f FROM FemaleObstetricHistory f WHERE f.beneficiaryRegID=:benRegID AND "
+			+ " ((f.pregOutcomeID IN :ids) OR (f.pregOutcomeID = 4 AND (f.pregDurationID = 1 OR f.pregDurationID = 3)) "
+			+ " OR (f.pregComplicationType like %:pregCompHypo%) OR (f.pregComplicationType like %:pregCompObst%) "
+			+ " OR (f.pregComplicationType like %:pregCompSeve%) OR (f.pregComplicationType like %:pregCompPih%) "
+			+ " OR (f.pregComplicationType like %:pregCompEcla%) OR (f.pregComplicationType like %:pregCompSyph%) "
+			+ " OR (f.pregComplicationType like %:pregCompHiv%) OR (f.pregComplicationType like %:pregCompGest%) "
+			+ " OR (f.pregComplicationType like %:pregCompMult%) OR (f.pregComplicationType like %:pregCompBree%) "
+			+ " OR (f.pregComplicationType like %:pregCompTran%) OR (f.pregComplicationType like %:pregCompAphP%) "
+			+ " OR (f.deliveryTypeID = 3) "
+			+ " OR (f.deliveryComplicationType like %:delivCompProl%) OR (f.deliveryComplicationType like %:delivCompPrec%) ) "
+			+ " AND f.deleted is false ")
+	public ArrayList<FemaleObstetricHistory> getPastObestetricDataForHRP(@Param("benRegID") Long benRegID,
+			@Param("pregCompHypo") String pregCompHypo, @Param("pregCompObst") String pregCompObst,
+			@Param("pregCompSeve") String pregCompSeve, @Param("pregCompPih") String pregCompPih,
+			@Param("pregCompEcla") String pregCompEcla, @Param("pregCompSyph") String pregCompSyph,
+			@Param("pregCompHiv") String pregCompHiv, @Param("pregCompGest") String pregCompGest,
+			@Param("pregCompMult") String pregCompMult, @Param("pregCompBree") String pregCompBree,
+			@Param("pregCompTran") String pregCompTran, @Param("pregCompAphP") String pregCompAphP,
+			@Param("delivCompProl") String delivCompProl, @Param("delivCompPrec") String delivCompPrec,
+			@Param("ids") List<Short> ids);
 
 }
