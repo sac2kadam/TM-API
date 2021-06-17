@@ -1,0 +1,381 @@
+package com.iemr.mmu.data.fetosense;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.annotations.Expose;
+
+@Entity
+@Table(name = "t_fetosenseData")
+public class Fetosense {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Expose
+	@Column(name = "fetosenseID")
+	private Integer fetosenseID;
+	
+	@Expose
+	@Column(name = "BeneficiaryRegID") 
+	private Long beneficiaryRegID;
+	
+	@Transient
+	private String partnerMotherId;
+	
+	@Expose
+	@Column(name = "visitcode")
+	private Long visitCode;
+	
+	@Expose
+	@Column(name = "testTime")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	private Timestamp testTime;
+	
+	@Expose
+	@Column(name = "motherLMPDate")
+	private Timestamp motherLMPDate;
+	
+	@Expose
+	@Column(name = "MotherName")
+	private String motherName;
+	
+	@Expose
+	@Column(name = "partnerName")
+	private String partnerName;
+	
+	@Expose
+	@Column(name = "fetosenseMotherID")
+	private String fetosenseMotherID;
+	
+	@Expose
+	@Column(name = "fetosensePartnerID")
+	private String fetosensePartnerID;
+	
+	@Expose
+	@Column(name = "testId")
+	private String testId;
+	
+	@Expose
+	@Column(name = "deviceId")
+	private String deviceId;
+	
+	@Expose
+	@Column(name = "testDoneAt")
+	private String testDoneAt;
+	
+	@Expose
+	@Column(name = "lengthOfTest")
+	private Integer lengthOfTest;
+	
+	@Expose
+	@Column(name = "basalHeartRate")
+	private Integer basalHeartRate;
+	
+	@Expose
+	@Column(name = "accelerationsList")
+	private String accelerationsListDB;
+	
+	@Expose
+	@Column(name = "decelerationsList")
+	private String decelerationsListDB;
+	
+	@Expose
+	@Column(name = "shortTermVariationBpm")
+	private String shortTermVariationBpm;
+	
+	@Expose
+	@Column(name = "shortTermVariationMilli")
+	private Integer shortTermVariationMilli;
+	
+	@Expose
+	@Column(name = "longTermVariation")
+	private Integer longTermVariation;
+	
+	@Expose
+	@Column(name = "movementEntries")
+	private String movementEntriesDB;
+	
+	@Expose
+	@Column(name = "autoFetalMovement")
+	private String autoFetalMovementDB;
+	
+	@Expose
+	@Column(name = "reportPath")
+	private String reportPath;
+	
+	@Expose
+	@Column(name = "Deleted", insertable = false, updatable = true)
+	private Boolean deleted;
+
+	@Expose
+	@Column(name = "Processed", insertable = false, updatable = true)
+	private String processed;
+
+	@Expose
+	@Column(name = "CreatedBy")
+	private String createdBy;
+
+	@Expose
+	@Column(name = "CreatedDate", insertable = false, updatable = false)
+	private Timestamp createdDate;
+
+	@Expose
+	@Column(name = "ModifiedBy")
+	private String modifiedBy;
+
+	@Expose
+	@Column(name = "LastModDate", insertable = false, updatable = false)
+	private Timestamp lastModDate;
+
+	@Expose
+	@Transient
+	private ArrayList<Object> accelerationsList;
+	@Expose
+	@Transient
+	private ArrayList<Object> decelerationsList;
+	
+	@Expose
+	@Transient
+	private ArrayList<Integer> movementEntries;
+	
+	@Expose
+	@Transient
+	private ArrayList<Integer> autoFetalMovement;
+	
+	@Transient
+	private Map<String,String> mother;
+	
+	
+	public int getFetosenseID() {
+		return fetosenseID;
+	}
+	public void setFetosenseID(int fetosenseID) {
+		this.fetosenseID = fetosenseID;
+	}
+	public Long getBeneficiaryRegID() {
+		return beneficiaryRegID;
+	}
+	public void setBeneficiaryRegID(Long beneficiaryRegID) {
+		this.beneficiaryRegID = beneficiaryRegID;
+	}
+	public Long getVisitCode() {
+		return visitCode;
+	}
+	public void setVisitCode(Long visitCode) {
+		this.visitCode = visitCode;
+	}
+	public Timestamp getTestTime() {
+		return testTime;
+	}
+	public void setTestTime(Timestamp testTime) {
+		this.testTime = testTime;
+	}
+	public Timestamp getMotherLMPDate() {
+		return motherLMPDate;
+	}
+	public void setMotherLMPDate(Timestamp motherLMPDate) {
+		this.motherLMPDate = motherLMPDate;
+	}
+	public String getMotherName() {
+		return motherName;
+	}
+	public void setMotherName(String motherName) {
+		motherName = motherName;
+	}
+	public String getPartnerName() {
+		return partnerName;
+	}
+	public void setPartnerName(String partnerName) {
+		this.partnerName = partnerName;
+	}
+	public String getFetosenseMotherID() {
+		return fetosenseMotherID;
+	}
+	public void setFetosenseMotherID(String fetosenseMotherID) {
+		this.fetosenseMotherID = fetosenseMotherID;
+	}
+	public String getFetosensePartnerID() {
+		return fetosensePartnerID;
+	}
+	public void setFetosensePartnerID(String fetosensePartnerID) {
+		this.fetosensePartnerID = fetosensePartnerID;
+	}
+	public String getTestId() {
+		return testId;
+	}
+	public void setTestId(String testId) {
+		this.testId = testId;
+	}
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+	public String getTestDoneAt() {
+		return testDoneAt;
+	}
+	public void setTestDoneAt(String testDoneAt) {
+		this.testDoneAt = testDoneAt;
+	}
+	public int getLengthOfTest() {
+		return lengthOfTest;
+	}
+	public void setLengthOfTest(int lengthOfTest) {
+		this.lengthOfTest = lengthOfTest;
+	}
+	public int getBasalHeartRate() {
+		return basalHeartRate;
+	}
+	public void setBasalHeartRate(int basalHeartRate) {
+		this.basalHeartRate = basalHeartRate;
+	}
+	public String getAccelerationsListDB() {
+		return accelerationsListDB;
+	}
+	public void setAccelerationsListDB(String accelerationsListDB) {
+		this.accelerationsListDB = accelerationsListDB;
+	}
+	public String getDecelerationsListDB() {
+		return decelerationsListDB;
+	}
+	public void setDecelerationsListDB(String decelerationsListDB) {
+		this.decelerationsListDB = decelerationsListDB;
+	}
+	public String getShortTermVariationBpm() {
+		return shortTermVariationBpm;
+	}
+	public void setShortTermVariationBpm(String shortTermVariationBpm) {
+		this.shortTermVariationBpm = shortTermVariationBpm;
+	}
+	public int getShortTermVariationMilli() {
+		return shortTermVariationMilli;
+	}
+	public void setShortTermVariationMilli(int shortTermVariationMilli) {
+		this.shortTermVariationMilli = shortTermVariationMilli;
+	}
+	public int getLongTermVariation() {
+		return longTermVariation;
+	}
+	public void setLongTermVariation(int longTermVariation) {
+		this.longTermVariation = longTermVariation;
+	}	
+	public String getReportPath() {
+		return reportPath;
+	}
+	public void setReportPath(String reportPath) {
+		this.reportPath = reportPath;
+	}
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+	public String getProcessed() {
+		return processed;
+	}
+	public void setProcessed(String processed) {
+		this.processed = processed;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Timestamp getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	public Timestamp getLastModDate() {
+		return lastModDate;
+	}
+	public void setLastModDate(Timestamp lastModDate) {
+		this.lastModDate = lastModDate;
+	}
+	public ArrayList<Object> getAccelerationsList() {
+		return accelerationsList;
+	}
+	public void setAccelerationsList(ArrayList<Object> accelerationsList) {
+		this.accelerationsList = accelerationsList;
+	}
+	public ArrayList<Object> getDecelerationsList() {
+		return decelerationsList;
+	}
+	public void setDecelerationsList(ArrayList<Object> decelerationsList) {
+		this.decelerationsList = decelerationsList;
+	}
+	public String getMovementEntriesDB() {
+		return movementEntriesDB;
+	}
+	public void setMovementEntriesDB(String movementEntriesDB) {
+		this.movementEntriesDB = movementEntriesDB;
+	}
+	public String getAutoFetalMovementDB() {
+		return autoFetalMovementDB;
+	}
+	public void setAutoFetalMovementDB(String autoFetalMovementDB) {
+		this.autoFetalMovementDB = autoFetalMovementDB;
+	}
+	public ArrayList<Integer> getMovementEntries() {
+		return movementEntries;
+	}
+	public void setMovementEntries(ArrayList<Integer> movementEntries) {
+		this.movementEntries = movementEntries;
+	}
+	public ArrayList<Integer> getAutoFetalMovement() {
+		return autoFetalMovement;
+	}
+	public void setAutoFetalMovement(ArrayList<Integer> autoFetalMovement) {
+		this.autoFetalMovement = autoFetalMovement;
+	}
+	public String getPartnerMotherId() {
+		return partnerMotherId;
+	}
+	public void setPartnerMotherId(String partnerMotherId) {
+		this.partnerMotherId = partnerMotherId;
+	}
+	public Map<String, String> getMother() {
+		return mother;
+	}
+	public void setMother(Map<String, String> mother) {
+		this.mother = mother;
+	}
+	public void setFetosenseID(Integer fetosenseID) {
+		this.fetosenseID = fetosenseID;
+	}
+	public void setLengthOfTest(Integer lengthOfTest) {
+		this.lengthOfTest = lengthOfTest;
+	}
+	public void setBasalHeartRate(Integer basalHeartRate) {
+		this.basalHeartRate = basalHeartRate;
+	}
+	public void setShortTermVariationMilli(Integer shortTermVariationMilli) {
+		this.shortTermVariationMilli = shortTermVariationMilli;
+	}
+	public void setLongTermVariation(Integer longTermVariation) {
+		this.longTermVariation = longTermVariation;
+	}
+	
+	
+}
