@@ -34,4 +34,23 @@ public interface FetosenseRepo extends CrudRepository<Fetosense, Short> {
 			@Param("longTermVariation") Integer longTermVariation,@Param("movementEntriesDB") String movementEntriesDB,
 			@Param("autoFetalMovementDB") String autoFetalMovementDB,@Param("reportPath") String reportPath,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,@Param("fetosenseID") Integer fetosenseID);
+	
+	
+	
+	/***
+	 * @author DU20091017
+	 * get the feto sense details while lab flag update.
+	 */
+	@Query("SELECT f FROM Fetosense f WHERE f.benFlowID = :benFlowID")
+	public Fetosense getFetosenseDetailsByFlowId(@Param("benFlowID") Long benFlowID);
+	
+	/***
+	 * @author DU20091017
+	 * update visitCode 
+	 */
+	@Query("UPDATE Fetosense f SET f.visitCode = visitCode WHERE f.benFlowID = :benFlowID")
+	public int updateVisitCode(@Param("visitCode") Long visitCode,@Param("benFlowID") Long benFlowID);
+	
+	
+	
 }
