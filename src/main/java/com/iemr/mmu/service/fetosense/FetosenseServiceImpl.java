@@ -80,7 +80,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 		if (response != null && response.getFetosenseID() > 0) {
 			
 			FetosenseData fetosenseTestDetails=new FetosenseData();
-			fetosenseTestDetails.setPartnerfetosenseID(response.getFetosenseID());
+			fetosenseTestDetails.setPartnerFetosenseID(response.getFetosenseID());
 			fetosenseTestDetails.setBeneficiaryRegID(request.getBeneficiaryRegID());
 			fetosenseTestDetails.setMotherLMPDate(request.getMotherLMPDate());
 			fetosenseTestDetails.setMotherName(request.getMotherName());

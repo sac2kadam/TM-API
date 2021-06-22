@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class FetosenseData {
 
-	private Long partnerfetosenseID;
+	private Long partnerFetosenseID;
 	private Long beneficiaryRegID;
 	private Timestamp motherLMPDate;
 	private String motherName;
@@ -12,11 +12,12 @@ public class FetosenseData {
 	
 	
 	
-	public Long getPartnerfetosenseID() {
-		return partnerfetosenseID;
+	
+	public Long getPartnerFetosenseID() {
+		return partnerFetosenseID;
 	}
-	public void setPartnerfetosenseID(Long partnerfetosenseID) {
-		this.partnerfetosenseID = partnerfetosenseID;
+	public void setPartnerFetosenseID(Long partnerFetosenseID) {
+		this.partnerFetosenseID = partnerFetosenseID;
 	}
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;
