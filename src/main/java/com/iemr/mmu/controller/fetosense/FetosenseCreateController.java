@@ -46,7 +46,7 @@ public class FetosenseCreateController {
 	@CrossOrigin()
 	@ApiOperation(value = "Provides the mother data and prescribed test details to fetosense")
 	@RequestMapping(value = "/sendMotherTestDetailsToFetosense", method = RequestMethod.POST, headers = "Authorization")
-	public String sendANCMotherTestDetailsToFetosense(@ApiParam("{\"beneficiaryRegID\":\"Long\",\"testTime\":\"Timestamp\",\"motherLMPDate\":\"Timestamp\",\"motherName\":\"String\",\"fetosenseTestId\":\"Long\",\"testName\":\"String\",\"ProviderServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj, @RequestHeader(value = "Authorization") String authorization) {
+	public String sendANCMotherTestDetailsToFetosense(@ApiParam("{\"beneficiaryRegID\":\"Long\",\"benFlowID\":\"Long\",\"testTime\":\"Timestamp\",\"motherLMPDate\":\"Timestamp\",\"motherName\":\"String\",\"fetosenseTestId\":\"Long\",\"testName\":\"String\",\"ProviderServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj, @RequestHeader(value = "Authorization") String authorization) {
 		logger.info("Request Object for transfering mother data to fetosense" + requestObj);
 		OutputResponse output = new OutputResponse();
 		
