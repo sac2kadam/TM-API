@@ -87,7 +87,6 @@ public class FetosenseServiceImpl implements FetosenseService {
 		
 
 		Fetosense response=null;
-		Fetosense testStatusResponse=null;
 		
 		//Saving Fetosense Data in Amrit DB
 		response = fetosenseRepo.save(request);

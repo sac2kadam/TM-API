@@ -62,11 +62,6 @@ public class FetosenseCreateController {
 				{
 			         output.setError(5000, "Error in saving Fetosense details in DB");
 				}
-				else if(response=="Unable to save test status")
-				{
-
-			         output.setError(5000, "Error in saving Fetosense test status in DB");
-				}
 				else if(response=="Error in sending Mother Data")
 				{
 
