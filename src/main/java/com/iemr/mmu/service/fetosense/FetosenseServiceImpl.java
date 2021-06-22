@@ -1,16 +1,30 @@
 package com.iemr.mmu.service.fetosense;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import com.google.common.collect.Sets.SetView;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iemr.mmu.data.fetosense.Fetosense;
+import com.iemr.mmu.data.fetosense.FetosenseData;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.fetosense.FetosenseRepo;
+import com.iemr.mmu.utils.config.ConfigProperties;
 import com.iemr.mmu.utils.mapper.InputMapper;
+import com.iemr.mmu.utils.http.HttpUtils;
 
 @Service
 public class FetosenseServiceImpl implements FetosenseService {
+	private static HttpUtils httpUtils = new HttpUtils();
 
 	@Autowired
 	private FetosenseRepo fetosenseRepo;
@@ -40,7 +54,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 		fetosenseData.setMotherLMPDate(fetosenseFetchData.getMotherLMPDate());
 		fetosenseData.setMotherName(fetosenseFetchData.getMotherName());
 		fetosenseData.setFetosenseTestId(fetosenseFetchData.getFetosenseTestId());
-//		fetosenseData.setprovider
+		fetosenseData.setProviderServiceMapID(fetosenseFetchData.getProviderServiceMapID());
 		fetosenseData.setBenFlowID(fetosenseFetchData.getBenFlowID());
 		
 		fetosenseData.setResponseStatus(true);
@@ -66,4 +80,65 @@ public class FetosenseServiceImpl implements FetosenseService {
 		}
 //		return fetosenseData.toString();
 	}
+	
+	
+	@Override
+	public String sendFetosenseTestDetails(Fetosense request, String auth) throws Exception {
+		
+
+		Fetosense response=null;
+		Fetosense testStatusResponse=null;
+		
+		//Saving Fetosense Data in Amrit DB
+		response = fetosenseRepo.save(request);
+	
+		if (response != null && response.getFetosenseID() > 0) {
+			
+			FetosenseData fetosenseTestDetails=new FetosenseData();
+			fetosenseTestDetails.setPartnerfetosenseID(response.getFetosenseID());
+			fetosenseTestDetails.setBeneficiaryRegID(request.getBeneficiaryRegID());
+			fetosenseTestDetails.setMotherLMPDate(request.getMotherLMPDate());
+			fetosenseTestDetails.setMotherName(request.getMotherName());
+			fetosenseTestDetails.setTestName(request.getTestName());
+
+			
+			
+			JsonParser parser = new JsonParser();
+			String result=null;
+
+			HashMap<String, Object> header = new HashMap<>();
+			if (auth != null)
+			{
+				header.put("Authorization", auth);
+			}
+			
+			//Invoking Fetosense API - Sending mother data and test details to fetosense
+			result = httpUtils.post(ConfigProperties.getPropertyByName("fetosense-api-url-ANCTestDetails"), fetosenseTestDetails.toString(), header);
+
+			JsonObject responseObj = (JsonObject) parser.parse(result);
+			JsonObject data1 = (JsonObject) responseObj.get("data");
+			int statusCode = responseObj.get("statusCode").getAsInt();
+			String responseData = data1.get("response").getAsString();
+			
+			
+			if((statusCode == 200) && (responseData!=null))
+			{
+				
+				
+					
+				return responseData;
+				
+				
+				
+			}
+			else
+				return "Error in sending Mother Data";
+
+			
+		}
+			
+	   else
+			return "Unable to save";
+    }
+		
 }
