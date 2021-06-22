@@ -72,8 +72,8 @@ public class Fetosense {
 	
     
     @Expose
-    @Column(name = "responseStatus") 
-    private Boolean responseStatus;
+    @Column(name = "resultState") 
+    private Boolean resultState;
 
 	@Expose
 	@Column(name = "testId")
@@ -487,13 +487,15 @@ public class Fetosense {
 		this.benFlowID = benFlowID;
 	}
 
-	public Boolean getResponseStatus() {
-		return responseStatus;
+	public Boolean getResultState() {
+		return resultState;
 	}
 
-	public void setResponseStatus(Boolean responseStatus) {
-		this.responseStatus = responseStatus;
+	public void setResultState(Boolean resultState) {
+		this.resultState = resultState;
 	}
+
+	
 	
 	
 	
