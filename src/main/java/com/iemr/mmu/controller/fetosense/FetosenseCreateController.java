@@ -96,7 +96,7 @@ public class FetosenseCreateController {
 			if (requestObj != null) {
 				
 				
-					 output.setResponse("Test is WIP");
+					 output.setResponse("Please wait. Test in Progress");
 		
 			}
 			else {
@@ -110,4 +110,6 @@ public class FetosenseCreateController {
 		
 		return output.toString();
 	}
+	
+
 }

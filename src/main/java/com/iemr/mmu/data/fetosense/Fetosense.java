@@ -500,6 +500,4 @@ public class Fetosense {
 	
 	
 	
-	
-	
 }

@@ -17,8 +17,6 @@ public interface FetosenseTestsRepo extends CrudRepository<FetosenseTestMaster, 
 	@Query("SELECT f.fetosenseTestId, f.testName FROM FetosenseTestMaster f WHERE f.providerServiceMapID = :providerServiceMapID AND f.deleted = false")
 	public ArrayList<Object[]> getFetosenseTestsDetails(@Param("providerServiceMapID") Integer providerServiceMapID);
 	
-//	@Query(value="select u from m_fetosensetests u where u.deleted = false and u.providerServiceMapID=:providerServiceMapID")
-//	public ArrayList<Object[]> getFetosenseTestsDetails(@Param("providerServiceMapID") Integer providerServiceMapID);
 
 
 

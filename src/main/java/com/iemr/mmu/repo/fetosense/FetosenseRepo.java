@@ -1,5 +1,7 @@
 package com.iemr.mmu.repo.fetosense;
 
+import java.util.ArrayList;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +36,5 @@ public interface FetosenseRepo extends CrudRepository<Fetosense, Short> {
 			@Param("longTermVariation") Integer longTermVariation,@Param("movementEntriesDB") String movementEntriesDB,
 			@Param("autoFetalMovementDB") String autoFetalMovementDB,@Param("reportPath") String reportPath,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,@Param("fetosenseID") Integer fetosenseID);
+	
 }
