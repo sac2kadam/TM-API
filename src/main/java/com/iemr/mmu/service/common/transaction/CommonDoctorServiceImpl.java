@@ -752,9 +752,9 @@ public class CommonDoctorServiceImpl {
 		
 		Fetosense fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
 		
-		if(fetosenseData != null && fetosenseData.getResponseStatus()) 
+		if(fetosenseData != null && fetosenseData.getResultState()) 
 			labTechnicianFlag = 3;
-		else if(fetosenseData != null && fetosenseData.getResponseStatus())
+		else if(fetosenseData != null && fetosenseData.getResultState())
 			labTechnicianFlag = 2;
 
 		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
@@ -837,9 +837,9 @@ public class CommonDoctorServiceImpl {
 		
 		Fetosense fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
 		
-		if(fetosenseData != null && fetosenseData.getResponseStatus()) 
+		if(fetosenseData != null && fetosenseData.getResultState()) 
 			labTechnicianFlag = 3;
-		else if(fetosenseData != null && fetosenseData.getResponseStatus())
+		else if(fetosenseData != null && fetosenseData.getResultState())
 			labTechnicianFlag = 2;
 
 		if (commonUtilityClass.getIsSpecialist() != null && commonUtilityClass.getIsSpecialist() == true) {

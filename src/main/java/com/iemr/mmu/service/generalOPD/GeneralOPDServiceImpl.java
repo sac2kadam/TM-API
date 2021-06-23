@@ -192,7 +192,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				
 		if(fetosenseData != null) {
 			fetosenseRepo.updateVisitCode(benVisitCode, benFlowID);
-			if(fetosenseData.getResponseStatus()) {
+			if(fetosenseData.getResultState()) {
 				labTechnicianFlag = 3;
 			}else {
 				labTechnicianFlag = 2;

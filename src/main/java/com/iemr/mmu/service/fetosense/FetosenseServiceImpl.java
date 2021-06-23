@@ -57,7 +57,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 		fetosenseData.setProviderServiceMapID(fetosenseFetchData.getProviderServiceMapID());
 		fetosenseData.setBenFlowID(fetosenseFetchData.getBenFlowID());
 		
-		fetosenseData.setResponseStatus(true);
+		fetosenseData.setResultState(true);
 		
 		//need to write the code for changing the report path data to base 64 and save it in DB
 		
