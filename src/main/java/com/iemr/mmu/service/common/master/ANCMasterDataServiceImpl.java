@@ -598,6 +598,7 @@ public class ANCMasterDataServiceImpl {
 			resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
 		}
 		
+		//To Fetch Fetosense Test Master Details
 		if (visitCategoryID == 4) {
 			ArrayList<Object[]> fetoTestList = fetosenseTestRepo.getFetosenseTestsDetails(providerServiceMapID);
 			resMap.put("fetosenseTestMaster", FetosenseTestMaster.getFetosenseMasters(fetoTestList));
