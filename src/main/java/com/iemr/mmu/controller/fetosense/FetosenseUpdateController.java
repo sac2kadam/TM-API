@@ -32,7 +32,7 @@ public class FetosenseUpdateController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@CrossOrigin
-	@ApiOperation(value = "update ANC Doctor Data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "update fetosense Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/update/fetosenseData", method = { RequestMethod.POST })
 	public String updateFetosenseData(
 			@ApiParam("\r\n" + 

@@ -750,12 +750,20 @@ public class CommonDoctorServiceImpl {
 
 		int i = 0;
 		
-		Fetosense fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
-		
-		if(fetosenseData != null && fetosenseData.getResultState()) 
-			labTechnicianFlag = 3;
-		else if(fetosenseData != null && fetosenseData.getResultState())
-			labTechnicianFlag = 2;
+		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() == 4) {
+			ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
+			if(fetosenseData.size() > 0) {
+				labTechnicianFlag = 3;
+				for(Fetosense data : fetosenseData) {
+					if(data != null && !data.getResultState()) {
+						labTechnicianFlag = 2;
+					}
+					if(data !=null && data.getVisitCode() == null) {
+						fetosenseRepo.updateVisitCode(commonUtilityClass.getVisitCode(), tmpBenFlowID);
+					}
+				}
+			}
+		}
 
 		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
 				&& commonUtilityClass.getIsSpecialist() == true) {
@@ -834,13 +842,26 @@ public class CommonDoctorServiceImpl {
 		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
 		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 		
-		
-		Fetosense fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
-		
-		if(fetosenseData != null && fetosenseData.getResultState()) 
-			labTechnicianFlag = 3;
-		else if(fetosenseData != null && fetosenseData.getResultState())
-			labTechnicianFlag = 2;
+		// fetosense related update in visitcode and lab flag
+		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() == 4) {
+			ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
+			if(fetosenseData.size() > 0) {
+				labTechnicianFlag = 3;
+				for(Fetosense data : fetosenseData) {
+					if(data != null && !data.getResultState()) {
+						labTechnicianFlag = 2;
+					}
+					if(data !=null && data.getVisitCode() == null) {
+						fetosenseRepo.updateVisitCode(commonUtilityClass.getVisitCode(), tmpBenFlowID);
+					}
+				}
+			}
+			
+//			if(fetosenseData != null && fetosenseData.get(1).getResultState()) 
+//				labTechnicianFlag = 3;
+//			else if(fetosenseData != null && fetosenseData.get(1).getResultState())
+//				labTechnicianFlag = 2;
+		}
 
 		if (commonUtilityClass.getIsSpecialist() != null && commonUtilityClass.getIsSpecialist() == true) {
 			if (isTestPrescribed)
@@ -997,5 +1018,15 @@ if(prescriptionDetails!=null && prescriptionDetails.size()>0) {
 			logger.info("SMS sent for TM Prescription");
 		else
 			logger.info("SMS not sent for TM Prescription");
+	}
+	
+	
+	public String getFetosenseData(Long beneFiciaryRegID , Long visitCode) {
+		
+		
+		ArrayList<Fetosense> fetosenseData  = fetosenseRepo.getFetosenseDetailsForCaseRecord(beneFiciaryRegID, visitCode);
+		
+		return new Gson().toJson(fetosenseData);
+		
 	}
 }

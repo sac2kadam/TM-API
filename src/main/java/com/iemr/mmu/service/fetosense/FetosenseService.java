@@ -6,4 +6,5 @@ public interface FetosenseService {
 
 	int updateFetosenseData(String requestObj) throws Exception;
 	String sendFetosenseTestDetails(Fetosense request, String auth) throws Exception;
+	String getFetosenseDetails(Long benFlowID) throws Exception;
 }

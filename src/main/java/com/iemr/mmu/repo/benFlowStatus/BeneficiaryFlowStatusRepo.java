@@ -47,6 +47,24 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			@Param("providerServiceMapId") Integer providerServiceMapId, @Param("vanID") Integer vanID);
 
 	
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set t.benVisitID = :benVisitID, t.VisitReason = :visitReason, "
+			+ " t.VisitCategory = :visitCategory, t.nurseFlag = :nurseFlag, t.doctorFlag = :docFlag, "
+			+ " t.labIteration = :labIteration, t.radiologist_flag = :radiologistFlag, "
+			+ " t.oncologist_flag = :oncologistFlag, t.specialist_flag = :specialistFlag, t.benVisitDate = now(), "
+			+ " t.tCRequestDate = :tcDate, t.tCSpecialistUserID = :specialistID, "
+			+ " t.visitCode = :benVisitCode, t.processed = 'U', t.vanID =:vanID,t.lab_technician_flag = 0 "
+			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID " + " AND nurseFlag = 1  ")
+	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
+			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
+			@Param("nurseFlag") Short nurseFlag, @Param("docFlag") Short docFlag,
+			@Param("labIteration") Short labIteration, @Param("radiologistFlag") Short radiologistFlag,
+			@Param("oncologistFlag") Short oncologistFlag, @Param("benVisitCode") Long benVisitCode,
+			@Param("vanID") Integer vanID, @Param("specialistFlag") Short specialistFlag,
+			@Param("tcDate") Timestamp tcDate, @Param("specialistID") Integer specialistID);
+
 	/***
 	 * @author DU20091017
 	 *removed lab technician flag , initially updating to 0 and updating it according to feto sense response and lab assigned
@@ -60,7 +78,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " t.tCRequestDate = :tcDate, t.tCSpecialistUserID = :specialistID, "
 			+ " t.visitCode = :benVisitCode, t.processed = 'U', t.vanID =:vanID,t.lab_technician_flag = :labTechnician "
 			+ "  WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID " + " AND nurseFlag = 1  ")
-	public int updateBenFlowStatusAfterNurseActivity(@Param("benFlowID") Long benFlowID,
+	public int updateBenFlowStatusAfterNurseActivityANC(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benVisitID") Long benVisitID,
 			@Param("visitReason") String visitReason, @Param("visitCategory") String visitCategory,
 			@Param("nurseFlag") Short nurseFlag, @Param("docFlag") Short docFlag,
@@ -175,6 +193,21 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag " 
 			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivitySpecialist(@Param("benFlowID") Long benFlowID,
+			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
+			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
+			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag);
+	
+	/***
+	 * @author DU20091017
+	 *updating lab technician flag as well after feto sense.
+	 */
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
+			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U', "
+			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag " 
+			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
+	public int updateBenFlowStatusAfterDoctorActivitySpecialistANC(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
 			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
 			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag);

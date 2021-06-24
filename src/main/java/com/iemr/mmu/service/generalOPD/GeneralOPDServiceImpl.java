@@ -75,8 +75,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonServiceImpl commonServiceImpl;
 	@Autowired
 	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
-	@Autowired
-	private FetosenseRepo fetosenseRepo;
+	
 
 	/// --------------- start of saving nurse data ------------------------
 	@Override
@@ -174,8 +173,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
 		
-		//for feto sense
-		short labTechnicianFlag = (short) 0;
 
 		short specialistFlag = (short) 0;
 		Timestamp tcDate = null;
@@ -188,21 +185,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		} else
 			specialistFlag = (short) 0;
 
-		Fetosense fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(benFlowID);
-				
-		if(fetosenseData != null) {
-			fetosenseRepo.updateVisitCode(benVisitCode, benFlowID);
-			if(fetosenseData.getResultState()) {
-				labTechnicianFlag = 3;
-			}else {
-				labTechnicianFlag = 2;
-			}
-		}
+		
 		
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID,labTechnicianFlag);
+				benVisitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
 
 		return i;
 	}

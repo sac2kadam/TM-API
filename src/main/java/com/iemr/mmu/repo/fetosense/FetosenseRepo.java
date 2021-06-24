@@ -1,5 +1,7 @@
 package com.iemr.mmu.repo.fetosense;
 
+import java.util.ArrayList;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,11 +13,11 @@ import org.springframework.stereotype.Repository;
 import com.iemr.mmu.data.fetosense.Fetosense;
 
 @Repository
-public interface FetosenseRepo extends CrudRepository<Fetosense, Short> {
+public interface FetosenseRepo extends CrudRepository<Fetosense, Long> {
 
 	@Query("SELECT f FROM Fetosense f WHERE f.beneficiaryRegID = :beneficiaryRegID AND f.fetosenseID = :fetosenseID")
 	public Fetosense getFetosenseDetails(@Param("beneficiaryRegID") Long beneficiaryRegID,
-			@Param("fetosenseID") Integer fetosenseID);
+			@Param("fetosenseID") Long fetosenseID);
 	
 	
 	@Modifying
@@ -42,14 +44,28 @@ public interface FetosenseRepo extends CrudRepository<Fetosense, Short> {
 	 * get the feto sense details while lab flag update.
 	 */
 	@Query("SELECT f FROM Fetosense f WHERE f.benFlowID = :benFlowID")
-	public Fetosense getFetosenseDetailsByFlowId(@Param("benFlowID") Long benFlowID);
+	public ArrayList<Fetosense> getFetosenseDetailsByFlowId(@Param("benFlowID") Long benFlowID);
 	
 	/***
 	 * @author DU20091017
 	 * update visitCode 
 	 */
-	@Query("UPDATE Fetosense f SET f.visitCode = visitCode WHERE f.benFlowID = :benFlowID")
+	@Modifying
+	@Transactional
+	@Query("UPDATE Fetosense f SET f.visitCode = :visitCode WHERE f.benFlowID = :benFlowID")
 	public int updateVisitCode(@Param("visitCode") Long visitCode,@Param("benFlowID") Long benFlowID);
+	
+	/***
+	 * @author DU20091017
+	 * get the details for case record.
+	 * @param beneficiaryRegID
+	 * @param visitCode
+	 * @return
+	 */
+	
+	@Query("SELECT f FROM Fetosense f WHERE f.beneficiaryRegID = :beneficiaryRegID AND f.visitCode = :visitCode")
+	public ArrayList<Fetosense> getFetosenseDetailsForCaseRecord(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
 	
 	
 	

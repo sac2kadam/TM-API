@@ -168,6 +168,7 @@ public class ANCMasterDataServiceImpl {
 	@Autowired
 	private MasterVanRepo masterVanRepo;
 	
+	@Autowired
 	private FetosenseTestsRepo fetosenseTestRepo;
 
 	@Autowired

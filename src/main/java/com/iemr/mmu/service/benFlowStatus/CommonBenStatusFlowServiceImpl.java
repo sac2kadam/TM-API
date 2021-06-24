@@ -75,10 +75,27 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 	public int updateBenFlowNurseAfterNurseActivity(Long benFlowID, Long benRegID, Long benVisitID, String visitReason,
 			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration, Short radiologistFlag,
 			Short oncologistFlag, Long visitCode, Integer vanID, Short specialistFlag, Timestamp tcDate,
-			Integer tcSpecialistUserID,Short labTechnician) {
+			Integer tcSpecialistUserID) {
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivity(benFlowID, benRegID, benVisitID,
+					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag,
+					visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
+			// System.out.println("hello");
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("Error in ben flow creation = " + e);
+		}
+		return i;
+	}
+	
+	public int updateBenFlowNurseAfterNurseActivityANC(Long benFlowID, Long benRegID, Long benVisitID, String visitReason,
+			String visitCategory, Short nurseFlag, Short docFlag, Short labIteration, Short radiologistFlag,
+			Short oncologistFlag, Long visitCode, Integer vanID, Short specialistFlag, Timestamp tcDate,
+			Integer tcSpecialistUserID,Short labTechnician) {
+		int i = 0;
+		try {
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterNurseActivityANC(benFlowID, benRegID, benVisitID,
 					visitReason, visitCategory, nurseFlag, docFlag, labIteration, radiologistFlag, oncologistFlag,
 					visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID,labTechnician);
 			// System.out.println("hello");
@@ -217,6 +234,18 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivitySpecialist(benFlowID, benRegID, benID,
+					docFlag, pharmaFlag, oncologistFlag, tcSpecialistFlag,labTechnicianFlag);
+		} catch (Exception e) {
+			logger.error("Error in ben flow creation = " + e);
+		}
+		return i;
+	}
+	
+	public int updateBenFlowAfterDocDataFromSpecialistANC(Long benFlowID, Long benRegID, Long benID, Long benVisitID,
+			short docFlag, short pharmaFlag, short oncologistFlag, short tcSpecialistFlag,short labTechnicianFlag) {
+		int i = 0;
+		try {
+			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivitySpecialistANC(benFlowID, benRegID, benID,
 					docFlag, pharmaFlag, oncologistFlag, tcSpecialistFlag,labTechnicianFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);

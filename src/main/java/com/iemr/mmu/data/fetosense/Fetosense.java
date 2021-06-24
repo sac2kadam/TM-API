@@ -72,7 +72,7 @@ public class Fetosense {
 	
     
     @Expose
-    @Column(name = "resultState") 
+    @Column(name = "resultState",insertable = false, updatable = true) 
     private Boolean resultState;
 
 	@Expose
@@ -132,11 +132,11 @@ public class Fetosense {
 	private String reportPath;
 	
 	@Expose
-	@Column(name = "Deleted", insertable = false, updatable = true)
+	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
 
 	@Expose
-	@Column(name = "Processed", insertable = false, updatable = true)
+	@Column(name = "Processed", insertable = false, updatable = false)
 	private String processed;
 
 	@Expose
@@ -180,6 +180,19 @@ public class Fetosense {
 	@Transient
 	private Map<String,String> mother;
 	
+	public Fetosense() {
+		
+	}
+	public Fetosense(Long fetosenseID,Long beneficiaryRegID,Long benFlowID,Long visitCode, Long fetosenseTestId,
+			Boolean resultState) {
+		this.fetosenseID = fetosenseID;		
+		this.beneficiaryRegID = beneficiaryRegID;
+		this.benFlowID = benFlowID;
+		this.visitCode = visitCode;
+		this.fetosenseTestId = fetosenseTestId;
+		this.resultState = resultState;
+		
+	}
 	
 	public Long getFetosenseID() {
 		return fetosenseID;
