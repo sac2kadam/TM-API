@@ -28,6 +28,15 @@ public class V_benLabTestOrderedDetails {
 	@Column(name = "ProcedureID")
 	private Integer procedureID;
 	@Expose
+	@Column(name = "CalibrationStartAPI")
+	private String calibrationStartAPI;
+	@Expose
+	@Column(name = "CalibrationStatusAPI")
+	private String calibrationStatusAPI;
+	@Expose
+	@Column(name = "CalibrationEndAPI")
+	private String calibrationEndAPI;
+	@Expose
 	@Column(name = "ProcedureName")
 	private String procedureName;
 	@Expose
@@ -121,6 +130,30 @@ public class V_benLabTestOrderedDetails {
 	
 	public Boolean getIsMandatory() {
 		return isMandatory;
+	}
+
+	public String getCalibrationStartAPI() {
+		return calibrationStartAPI;
+	}
+
+	public void setCalibrationStartAPI(String calibrationStartAPI) {
+		this.calibrationStartAPI = calibrationStartAPI;
+	}
+
+	public String getCalibrationStatusAPI() {
+		return calibrationStatusAPI;
+	}
+
+	public void setCalibrationStatusAPI(String calibrationStatusAPI) {
+		this.calibrationStatusAPI = calibrationStatusAPI;
+	}
+
+	public String getCalibrationEndAPI() {
+		return calibrationEndAPI;
+	}
+
+	public void setCalibrationEndAPI(String calibrationEndAPI) {
+		this.calibrationEndAPI = calibrationEndAPI;
 	}
 
 	public void setIsMandatory(Boolean isMandatory) {
