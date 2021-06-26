@@ -25,10 +25,10 @@ public class FetosenseFetchController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
-	@CrossOrigin()
+	@CrossOrigin
 	@ApiOperation(value = "Provides the fetosense details")
 	@RequestMapping(value = "/fetch/fetosenseDetails/{benFlowID}", method = RequestMethod.GET, headers = "Authorization")
-	public String fetFetosenseDetails(@ApiParam("{\"benFlowID\":\"Long\"}") @PathVariable("benFlowID") Long benFlowID) throws Exception {
+	public String getFetosenseDetails(@ApiParam("{\"benFlowID\":\"Long\"}") @PathVariable("benFlowID") Long benFlowID) throws Exception {
 	
 		logger.info("Request Object for getting fetosense data - " + benFlowID);
 		OutputResponse output = new OutputResponse();

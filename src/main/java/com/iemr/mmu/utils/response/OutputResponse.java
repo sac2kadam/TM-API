@@ -3,14 +3,18 @@ package com.iemr.mmu.utils.response;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.hibernate.loader.custom.Return;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.LongSerializationPolicy;
 import com.google.gson.annotations.Expose;
 
 public class OutputResponse {
@@ -28,6 +32,7 @@ public class OutputResponse {
 	public static final int PARSE_EXCEPTION = 5007;
 	public static final int SWYMED_EXCEPTION = 5010;
 	public static final int TM_EXCEPTION = 5010;
+	public static final int BAD_REQUEST = 404;
 
 	@Expose
 	private int statusCode = GENERIC_FAILURE;
@@ -174,6 +179,45 @@ public class OutputResponse {
 		// builder.serializeNulls();
 		// builder.disableInnerClassSerialization();
 		return builder.create().toJson(this);
+		// JSONObject response = new JSONObject();
+		// response.put("data", data);
+		// response.put("statusCode", statusCode);
+		// response.put("status", status);
+		// response.put("errorMessage", errorMessage);
+		// return response.toString();
+	}
+
+	public ResponseEntity<String> toStringWithHttpStatus()
+	{
+		// return new Gson().toJson(this);
+		// Gson gson = OutputMapper.gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.excludeFieldsWithoutExposeAnnotation();
+		builder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
+		// builder.disableInnerClassSerialization();
+		String output = builder.create().toJson(this);
+		
+		switch(this.statusCode) {
+			case SUCCESS:
+				return ResponseEntity.status(HttpStatus.OK)
+		            .body(output);
+			case GENERIC_FAILURE:
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			            .body(output);
+			case BAD_REQUEST:
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			            .body(output);
+			default:
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+		            .body(output);
+		}
+			
+//		if(!isSuccess())
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//		            .body(output);
+//		else
+//		 return ResponseEntity.status(HttpStatus.OK)
+//	            .body(output);
 		// JSONObject response = new JSONObject();
 		// response.put("data", data);
 		// response.put("statusCode", statusCode);

@@ -24,113 +24,109 @@ public class Fetosense {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "fetosenseID")
-	private Long fetosenseID;
-	
+	private Long partnerFetosenseId;
+
 	@Expose
-	@Column(name = "BeneficiaryRegID") 
+	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
-	
+
 	@Expose
-    @Column(name = "benFlowID") 
-    private Long benFlowID;
-	
-	@Transient
-	private String partnerMotherId;
-	
+	@Column(name = "benFlowID")
+	private Long benFlowID;
+
 	@Expose
 	@Column(name = "visitcode")
 	private Long visitCode;
-	
+
 	@Expose
 	@Column(name = "testtime")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Timestamp testTime;
-	
+
 	@Expose
 	@Column(name = "motherLMPDate")
 	private Timestamp motherLMPDate;
-	
+
 	@Expose
 	@Column(name = "MotherName")
 	private String motherName;
-	
+
 	@Expose
 	@Column(name = "partnerName")
 	private String partnerName;
-	
+
 	@Expose
 	@Column(name = "fetosenseMotherID")
-	private String fetosenseMotherID;
-	
+	private String cmMotherId;
+
 	@Expose
 	@Column(name = "fetosensePartnerID")
-	private String fetosensePartnerID;
-	
+	private String partnerId;
+
 	@Expose
 	@Column(name = "fetosensetestid")
 	private Long fetosenseTestId;
-	
-    
-    @Expose
-    @Column(name = "resultState",insertable = false, updatable = true) 
-    private Boolean resultState;
+
+	@Expose
+	@Column(name = "resultState", insertable = false, updatable = true)
+	private Boolean resultState;
 
 	@Expose
 	@Column(name = "testId")
 	private String testId;
-	
+
 	@Expose
-    @Transient
+	@Column(name = "testName")
 	private String testName;
-	
+
 	@Expose
 	@Column(name = "deviceId")
 	private String deviceId;
-	
+
 	@Expose
 	@Column(name = "testDoneAt")
 	private String testDoneAt;
-	
+
 	@Expose
 	@Column(name = "lengthOfTest")
 	private Integer lengthOfTest;
-	
+
 	@Expose
 	@Column(name = "basalHeartRate")
 	private Integer basalHeartRate;
-	
+
 	@Expose
 	@Column(name = "accelerationsList")
 	private String accelerationsListDB;
-	
+
 	@Expose
 	@Column(name = "decelerationsList")
 	private String decelerationsListDB;
-	
+
 	@Expose
 	@Column(name = "shortTermVariationBpm")
 	private String shortTermVariationBpm;
-	
+
 	@Expose
 	@Column(name = "shortTermVariationMilli")
 	private Integer shortTermVariationMilli;
-	
+
 	@Expose
 	@Column(name = "longTermVariation")
 	private Integer longTermVariation;
-	
+
 	@Expose
 	@Column(name = "movementEntries")
 	private String movementEntriesDB;
-	
+
 	@Expose
 	@Column(name = "autoFetalMovement")
 	private String autoFetalMovementDB;
-	
+
 	@Expose
 	@Column(name = "reportPath")
 	private String reportPath;
-	
+
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = false)
 	private Boolean deleted;
@@ -157,49 +153,51 @@ public class Fetosense {
 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
-	private Integer ProviderServiceMapID;
-	
+	private Integer ProviderServiceMapID;	
+	@Expose
+	@Column(name = "vanID")
+	private Integer vanID;
+
 	@Expose
 	@Transient
 	private ArrayList<Object> accelerationsList;
-	
 
 	@Expose
 	@Transient
 	private ArrayList<Object> decelerationsList;
-	
+
 	@Expose
 	@Transient
 	private ArrayList<Integer> movementEntries;
-	
-	
+
 	@Expose
 	@Transient
 	private ArrayList<Integer> autoFetalMovement;
-	
+
 	@Transient
-	private Map<String,String> mother;
-	
+	private Map<String, String> mother;
+
 	public Fetosense() {
-		
+
 	}
-	public Fetosense(Long fetosenseID,Long beneficiaryRegID,Long benFlowID,Long visitCode, Long fetosenseTestId,
+
+	public Fetosense(Long fetosenseID, Long beneficiaryRegID, Long benFlowID, Long visitCode, Long fetosenseTestId,
 			Boolean resultState) {
-		this.fetosenseID = fetosenseID;		
+		this.partnerFetosenseId = fetosenseID;
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benFlowID = benFlowID;
 		this.visitCode = visitCode;
 		this.fetosenseTestId = fetosenseTestId;
 		this.resultState = resultState;
-		
+
 	}
-	
+
 	public Long getFetosenseID() {
-		return fetosenseID;
+		return partnerFetosenseId;
 	}
 
 	public void setFetosenseID(Long fetosenseID) {
-		this.fetosenseID = fetosenseID;
+		this.partnerFetosenseId = fetosenseID;
 	}
 
 	public Long getBeneficiaryRegID() {
@@ -208,14 +206,6 @@ public class Fetosense {
 
 	public void setBeneficiaryRegID(Long beneficiaryRegID) {
 		this.beneficiaryRegID = beneficiaryRegID;
-	}
-
-	public String getPartnerMotherId() {
-		return partnerMotherId;
-	}
-
-	public void setPartnerMotherId(String partnerMotherId) {
-		this.partnerMotherId = partnerMotherId;
 	}
 
 	public Long getVisitCode() {
@@ -259,19 +249,19 @@ public class Fetosense {
 	}
 
 	public String getFetosenseMotherID() {
-		return fetosenseMotherID;
+		return cmMotherId;
 	}
 
 	public void setFetosenseMotherID(String fetosenseMotherID) {
-		this.fetosenseMotherID = fetosenseMotherID;
+		this.cmMotherId = fetosenseMotherID;
 	}
 
 	public String getFetosensePartnerID() {
-		return fetosensePartnerID;
+		return partnerId;
 	}
 
 	public void setFetosensePartnerID(String fetosensePartnerID) {
-		this.fetosensePartnerID = fetosensePartnerID;
+		this.partnerId = fetosensePartnerID;
 	}
 
 	public String getTestId() {
@@ -434,8 +424,6 @@ public class Fetosense {
 		this.lastModDate = lastModDate;
 	}
 
-
-
 	public ArrayList<Object> getAccelerationsList() {
 		return accelerationsList;
 	}
@@ -483,7 +471,7 @@ public class Fetosense {
 	public void setProviderServiceMapID(Integer providerServiceMapID) {
 		ProviderServiceMapID = providerServiceMapID;
 	}
-	
+
 	public Long getFetosenseTestId() {
 		return fetosenseTestId;
 	}
@@ -508,9 +496,28 @@ public class Fetosense {
 		this.resultState = resultState;
 	}
 
-	
-	
-	
-	
-	
+	public String getCmMotherId() {
+		return cmMotherId;
+	}
+
+	public void setCmMotherId(String cmMotherId) {
+		this.cmMotherId = cmMotherId;
+	}
+
+	public String getPartnerId() {
+		return partnerId;
+	}
+
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	public Integer getVanID() {
+		return vanID;
+	}
+
+	public void setVanID(Integer vanID) {
+		this.vanID = vanID;
+	}
+
 }
