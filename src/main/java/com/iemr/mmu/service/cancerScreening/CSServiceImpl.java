@@ -832,7 +832,7 @@ public class CSServiceImpl implements CSService {
 						&& commonUtilityClass.getIsSpecialist() == true) {
 					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
-							tcSpecialistFlag);
+							tcSpecialistFlag,(short) 0);
 
 					if (tcSpecialistFlag == 9) {
 						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
@@ -841,7 +841,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
-							tcUserID, tcDate);
+							tcUserID, tcDate,(short) 0);
 				}
 
 				if (l1 > 0 || l2 > 0)

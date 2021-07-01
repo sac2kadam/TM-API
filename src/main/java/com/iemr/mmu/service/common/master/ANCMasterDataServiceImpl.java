@@ -12,6 +12,7 @@ import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 import com.iemr.mmu.data.doctor.DrugDoseMaster;
 import com.iemr.mmu.data.doctor.DrugDurationUnitMaster;
 import com.iemr.mmu.data.doctor.DrugFrequencyMaster;
+import com.iemr.mmu.data.fetosense.FetosenseTestMaster;
 import com.iemr.mmu.data.institution.Institute;
 import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.data.masterdata.anc.AllergicReactionTypes;
@@ -53,6 +54,7 @@ import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDoseMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugDurationUnitMasterRepo;
 import com.iemr.mmu.repo.doctor.DrugFrequencyMasterRepo;
+import com.iemr.mmu.repo.fetosense.FetosenseTestsRepo;
 import com.iemr.mmu.repo.labModule.ProcedureRepo;
 import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
@@ -165,6 +167,9 @@ public class ANCMasterDataServiceImpl {
 
 	@Autowired
 	private MasterVanRepo masterVanRepo;
+	
+	@Autowired
+	private FetosenseTestsRepo fetosenseTestRepo;
 
 	@Autowired
 	public void setV_DrugPrescriptionRepo(V_DrugPrescriptionRepo v_DrugPrescriptionRepo) {
@@ -591,6 +596,12 @@ public class ANCMasterDataServiceImpl {
 			resMap.put("covidSymptomsMaster", covidSymptomsMasterRepo.findByDeleted(false));
 			resMap.put("covidContactHistoryMaster", covidContactHistoryMasterRepo.findByDeleted(false));
 			resMap.put("covidRecommendationMaster", covidRecommnedationMasterRepo.findByDeleted(false));
+		}
+		
+		//To Fetch Fetosense Test Master Details
+		if (visitCategoryID == 4) {
+			ArrayList<Object[]> fetoTestList = fetosenseTestRepo.getFetosenseTestsDetails(providerServiceMapID);
+			resMap.put("fetosenseTestMaster", FetosenseTestMaster.getFetosenseMasters(fetoTestList));
 		}
 
 		return new Gson().toJson(resMap);

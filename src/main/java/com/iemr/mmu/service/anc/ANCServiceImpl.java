@@ -43,6 +43,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.fetosense.Fetosense;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -52,6 +53,7 @@ import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
+import com.iemr.mmu.repo.fetosense.FetosenseRepo;
 import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
@@ -87,6 +89,8 @@ public class ANCServiceImpl implements ANCService {
 	private FemaleObstetricHistoryRepo femaleObstetricHistoryRepo;
 	@Autowired
 	private ANCDiagnosisRepo aNCDiagnosisRepo;
+	@Autowired
+	private FetosenseRepo fetosenseRepo;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -222,6 +226,10 @@ public class ANCServiceImpl implements ANCService {
 		short specialistFlag = (short) 0;
 		Timestamp tcDate = null;
 		Integer tcSpecialistUserID = null;
+		
+
+		//for feto sense
+		short labTechnicianFlag = (short) 0;
 
 		if (!investigationDataCheck.isJsonNull() && !investigationDataCheck.get("laboratoryList").isJsonNull()
 				&& investigationDataCheck.getAsJsonArray("laboratoryList").size() > 0) {
@@ -244,10 +252,22 @@ public class ANCServiceImpl implements ANCService {
 		} else
 			specialistFlag = (short) 0;
 
-		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
+		//updating visitcode in fetosense table;
+		fetosenseRepo.updateVisitCode(visitCode, benFlowID);
+		
+		ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(benFlowID);
+		if(fetosenseData.size() > 0) {
+			labTechnicianFlag = 3;
+			for(Fetosense data : fetosenseData) {
+				if(data != null && !data.getResultState()) {
+					labTechnicianFlag = 2;
+				}
+			}
+		}
+		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivityANC(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID);
+				visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID,labTechnicianFlag);
 
 		return rs;
 	}
@@ -1419,6 +1439,8 @@ public class ANCServiceImpl implements ANCService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
+		
+		resMap.put("fetosenseData",commonDoctorServiceImpl.getFetosenseData(benRegID, visitCode));
 
 		resMap.put("LabReport",
 				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));

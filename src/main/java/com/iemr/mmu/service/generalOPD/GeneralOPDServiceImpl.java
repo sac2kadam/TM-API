@@ -36,6 +36,7 @@ import com.iemr.mmu.data.anc.WrapperComorbidCondDetails;
 import com.iemr.mmu.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.mmu.data.anc.WrapperImmunizationHistory;
 import com.iemr.mmu.data.anc.WrapperMedicationHistory;
+import com.iemr.mmu.data.fetosense.Fetosense;
 import com.iemr.mmu.data.nurse.BenAnthropometryDetail;
 import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
@@ -44,6 +45,7 @@ import com.iemr.mmu.data.quickConsultation.BenChiefComplaint;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
+import com.iemr.mmu.repo.fetosense.FetosenseRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonNurseServiceImpl;
@@ -73,6 +75,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private CommonServiceImpl commonServiceImpl;
 	@Autowired
 	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
+	
 
 	/// --------------- start of saving nurse data ------------------------
 	@Override
@@ -169,6 +172,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		short nurseFlag = (short) 9;
 		short docFlag = (short) 1;
 		short labIteration = (short) 0;
+		
 
 		short specialistFlag = (short) 0;
 		Timestamp tcDate = null;
@@ -181,6 +185,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		} else
 			specialistFlag = (short) 0;
 
+		
+		
 		int i = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivity(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
