@@ -34,7 +34,7 @@ public class HttpUtils {
 		if (rest == null) {
 			rest = new RestTemplate();
 			headers = new HttpHeaders();
-			headers.add("Content-Type", "application/json");
+//			headers.add("Content-Type", "application/pdf");
 		}
 	}
 	// public HttpUtils() {
@@ -52,7 +52,7 @@ public class HttpUtils {
 
 	public String get(String uri) {
 		String body;
-		HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
+		HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
 		setStatus(responseEntity.getStatusCode());
 		// if (status == HttpStatus.OK){

@@ -9,6 +9,7 @@ public class FetosenseData {
 	private String motherLMPDate;
 	private String motherName;
 	private String testName;
+	private String deviceID;
 	
 	public Long getPartnerFetosenseID() {
 		return partnerFetosenseID;
@@ -40,6 +41,12 @@ public class FetosenseData {
 	}
 	public void setBeneficiaryRegID(Long beneficiaryRegID) {
 		this.beneficiaryRegID = beneficiaryRegID;
+	}
+	public String getDeviceID() {
+		return deviceID;
+	}
+	public void setDeviceID(String deviceID) {
+		this.deviceID = deviceID;
 	}
 	
 

@@ -1,5 +1,8 @@
 package com.iemr.mmu.controller.fetosense;
 
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.fetosense.Fetosense;
+import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.service.fetosense.FetosenseService;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -33,8 +37,15 @@ public class FetosenseUpdateController {
 	@Autowired
 	private FetosenseService fetosenseService;
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	private Logger logger = LoggerFactory.getLogger(FetosenseUpdateController.class);
 
+	/***
+	 * @author DU20091017
+	 * @param requestObj
+	 * @param Authorization
+	 * @return
+	 * @throws IOException 
+	 */
 	@CrossOrigin
 	@ApiOperation(value = "update fetosense Data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/update/fetosenseData", method = { RequestMethod.POST })
@@ -51,27 +62,24 @@ public class FetosenseUpdateController {
 					+ "\"motherName\":\"String\", \r\n" + "}\r\n" + "}") @RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for fetosense data updating :" + requestObj);
-
+		logger.info("Request object for fetosense data updating  :" + requestObj);
+//
 		try {
 			if (requestObj != null) {
 				Fetosense fetosenseData = InputMapper.gson().fromJson(requestObj, Fetosense.class);
 				int responseValue = fetosenseService.updateFetosenseData(fetosenseData);
 				if (responseValue == 1)
-					response.setResponse("Data updated successfully");
-				else
-					response.setError(5000, "Unable to modify data");
-				logger.info("Error while updating fetosense data :" + response);
+					response.setResponse("Data updated successfully");						
 			} else {
 				response.setError(404, "Invalid request");
+				logger.error("Invalid request");
 			}
 		} catch (IEMRException e) {
-			response.setError(5000, "Unable to modify data. " + e.getMessage());
+			response.setError(5000, e.getMessage());
 			logger.error("Error while updating fetosense data :" + e);
-		} catch (Exception e) {
-			response.setError(5000, "Unable to modify data. " + e.getMessage());
 		}
-
 		return response.toStringWithHttpStatus();
 	}
+	
+	
 }
