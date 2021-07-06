@@ -184,7 +184,7 @@ public class LocationController {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(5000, "Error while getting location data");
 		}
 		return response.toString();
@@ -213,7 +213,7 @@ public class LocationController {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(5000, "Error while getting location data");
 		}
 		return response.toString();

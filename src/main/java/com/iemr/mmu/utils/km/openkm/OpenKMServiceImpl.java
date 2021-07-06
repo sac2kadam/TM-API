@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.iemr.mmu.utils.config.ConfigProperties;
 import com.iemr.mmu.utils.km.KMService;
 import com.openkm.sdk4j.OKMWebservices;
@@ -26,6 +29,7 @@ import com.openkm.sdk4j.exception.VirusDetectedException;
 import com.openkm.sdk4j.exception.WebserviceException;
 
 public class OpenKMServiceImpl implements KMService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	// private ConfigProperties configProperties;
 	//
 	// @Autowired
@@ -67,9 +71,9 @@ public class OpenKMServiceImpl implements KMService {
 			response = rootFolder.getPath();
 		} catch (PathNotFoundException | RepositoryException | DatabaseException | UnknowException
 				| WebserviceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return response;
 	}
@@ -83,7 +87,7 @@ public class OpenKMServiceImpl implements KMService {
 				| VersionException | PathNotFoundException | AccessDeniedException | RepositoryException | IOException
 				| DatabaseException | ExtensionException | AutomationException | UnknowException
 				| WebserviceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return response;
 	}
@@ -103,7 +107,7 @@ public class OpenKMServiceImpl implements KMService {
 				| VirusDetectedException | ItemExistsException | AccessDeniedException | RepositoryException
 				| DatabaseException | ExtensionException | AutomationException | UnknowException
 				| WebserviceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return response;
 	}
@@ -131,7 +135,7 @@ public class OpenKMServiceImpl implements KMService {
 		} catch (PathNotFoundException | AccessDeniedException | RepositoryException | ItemExistsException
 				| DatabaseException | ExtensionException | AutomationException | UnknowException
 				| WebserviceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return response;
 	}
@@ -152,7 +156,7 @@ public class OpenKMServiceImpl implements KMService {
 			response = "success";
 		} catch (AccessDeniedException | RepositoryException | PathNotFoundException | LockException | DatabaseException
 				| ExtensionException | UnknowException | WebserviceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return response;
 	}

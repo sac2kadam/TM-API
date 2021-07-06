@@ -62,7 +62,7 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService {
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long visitCode) {
 		NCDScreening ncdScreeningDetails = ncdScreeningRepo.getNCDScreeningDetails(beneficiaryRegID, visitCode);
 
-		if (ncdScreeningDetails.getNcdScreeningConditionID() != null
+		if (ncdScreeningDetails != null && ncdScreeningDetails.getNcdScreeningConditionID() != null
 				&& ncdScreeningDetails.getScreeningCondition() != null) {
 			ArrayList<Map<String, Object>> screeningConditionList = new ArrayList<>();
 			Map<String, Object> screeningConditionMap = null;
@@ -82,14 +82,10 @@ public class NCDScreeningNurseServiceImpl implements NCDScreeningNurseService {
 
 		}
 
-		if (ncdScreeningDetails.getNextScreeningDateDB() != null)
+		if (ncdScreeningDetails != null && ncdScreeningDetails.getNextScreeningDateDB() != null)
 			ncdScreeningDetails.setNextScreeningDate(ncdScreeningDetails.getNextScreeningDateDB().toString());
 
-		if (null != ncdScreeningDetails) {
-			return new Gson().toJson(ncdScreeningDetails);
-		} else {
-			return null;
-		}
+		return new Gson().toJson(ncdScreeningDetails);
 	}
 
 	@Override

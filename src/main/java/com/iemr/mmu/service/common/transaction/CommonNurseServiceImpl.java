@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -102,6 +104,7 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonNurseServiceImpl implements CommonNurseService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Value("${nurseTCWL}")
 	private Integer nurseTCWL;
@@ -115,7 +118,6 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer oncoWL;
 	@Value("${TMReferredWL}")
 	private Integer TMReferredWL;
-	
 
 	private BenVisitDetailRepo benVisitDetailRepo;
 	private BenChiefComplaintRepo benChiefComplaintRepo;
@@ -156,7 +158,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	@Autowired
 	private BenReferDetailsRepo benReferDetailsRepo;
-	
+
 	@Autowired
 	public void setCommonDoctorServiceImpl(CommonDoctorServiceImpl commonDoctorServiceImpl) {
 		this.commonDoctorServiceImpl = commonDoctorServiceImpl;
@@ -456,7 +458,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					beneficiaryVisitDetail.getBenVisitID());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 
 		}
 		return response;
@@ -498,7 +500,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			fileIds = new Integer[0];
 		}
 
-		benVisitDetailsOBJ1.setFileIDs(fileIds);
+		if (benVisitDetailsOBJ1 != null)
+			benVisitDetailsOBJ1.setFileIDs(fileIds);
 
 		return benVisitDetailsOBJ1;
 	}
@@ -2849,17 +2852,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				prescription.getBeneficiaryRegID(), prescription.getVisitCode(), prescription.getPrescriptionID());
 		if (null != pDetails && !pDetails.getProcessed().equals("N")) {
 			processed = "U";
-		} else
-			processed = pDetails.getProcessed();
+		} else {
+			if (pDetails != null)
+				processed = pDetails.getProcessed();
+			else
+				processed = "N";
+		}
 
 		prescription.setProcessed(processed);
 //		if (pDetails.getInstruction() != null) {
 //			prescription.setInstruction(pDetails.getInstruction());}
 //		
-		if (prescription.getInstruction() == null && pDetails.getInstruction() != null) {
+		if (pDetails != null && prescription.getInstruction() == null && pDetails.getInstruction() != null) {
 			prescription.setInstruction(pDetails.getInstruction());
 		}
-		if (prescription.getDiagnosisProvided() == null && pDetails.getDiagnosisProvided() != null) {
+		if (pDetails != null && prescription.getDiagnosisProvided() == null
+				&& pDetails.getDiagnosisProvided() != null) {
 			prescription.setDiagnosisProvided(pDetails.getDiagnosisProvided());
 		}
 
@@ -3908,10 +3916,9 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 					questionAnsMap.put("qID", i.getIdrsQuestionID());
 					questionAnsMap.put("qANS", i.getAnswer());
 
-					if (pointer == 0)
-					{
+					if (pointer == 0) {
 						suspectedDisease = i.getSuspectedDisease();
-					    confirmedDisease = i.getConfirmedDisease();
+						confirmedDisease = i.getConfirmedDisease();
 					}
 					ansList.add(questionAnsMap);
 					pointer++;
@@ -3945,7 +3952,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			responseMap.put("isHypertension", false);
 		if (suspectedDisease != null)
 			responseMap.put("suspectedDisease", suspectedDisease);
-		
+
 		if (confirmedDisease != null)
 			responseMap.put("confirmedDisease", confirmedDisease);
 
@@ -4031,13 +4038,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response.put("data", resultSet);
 		return new Gson().toJson(response);
 	}
+
 	// New Nurse worklist coming from MMU.... 16-02-2021
 	public String getMmuNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, -TMReferredWL);
 		long startTime = cal.getTimeInMillis();
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getMmuNurseWorklistNew(providerServiceMapId,
-				vanID,new Timestamp(startTime));
+				vanID, new Timestamp(startTime));
 
 		return new Gson().toJson(obj);
 	}
@@ -4049,7 +4057,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		ArrayList<Object[]> resultSet = new ArrayList<>();
 		ArrayList<IDRSData> resultSet1 = new ArrayList<>();
-        IDRSData idrs=new IDRSData();
+		IDRSData idrs = new IDRSData();
 		Map<String, String> column;
 		ArrayList<Map<String, String>> columns = new ArrayList<>();
 
@@ -4069,16 +4077,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 
 		resultSet = iDRSDataRepo.getBenPreviousReferredDetails(benRegID);
-		
-        if(resultSet !=null )
-        {
-        	for(Object[] obj :resultSet)
-        	{
-        		idrs=new IDRSData(((BigInteger) obj[0]).longValue(),(Timestamp)obj[1],(String)obj[2]);
-        		resultSet1.add(idrs);
-        	}
-        }
-        	response.put("data", resultSet1);
+
+		if (resultSet != null) {
+			for (Object[] obj : resultSet) {
+				idrs = new IDRSData(((BigInteger) obj[0]).longValue(), (Timestamp) obj[1], (String) obj[2]);
+				resultSet1.add(idrs);
+			}
+		}
+		response.put("data", resultSet1);
 		response.put("columns", columns);
 		return new Gson().toJson(response);
 	}
@@ -4139,14 +4145,17 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		columns.add(column);
 		response.put("columns", columns);
 		try {
-			//ArrayList<BenReferDetails> resList = benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(), request.getVisitCode());
-			ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(request.getBenRegID(), request.getVisitCode());
+			// ArrayList<BenReferDetails> resList =
+			// benReferDetailsRepo.getBenReferDetails2(request.getBenRegID(),
+			// request.getVisitCode());
+			ArrayList<Object[]> resList = benReferDetailsRepo.getBenReferDetails(request.getBenRegID(),
+					request.getVisitCode());
 			BenReferDetails referDetails = BenReferDetails.getBenReferDetails(resList);
 //			value.put("data",
 //					commonDoctorServiceImpl.getReferralDetails(request.getBenRegID(), request.getVisitCode()));
-			//values.add(value);
+			// values.add(value);
 			response.put("data", referDetails);
-			
+
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Referral data");
 		}
@@ -4191,7 +4200,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Quantity Prescribed");
 		column.put("keyName", "qtyPrescribed");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Prescribed Date");
 		column.put("keyName", "createdDate");
@@ -4199,12 +4208,14 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 		response.put("columns", columns);
 		try {
-			//ArrayList<PrescribedDrugDetail> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails2(request.getBenRegID(), request.getVisitCode());
-			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(request.getBenRegID(), request.getVisitCode());
+			// ArrayList<PrescribedDrugDetail> resList =
+			// prescribedDrugDetailRepo.getBenPrescribedDrugDetails2(request.getBenRegID(),
+			// request.getVisitCode());
+			ArrayList<Object[]> resList = prescribedDrugDetailRepo.getBenPrescribedDrugDetails(request.getBenRegID(),
+					request.getVisitCode());
 
 			ArrayList<PrescribedDrugDetail> prescribedDrugs = PrescribedDrugDetail.getprescribedDrugs(resList);
-			response.put("data",
-					prescribedDrugs);
+			response.put("data", prescribedDrugs);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching prescription data");
 		}
@@ -4223,10 +4234,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		response.put("columns", columns);
 		try {
 //			ArrayList<LabTestOrderDetail> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails2(request.getBenRegID(), request.getVisitCode());
-			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(), request.getVisitCode());
+			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(),
+					request.getVisitCode());
 			WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
-			response.put("data",
-					labTestOrdersList);
+			response.put("data", labTestOrdersList);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Investigation data");
 		}

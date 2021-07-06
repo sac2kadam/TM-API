@@ -43,19 +43,18 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	@Autowired
 	private TempVanRepo tempVanRepo;
 
-	public static int progressCounter = 0;
-	public static int totalCounter = 0;
-	public static StringBuilder failedMasters;
+	private static int progressCounter = 0;
+	private static int totalCounter = 0;
+	private static StringBuilder failedMasters;
 
-	public static int successCounter;
-	public static int failedCounter;
+	private static int successCounter;
+	private static int failedCounter;
 	private static int downloadProgress;
 
 	/**
 	 * 
 	 * @return
-	 * @throws Exception
-	 *             Masters download in van from central server
+	 * @throws Exception Masters download in van from central server
 	 */
 	public String downloadMasterDataFromServer(String ServerAuthorization, Integer vanID, Integer psmID)
 			throws Exception {
@@ -226,9 +225,11 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 			}
 		}
 
-		String query = " INSERT INTO " + syncDownloadMaster.getSchemaName() + "." + syncDownloadMaster.getTableName()
-				+ "( " + syncDownloadMaster.getVanColumnName() + ") VALUES ( " + preparedStatementSetter
-				+ " ) ON DUPLICATE KEY UPDATE " + updateStatement;
+		String query = "";
+		if (syncDownloadMaster != null)
+			query = " INSERT INTO " + syncDownloadMaster.getSchemaName() + "." + syncDownloadMaster.getTableName()
+					+ "( " + syncDownloadMaster.getVanColumnName() + ") VALUES ( " + preparedStatementSetter
+					+ " ) ON DUPLICATE KEY UPDATE " + updateStatement;
 
 		return query;
 	}
