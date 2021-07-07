@@ -152,7 +152,7 @@ public class ConfigProperties {
 	public static String getPassword(String key) {
 		String password = "";
 		password = getPropertyByName(key);
-		if (password.startsWith("0X10:")) {
+		if (password != null && password.startsWith("0X10:")) {
 			password = new String(Base64.getDecoder().decode(password.split(":")[1]));
 		}
 		return password;

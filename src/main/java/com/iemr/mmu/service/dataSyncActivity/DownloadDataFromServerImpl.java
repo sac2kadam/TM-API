@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.dataSyncActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -43,19 +44,18 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 	@Autowired
 	private TempVanRepo tempVanRepo;
 
-	public static int progressCounter = 0;
-	public static int totalCounter = 0;
-	public static StringBuilder failedMasters;
+	private static int progressCounter = 0;
+	private static int totalCounter = 0;
+	private static StringBuilder failedMasters;
 
-	public static int successCounter;
-	public static int failedCounter;
-	private static int downloadProgress;
+	// private static int successCounter;
+	private static int failedCounter;
+	// private static int downloadProgress;
 
 	/**
 	 * 
 	 * @return
-	 * @throws Exception
-	 *             Masters download in van from central server
+	 * @throws Exception Masters download in van from central server
 	 */
 	public String downloadMasterDataFromServer(String ServerAuthorization, Integer vanID, Integer psmID)
 			throws Exception {
@@ -72,7 +72,7 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		progressCounter = 0;
 
 		failedMasters = new StringBuilder();
-		successCounter = 0;
+		// successCounter = 0;
 		failedCounter = 0;
 
 		final ExecutorService threadPool = Executors.newFixedThreadPool(3);
@@ -226,9 +226,11 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 			}
 		}
 
-		String query = " INSERT INTO " + syncDownloadMaster.getSchemaName() + "." + syncDownloadMaster.getTableName()
-				+ "( " + syncDownloadMaster.getVanColumnName() + ") VALUES ( " + preparedStatementSetter
-				+ " ) ON DUPLICATE KEY UPDATE " + updateStatement;
+		String query = "";
+		if (syncDownloadMaster != null)
+			query = " INSERT INTO " + syncDownloadMaster.getSchemaName() + "." + syncDownloadMaster.getTableName()
+					+ "( " + syncDownloadMaster.getVanColumnName() + ") VALUES ( " + preparedStatementSetter
+					+ " ) ON DUPLICATE KEY UPDATE " + updateStatement;
 
 		return query;
 	}
@@ -270,5 +272,15 @@ public class DownloadDataFromServerImpl implements DownloadDataFromServer {
 		} else {
 			throw new Exception("There are more than 1 van available. Kindly contact the administrator.");
 		}
+	}
+
+	public Map<String, Object> getDownloadStatus() {
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("percentage", Math
+				.floor(((DownloadDataFromServerImpl.progressCounter * 100) / DownloadDataFromServerImpl.totalCounter)));
+		resultMap.put("failedMasterCount", DownloadDataFromServerImpl.failedCounter);
+		resultMap.put("failedMasters", DownloadDataFromServerImpl.failedMasters);
+
+		return resultMap;
 	}
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ import com.iemr.mmu.repo.masterrepo.nurse.VisitReasonMasterRepo;
 
 @Service
 public class NurseMasterDataServiceImpl implements NurseMasterDataService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
 	private CancerDiseaseMasterRepo cancerDiseaseMasterRepo;
@@ -37,17 +40,17 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 	@Autowired
 	private VisitReasonMasterRepo visitReasonMasterRepo;
 
-	public String GetVisitReasonAndCategories(){
+	public String GetVisitReasonAndCategories() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
 		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
-		
+
 		resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
 		resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
-		
+
 		return new Gson().toJson(resMap);
 	}
-	
+
 	public String getCancerScreeningMasterDataForNurse() {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 		ArrayList<Object[]> DiseaseTypes = cancerDiseaseMasterRepo.getCancerDiseaseMaster();
@@ -66,7 +69,8 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 				.getCancerPersonalHabitTypeMaster("Physical Activity Type ");
 
 		ArrayList<Object[]> familyMemberTypes = familyMemberMasterRepo.getFamilyMemberTypeMaster();
-		// Later remove these 2 from here, These moved to GetVisitReasonAndCategories function
+		// Later remove these 2 from here, These moved to GetVisitReasonAndCategories
+		// function
 		ArrayList<Object[]> visitCategories = visitCategoryMasterRepo.getVisitCategoryMaster();
 		ArrayList<Object[]> visitReasons = visitReasonMasterRepo.getVisitReasonMaster();
 
@@ -86,17 +90,18 @@ public class NurseMasterDataServiceImpl implements NurseMasterDataService {
 					CancerPersonalHabitType.getCancerPersonalHabitTypeMasterData(physicalActivityType));
 
 			resMap.put("familyMemberTypes", FamilyMemberType.getFamilyMemberTypeMasterData(familyMemberTypes));
-			
-			// Later remove these 2 from here, These moved to GetVisitReasonAndCategories function
+
+			// Later remove these 2 from here, These moved to GetVisitReasonAndCategories
+			// function
 			resMap.put("visitCategories", VisitCategory.getVisitCategoryMasterData(visitCategories));
 			resMap.put("visitReasons", VisitReason.getVisitReasonMasterData(visitReasons));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
-		//System.out.println(new Gson().toJson(resMap));
+		// System.out.println(new Gson().toJson(resMap));
 		return new Gson().toJson(resMap);
 
 	}

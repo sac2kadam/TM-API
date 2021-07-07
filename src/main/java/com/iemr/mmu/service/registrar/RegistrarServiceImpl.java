@@ -13,6 +13,8 @@ import java.util.Objects;
 import javax.ws.rs.core.MediaType;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -57,6 +59,8 @@ import com.iemr.mmu.utils.response.OutputResponse;
 @Service
 @PropertySource("classpath:application.properties")
 public class RegistrarServiceImpl implements RegistrarService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
 	@Value("${registrationUrl}")
 	private String registrationUrl;
 
@@ -332,7 +336,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 			// System.out.println(resList);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return result;
 	}
@@ -357,7 +361,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				// System.out.println("hello");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 
 		}
@@ -668,7 +672,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				}
 			}
 		}
-		if (null != beneficiaryDemographicData) {
+		if (null != beneficiaryDemographicData && benDetails != null) {
 			for (Object[] obj : beneficiaryDemographicData) {
 				benDetails.setServicePointName((String) obj[2]);
 			}

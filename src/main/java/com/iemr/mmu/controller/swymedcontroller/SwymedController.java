@@ -15,7 +15,7 @@ import com.iemr.mmu.utils.response.OutputResponse;
 @RestController
 @RequestMapping(value = "/swymed", headers = "Authorization")
 public class SwymedController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
@@ -35,7 +35,7 @@ public class SwymedController {
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -60,7 +60,7 @@ public class SwymedController {
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -70,28 +70,27 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = "/call/{fromuserID}/{touserID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID, @PathVariable("touserID") Long touserID,
-			@PathVariable("type") String Type) {
+	public String CallSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+			@PathVariable("touserID") Long touserID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
-			String createdData =null;
-			if(Type.equalsIgnoreCase("Swymed")) {
+			String createdData = null;
+			if (Type.equalsIgnoreCase("Swymed")) {
 				createdData = swymedService.callUser(fromuserID, touserID);
-			}else {
+			} else {
 				createdData = swymedService.callUserjitsi(fromuserID, touserID);
 			}
-			
 
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -116,7 +115,7 @@ public class SwymedController {
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -126,29 +125,28 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallVanSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID, @PathVariable("vanID") Integer vanID,
-			@PathVariable("type") String Type) {
+	public String CallVanSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+			@PathVariable("vanID") Integer vanID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
-			
-			String createdData =null;
-			if(Type.equalsIgnoreCase("Swymed")) {
+
+			String createdData = null;
+			if (Type.equalsIgnoreCase("Swymed")) {
 				createdData = swymedService.callVan(fromuserID, vanID);
-			}else {
+			} else {
 				createdData = swymedService.callVanJitsi(fromuserID, vanID);
 			}
-			
 
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -158,11 +156,10 @@ public class SwymedController {
 		return response.toString();
 
 	}
-	
-	
+
 	@CrossOrigin()
-	@RequestMapping(value = "/logout", headers = "Authorization", method = {
-			RequestMethod.GET }, produces = { "application/json" })
+	@RequestMapping(value = "/logout", headers = "Authorization", method = { RequestMethod.GET }, produces = {
+			"application/json" })
 	public String logout() {
 
 		OutputResponse response = new OutputResponse();
@@ -174,7 +171,7 @@ public class SwymedController {
 			response.setResponse(createdData.toString());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}

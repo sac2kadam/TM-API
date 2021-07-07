@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ import com.iemr.mmu.utils.exception.TMException;
 
 @Service
 public class CRMReportServiceImpl implements CRMReportService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
 	private BenChiefComplaintReportRepo benChiefComplaintReportRepo;
@@ -119,21 +122,20 @@ public class CRMReportServiceImpl implements CRMReportService {
 		report.setSpecializationID(obj[7].toString());
 		report.setSpecialization((String) obj[8]);
 		report.setRequestedDate((Timestamp) obj[12]);
-		
+
 		if (obj[14] != null && ((String) obj[14]).equals("D")) {
 			report.setConsulted("YES");
 		} else {
 			report.setConsulted("NO");
 		}
 		report.setBeneficiaryArrivalTime((Timestamp) obj[16]);
-		report.setConsultationFirstStart((Timestamp) obj [17]);
+		report.setConsultationFirstStart((Timestamp) obj[17]);
 //		report.setConsultedTime((Timestamp) obj[17]);
 //		report.setWaitingTime(calculateTime(report.getConsultedTime(), report.getArrivalTime()));
 		report.setSpecialistConsultationStart((Timestamp) obj[23]);
 		report.setConsultationEnd((Timestamp) obj[24]);
 		report.settATForArrivalToConsultationStart((obj[25] == null) ? "" : obj[25].toString());
 		report.settATForSpecialistConsultationStartToEnd((obj[26] == null) ? "" : obj[26].toString());
-		
 
 		return report;
 
@@ -252,7 +254,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 		try {
 			output1 = mapper.writeValueAsString(output);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return output1;
 	}
@@ -307,7 +309,7 @@ public class CRMReportServiceImpl implements CRMReportService {
 		try {
 			output1 = mapper.writeValueAsString(output);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return output1;
 	}

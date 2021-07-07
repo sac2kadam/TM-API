@@ -136,12 +136,12 @@ public class LabResultEntry {
 	@ManyToOne
 	@JoinColumn(name = "testComponentID", insertable = false)
 	private TestComponentMaster testComponentMaster;
-    
+
 	@Expose
 	@ManyToOne
 	@JoinColumn(name = "procedureID", insertable = false)
 	private ProcedureData procedureData;
-	
+
 	@Expose
 	@Transient
 	private String procedureName;
@@ -165,7 +165,7 @@ public class LabResultEntry {
 	@Expose
 	@Column(name = "stripsNotAvailable")
 	private Boolean stripsNotAvailable;
-	
+
 	public Boolean getStripsNotAvailable() {
 		return stripsNotAvailable;
 	}
@@ -237,7 +237,7 @@ public class LabResultEntry {
 			for (LabResultEntry obj : comingList) {
 				if (procedureId == null || obj.getProcedureID().intValue() != procedureId) {
 
-					procedureId = obj.getProcedureID().intValue();
+					procedureId = obj.getProcedureID();
 
 					tmpOBJ = new LabResultEntry();
 					tmpOBJ.setPrescriptionID(obj.getPrescriptionID());
@@ -250,10 +250,10 @@ public class LabResultEntry {
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
-					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					// Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
 					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
-					
+
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());
@@ -284,14 +284,14 @@ public class LabResultEntry {
 					returnList.add(tmpOBJ);
 
 				} else {
- 					compDetails = new HashMap<String, Object>();
+					compDetails = new HashMap<String, Object>();
 					// compDetails.put("resultEntryDate", obj.getCreatedDate());
 					compDetails.put("testComponentID", obj.getTestComponentID());
 					compDetails.put("componentName", obj.getTestComponentMaster().getTestComponentName());
-					//Shubham Shekhar,16-11-2020,lionic code added to casesheet
+					// Shubham Shekhar,16-11-2020,lionic code added to casesheet
 					compDetails.put("loincName", obj.getTestComponentMaster().getLionicNum());
 					compDetails.put("loincTerm", obj.getTestComponentMaster().getLionicTerm());
-					
+
 					compDetails.put("testResultValue", obj.getTestResultValue());
 					compDetails.put("testResultUnit", obj.getTestResultUnit());
 					compDetails.put("testReportFilePath", obj.getTestReportFilePath());

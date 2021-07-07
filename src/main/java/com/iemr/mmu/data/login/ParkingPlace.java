@@ -284,7 +284,7 @@ public class ParkingPlace {
 	}
 
 	public void setAreaHQAddress(String areaHQAddress) {
-		areaHQAddress = areaHQAddress;
+		this.areaHQAddress = areaHQAddress;
 	}
 
 	public Boolean getDeleted() {

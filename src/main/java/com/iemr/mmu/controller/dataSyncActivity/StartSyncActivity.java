@@ -1,8 +1,5 @@
 package com.iemr.mmu.controller.dataSyncActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,8 +110,7 @@ public class StartSyncActivity {
 					response.setError(5000, s);
 			} else {
 				response.setError(5000,
-						"vanID / providerServiceMapID or both are missing,"
-						+ " Kindly contact the administrator.");
+						"vanID / providerServiceMapID or both are missing," + " Kindly contact the administrator.");
 			}
 
 		} catch (Exception e) {
@@ -130,12 +126,7 @@ public class StartSyncActivity {
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
 		try {
-			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("percentage", Math.floor(
-					((DownloadDataFromServerImpl.progressCounter * 100) / DownloadDataFromServerImpl.totalCounter)));
-			resultMap.put("failedMasterCount", DownloadDataFromServerImpl.failedCounter);
-			resultMap.put("failedMasters", DownloadDataFromServerImpl.failedMasters);
-			response.setResponse(new Gson().toJson(resultMap));
+			response.setResponse(new Gson().toJson(downloadDataFromServerImpl.getDownloadStatus()));
 		} catch (Exception e) {
 			logger.error("Error in Master data Download progress check : " + e);
 			response.setError(e);
