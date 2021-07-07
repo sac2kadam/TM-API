@@ -712,7 +712,7 @@ public class CommonDoctorServiceImpl {
 		Long tmpBenVisitID = commonUtilityClass.getBenVisitID();
 		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 
-		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() == 4) {
+		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() != null && commonUtilityClass.getVisitCategoryID() == 4) {
 			ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
 			if(fetosenseData.size() > 0) {
 				labTechnicianFlag = 3;
@@ -861,7 +861,7 @@ public class CommonDoctorServiceImpl {
 		Long tmpbeneficiaryRegID = commonUtilityClass.getBeneficiaryRegID();
 		
 		// fetosense related update in visitcode and lab flag
-		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() == 4) {
+		if(commonUtilityClass != null && commonUtilityClass.getVisitCategoryID() != null && commonUtilityClass.getVisitCategoryID() == 4) {
 			ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(tmpBenFlowID);
 			if(fetosenseData.size() > 0) {
 				labTechnicianFlag = 3;
