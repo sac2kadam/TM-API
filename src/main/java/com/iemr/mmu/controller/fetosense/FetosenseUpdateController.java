@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.mmu.data.fetosense.Fetosense;
-import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.service.fetosense.FetosenseService;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;

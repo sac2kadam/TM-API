@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import com.google.gson.JsonParser;
 import com.iemr.mmu.data.fetosense.Fetosense;
 import com.iemr.mmu.data.fetosense.FetosenseData;
 import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
-import com.iemr.mmu.data.login.MasterVan;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.fetosense.FetosenseDeviceIDRepo;
 import com.iemr.mmu.repo.fetosense.FetosenseRepo;
@@ -32,18 +32,14 @@ import com.iemr.mmu.utils.http.HttpUtils;
 //import com.itextpdf.kernel.pdf.PdfWriter;
 //import com.itextpdf.layout.Document;
 
-import ch.qos.logback.classic.Logger;
 
 @Service
 public class FetosenseServiceImpl implements FetosenseService {
 	private static HttpUtils httpUtils = new HttpUtils();
-	private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass().getSimpleName());
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
 	private FetosenseRepo fetosenseRepo;
-
-	@Autowired
-	private MasterVanRepo masterVanRepo;
 
 	@Autowired
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;

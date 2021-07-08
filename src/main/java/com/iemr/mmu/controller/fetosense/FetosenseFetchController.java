@@ -1,20 +1,16 @@
 package com.iemr.mmu.controller.fetosense;
 
-import org.apache.log4j.Logger;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.service.fetosense.FetosenseService;
 import com.iemr.mmu.utils.exception.IEMRException;
-import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +24,7 @@ public class FetosenseFetchController {
 	@Autowired
 	private FetosenseService fetosenseService;
 
-	private final static Logger logger = Logger.getLogger(FetosenseFetchController.class);
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	/***
 	 * @author DU20091017
