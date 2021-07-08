@@ -654,6 +654,8 @@ public class CommonDoctorServiceImpl {
 					referDetailsTemp.setProviderServiceMapID(referDetails.getProviderServiceMapID());
 					referDetailsTemp.setVisitCode(referDetails.getVisitCode());
 					referDetailsTemp.setCreatedBy(referDetails.getCreatedBy());
+					referDetailsTemp.setVanID(referDetails.getVanID());
+					referDetailsTemp.setParkingPlaceID(referDetails.getParkingPlaceID());
 					if (referDetails.getReferredToInstituteID() != null
 							&& referDetails.getReferredToInstituteName() != null) {
 						referDetailsTemp.setReferredToInstituteID(referDetails.getReferredToInstituteID());
