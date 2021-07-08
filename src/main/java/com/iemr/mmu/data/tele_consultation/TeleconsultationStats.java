@@ -65,7 +65,7 @@ public class TeleconsultationStats {
 	}
 
 	public void settMStatsID(Long tMStatsID) {
-		tMStatsID = tMStatsID;
+		this.tMStatsID = tMStatsID;
 	}
 
 	public Long getBeneficiaryRegID() {
