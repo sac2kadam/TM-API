@@ -462,8 +462,8 @@ public class BenFamilyHistory {
 		if (null != familyDiseaseList) {
 			for (Map<String, Object> disease : familyDiseaseList) {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
-				if (disease.containsKey("ID") && disease.get("ID") != null) {
-					benFamilyHistory.setID((Long) disease.get("ID"));
+				if (disease.containsKey("ID") && disease.get("ID") != null) {					
+					benFamilyHistory.setID(((Double) disease.get("ID")).longValue());
 				}
 				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benFamilyHistory.setBenVisitID(benVisitID);
