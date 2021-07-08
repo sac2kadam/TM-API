@@ -28,9 +28,9 @@ import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.utils.config.ConfigProperties;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.http.HttpUtils;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
+//import com.itextpdf.kernel.pdf.PdfDocument;
+//import com.itextpdf.kernel.pdf.PdfWriter;
+//import com.itextpdf.layout.Document;
 
 import ch.qos.logback.classic.Logger;
 
@@ -142,12 +142,12 @@ public class FetosenseServiceImpl implements FetosenseService {
 //		fos.write("Spain".getBytes());
 //		fos.close();
 //		PdfWriter.getInstance(document, fos);
-		PdfWriter writer = new PdfWriter(path);
-		writer.write("How are you".getBytes());
-		PdfDocument pdfdoc = new PdfDocument(writer);
-//		pdfdoc.addNewPage();	
-		Document document = new Document(pdfdoc);
-		document.close();
+//		PdfWriter writer = new PdfWriter(path);
+//		writer.write("How are you".getBytes());
+//		PdfDocument pdfdoc = new PdfDocument(writer);
+////		pdfdoc.addNewPage();	
+//		Document document = new Document(pdfdoc);
+//		document.close();
 //		document.open();
 //		document.close();
 //		document.add()
