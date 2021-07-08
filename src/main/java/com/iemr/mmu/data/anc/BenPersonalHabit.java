@@ -27,7 +27,7 @@ public class BenPersonalHabit {
 	@Expose
 	@Column(name = "BenPersonalHabitID")
 	private Integer benPersonalHabitID;
-	
+
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -746,7 +746,9 @@ public class BenPersonalHabit {
 						alcoholInfo.put("duration", null);
 
 					// alcoholInfo.put("duration", timePeriodAgo.toString());
-					alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+							&& timePeriod.get("timePeriodUnit") != null)
+						alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					alcoholList.add(alcoholInfo);
 				}

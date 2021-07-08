@@ -197,7 +197,7 @@ public class PNCDoctorServiceImpl implements PNCDoctorService {
 		} else {
 			pncDiagnosisDetails = new PNCDiagnosis();
 		}
-		if (instruction != null)
+		if (instruction != null && pncDiagnosisDetails != null)
 			pncDiagnosisDetails.setSpecialistDiagnosis(instruction);
 
 		return new Gson().toJson(pncDiagnosisDetails);

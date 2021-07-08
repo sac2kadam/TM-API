@@ -24,26 +24,25 @@ import com.iemr.mmu.utils.response.OutputResponse;
 public class CRMReportController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	
+
 	@Autowired
 	private CRMReportService cRMReportService;
-	
+
 	@CrossOrigin()
-	@RequestMapping(value = "/chiefcomplaintreport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
-			"application/json" })
+	@RequestMapping(value = "/chiefcomplaintreport", headers = "Authorization", method = {
+			RequestMethod.POST }, produces = { "application/json" })
 	public String chiefcomplaintreport(@RequestBody ReportInput input) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
 
-			Set<SpokeReport> report= cRMReportService.getChiefcomplaintreport(input);
-			
+			Set<SpokeReport> report = cRMReportService.getChiefcomplaintreport(input);
+
 			response.setResponse(report.toString());
-			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -53,23 +52,22 @@ public class CRMReportController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
-	@RequestMapping(value = "/ConsultationReport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
-			"application/json" })
+	@RequestMapping(value = "/ConsultationReport", headers = "Authorization", method = {
+			RequestMethod.POST }, produces = { "application/json" })
 	public String getConsultationReport(@RequestBody ReportInput input) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
 
-			List<ConsultationReport> report= cRMReportService.getConsultationReport(input);
+			List<ConsultationReport> report = cRMReportService.getConsultationReport(input);
 
 			response.setResponse(report.toString());
-			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -81,21 +79,20 @@ public class CRMReportController {
 	}
 
 	@CrossOrigin()
-	@RequestMapping(value = "/TotalConsultationReport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
-			"application/json" })
+	@RequestMapping(value = "/TotalConsultationReport", headers = "Authorization", method = {
+			RequestMethod.POST }, produces = { "application/json" })
 	public String getTotalConsultationReport(@RequestBody ReportInput input) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
 
-			String report= cRMReportService.getTotalConsultationReport(input);
+			String report = cRMReportService.getTotalConsultationReport(input);
 
 			response.setResponse(report);
-			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -105,7 +102,7 @@ public class CRMReportController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = "/MonthlyReport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
 			"application/json" })
@@ -115,13 +112,12 @@ public class CRMReportController {
 
 		try {
 
-			String report= cRMReportService.getMonthlyReport(input);
+			String report = cRMReportService.getMonthlyReport(input);
 
 			response.setResponse(report);
-			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -131,7 +127,7 @@ public class CRMReportController {
 		return response.toString();
 
 	}
-	
+
 	@CrossOrigin()
 	@RequestMapping(value = "/DailyReport", headers = "Authorization", method = { RequestMethod.POST }, produces = {
 			"application/json" })
@@ -141,13 +137,12 @@ public class CRMReportController {
 
 		try {
 
-			List<TMDailyReport> report= cRMReportService.getDailyReport(input);
+			List<TMDailyReport> report = cRMReportService.getDailyReport(input);
 
 			response.setResponse(report.toString());
-			
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			response.setError(e);
 
 		}
@@ -157,6 +152,5 @@ public class CRMReportController {
 		return response.toStringWithSerialization();
 
 	}
-	
 
 }

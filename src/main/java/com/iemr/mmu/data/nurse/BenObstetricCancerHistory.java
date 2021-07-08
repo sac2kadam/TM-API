@@ -498,7 +498,7 @@ public class BenObstetricCancerHistory {
 	}
 
 	public void setIsFoulSmellingDischarge(Boolean isFoulSmellingDischarge) {
-		isFoulSmellingDischarge = isFoulSmellingDischarge;
+		this.isFoulSmellingDischarge = isFoulSmellingDischarge;
 	}
 
 	public Boolean getDeleted() {
