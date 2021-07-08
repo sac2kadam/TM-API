@@ -50,6 +50,14 @@ public class MasterVan {
 	@Expose
 	@Column(name = "SwymedEmailID")
 	private String swymedEmailID;
+	
+	@Expose
+	@Column(name = "vanfetosenseIDmapped")
+	private Boolean vanfetosenseIDmapped;
+	
+	@Expose
+	@Column(name = "VanTypeID")
+	private Integer VanTypeID;
 
 //	@ManyToOne
 //	@JoinColumn(name = "ParkingPlaceID", insertable = false, updatable = false)

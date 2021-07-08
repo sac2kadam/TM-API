@@ -1,5 +1,7 @@
 package com.iemr.mmu.controller.fetosense;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.data.fetosense.Fetosense;
+import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.service.fetosense.FetosenseService;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
@@ -44,7 +47,7 @@ public class FetosenseCreateController {
 	 * @return success or failure response
 	 */
 
-	@CrossOrigin()
+	@CrossOrigin
 	@ApiOperation(value = "Provides the mother data and prescribed test details to fetosense")
 	@RequestMapping(value = "/sendMotherTestDetailsToFetosense", method = RequestMethod.POST, headers = "Authorization")
 	public ResponseEntity<String> sendANCMotherTestDetailsToFetosense(
@@ -68,9 +71,6 @@ public class FetosenseCreateController {
 		} catch (IEMRException e) {
 			logger.error("sendANCMotherTestDetailsToFetosense failed with error " + e.getMessage());
 			output.setError(5000, e.getMessage());
-		}catch (Exception e) {
-			logger.error("sendANCMotherTestDetailsToFetosense failed with error " + e.getMessage());
-			output.setError(5000, e.getMessage());
 		}
 		return output.toStringWithHttpStatus();
 	}
@@ -81,7 +81,7 @@ public class FetosenseCreateController {
 	 * @param authorization
 	 * @return
 	 */
-	@CrossOrigin()
+	@CrossOrigin
 	@ApiOperation(value = "Register Mother")
 	@RequestMapping(value = "/registerMother", method = RequestMethod.POST, headers = "Authorization")
 	public String saveMother(@RequestBody String requestObj,
@@ -106,4 +106,5 @@ public class FetosenseCreateController {
 		return output.toString();
 	}
 
+	
 }
