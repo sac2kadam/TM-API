@@ -656,7 +656,18 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 				{
 					idrsDetail.setBenVisitID(benVisitID);
 					idrsDetail.setVisitCode(benVisitCode);
-					
+					if (idrsDetail.getSuspectArray() != null && idrsDetail.getSuspectArray().length > 0) {
+						for (int a = 0; a < idrsDetail.getSuspectArray().length; a++) {
+							if (a == idrsDetail.getSuspectArray().length - 1)
+								temp1 += idrsDetail.getSuspectArray()[a];
+							else
+								temp1 = temp1 + idrsDetail.getSuspectArray()[a] + ",";
+						}
+						if (temp1.equalsIgnoreCase(""))
+							temp1 = null;
+						idrsDetail.setSuspectedDisease(temp1);
+					}
+					temp1="";
 					if(idrsDetail.getConfirmArray()!=null && idrsDetail.getConfirmArray().length >0)
 					{
 						for(int a=0;a<idrsDetail.getConfirmArray().length;a++)
@@ -901,7 +912,9 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 								temp1=null;
 							idrsDetail.setConfirmedDisease(temp1);
 						}
-						
+						int updateSuspected=0;
+						if(temp !=null)
+						 updateSuspected=iDrsDataRepo.updateSuspectedDiseases(idrsDetail1.getBeneficiaryRegID(), idrsDetail1.getVisitCode(), temp);
 						idrsFlag = commonNurseServiceImpl
 								.saveIDRS(idrsDetail);
 					}
@@ -938,6 +951,33 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 							idrsFlag = new Long(1);
 						}
 					}
+					 if(idrsDetail1.getSuspectArray()!=null && idrsDetail1.getSuspectArray().length >0)
+						{
+							for(int a=0;a<idrsDetail1.getSuspectArray().length;a++)
+					    	{
+					    		if(a==idrsDetail1.getSuspectArray().length-1)
+					    		temp1+=idrsDetail1.getSuspectArray()[a];
+					    		else
+					    		temp1=temp1+idrsDetail1.getSuspectArray()[a]+",";
+					    	}
+							if(temp1.equalsIgnoreCase(""))
+								temp1=null;
+							if(temp1!=null)
+							{
+								success=iDrsDataRepo.updateSuspectedDiseases(idrsDetail1.getBeneficiaryRegID(), idrsDetail1.getVisitCode(), temp1);
+							}
+								
+							if(success > 0) {
+								idrsFlag = new Long(1);
+							}
+						}
+						 if(idrsDetail1.getIdrsScore() != null) {
+							 success = iDrsDataRepo.updateIdrsScore(idrsDetail1.getBeneficiaryRegID(), idrsDetail1.getVisitCode(), idrsDetail1.getIdrsScore());
+							
+							if(success > 0) {
+								idrsFlag = new Long(1);
+							}
+						}
 //					idrsFlag = commonNurseServiceImpl
 //							.saveIDRS(idrsDetail1);
 				}
