@@ -62,4 +62,9 @@ public interface IDRSDataRepo extends CrudRepository<IDRSData, Long> {
 	@Query("UPDATE IDRSData SET confirmedDisease = :confirmedDisease WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
 	public int updateConfirmedDiseases(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode, @Param("confirmedDisease") String confirmedDisease);
+	@Transactional
+	@Modifying
+	@Query("UPDATE IDRSData SET suspectedDisease = :suspectedDisease WHERE beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
+	public int updateSuspectedDiseases(@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode, @Param("suspectedDisease") String suspectedDisease);
 }
