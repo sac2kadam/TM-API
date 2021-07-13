@@ -105,7 +105,7 @@ public class HttpUtils {
 		body = responseEntity.getBody();
 		return body;
 	}
-	
+
 	public ResponseEntity<String> postWithResponseEntity(String uri, String data, HashMap<String, Object> header) {
 		String body;
 		HttpHeaders headers = new HttpHeaders();
