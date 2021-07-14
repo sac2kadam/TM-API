@@ -1,7 +1,5 @@
 package com.iemr.mmu.controller.fetosense;
 
-import java.util.ArrayList;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.iemr.mmu.data.fetosense.Fetosense;
-import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.service.fetosense.FetosenseService;
+import com.iemr.mmu.service.fetosense.FetosenseServiceImpl;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
@@ -37,6 +32,8 @@ import io.swagger.annotations.ApiParam;
 public class FetosenseCreateController {
 	@Autowired
 	private FetosenseService fetosenseService;
+	@Autowired
+	private FetosenseServiceImpl fetosenseServiceImpl;
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -90,14 +87,9 @@ public class FetosenseCreateController {
 		OutputResponse output = new OutputResponse();
 
 		try {
-			if (requestObj != null) {
-
-				output.setResponse("Please wait. Test in Progress");
-
-			} else {
-
-				output.setError(5000, "Invalid request");
-			}
+			output.setResponse("Test in progress");
+//			output.setResponse(fetosenseServiceImpl.generatePDF(
+//					"https://us-central1-fetosense-v2.cloudfunctions.net/getGraph?apiKey=AWP2x7gH2BKtHXcBIUcB&userId=xrJNj3ZC1prquXa5Kzda&testId=WsHlvDn4wr0cACShfhG5&highlight=false&interpretations=true&comments=true"));
 		} catch (Exception e) {
 
 			output.setError(e);
@@ -106,5 +98,4 @@ public class FetosenseCreateController {
 		return output.toString();
 	}
 
-	
 }

@@ -1,6 +1,5 @@
 package com.iemr.mmu.data.fetosense;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
@@ -153,7 +152,7 @@ public class Fetosense {
 
 	@Expose
 	@Column(name = "ProviderServiceMapID")
-	private Integer ProviderServiceMapID;	
+	private Integer ProviderServiceMapID;
 	@Expose
 	@Column(name = "vanID")
 	private Integer vanID;
@@ -176,6 +175,10 @@ public class Fetosense {
 
 	@Transient
 	private Map<String, String> mother;
+
+	@Expose
+	@Column(name = "AMRITFilePath")
+	private String aMRITFilePath;
 
 	public Fetosense() {
 
@@ -518,6 +521,22 @@ public class Fetosense {
 
 	public void setVanID(Integer vanID) {
 		this.vanID = vanID;
+	}
+
+	public Long getPartnerFetosenseId() {
+		return partnerFetosenseId;
+	}
+
+	public void setPartnerFetosenseId(Long partnerFetosenseId) {
+		this.partnerFetosenseId = partnerFetosenseId;
+	}
+
+	public String getaMRITFilePath() {
+		return aMRITFilePath;
+	}
+
+	public void setaMRITFilePath(String aMRITFilePath) {
+		this.aMRITFilePath = aMRITFilePath;
 	}
 
 }
