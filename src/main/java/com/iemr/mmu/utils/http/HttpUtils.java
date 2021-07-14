@@ -116,6 +116,7 @@ public class HttpUtils {
 		if (header.containsKey(headers.AUTHORIZATION)) {
 			headers.add(headers.AUTHORIZATION, header.get(headers.AUTHORIZATION).toString());
 		}
+		// for fetosense api
 		if (header.containsKey("apiKey")) {
 			headers.add("apiKey", header.get("apiKey").toString());
 		}
