@@ -112,14 +112,17 @@ public class HttpUtils {
 		if (header.containsKey(headers.AUTHORIZATION)) {
 			headers.add(headers.AUTHORIZATION, header.get(headers.AUTHORIZATION).toString());
 		}
-		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
+		if (header.containsKey("apiKey")) {
+			headers.add("apiKey", header.get("apiKey").toString());
+		}
+		 headers.add("Content-Type", MediaType.APPLICATION_JSON);
 		ResponseEntity<String> responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
 		HttpEntity<String> requestEntity;
 		requestEntity = new HttpEntity<String>(data, headers);
 		responseEntity = rest.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 		return responseEntity;
 	}
-
+	
 	public String uploadFile(String uri, String data, HashMap<String, Object> header) {
 		String body;
 		HttpHeaders headers = new HttpHeaders();

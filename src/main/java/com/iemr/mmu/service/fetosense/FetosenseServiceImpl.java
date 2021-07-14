@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,9 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 	@Value("${fotesenseFilePath}")
 	private String fotesenseFilePath;
+	
+	@Value("${fetosenseAPIKey}")
+	private String fetosenseAPIKey;
 
 	static HttpURLConnection con;
 
@@ -160,7 +164,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setDoInput(true);
-			filePathLocal = fotesenseFilePath + timeStamp.toString() + ".pdf";
+			filePathLocal = fotesenseFilePath + "/" + timeStamp.toString() + ".pdf";
 			Path path = Paths.get(filePathLocal);
 			Files.copy(con.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
@@ -220,14 +224,15 @@ public class FetosenseServiceImpl implements FetosenseService {
 				JsonParser parser = new JsonParser();
 				ResponseEntity<String> result = null;
 
+//				HttpHeaders headers = new HttpHeaders();
 				HashMap<String, Object> header = new HashMap<>();
-				if (auth != null) {
-					header.put("Authorization", auth);
-				}
+//				if (auth != null) {
+					header.put("apiKey", fetosenseAPIKey);
+//				}
 
 				String requestObj = new Gson().toJson(fetosenseTestDetails).toString();
 
-				logger.debug("request obj of fetosense API - " + requestObj);
+				logger.info("request obj of fetosense API - " + requestObj);
 
 				// Invoking Fetosense API - Sending mother data and test details to fetosense
 				result = httpUtils.postWithResponseEntity(

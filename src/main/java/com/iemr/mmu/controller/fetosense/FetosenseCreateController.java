@@ -78,7 +78,6 @@ public class FetosenseCreateController {
 	 * @param authorization
 	 * @return
 	 */
-	@Deprecated
 	@CrossOrigin
 	@ApiOperation(value = "Register Mother")
 	@RequestMapping(value = "/registerMother", method = RequestMethod.POST, headers = "Authorization")
@@ -88,6 +87,7 @@ public class FetosenseCreateController {
 		OutputResponse output = new OutputResponse();
 
 		try {
+			output.setResponse("Test in progress");
 //			output.setResponse(fetosenseServiceImpl.generatePDF(
 //					"https://us-central1-fetosense-v2.cloudfunctions.net/getGraph?apiKey=AWP2x7gH2BKtHXcBIUcB&userId=xrJNj3ZC1prquXa5Kzda&testId=WsHlvDn4wr0cACShfhG5&highlight=false&interpretations=true&comments=true"));
 		} catch (Exception e) {
