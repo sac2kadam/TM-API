@@ -2,7 +2,7 @@
 
 	<property name="LOG_PATTERN"
 		value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%thread]  %-5level %logger{36} - %msg%n" />
-	<property name="APP_LOG_ROOT" value="D:/ApplicationLogs" />
+	<property name="APP_LOG_ROOT" value="C:/ApplicationLogs" />
 
 	<appender name="console"
 		class="ch.qos.logback.core.ConsoleAppender">
