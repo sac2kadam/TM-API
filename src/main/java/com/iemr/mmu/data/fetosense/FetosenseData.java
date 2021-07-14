@@ -4,18 +4,18 @@ import java.sql.Timestamp;
 
 public class FetosenseData {
 
-	private Long partnerFetosenseID;
+	private Long partnerFetosenseId;
 	private Long beneficiaryRegID;
 	private String motherLMPDate;
 	private String motherName;
 	private String testName;
-	private String deviceID;
+	private String deviceId;
 	
 	public Long getPartnerFetosenseID() {
-		return partnerFetosenseID;
+		return partnerFetosenseId;
 	}
 	public void setPartnerFetosenseID(Long partnerFetosenseID) {
-		this.partnerFetosenseID = partnerFetosenseID;
+		this.partnerFetosenseId = partnerFetosenseID;
 	}
 	public String getMotherLMPDate() {
 		return motherLMPDate;
@@ -43,10 +43,10 @@ public class FetosenseData {
 		this.beneficiaryRegID = beneficiaryRegID;
 	}
 	public String getDeviceID() {
-		return deviceID;
+		return deviceId;
 	}
 	public void setDeviceID(String deviceID) {
-		this.deviceID = deviceID;
+		this.deviceId = deviceID;
 	}
 	
 
