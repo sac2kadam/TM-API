@@ -68,6 +68,9 @@ public class FetosenseCreateController {
 		} catch (IEMRException e) {
 			logger.error("send ANC Mother TestDetails To Fetosense failed with error " + e.getMessage());
 			output.setError(5000, e.getMessage());
+		}catch (Exception e) {
+			logger.error("send ANC Mother TestDetails To Fetosense failed with error " + e.getMessage());
+			output.setError(5000, e.getMessage());
 		}
 		return output.toStringWithHttpStatus();
 	}
