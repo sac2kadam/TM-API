@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,6 @@ import com.iemr.mmu.data.fetosense.FetosenseDeviceID;
 import com.iemr.mmu.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.mmu.repo.fetosense.FetosenseDeviceIDRepo;
 import com.iemr.mmu.repo.fetosense.FetosenseRepo;
-import com.iemr.mmu.repo.login.MasterVanRepo;
 import com.iemr.mmu.utils.config.ConfigProperties;
 import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.http.HttpUtils;
@@ -42,14 +40,13 @@ import com.iemr.mmu.utils.http.HttpUtils;
 //import com.itextpdf.kernel.pdf.PdfWriter;
 //import com.itextpdf.layout.Document;
 
-
 @Service
 @PropertySource("classpath:application.properties")
 public class FetosenseServiceImpl implements FetosenseService {
 
 	@Value("${fotesenseFilePath}")
 	private String fotesenseFilePath;
-	
+
 	@Value("${fetosenseAPIKey}")
 	private String fetosenseAPIKey;
 
@@ -168,7 +165,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 			// base64 = readPDFANDGetBase64(filePathLocal);
 
 		} catch (IOException e) {
-			throw new IEMRException(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		} finally {
 			con.disconnect();
 		}
@@ -221,11 +218,8 @@ public class FetosenseServiceImpl implements FetosenseService {
 				JsonParser parser = new JsonParser();
 				ResponseEntity<String> result = null;
 
-//				HttpHeaders headers = new HttpHeaders();
 				HashMap<String, Object> header = new HashMap<>();
-//				if (auth != null) {
-					header.put("apiKey", fetosenseAPIKey);
-//				}
+				header.put("apiKey", fetosenseAPIKey);
 
 				String requestObj = new Gson().toJson(fetosenseTestDetails).toString();
 
@@ -242,15 +236,15 @@ public class FetosenseServiceImpl implements FetosenseService {
 					if (responseData != null) {
 						return "Patient details sent to fetosense device successfully. Please select patient name on device and start the test";
 					} else
-						throw new IEMRException("Error in receving data from fetosense");
+						throw new RuntimeException("fetosense register mother service giving response as null");
 				} else
-					throw new IEMRException("Error in receving data from fetosense");
+					throw new RuntimeException("Error in registering mother in fetosense");
 
 			} else
-				throw new IEMRException("Unable to save data");
+				throw new RuntimeException("Unable to generate fetosense id");
 
 		} catch (Exception e) {
-			throw new IEMRException("Unable to save data " + e.getMessage());
+			throw new RuntimeException("Unable to save data " + e.getMessage());
 		}
 
 	}

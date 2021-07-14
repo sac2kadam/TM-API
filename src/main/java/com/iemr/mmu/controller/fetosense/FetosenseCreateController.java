@@ -66,7 +66,7 @@ public class FetosenseCreateController {
 				output.setError(404, "Invalid request");
 			}
 		} catch (IEMRException e) {
-			logger.error("sendANCMotherTestDetailsToFetosense failed with error " + e.getMessage());
+			logger.error("send ANC Mother TestDetails To Fetosense failed with error " + e.getMessage());
 			output.setError(5000, e.getMessage());
 		}
 		return output.toStringWithHttpStatus();
