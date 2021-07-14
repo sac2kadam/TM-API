@@ -237,8 +237,8 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 				if (Integer.parseInt(result.getStatusCode().toString()) == 200) {
 					JsonObject responseObj = (JsonObject) parser.parse(result.getBody());
-					JsonObject data1 = (JsonObject) responseObj.get("data");
-					String responseData = data1.get("response").getAsString();
+					String responseData = responseObj.get("message").getAsString();
+//					String responseData = data1.get("response").getAsString();
 					if (responseData != null) {
 						return "Patient details sent to fetosense device successfully. Please select patient name on device and start the test";
 					} else
