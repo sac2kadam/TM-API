@@ -213,7 +213,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 				if (deviceIDForVanID != null && deviceIDForVanID.getDeviceID() != null) {
 					fetosenseTestDetails.setDeviceID(deviceIDForVanID.getDeviceID());
 				} else
-					throw new IEMRException("Van is not mapped with the deviceID");
+					throw new RuntimeException("Van is not mapped with the deviceID");
 
 				JsonParser parser = new JsonParser();
 				ResponseEntity<String> result = null;
