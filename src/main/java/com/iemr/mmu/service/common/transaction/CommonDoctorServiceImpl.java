@@ -738,7 +738,7 @@ public class CommonDoctorServiceImpl {
 			} else {
 				tcSpecialistFlag = (short) 9;
 			}
-			if(labTechnicianFlag == 3) {
+			if(labTechnicianFlag == 3 && tcSpecialistFlag != 2) {
 				tcSpecialistFlag = (short) 9;
 			}else if(labTechnicianFlag == 2) {
 				tcSpecialistFlag = (short) 2;
@@ -753,7 +753,7 @@ public class CommonDoctorServiceImpl {
 //				if(commonUtilityClass.getPrescriptionID()!=null)
 //				createTMPrescriptionSms(commonUtilityClass);
 			}
-			if(labTechnicianFlag == 3) {
+			if(labTechnicianFlag == 3 && docFlag != 2) {
 				docFlag = (short) 9;
 			}else if(labTechnicianFlag == 2) {
 				docFlag = (short) 2;
@@ -894,7 +894,7 @@ public class CommonDoctorServiceImpl {
 				pharmaFalg = (short) 1;
 			else
 				pharmaFalg = (short) 0;
-			if(labTechnicianFlag == 3)
+			if(labTechnicianFlag == 3 && tcSpecialistFlag != 2)
 				tcSpecialistFlag = (short) 9;
 			else if(labTechnicianFlag == 2)
 				tcSpecialistFlag = (short) 2;
@@ -936,7 +936,7 @@ public class CommonDoctorServiceImpl {
 				pharmaFalg = (short) 1;
 			else
 				pharmaFalg = (short) 0;
-			if(labTechnicianFlag == 3)
+			if(labTechnicianFlag == 3 && docFlag != 2)
 				docFlag = (short) 9;
 			else if(labTechnicianFlag == 2)
 				docFlag = (short) 2;

@@ -190,7 +190,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 		Fetosense response = null;
 
-//		try {
+		try {
 			// Saving Fetosense Data in Amrit DB
 			response = fetosenseRepo.save(request);
 
@@ -243,9 +243,9 @@ public class FetosenseServiceImpl implements FetosenseService {
 			} else
 				throw new RuntimeException("Unable to generate fetosense id");
 
-//		} catch (Exception e) {
-//			throw new RuntimeException("Unable to save data " + e.getMessage());
-//		}
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to save data " + e.getMessage());
+		}
 
 	}
 
