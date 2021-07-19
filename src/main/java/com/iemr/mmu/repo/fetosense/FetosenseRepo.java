@@ -48,7 +48,7 @@ public interface FetosenseRepo extends CrudRepository<Fetosense, Long> {
 	/***
 	 * @author DU20091017 get the feto sense details while lab flag update.
 	 */
-	@Query("SELECT f FROM Fetosense f WHERE f.benFlowID = :benFlowID")
+	@Query("SELECT f FROM Fetosense f WHERE f.benFlowID = :benFlowID AND f.deleted is false ")
 	public ArrayList<Fetosense> getFetosenseDetailsByFlowId(@Param("benFlowID") Long benFlowID);
 
 	/***

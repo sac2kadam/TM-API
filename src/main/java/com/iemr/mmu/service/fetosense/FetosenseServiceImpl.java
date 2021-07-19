@@ -105,6 +105,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 			fetosenseData.setCreatedBy(fetosenseFetchData.getCreatedBy());
 
 			fetosenseData.setResultState(true);
+			fetosenseData.setDeleted(fetosenseFetchData.getDeleted());
 
 			// need to write the code for changing the report path data to base 64 and save
 			// it in DB
@@ -185,12 +186,12 @@ public class FetosenseServiceImpl implements FetosenseService {
 	 * sends the details to fetosense.
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public String sendFetosenseTestDetails(Fetosense request, String auth) throws IEMRException {
+//	@Transactional(rollbackFor = Exception.class)
+	public String sendFetosenseTestDetails(Fetosense request, String auth) throws Exception {
 
 		Fetosense response = null;
 
-		try {
+//		try {
 			// Saving Fetosense Data in Amrit DB
 			response = fetosenseRepo.save(request);
 
@@ -225,10 +226,18 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 				logger.info("request obj of fetosense API - " + requestObj);
 
-				// Invoking Fetosense API - Sending mother data and test details to fetosense
-				result = httpUtils.postWithResponseEntity(
-						ConfigProperties.getPropertyByName("fetosense-api-url-ANCTestDetails"), requestObj, header);
+				try {
+					// Invoking Fetosense API - Sending mother data and test details to fetosense
+					result = httpUtils.postWithResponseEntity(
+							ConfigProperties.getPropertyByName("fetosense-api-url-ANCTestDetails"), requestObj, header);
 
+				} catch (Exception e) {
+					response.setDeleted(true);
+					fetosenseRepo.save(response);
+					throw new RuntimeException("Unable to save data " + e.getMessage());
+				}
+				
+				
 				if (Integer.parseInt(result.getStatusCode().toString()) == 200) {
 					JsonObject responseObj = (JsonObject) parser.parse(result.getBody());
 					String responseData = responseObj.get("message").getAsString();
@@ -243,9 +252,9 @@ public class FetosenseServiceImpl implements FetosenseService {
 			} else
 				throw new RuntimeException("Unable to generate fetosense id");
 
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to save data " + e.getMessage());
-		}
+//		} catch (Exception e) {
+//			throw new RuntimeException("Unable to save data " + e.getMessage());
+//		}
 
 	}
 

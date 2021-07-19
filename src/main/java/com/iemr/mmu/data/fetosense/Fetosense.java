@@ -127,7 +127,7 @@ public class Fetosense {
 	private String reportPath;
 
 	@Expose
-	@Column(name = "Deleted", insertable = false, updatable = false)
+	@Column(name = "Deleted", insertable = false)
 	private Boolean deleted;
 
 	@Expose

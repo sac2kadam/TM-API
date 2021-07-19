@@ -9,7 +9,7 @@ public interface FetosenseService {
 
 	int updateFetosenseData(Fetosense fetosenseData) throws IEMRException;
 
-	String sendFetosenseTestDetails(Fetosense request, String auth) throws IEMRException;
+	String sendFetosenseTestDetails(Fetosense request, String auth) throws Exception;
 
 	String getFetosenseDetails(Long benFlowID) throws IEMRException;
 
