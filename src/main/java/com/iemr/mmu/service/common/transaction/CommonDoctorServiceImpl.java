@@ -728,6 +728,8 @@ public class CommonDoctorServiceImpl {
 				}
 			}
 		}
+		//get lab technician flag,SH20094090,19-7-2021(Fetosense flag changes)
+		//Short labFlag= beneficiaryFlowStatusRepo.getLabTechnicianFlag(tmpBenFlowID);
 		
 		// check if TC specialist or doctor
 		if (commonUtilityClass != null && commonUtilityClass.getIsSpecialist() != null
@@ -736,27 +738,21 @@ public class CommonDoctorServiceImpl {
 			if (isTestPrescribed) {
 				tcSpecialistFlag = (short) 2;
 			} else {
+				//update lab technician flag,SH20094090,19-7-2021(Fetosense flag changes)
+				if(labTechnicianFlag==3)
+					labTechnicianFlag=9;
 				tcSpecialistFlag = (short) 9;
 			}
-			if(labTechnicianFlag == 3 && tcSpecialistFlag != 2) {
-				tcSpecialistFlag = (short) 9;
-			}else if(labTechnicianFlag == 2) {
-				tcSpecialistFlag = (short) 2;
-			}
+			
 		} else {
 			// checking if test is prescribed
 			if (isTestPrescribed) {
 				docFlag = (short) 2;
 			} else {
 				docFlag = (short) 9;
-				// SH20094090, 10-10-2020, For TM Prescription SMS
-//				if(commonUtilityClass.getPrescriptionID()!=null)
-//				createTMPrescriptionSms(commonUtilityClass);
-			}
-			if(labTechnicianFlag == 3 && docFlag != 2) {
-				docFlag = (short) 9;
-			}else if(labTechnicianFlag == 2) {
-				docFlag = (short) 2;
+				//update lab technician flag,SH20094090,19-7-2021(Fetosense flag changes)
+				if(labTechnicianFlag==3)
+					labTechnicianFlag=9;
 			}
 		}
 
@@ -888,16 +884,18 @@ public class CommonDoctorServiceImpl {
 			if (isTestPrescribed)
 				tcSpecialistFlag = (short) 2;
 			else
+			{
 				tcSpecialistFlag = (short) 9;
+				//update lab technician flag,SH20094090,19-7-2021(Fetosense flag changes)
+				if(labTechnicianFlag==3)
+					labTechnicianFlag=9;
+			}
+				
 
 			if (isMedicinePrescribed)
 				pharmaFalg = (short) 1;
 			else
 				pharmaFalg = (short) 0;
-			if(labTechnicianFlag == 3 && tcSpecialistFlag != 2)
-				tcSpecialistFlag = (short) 9;
-			else if(labTechnicianFlag == 2)
-				tcSpecialistFlag = (short) 2;
 			
 
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateTCSpecialist(tmpBenFlowID,
@@ -930,16 +928,17 @@ public class CommonDoctorServiceImpl {
 			if (isTestPrescribed)
 				docFlag = (short) 2;
 			else
+			{
 				docFlag = (short) 9;
-
+				//update lab technician flag,SH20094090,19-7-2021(Fetosense flag changes)
+				if(labTechnicianFlag==3)
+					labTechnicianFlag=9;
+			}
+				
 			if (isMedicinePrescribed)
 				pharmaFalg = (short) 1;
 			else
 				pharmaFalg = (short) 0;
-			if(labTechnicianFlag == 3 && docFlag != 2)
-				docFlag = (short) 9;
-			else if(labTechnicianFlag == 2)
-				docFlag = (short) 2;
 
 			if (tcRequestOBJ != null && tcRequestOBJ.getUserID() != null && tcRequestOBJ.getUserID() > 0
 					&& tcRequestOBJ.getAllocationDate() != null) {

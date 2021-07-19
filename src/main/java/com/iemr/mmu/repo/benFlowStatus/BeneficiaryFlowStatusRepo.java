@@ -398,5 +398,13 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Query(nativeQuery = true, value = " SELECT ben_dob FROM i_ben_flow_outreach WHERE beneficiary_reg_id = :benRegID "
 			+ " AND ben_gender_val = 2 AND ben_dob is not null order by ben_flow_id DESC LIMIT 1 ")
 	public Timestamp getBenAgeVal(@Param("benRegID") Long benRegID);
+	
+//	/**
+//	 * get labtechnician flag and update for fetosense test
+//	 * @author SH20094090
+//	 * @param benFlowID
+//	 */
+//	@Query("SELECT  t.lab_technician_flag from BeneficiaryFlowStatus t WHERE t.benFlowID =:benFlowID ")
+//	public Short getLabTechnicianFlag(@Param("benFlowID") Long benFlowID);
 
 }
