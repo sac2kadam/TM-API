@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.mmu.data.fetosense.Fetosense;
 import com.iemr.mmu.service.fetosense.FetosenseService;
 import com.iemr.mmu.service.fetosense.FetosenseServiceImpl;
-import com.iemr.mmu.utils.exception.IEMRException;
 import com.iemr.mmu.utils.mapper.InputMapper;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -50,7 +49,8 @@ public class FetosenseCreateController {
 	public ResponseEntity<String> sendANCMotherTestDetailsToFetosense(
 			@ApiParam("{\"beneficiaryRegID\":\"Long\",\"benFlowID\":\"Long\",\"testTime\":\"Timestamp\",\"motherLMPDate\":\"Timestamp\",\"motherName\":\"String\",\"fetosenseTestId\":\"Long\",\"testName\":\"String\",\"ProviderServiceMapID\":\"Integer\",\"createdBy\":\"String\"}") @RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String authorization) {
-		logger.info("Request Object for transfering mother data to fetosense" + requestObj);
+		// logger.info("Request Object for transfering mother data to fetosense" +
+		// requestObj);
 		OutputResponse output = new OutputResponse();
 
 		try {
@@ -63,12 +63,10 @@ public class FetosenseCreateController {
 
 				output.setResponse(response);
 			} else {
+				logger.error("send ANC Mother TestDetails To Fetosense : Invalid request");
 				output.setError(404, "Invalid request");
 			}
-		} catch (IEMRException e) {
-			logger.error("send ANC Mother TestDetails To Fetosense failed with error " + e.getMessage());
-			output.setError(5000, e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("send ANC Mother TestDetails To Fetosense failed with error " + e.getMessage());
 			output.setError(5000, e.getMessage());
 		}

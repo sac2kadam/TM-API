@@ -226,9 +226,8 @@ public class ANCServiceImpl implements ANCService {
 		short specialistFlag = (short) 0;
 		Timestamp tcDate = null;
 		Integer tcSpecialistUserID = null;
-		
 
-		//for feto sense
+		// for feto sense
 		short labTechnicianFlag = (short) 0;
 
 		if (!investigationDataCheck.isJsonNull() && !investigationDataCheck.get("laboratoryList").isJsonNull()
@@ -252,14 +251,14 @@ public class ANCServiceImpl implements ANCService {
 		} else
 			specialistFlag = (short) 0;
 
-		//updating visitcode in fetosense table;
-		fetosenseRepo.updateVisitCode(visitCode, benFlowID);
-		
 		ArrayList<Fetosense> fetosenseData = fetosenseRepo.getFetosenseDetailsByFlowId(benFlowID);
-		if(fetosenseData.size() > 0) {
+		if (fetosenseData.size() > 0) {
+			// updating visitcode in fetosense table;
+			fetosenseRepo.updateVisitCode(visitCode, benFlowID);
+
 			labTechnicianFlag = 3;
-			for(Fetosense data : fetosenseData) {
-				if(data != null && !data.getResultState()) {
+			for (Fetosense data : fetosenseData) {
+				if (data != null && !data.getResultState()) {
 					labTechnicianFlag = 2;
 				}
 			}
@@ -267,7 +266,7 @@ public class ANCServiceImpl implements ANCService {
 		int rs = commonBenStatusFlowServiceImpl.updateBenFlowNurseAfterNurseActivityANC(benFlowID,
 				tmpOBJ.get("beneficiaryRegID").getAsLong(), benVisitID, tmpOBJ.get("visitReason").getAsString(),
 				tmpOBJ.get("visitCategory").getAsString(), nurseFlag, docFlag, labIteration, (short) 0, (short) 0,
-				visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID,labTechnicianFlag);
+				visitCode, vanID, specialistFlag, tcDate, tcSpecialistUserID, labTechnicianFlag);
 
 		return rs;
 	}
@@ -1439,8 +1438,8 @@ public class ANCServiceImpl implements ANCService {
 		resMap.put("prescription", commonDoctorServiceImpl.getPrescribedDrugs(benRegID, visitCode));
 
 		resMap.put("Refer", commonDoctorServiceImpl.getReferralDetails(benRegID, visitCode));
-		
-		resMap.put("fetosenseData",commonDoctorServiceImpl.getFetosenseData(benRegID, visitCode));
+
+		resMap.put("fetosenseData", commonDoctorServiceImpl.getFetosenseData(benRegID, visitCode));
 
 		resMap.put("LabReport",
 				new Gson().toJson(labTechnicianServiceImpl.getLabResultDataForBen(benRegID, visitCode)));

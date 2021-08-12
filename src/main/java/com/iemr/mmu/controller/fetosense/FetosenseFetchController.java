@@ -1,5 +1,6 @@
 package com.iemr.mmu.controller.fetosense;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -72,9 +73,12 @@ public class FetosenseFetchController {
 				output.setResponse(response);
 			else
 				output.setError(5000, "Error in fetching the details");
+		} catch (FileNotFoundException fnf) {
+			logger.error("getFetosenseDetails failed with error " + fnf.getMessage());
+			output.setError(5000, "File not found : " + fnf.getMessage());
 		} catch (IOException io) {
 			logger.error("getFetosenseDetails failed with error " + io.getMessage());
-			output.setError(5000, io.getMessage());
+			output.setError(5000, "File not found : " + io.getMessage());
 		} catch (IEMRException e) {
 			logger.error("getFetosenseDetails failed with error " + e.getMessage(), e);
 			output.setError(5000, e.getMessage());

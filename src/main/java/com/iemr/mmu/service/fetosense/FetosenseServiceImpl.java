@@ -1,5 +1,6 @@
 package com.iemr.mmu.service.fetosense;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -70,62 +70,62 @@ public class FetosenseServiceImpl implements FetosenseService {
 	 * @throws DocumentException
 	 */
 	@Override
-	public int updateFetosenseData(Fetosense fetosenseData) throws IEMRException {
+	public int updateFetosenseData(Fetosense fetosenseDataOutside) throws IEMRException {
 
 		try {
-			fetosenseData.setAccelerationsListDB(fetosenseData.getAccelerationsList().toString());
-			fetosenseData.setDecelerationsListDB(fetosenseData.getAccelerationsList().toString());
-			fetosenseData.setMovementEntriesDB(fetosenseData.getMovementEntries().toString());
-			fetosenseData.setAutoFetalMovementDB(fetosenseData.getAutoFetalMovement().toString());
-			fetosenseData.setFetosenseMotherID(fetosenseData.getMother().get("cmMotherId"));
-			fetosenseData.setFetosensePartnerID(fetosenseData.getMother().get("partnerId"));
-			fetosenseData.setPartnerName(fetosenseData.getMother().get("partnerName"));
+			logger.info("start test reult data into DB : " + fetosenseDataOutside.toString());
+			fetosenseDataOutside.setAccelerationsListDB(fetosenseDataOutside.getAccelerationsList().toString());
+			fetosenseDataOutside.setDecelerationsListDB(fetosenseDataOutside.getAccelerationsList().toString());
+			fetosenseDataOutside.setMovementEntriesDB(fetosenseDataOutside.getMovementEntries().toString());
+			fetosenseDataOutside.setAutoFetalMovementDB(fetosenseDataOutside.getAutoFetalMovement().toString());
+			fetosenseDataOutside.setFetosenseMotherID(fetosenseDataOutside.getMother().get("cmMotherId"));
+			fetosenseDataOutside.setFetosensePartnerID(fetosenseDataOutside.getMother().get("partnerId"));
+			fetosenseDataOutside.setPartnerName(fetosenseDataOutside.getMother().get("partnerName"));
 
 			// fetching data from the db
-			Fetosense fetosenseFetchData = fetosenseRepo.getFetosenseDetails(fetosenseData.getFetosenseID());
-
-			if (fetosenseFetchData == null || fetosenseFetchData.getFetosenseID() == null)
-//				fetosenseData.setFetosenseID(fetosenseData.getPartnerFetosenseID());
+			Fetosense fetosenseFetchDataDB = fetosenseRepo.getFetosenseDetails(fetosenseDataOutside.getFetosenseID());
+			if (fetosenseFetchDataDB == null || fetosenseFetchDataDB.getFetosenseID() == null)
 				throw new IEMRException("Invalid partnerFetosenseID");
-//			else
-//				throw new IEMRException("Invalid partnerFetosenseID");
+
+			fetosenseDataOutside.setBeneficiaryID(fetosenseFetchDataDB.getBeneficiaryID());
+			fetosenseDataOutside.setBeneficiaryRegID(fetosenseFetchDataDB.getBeneficiaryRegID());
 
 			// setting the values from the DB response
-			fetosenseData.setBeneficiaryRegID(fetosenseFetchData.getBeneficiaryRegID());
-			if (fetosenseFetchData.getVisitCode() != null)
-				fetosenseData.setVisitCode(fetosenseFetchData.getVisitCode());
-			fetosenseData.setTestTime(fetosenseFetchData.getTestTime());
-			fetosenseData.setMotherLMPDate(fetosenseFetchData.getMotherLMPDate());
-			fetosenseData.setMotherName(fetosenseFetchData.getMotherName());
-			fetosenseData.setFetosenseTestId(fetosenseFetchData.getFetosenseTestId());
-			fetosenseData.setProviderServiceMapID(fetosenseFetchData.getProviderServiceMapID());
-			fetosenseData.setBenFlowID(fetosenseFetchData.getBenFlowID());
-			fetosenseData.setVanID(fetosenseFetchData.getVanID());
-			fetosenseData.setTestName(fetosenseFetchData.getTestName());
-			fetosenseData.setCreatedBy(fetosenseFetchData.getCreatedBy());
+			// fetosenseDataOutside.setBeneficiaryRegID(fetosenseFetchDataDB.getBeneficiaryRegID());
+			if (fetosenseFetchDataDB.getVisitCode() != null)
+				fetosenseDataOutside.setVisitCode(fetosenseFetchDataDB.getVisitCode());
+			fetosenseDataOutside.setTestTime(fetosenseFetchDataDB.getTestTime());
+			fetosenseDataOutside.setMotherLMPDate(fetosenseFetchDataDB.getMotherLMPDate());
+			fetosenseDataOutside.setMotherName(fetosenseFetchDataDB.getMotherName());
+			fetosenseDataOutside.setFetosenseTestId(fetosenseFetchDataDB.getFetosenseTestId());
+			fetosenseDataOutside.setProviderServiceMapID(fetosenseFetchDataDB.getProviderServiceMapID());
+			fetosenseDataOutside.setBenFlowID(fetosenseFetchDataDB.getBenFlowID());
+			fetosenseDataOutside.setVanID(fetosenseFetchDataDB.getVanID());
+			fetosenseDataOutside.setTestName(fetosenseFetchDataDB.getTestName());
+			fetosenseDataOutside.setCreatedBy(fetosenseFetchDataDB.getCreatedBy());
 
-			fetosenseData.setResultState(true);
-			fetosenseData.setDeleted(fetosenseFetchData.getDeleted());
+			fetosenseDataOutside.setResultState(true);
+			fetosenseDataOutside.setDeleted(fetosenseFetchDataDB.getDeleted());
 
 			// need to write the code for changing the report path data to base 64 and save
 			// it in DB
 
-			String filePath = generatePDF(fetosenseData.getReportPath());
-			fetosenseData.setaMRITFilePath(filePath);
+			String filePath = generatePDF(fetosenseDataOutside.getReportPath());
+			fetosenseDataOutside.setaMRITFilePath(filePath);
 
 			// saving the feto sense response to DB
-			Fetosense fetosenseDateUpdated = fetosenseRepo.save(fetosenseData);
+			fetosenseDataOutside = fetosenseRepo.save(fetosenseDataOutside);
 
 			int flagUpdate = 0;
 
 			// updating lab technician flag to 3 from 2 as we got the response from feto
 			// sense
-			if (fetosenseDateUpdated != null && fetosenseDateUpdated.getFetosenseID() > 0) {
+			if (fetosenseDataOutside != null && fetosenseDataOutside.getFetosenseID() > 0) {
 
 				// need to check how many records are there with benflowID
 				short lab_technician_flag = 3;
 				ArrayList<Fetosense> fetosenseDataOnBenFlowID = fetosenseRepo
-						.getFetosenseDetailsByFlowId(fetosenseFetchData.getBenFlowID());
+						.getFetosenseDetailsByFlowId(fetosenseFetchDataDB.getBenFlowID());
 				if (fetosenseDataOnBenFlowID.size() > 0) {
 					// if any of the record is not updated then marking lab flag as 2 - not able to
 					// open in doctor screen.
@@ -136,10 +136,11 @@ public class FetosenseServiceImpl implements FetosenseService {
 					}
 				}
 				flagUpdate = beneficiaryFlowStatusRepo.updateLabTechnicianFlag(lab_technician_flag,
-						fetosenseFetchData.getBenFlowID());
-				if (flagUpdate > 0)
+						fetosenseFetchDataDB.getBenFlowID());
+				if (flagUpdate > 0) {
+					logger.info("End test reult data into DB ");
 					return 1;
-				else
+				} else
 					throw new IEMRException("Error in updating the lab technician flag");
 			} else
 				throw new IEMRException("Error in updating fetosense data");
@@ -176,7 +177,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 	// generate report file in file storage
 	@Override
-	public String readPDFANDGetBase64(String filePath) throws IEMRException, IOException {
+	public String readPDFANDGetBase64(String filePath) throws IEMRException, IOException, FileNotFoundException {
 //		FileInputStream file = new FileInputStream(filePath);
 		byte[] byteArray = Files.readAllBytes(Paths.get(filePath));
 		return Base64.getEncoder().encodeToString(byteArray);
@@ -186,20 +187,24 @@ public class FetosenseServiceImpl implements FetosenseService {
 	 * sends the details to fetosense.
 	 */
 	@Override
-//	@Transactional(rollbackFor = Exception.class)
+	// @Transactional(rollbackFor = Exception.class)
 	public String sendFetosenseTestDetails(Fetosense request, String auth) throws Exception {
 
-		Fetosense response = null;
-
-//		try {
+		// Fetosense response = null;
+		logger.info("start fetosense test request : " + request.getTestName());
+		try {
+			Long benID = fetosenseRepo.getBenID(request.getBeneficiaryRegID());
+			request.setBeneficiaryID(benID);
 			// Saving Fetosense Data in Amrit DB
-			response = fetosenseRepo.save(request);
+			request = fetosenseRepo.save(request);
 
-			if (response != null && response.getFetosenseID() > 0) {
+			if (request != null && request.getFetosenseID() > 0) {
 
 				FetosenseData fetosenseTestDetails = new FetosenseData();
-				fetosenseTestDetails.setPartnerFetosenseID(response.getFetosenseID());
-				fetosenseTestDetails.setBeneficiaryRegID(request.getBeneficiaryRegID());
+				fetosenseTestDetails.setPartnerFetosenseID(request.getFetosenseID());
+
+				// send benid in place of benregid to fetosense
+				fetosenseTestDetails.setBeneficiaryRegID(benID);
 
 				String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 				SimpleDateFormat sdf = new SimpleDateFormat(ISO_FORMAT);
@@ -214,7 +219,7 @@ public class FetosenseServiceImpl implements FetosenseService {
 				if (deviceIDForVanID != null && deviceIDForVanID.getDeviceID() != null) {
 					fetosenseTestDetails.setDeviceID(deviceIDForVanID.getDeviceID());
 				} else
-					throw new RuntimeException("Van is not mapped with the deviceID");
+					throw new RuntimeException("Spoke is not mapped with Fetosense deviceID");
 
 				JsonParser parser = new JsonParser();
 				ResponseEntity<String> result = null;
@@ -224,37 +229,40 @@ public class FetosenseServiceImpl implements FetosenseService {
 
 				String requestObj = new Gson().toJson(fetosenseTestDetails).toString();
 
-				logger.info("request obj of fetosense API - " + requestObj);
+				logger.info("calling fetosense API with request OBJ : " + requestObj);
+				// Invoking Fetosense API - Sending mother data and test details to fetosense
+				result = httpUtils.postWithResponseEntity(
+						ConfigProperties.getPropertyByName("fetosense-api-url-ANCTestDetails"), requestObj, header);
+				logger.info("Fetosense register mother API response : " + result.toString());
 
-				try {
-					// Invoking Fetosense API - Sending mother data and test details to fetosense
-					result = httpUtils.postWithResponseEntity(
-							ConfigProperties.getPropertyByName("fetosense-api-url-ANCTestDetails"), requestObj, header);
-
-				} catch (Exception e) {
-					response.setDeleted(true);
-					fetosenseRepo.save(response);
-					throw new RuntimeException("Unable to save data " + e.getMessage());
-				}
-				
-				
-				if (Integer.parseInt(result.getStatusCode().toString()) == 200) {
+				// check fetosense API response code
+				if (result != null && Integer.parseInt(result.getStatusCode().toString()) == 200) {
 					JsonObject responseObj = (JsonObject) parser.parse(result.getBody());
 					String responseData = responseObj.get("message").getAsString();
-//					String responseData = data1.get("response").getAsString();
 					if (responseData != null) {
+						logger.info("end fetosense test request: " + request.getTestName());
 						return "Patient details sent to fetosense device successfully. Please select patient name on device and start the test";
-					} else
-						throw new RuntimeException("fetosense register mother service giving response as null");
-				} else
-					throw new RuntimeException("Error in registering mother in fetosense");
+					} else {
+						throw new RuntimeException("fetosense register mother API is giving response as null");
+					}
+				} else {
+					throw new RuntimeException(
+							"Error while registering mother in fetosense, fetosense response status code : "
+									+ Integer.parseInt(result.getStatusCode().toString()));
+				}
 
 			} else
-				throw new RuntimeException("Unable to generate fetosense id");
+				throw new RuntimeException("Unable to generate fetosense id in TM");
 
-//		} catch (Exception e) {
-//			throw new RuntimeException("Unable to save data " + e.getMessage());
-//		}
+		} catch (Exception e) {
+			// if record is created, and not raised in fetosense device, soft delete it
+			if (request != null && request.getPartnerFetosenseId() != null && request.getPartnerFetosenseId() > 0) {
+				logger.info("fetosense test request transaction roll-backed");
+				request.setDeleted(true);
+				fetosenseRepo.save(request);
+			}
+			throw new Exception("Unable to raise test request, error is :  " + e.getMessage());
+		}
 
 	}
 

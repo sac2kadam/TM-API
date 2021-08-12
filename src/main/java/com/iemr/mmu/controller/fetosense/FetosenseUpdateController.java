@@ -1,6 +1,5 @@
 package com.iemr.mmu.controller.fetosense;
 
-
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class FetosenseUpdateController {
 	 * @param requestObj
 	 * @param Authorization
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@CrossOrigin
 	@ApiOperation(value = "update fetosense Data", consumes = "application/json", produces = "application/json")
@@ -61,14 +60,14 @@ public class FetosenseUpdateController {
 					+ "\"motherName\":\"String\", \r\n" + "}\r\n" + "}") @RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for fetosense data updating  :" + requestObj);
+		logger.info("Fetosense API test result data  :" + requestObj);
 //
 		try {
 			if (requestObj != null) {
 				Fetosense fetosenseData = InputMapper.gson().fromJson(requestObj, Fetosense.class);
 				int responseValue = fetosenseService.updateFetosenseData(fetosenseData);
 				if (responseValue == 1)
-					response.setResponse("Data updated successfully");						
+					response.setResponse("Data updated successfully");
 			} else {
 				response.setError(404, "Invalid request");
 				logger.error("Invalid request");
@@ -79,6 +78,5 @@ public class FetosenseUpdateController {
 		}
 		return response.toStringWithHttpStatus();
 	}
-	
-	
+
 }

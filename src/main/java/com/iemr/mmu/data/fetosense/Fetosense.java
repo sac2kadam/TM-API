@@ -30,6 +30,10 @@ public class Fetosense {
 	private Long beneficiaryRegID;
 
 	@Expose
+	@Column(name = "BeneficiaryID")
+	private Long beneficiaryID;
+
+	@Expose
 	@Column(name = "benFlowID")
 	private Long benFlowID;
 
@@ -537,6 +541,14 @@ public class Fetosense {
 
 	public void setaMRITFilePath(String aMRITFilePath) {
 		this.aMRITFilePath = aMRITFilePath;
+	}
+
+	public Long getBeneficiaryID() {
+		return beneficiaryID;
+	}
+
+	public void setBeneficiaryID(Long beneficiaryID) {
+		this.beneficiaryID = beneficiaryID;
 	}
 
 }
