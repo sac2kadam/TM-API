@@ -3,6 +3,7 @@ package com.iemr.mmu.service.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,7 @@ import com.iemr.mmu.repo.nurse.BenAnthropometryRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
 import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.mmu.repo.nurse.anc.BenMedHistoryRepo;
+import com.iemr.mmu.repo.nurse.anc.BenMenstrualDetailsRepo;
 import com.iemr.mmu.repo.nurse.anc.BencomrbidityCondRepo;
 import com.iemr.mmu.repo.nurse.anc.FemaleObstetricHistoryRepo;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -91,6 +93,9 @@ public class ANCServiceImpl implements ANCService {
 	private ANCDiagnosisRepo aNCDiagnosisRepo;
 	@Autowired
 	private FetosenseRepo fetosenseRepo;
+
+	@Autowired
+	private BenMenstrualDetailsRepo benMenstrualDetailsRepo;
 
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
@@ -1130,6 +1135,15 @@ public class ANCServiceImpl implements ANCService {
 			ANCCareDetails ancCareDetailsOBJ = InputMapper.gson().fromJson(ancDetailsOBJ.get("ancObstetricDetails"),
 					ANCCareDetails.class);
 			ancCareSuccessFlag = ancNurseServiceImpl.updateBenAncCareDetails(ancCareDetailsOBJ);
+
+			if (ancCareDetailsOBJ.getLmpDate() != null && !ancCareDetailsOBJ.getLmpDate().isEmpty()
+					&& ancCareDetailsOBJ.getLmpDate().length() >= 10) {
+				String lmpDate = ancCareDetailsOBJ.getLmpDate().split("T")[0];
+				new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime());
+				int i = benMenstrualDetailsRepo.updateLmpDate(
+						new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(lmpDate).getTime()),ancCareDetailsOBJ.getModifiedBy(),
+						 ancCareDetailsOBJ.getBeneficiaryRegID(),ancCareDetailsOBJ.getVisitCode());
+			}
 		}
 		if (ancDetailsOBJ != null && ancDetailsOBJ.has("ancImmunization")
 				&& !ancDetailsOBJ.get("ancImmunization").isJsonNull()) {
