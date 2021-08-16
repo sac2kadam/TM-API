@@ -44,7 +44,8 @@ public interface FetosenseRepo extends CrudRepository<Fetosense, Long> {
 	 * @return
 	 */
 
-	@Query("SELECT f FROM Fetosense f WHERE f.beneficiaryRegID = :beneficiaryRegID AND f.visitCode = :visitCode")
+	@Query("SELECT f FROM Fetosense f WHERE f.beneficiaryRegID = :beneficiaryRegID "
+			+ " AND f.visitCode = :visitCode AND f.deleted is false ")
 	public ArrayList<Fetosense> getFetosenseDetailsForCaseRecord(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 
