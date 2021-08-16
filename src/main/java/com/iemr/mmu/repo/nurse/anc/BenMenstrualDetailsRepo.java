@@ -53,4 +53,14 @@ public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDeta
 			@Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
+	
+	@Transactional
+	@Modifying
+	@Query("update BenMenstrualDetails set lMPDate=:lMPDate,modifiedBy=:modifiedBy"
+			+ " where beneficiaryRegID=:beneficiaryRegID AND visitCode = :visitCode AND deleted = false ")
+	public int updateLmpDate(@Param("lMPDate") Timestamp lMPDate,
+			@Param("modifiedBy") String modifiedBy,
+			@Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("visitCode") Long visitCode);
+	
 }
