@@ -270,12 +270,19 @@ public class FetosenseServiceImpl implements FetosenseService {
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(e.getResponseBodyAsString());
 			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if (request != null && request.getPartnerFetosenseId() != null && request.getPartnerFetosenseId() > 0) {
+				 //String response = e.getres;
+				logger.info("fetosense test request transaction roll-backed");
+				request.setDeleted(true);
+				fetosenseRepo.save(request);
+			}
 			if(jsnOBJ.get("status") !=null && jsnOBJ.get("message") !=null)
 //			throw new Exception("Unable to raise test request, error is : " + ("status code "+(jsnOBJ.get("status").getAsString())
 //					+","+(jsnOBJ.get("message").getAsString())));
 				throw new Exception("Unable to raise test request, error is : " + (jsnOBJ.get("message").getAsString()));
 			else
 				throw new Exception("Unable to raise test request, error is :  " + e.getMessage());
+			
 		}
 		catch (Exception e) {
 			// if record is created, and not raised in fetosense device, soft delete it
