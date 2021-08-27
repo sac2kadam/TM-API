@@ -271,8 +271,9 @@ public class FetosenseServiceImpl implements FetosenseService {
 			JsonElement jsnElmnt = jsnParser.parse(e.getResponseBodyAsString());
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if(jsnOBJ.get("status") !=null && jsnOBJ.get("message") !=null)
-			throw new Exception("Unable to raise test request, error is : " + ("status code "+(jsnOBJ.get("status").getAsString())
-					+","+(jsnOBJ.get("message").getAsString())));
+//			throw new Exception("Unable to raise test request, error is : " + ("status code "+(jsnOBJ.get("status").getAsString())
+//					+","+(jsnOBJ.get("message").getAsString())));
+				throw new Exception("Unable to raise test request, error is : " + (jsnOBJ.get("message").getAsString()));
 			else
 				throw new Exception("Unable to raise test request, error is :  " + e.getMessage());
 		}
