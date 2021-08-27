@@ -16,15 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.DocumentException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.data.fetosense.Fetosense;
@@ -254,9 +259,27 @@ public class FetosenseServiceImpl implements FetosenseService {
 			} else
 				throw new RuntimeException("Unable to generate fetosense id in TM");
 
-		} catch (Exception e) {
+		} 
+		/**
+		 * @author SH20094090
+		 * @purpose To get response body in case of exception
+		 */
+		catch(HttpClientErrorException e)
+		{
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(e.getResponseBodyAsString());
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if(jsnOBJ.get("status") !=null && jsnOBJ.get("message") !=null)
+			throw new Exception("Unable to raise test request, error is : " + ("status code "+(jsnOBJ.get("status").getAsString())
+					+","+(jsnOBJ.get("message").getAsString())));
+			else
+				throw new Exception("Unable to raise test request, error is :  " + e.getMessage());
+		}
+		catch (Exception e) {
 			// if record is created, and not raised in fetosense device, soft delete it
 			if (request != null && request.getPartnerFetosenseId() != null && request.getPartnerFetosenseId() > 0) {
+				 //String response = e.getres;
 				logger.info("fetosense test request transaction roll-backed");
 				request.setDeleted(true);
 				fetosenseRepo.save(request);
