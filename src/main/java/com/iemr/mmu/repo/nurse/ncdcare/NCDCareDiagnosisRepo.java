@@ -29,14 +29,16 @@ public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, L
 	@Transactional
 	@Modifying
 	@Query("update NCDCareDiagnosis set ncdScreeningCondition=:ncdScreeningCondition, ncdComplication=:ncdComplication, "
-			+ "ncdCareType=:ncdCareType, modifiedBy=:modifiedBy, processed=:processed "
+			+ "ncdCareType=:ncdCareType, modifiedBy=:modifiedBy, processed=:processed, "
+			+ " ncdScreeningConditionOther = :ncdScreeningConditionOther "
 			+ "where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID AND prescriptionID =:prescriptionID ")
 	public int updateNCDCareDiagnosis(@Param("ncdScreeningCondition") String ncdScreeningCondition,
 			@Param("ncdComplication") String ncdComplication, @Param("ncdCareType") String ncdCareType,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
 			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
-			@Param("prescriptionID") Long prescriptionID);
-	
+			@Param("prescriptionID") Long prescriptionID,
+			@Param("ncdScreeningConditionOther") String ncdScreeningConditionOther);
+
 	@Query("SELECT ncdScreeningCondition from NCDCareDiagnosis where visitCode = :visitCode "
 			+ " AND prescriptionID =:prescriptionID AND (deleted <> true OR deleted IS NULL)")
 	public List<Object> getNCDcondition(@Param("visitCode") Long visitCode,

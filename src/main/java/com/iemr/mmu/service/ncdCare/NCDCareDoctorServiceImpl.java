@@ -26,8 +26,18 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		this.ncdCareDiagnosisRepo = ncdCareDiagnosisRepo;
 	}
 
-	public long saveNCDDiagnosisData(NCDCareDiagnosis ncdDiagnosis) {
+	public long saveNCDDiagnosisData(NCDCareDiagnosis ncdDiagnosis) throws Exception {
 		long res = 0;
+
+		if (ncdDiagnosis.getNcdScreeningConditionArray() != null
+				&& ncdDiagnosis.getNcdScreeningConditionArray().length > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (String s : ncdDiagnosis.getNcdScreeningConditionArray()) {
+				sb.append(s).append("||");
+			}
+			ncdDiagnosis.setNcdScreeningCondition((sb.delete((sb.length() - 2), (sb.length()))).toString());
+		} else
+			ncdDiagnosis.setNcdScreeningCondition(null);
 
 		NCDCareDiagnosis diagnosis = ncdCareDiagnosisRepo.save(ncdDiagnosis);
 		if (null != diagnosis) {
@@ -45,7 +55,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		String instruction = null;
 		if (prescriptionData != null && prescriptionData.size() > 0) {
 			if (prescriptionData.get(0)[0] != null)
-			externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
+				externalInvestigation = String.valueOf(prescriptionData.get(0)[0]);
 			if (prescriptionData.get(0)[1] != null)
 				instruction = String.valueOf(prescriptionData.get(0)[1]);
 		}
@@ -55,8 +65,22 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 
 		ArrayList<Object[]> resList = ncdCareDiagnosisRepo.getNCDCareDiagnosisDetails(beneficiaryRegID, visitCode);
 		NCDCareDiagnosis ncdCareDiagnosisDetails = NCDCareDiagnosis.getNCDCareDiagnosisDetails(resList);
-		if (externalInvestigation != null)
+
+		// 07-09-2021 parsing the || seperated ncd_condition to array of string, if
+		// condition
+		// 07-09-2021
+
+		if (ncdCareDiagnosisDetails != null && ncdCareDiagnosisDetails.getNcdScreeningCondition() != null
+				&& ncdCareDiagnosisDetails.getNcdScreeningCondition().length() > 0) {
+
+			String[] ncdConditionArr = ncdCareDiagnosisDetails.getNcdScreeningCondition().split("||");
+			if (ncdConditionArr != null)
+				ncdCareDiagnosisDetails.setNcdScreeningConditionArray(ncdConditionArr);
+		}
+
+		if (externalInvestigation != null) {
 			ncdCareDiagnosisDetails.setExternalInvestigation(externalInvestigation);
+		}
 		if (instruction != null)
 			ncdCareDiagnosisDetails.setSpecialistDiagnosis(instruction);
 
@@ -72,13 +96,24 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 			processed = "U";
 		}
 
-		ncdCareDiagnosis.setProcessed(processed);
+		if (ncdCareDiagnosis.getNcdScreeningConditionArray() != null
+				&& ncdCareDiagnosis.getNcdScreeningConditionArray().length > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (String s : ncdCareDiagnosis.getNcdScreeningConditionArray()) {
+				sb.append(s).append("||");
+			}
+			ncdCareDiagnosis.setNcdScreeningCondition((sb.delete((sb.length() - 2), (sb.length()))).toString());
+		} else
+			ncdCareDiagnosis.setNcdScreeningCondition(null);
+
 		if (processed != null) {
+			// 07-09-2021, moved below line from outside if block to inside for null check
+			ncdCareDiagnosis.setProcessed(processed);
 			res = ncdCareDiagnosisRepo.updateNCDCareDiagnosis(ncdCareDiagnosis.getNcdCareCondition(),
 					ncdCareDiagnosis.getNcdComplication(), ncdCareDiagnosis.getNcdCareType(),
 					ncdCareDiagnosis.getCreatedBy(), ncdCareDiagnosis.getProcessed(),
 					ncdCareDiagnosis.getBeneficiaryRegID(), ncdCareDiagnosis.getVisitCode(),
-					ncdCareDiagnosis.getPrescriptionID());
+					ncdCareDiagnosis.getPrescriptionID(), ncdCareDiagnosis.getNcdScreeningConditionOther());
 		} else {
 			NCDCareDiagnosis ncdCareDiagnosisRes = ncdCareDiagnosisRepo.save(ncdCareDiagnosis);
 			if (null != ncdCareDiagnosisRes && ncdCareDiagnosisRes.getID() > 0) {

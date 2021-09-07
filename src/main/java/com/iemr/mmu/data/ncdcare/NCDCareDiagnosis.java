@@ -45,6 +45,16 @@ public class NCDCareDiagnosis {
 	@Column(name = "NCD_Condition")
 	private String ncdScreeningCondition;
 
+	// 07-09-2021
+	@Expose
+	private String[] ncdScreeningConditionArray;
+
+	@Expose
+	@Column(name = "NCDConditionOther")
+	private String ncdScreeningConditionOther;
+
+	// End
+
 	@Expose
 	@Column(name = "NCD_Complication")
 	private String ncdComplication;
@@ -287,6 +297,22 @@ public class NCDCareDiagnosis {
 
 	public void setPrescriptionID(Long prescriptionID) {
 		this.prescriptionID = prescriptionID;
+	}
+
+	public String[] getNcdScreeningConditionArray() {
+		return ncdScreeningConditionArray;
+	}
+
+	public void setNcdScreeningConditionArray(String[] ncdScreeningConditionArray) {
+		this.ncdScreeningConditionArray = ncdScreeningConditionArray;
+	}
+
+	public String getNcdScreeningConditionOther() {
+		return ncdScreeningConditionOther;
+	}
+
+	public void setNcdScreeningConditionOther(String ncdScreeningConditionOther) {
+		this.ncdScreeningConditionOther = ncdScreeningConditionOther;
 	}
 
 	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
