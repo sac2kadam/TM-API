@@ -15,9 +15,9 @@ import com.iemr.mmu.data.ncdcare.NCDCareDiagnosis;
 public interface NCDCareDiagnosisRepo extends CrudRepository<NCDCareDiagnosis, Long> {
 
 	@Query(" SELECT beneficiaryRegID, benVisitID, providerServiceMapID, prescriptionID, "
-			+ " ncdScreeningCondition, ncdComplication, ncdCareType, visitCode " + " from NCDCareDiagnosis ba "
-			+ " WHERE ba.beneficiaryRegID = :benRegID" + " AND ba.visitCode = :visitCode AND ba.deleted = false "
-			+ " ORDER BY createdDate desc")
+			+ " ncdScreeningCondition, ncdComplication, ncdCareType, visitCode, ncdScreeningConditionOther "
+			+ " from NCDCareDiagnosis ba " + " WHERE ba.beneficiaryRegID = :benRegID"
+			+ " AND ba.visitCode = :visitCode AND ba.deleted = false " + " ORDER BY createdDate desc")
 	public ArrayList<Object[]> getNCDCareDiagnosisDetails(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 
