@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.ncdCare;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +74,7 @@ public class NCDCareDoctorServiceImpl implements NCDCareDoctorService {
 		if (ncdCareDiagnosisDetails != null && ncdCareDiagnosisDetails.getNcdScreeningCondition() != null
 				&& ncdCareDiagnosisDetails.getNcdScreeningCondition().length() > 0) {
 
-			String[] ncdConditionArr = ncdCareDiagnosisDetails.getNcdScreeningCondition().split("||");
+			String[] ncdConditionArr = ncdCareDiagnosisDetails.getNcdScreeningCondition().split(Pattern.quote("||"));
 			if (ncdConditionArr != null)
 				ncdCareDiagnosisDetails.setNcdScreeningConditionArray(ncdConditionArr);
 		}
