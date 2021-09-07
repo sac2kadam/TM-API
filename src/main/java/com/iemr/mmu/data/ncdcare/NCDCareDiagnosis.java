@@ -47,6 +47,7 @@ public class NCDCareDiagnosis {
 
 	// 07-09-2021
 	@Expose
+	@Transient
 	private String[] ncdScreeningConditionArray;
 
 	@Expose
