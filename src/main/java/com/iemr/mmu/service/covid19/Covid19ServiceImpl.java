@@ -72,10 +72,11 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveCovid19NurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveCovid19NurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long saveSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		// check if visit details data is not null
+		Long benVisitCode = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
 			// Call method to save visit details data
@@ -84,7 +85,6 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 			// 07-06-2018 visit code
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -160,7 +160,18 @@ public class Covid19ServiceImpl implements Covid19Service {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return saveSuccessFlag;
+		
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);			
 	}
 
 	/**

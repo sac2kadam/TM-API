@@ -58,12 +58,13 @@ public class GeneralOPDCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ, Authorization);
-				if (null != genOPDRes && genOPDRes > 0) {
-					response.setResponse("Data saved successfully");
-				} else {
-					response.setResponse("Unable to save data");
-				}
+				String genOPDRes = generalOPDServiceImpl.saveNurseData(jsnOBJ, Authorization);
+				response.setResponse(genOPDRes);
+//				if (null != genOPDRes && genOPDRes > 0) {
+//					response.setResponse("Data saved successfully and visit code is "+genOPDRes);
+//				} else {
+//					response.setResponse("Unable to save data");
+//				}
 
 			} else {
 				response.setResponse("Invalid request");

@@ -48,13 +48,13 @@ public class CovidCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ncdCareRes = covid19ServiceImpl.saveCovid19NurseData(jsnOBJ, Authorization);
-				if (null != ncdCareRes && ncdCareRes > 0) {
-					response.setResponse("Data saved successfully");
-				} else {
-					response.setResponse("Unable to save data");
-				}
-
+				String ncdCareRes = covid19ServiceImpl.saveCovid19NurseData(jsnOBJ, Authorization);
+//				if (null != ncdCareRes && ncdCareRes > 0) {
+//					response.setResponse("Data saved successfully");
+//				} else {
+//					response.setResponse("Unable to save data");
+//				}
+				response.setResponse(ncdCareRes);
 			} else {
 				response.setError(5000, "Invalid Request !!!");
 			}

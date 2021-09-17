@@ -7,7 +7,7 @@ public interface NCDScreeningService {
 	
 	public String getNCDScreeningDetails(Long beneficiaryRegID, Long benVisitID);
 
-    Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
+    String saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception;
 
 	Integer updateNurseNCDScreeningDetails(JsonObject jsonObject) throws Exception;
 	

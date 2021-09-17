@@ -134,10 +134,62 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveNCDScreeningNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+
+//		Integer result = null;
+//
+//		if (jsonObject != null && jsonObject.has("visitDetails") && jsonObject.has("ncdScreeningDetails")) {
+//			// JsonElement visitDetails = jsonObject.get("visitDetails");
+//			// JsonElement ncdScreeningDetails =
+//			// jsonObject.get("ncdScreeningDetails");
+//			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsonObject, CommonUtilityClass.class);
+//			Long benFlowID = nurseUtilityClass.getBenFlowID();
+//
+//			BeneficiaryVisitDetail beneficiaryVisitDetail = InputMapper.gson().fromJson(jsonObject.get("visitDetails"),
+//					BeneficiaryVisitDetail.class);
+//
+//			NCDScreening ncdScreening = InputMapper.gson().fromJson(jsonObject.get("ncdScreeningDetails"),
+//					NCDScreening.class);
+//
+//			if (ncdScreening.getNextScreeningDate() != null)
+//				ncdScreening.setNextScreeningDateDB(Timestamp
+//						.valueOf(ncdScreening.getNextScreeningDate().replaceAll("T", " ").replaceAll("Z", " ")));
+//
+//			Long visitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(beneficiaryVisitDetail);
+//
+//			// 11-06-2018 visit code
+//			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(visitID, nurseUtilityClass.getVanID(),
+//					nurseUtilityClass.getSessionID());
+//
+//			if (null != visitID) {
+//
+//				Long vitalSuccessFlag = saveNCDScreeningVitalDetails(jsonObject, visitID, benVisitCode);
+//				Long saveNCDScreeningDetails = null;
+//				ncdScreening.setBenVisitID(visitID);
+//				ncdScreening.setVisitCode(benVisitCode);
+//				saveNCDScreeningDetails = ncdScreeningNurseServiceImpl.saveNCDScreeningDetails(ncdScreening);
+//
+//				if (null != vitalSuccessFlag && null != saveNCDScreeningDetails) {
+//
+//					int i = updateBenFlowNurseAfterNurseActivityANC(beneficiaryVisitDetail.getBeneficiaryRegID(),
+//							visitID, benFlowID, beneficiaryVisitDetail.getVisitReason(),
+//							beneficiaryVisitDetail.getVisitCategory(), ncdScreening.getIsScreeningComplete(),
+//							benVisitCode, nurseUtilityClass.getVanID());
+//
+//					result = 1;
+//				} else {
+//					throw new RuntimeException("Error occurred while saving data");
+//				}
+//			} else
+//				throw new RuntimeException("Error occurred while creating beneficiary visit");
+//		} else {
+//			throw new Exception("Invalid input");
+//		}
+//		return result;
 		//Shubham Shekhar,8-12-2020,WDF
 		Long saveSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		Long benVisitCode = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -147,7 +199,6 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			// 07-06-2018 visit code
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -222,7 +273,17 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return saveSuccessFlag;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);		
 
 	}
 	// method for updating ben flow status flag for nurse

@@ -132,11 +132,12 @@ public class ANCServiceImpl implements ANCService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveANCNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveANCNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		// String vr = "";
 		// String vc = "";
 		Long saveSuccessFlag = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		Long benVisitCode = null;
 		// check if visit details data is not null
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(requestOBJ, CommonUtilityClass.class);
@@ -145,7 +146,6 @@ public class ANCServiceImpl implements ANCService {
 					nurseUtilityClass);
 
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -220,7 +220,17 @@ public class ANCServiceImpl implements ANCService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return saveSuccessFlag;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);			
 	}
 
 	private int updateBenFlowNurseAfterNurseActivityANC(JsonObject investigationDataCheck, JsonObject tmpOBJ,

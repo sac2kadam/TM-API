@@ -61,12 +61,13 @@ public class NCDCreateController {
 			jsonObject = jsonElement.getAsJsonObject();
 
 			if (jsonObject != null) {
-				Long r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject,Authorization);
-				if (r != null && r > 0) {
-					response.setResponse("Data saved successfully");
-				} else {
-					response.setError(5000, "Unable to save data");
-				}
+				String r = ncdScreeningServiceImpl.saveNCDScreeningNurseData(jsonObject,Authorization);
+				response.setResponse(r);
+//				if (r != null && r > 0) {
+//					response.setResponse("Data saved successfully");
+//				} else {
+//					response.setError(5000, "Unable to save data");
+//				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}

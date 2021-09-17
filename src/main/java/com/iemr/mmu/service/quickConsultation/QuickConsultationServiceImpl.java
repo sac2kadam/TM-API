@@ -158,9 +158,9 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 	}
 
 	@Override
-	public Integer quickConsultNurseDataInsert(JsonObject jsnOBJ, String Authorization) throws Exception {
+	public String quickConsultNurseDataInsert(JsonObject jsnOBJ, String Authorization) throws Exception {
 		Integer returnOBJ = 0;
-		TeleconsultationRequestOBJ tcRequestOBJ = null;
+		TeleconsultationRequestOBJ tcRequestOBJ = null;Long benVisitCode=null;
 		if (jsnOBJ != null && jsnOBJ.has("visitDetails") && !jsnOBJ.get("visitDetails").isJsonNull()) {
 
 			CommonUtilityClass nurseUtilityClass = InputMapper.gson().fromJson(jsnOBJ, CommonUtilityClass.class);
@@ -170,7 +170,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			Long benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 11-06-2018 visit code
-			Long benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
+			 benVisitCode = commonNurseServiceImpl.generateVisitCode(benVisitID, nurseUtilityClass.getVanID(),
 					nurseUtilityClass.getSessionID());
 
 			// Getting benflowID for ben status update
@@ -239,7 +239,18 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return returnOBJ;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != returnOBJ && returnOBJ > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);		
+		//return returnOBJ;
 	}
 
 	// method for updating ben flow status flag for nurse

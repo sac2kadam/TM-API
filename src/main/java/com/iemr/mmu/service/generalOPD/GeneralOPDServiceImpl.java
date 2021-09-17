@@ -80,11 +80,12 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/// --------------- start of saving nurse data ------------------------
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Long saveNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
+	public String saveNurseData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long historySaveSuccessFlag = null;
 		Long vitalSaveSuccessFlag = null;
 		Long examtnSaveSuccessFlag = null;
 		Long saveSuccessFlag = null;
+		Long benVisitCode = null;
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		if (requestOBJ != null && requestOBJ.has("visitDetails") && !requestOBJ.get("visitDetails").isJsonNull()) {
 
@@ -94,7 +95,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 					nurseUtilityClass);
 
 			Long benVisitID = null;
-			Long benVisitCode = null;
 
 			if (visitIdAndCodeMap != null && visitIdAndCodeMap.size() > 0 && visitIdAndCodeMap.containsKey("visitID")
 					&& visitIdAndCodeMap.containsKey("visitCode")) {
@@ -143,10 +143,10 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
 						nurseUtilityClass.getVanID(), tcRequestOBJ);
 
-				if (i > 0)
+				//if (i > 0)
 					saveSuccessFlag = historySaveSuccessFlag;
-				else
-					throw new RuntimeException("Error occurred while saving data. Beneficiary status update failed");
+//				else
+//					throw new RuntimeException("Error occurred while saving data. Beneficiary status update failed");
 
 				if (i > 0 && tcRequestOBJ != null && tcRequestOBJ.getWalkIn() == false) {
 					int k = sMSGatewayServiceImpl.smsSenderGateway("schedule", nurseUtilityClass.getBeneficiaryRegID(),
@@ -163,7 +163,17 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		} else {
 			throw new Exception("Invalid input");
 		}
-		return saveSuccessFlag;
+		Map<String, String> responseMap = new HashMap<String, String>();
+		if(benVisitCode!=null)
+		{
+			responseMap.put("visitCode",benVisitCode.toString());
+		}
+		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
+			responseMap.put("response", "Data saved successfully");
+		} else {
+			responseMap.put("response", "Unable to save data");
+		}
+		return new  Gson().toJson(responseMap);			
 	}
 
 	// method for updating ben flow status flag for nurse

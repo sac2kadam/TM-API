@@ -57,12 +57,13 @@ public class PNCCreateController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				Long ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ, Authorization);
-				if (null != ancRes && ancRes > 0) {
-					response.setResponse("Data saved successfully");
-				} else {
-					response.setResponse("Unable to save data");
-				}
+				String ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ, Authorization);
+				response.setResponse(ancRes);
+//				if (null != ancRes && ancRes > 0) {
+//					response.setResponse("Data saved successfully");
+//				} else {
+//					response.setResponse("Unable to save data");
+//				}
 
 			} else {
 				response.setError(5000, "Invalid request");
