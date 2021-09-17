@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_DevelopmentHistory")
@@ -24,7 +25,7 @@ public class BenChildDevelopmentHistory {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -43,7 +44,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "GrossMotorMilestone")
-	private String grossMotorMilestone;
+	private @SQLInjectionSafe String grossMotorMilestone;
 	
 	@Expose
 	@Column(name = "IsGMMAttained")
@@ -51,7 +52,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "FineMotorMilestone")
-	private String fineMotorMilestone;
+	private @SQLInjectionSafe String fineMotorMilestone;
 	
 	@Expose
 	@Column(name = "IsFMMAttained")
@@ -59,7 +60,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "SocialMilestone")
-	private String socialMilestone;
+	private @SQLInjectionSafe String socialMilestone;
 	
 	@Expose
 	@Column(name = "IsSMAttained")
@@ -67,7 +68,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "LanguageMilestone")
-	private String languageMilestone;
+	private @SQLInjectionSafe String languageMilestone;
 	
 	@Expose
 	@Column(name = "IsLMAttained")
@@ -75,7 +76,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "DevelopmentProblem")
-	private String developmentProblem;
+	private @SQLInjectionSafe String developmentProblem;
 	
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -83,11 +84,11 @@ public class BenChildDevelopmentHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -95,7 +96,7 @@ public class BenChildDevelopmentHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -125,7 +126,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 	
     @Expose
 	@Column(name = "vanID")
@@ -137,7 +138,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 	
 	@Expose
 	@Column(name = "SyncedDate")
@@ -145,7 +146,7 @@ public class BenChildDevelopmentHistory {
 	
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 	
 	public Long getBeneficiaryRegID() {
 		return beneficiaryRegID;

@@ -100,7 +100,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("prescriptionID", obj.getPrescriptionID());
 					procDetails.put("isMandatory", obj.getIsMandatory());
 
-					System.out.println("obj.getIsMandatory(): "+obj.getIsMandatory());
+//					System.out.println("obj.getIsMandatory(): "+obj.getIsMandatory());
 
 					procDetails.put("iotProcedureName", obj.getIotProcedureName());
 					procDetails.put("procedureCode", obj.getProcedureCode());
@@ -109,11 +109,15 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 					procDetails.put("procedureStatusAPI", obj.getProcedureStatusAPI());
 					procDetails.put("isLabProcedure", obj.getIsLabProcedure());
 					procDetails.put("discoveryCode", obj.getDiscoveryCode());
+					
+					procDetails.put("calibrationStartAPI", obj.getCalibrationStartAPI());
+					procDetails.put("calibrationStatusAPI", obj.getCalibrationStatusAPI());
+					procDetails.put("calibrationEndAPI", obj.getCalibrationEndAPI());
 
-					System.out.println(procDetails.get("procedureID"));
+//					System.out.println(procDetails.get("procedureID"));
 					if (procDetails.get("procedureID") instanceof Integer
 							&& obj.getProcedureID() == procDetails.get("procedureID")) {
-						System.out.println("hello");
+//						System.out.println("hello");
 					}
 					if (procDetails.containsKey("compListDetails") == false) {
 						compList = new ArrayList<>();

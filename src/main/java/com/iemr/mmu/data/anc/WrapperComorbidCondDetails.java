@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.service.anc.Utility;
 
 public class WrapperComorbidCondDetails {
@@ -12,7 +13,7 @@ public class WrapperComorbidCondDetails {
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	private Integer vanID;
 	private Integer parkingPlaceID;
@@ -127,9 +128,13 @@ public class WrapperComorbidCondDetails {
 						&& timePeriod.get("timePeriodAgo") instanceof java.lang.Integer)
 					timePeriodAgo = Integer.parseInt(timePeriod.get("timePeriodAgo").toString());
 
+				String timePeriodUnit = null;
+				if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+						&& timePeriod.get("timePeriodUnit") != null)
+					timePeriodUnit = timePeriod.get("timePeriodUnit").toString();
+
 				BencomrbidityCondDetails comrbidityConds = new BencomrbidityCondDetails((Short) obj[3], (String) obj[4],
-						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriod.get("timePeriodUnit").toString(),
-						(Long) obj[9]);
+						(String) obj[6], (Boolean) obj[7], timePeriodAgo, timePeriodUnit, (Long) obj[9]);
 
 				WCD.comorbidityConcurrentConditionsList.add(comrbidityConds);
 

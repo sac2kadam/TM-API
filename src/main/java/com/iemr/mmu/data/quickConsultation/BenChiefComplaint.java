@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_benchiefcomplaint")
@@ -21,7 +22,7 @@ public class BenChiefComplaint {
 	@Expose
 	@Column(name = "ID")
 	private Long benChiefComplaintID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -42,21 +43,21 @@ public class BenChiefComplaint {
 	private Integer chiefComplaintID;
 	@Expose
 	@Column(name = "ChiefComplaint")
-	private String chiefComplaint;
+	private @SQLInjectionSafe String chiefComplaint;
 
 	@Expose
 	@Column(name = "SCTCode")
-	private String conceptID;
+	private @SQLInjectionSafe String conceptID;
 
 	@Expose
 	@Column(name = "Duration")
 	private Integer duration;
 	@Expose
 	@Column(name = "UnitOfDuration")
-	private String unitOfDuration;
+	private @SQLInjectionSafe String unitOfDuration;
 	@Expose
 	@Column(name = "Description")
-	private String description;
+	private @SQLInjectionSafe String description;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -64,11 +65,11 @@ public class BenChiefComplaint {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -76,7 +77,7 @@ public class BenChiefComplaint {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -88,7 +89,7 @@ public class BenChiefComplaint {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "VanID")
@@ -100,7 +101,7 @@ public class BenChiefComplaint {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -108,7 +109,7 @@ public class BenChiefComplaint {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	public BenChiefComplaint() {
 		super();

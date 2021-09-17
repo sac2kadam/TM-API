@@ -45,6 +45,17 @@ public class NCDCareDiagnosis {
 	@Column(name = "NCD_Condition")
 	private String ncdScreeningCondition;
 
+	// 07-09-2021
+	@Expose
+	@Transient
+	private String[] ncdScreeningConditionArray;
+
+	@Expose
+	@Column(name = "NCDConditionOther")
+	private String ncdScreeningConditionOther;
+
+	// End
+
 	@Expose
 	@Column(name = "NCD_Complication")
 	private String ncdComplication;
@@ -289,9 +300,25 @@ public class NCDCareDiagnosis {
 		this.prescriptionID = prescriptionID;
 	}
 
+	public String[] getNcdScreeningConditionArray() {
+		return ncdScreeningConditionArray;
+	}
+
+	public void setNcdScreeningConditionArray(String[] ncdScreeningConditionArray) {
+		this.ncdScreeningConditionArray = ncdScreeningConditionArray;
+	}
+
+	public String getNcdScreeningConditionOther() {
+		return ncdScreeningConditionOther;
+	}
+
+	public void setNcdScreeningConditionOther(String ncdScreeningConditionOther) {
+		this.ncdScreeningConditionOther = ncdScreeningConditionOther;
+	}
+
 	public NCDCareDiagnosis(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID, Long prescriptionID,
 			String ncdCareCondition, String ncdComplication, String ncdCareType, Long visitCode,
-			String externalInvestigation) {
+			String externalInvestigation, String ncdCareConditionOther) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
@@ -302,6 +329,7 @@ public class NCDCareDiagnosis {
 		this.ncdCareType = ncdCareType;
 		this.visitCode = visitCode;
 		this.externalInvestigation = externalInvestigation;
+		this.ncdScreeningConditionOther = ncdCareConditionOther;
 	}
 
 	public static NCDCareDiagnosis getNCDCareDiagnosisDetails(ArrayList<Object[]> resList) {
@@ -309,7 +337,7 @@ public class NCDCareDiagnosis {
 		if (null != resList && resList.size() > 0) {
 			Object[] obj = resList.get(0);
 			cOBJ = new NCDCareDiagnosis((Long) obj[0], (Long) obj[1], (Integer) obj[2], (Long) obj[3], (String) obj[4],
-					(String) obj[5], (String) obj[6], (Long) obj[7], null);
+					(String) obj[5], (String) obj[6], (Long) obj[7], null, (String) obj[8]);
 
 		}
 		return cOBJ;

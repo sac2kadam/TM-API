@@ -157,6 +157,10 @@ public class ANCCareDetails {
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
 
+	@Expose
+	@Column(name = "stillBirth")
+	private Integer stillBirth;
+
 	public ANCCareDetails() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -166,7 +170,7 @@ public class ANCCareDetails {
 			Short visitNo, String comolaintType, String duration, String description, Date lastMenstrualPeriod_LMP,
 			Short gestationalAgeOrPeriodofAmenorrhea_POA, Short trimesterNumber, Date expectedDateofDelivery,
 			Boolean primiGravida, Short gravida_G, Short termDeliveries_T, Short pretermDeliveries_P, Short abortions_A,
-			Short livebirths_L, String bloodGroup) {
+			Short livebirths_L, String bloodGroup, Integer stillBirth) {
 		super();
 		ID = iD;
 		this.beneficiaryRegID = beneficiaryRegID;
@@ -188,6 +192,7 @@ public class ANCCareDetails {
 		this.abortions_A = abortions_A;
 		this.livebirths_L = livebirths_L;
 		this.bloodGroup = bloodGroup;
+		this.stillBirth = stillBirth;
 	}
 
 	public static ANCCareDetails getANCCareDetails(ArrayList<Object[]> resList) {
@@ -197,7 +202,7 @@ public class ANCCareDetails {
 			cOBJ = new ANCCareDetails((Long) obj[0], (Long) obj[1], (Long) obj[2], (Integer) obj[3], (Long) obj[4],
 					(Short) obj[5], (String) obj[6], (String) obj[7], (String) obj[8], (Date) obj[9], (Short) obj[10],
 					(Short) obj[11], (Date) obj[12], (Boolean) obj[13], (Short) obj[14], (Short) obj[15],
-					(Short) obj[16], (Short) obj[17], (Short) obj[18], (String) obj[19]);
+					(Short) obj[16], (Short) obj[17], (Short) obj[18], (String) obj[19], (Integer) obj[20]);
 
 			Date Ldate = (Date) obj[9];
 			if (null != Ldate) {
@@ -490,6 +495,14 @@ public class ANCCareDetails {
 
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
+	}
+
+	public Integer getStillBirth() {
+		return stillBirth;
+	}
+
+	public void setStillBirth(Integer stillBirth) {
+		this.stillBirth = stillBirth;
 	}
 
 }

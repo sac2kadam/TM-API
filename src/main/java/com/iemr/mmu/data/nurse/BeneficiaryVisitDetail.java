@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.data.provider.ProviderServiceMapping;
 
 @Entity
@@ -23,7 +24,7 @@ public class BeneficiaryVisitDetail {
 	@Expose
 	@Column(name = "BenVisitID")
 	private Long benVisitID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -42,7 +43,7 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Transient
-	private String serviceProviderName;
+	private @SQLInjectionSafe String serviceProviderName;
 
 	@Expose
 	@OneToOne(fetch = FetchType.LAZY)
@@ -63,7 +64,7 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "VisitReason")
-	private String visitReason;
+	private @SQLInjectionSafe String visitReason;
 
 	@Expose
 	@Column(name = "VisitCategoryID")
@@ -71,11 +72,11 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "VisitCategory")
-	private String visitCategory;
+	private @SQLInjectionSafe String visitCategory;
 
 	@Expose
 	@Column(name = "PregnancyStatus")
-	private String pregnancyStatus;
+	private @SQLInjectionSafe String pregnancyStatus;
 
 	@Expose
 	@Column(name = "RCHID")
@@ -83,38 +84,38 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "HealthFacilityType")
-	private String healthFacilityType;
+	private @SQLInjectionSafe String healthFacilityType;
 
 	@Expose
 	@Column(name = "HealthFacilityLocation")
-	private String healthFacilityLocation;
+	private @SQLInjectionSafe String healthFacilityLocation;
 
 	@Expose
 	@Column(name = "ReportFilePath")
-	private String reportFilePath;
+	private @SQLInjectionSafe String reportFilePath;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
 	private Boolean deleted;
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
 	private Timestamp createdDate;
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 	@Expose
 	@Column(name = "LastModDate", insertable = false)
 	private Timestamp lastModDate;
 
 	@Expose
 	@Column(name = "VisitFlowStatusFlag", insertable = false)
-	private String visitFlowStatusFlag;
+	private @SQLInjectionSafe String visitFlowStatusFlag;
 
 	@Expose
 	@Column(name = "VanSerialNo")
@@ -122,7 +123,7 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "VanID")
@@ -134,7 +135,7 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -142,7 +143,7 @@ public class BeneficiaryVisitDetail {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Expose
 	@Transient

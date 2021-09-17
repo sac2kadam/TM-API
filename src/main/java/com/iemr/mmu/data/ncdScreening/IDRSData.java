@@ -8,12 +8,19 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
+import com.iemr.mmu.data.swymed.UserSwymed;
 @Entity
 @Table(name = "t_idrsDetails")
 public class IDRSData {
@@ -22,7 +29,7 @@ public class IDRSData {
 	@Expose
 	@Column(name = "Idrsid")
 	private Long id;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -50,12 +57,22 @@ public class IDRSData {
 	@Column(name = "SuspectedDiseases")
 	private String suspectedDisease;
 	
+	@Expose
+	@Column(name = "ConfirmedDiseases")
+	private String confirmedDisease;
+	
     @Transient
     private IDRSData[] questionArray;
     @Transient
     private String[] suspectArray;
+    
+    @Transient
+    private String[] confirmArray;
 	
-
+//    @OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "visitCode",insertable = false, updatable = false)
+//	@Expose
+//	private BeneficiaryFlowStatus beneficiaryFlowStatus;
 	@Expose
 	@Column(name = "DiseaseQuestionType")
 	private String diseaseQuestionType;
@@ -106,6 +123,22 @@ public class IDRSData {
 	@Transient
 	@Expose
 	private List<Map<String, Object>> suspectDetails;
+	
+	public String getConfirmedDisease() {
+		return confirmedDisease;
+	}
+
+	public void setConfirmedDisease(String confirmedDisease) {
+		this.confirmedDisease = confirmedDisease;
+	}
+
+	public String[] getConfirmArray() {
+		return confirmArray;
+	}
+
+	public void setConfirmArray(String[] confirmArray) {
+		this.confirmArray = confirmArray;
+	}
 
 	public Long getId() {
 		return id;
@@ -321,13 +354,14 @@ public class IDRSData {
 	}
 	
 	public IDRSData(Long beneficiaryRegID, Long benVisitID, Integer providerServiceMapID,Integer idrsScore, String suspectedDisease,
-			 Long visitCode) {
+			 String confirmedDisease, Long visitCode) {
 		super();
 		this.beneficiaryRegID = beneficiaryRegID;
 		this.benVisitID = benVisitID;
 		this.providerServiceMapID = providerServiceMapID;
 		this.idrsScore = idrsScore;
 		this.suspectedDisease = suspectedDisease;
+		this.confirmedDisease = confirmedDisease;
 		this.visitCode = visitCode;
 		
 	}
@@ -337,20 +371,36 @@ public class IDRSData {
 		super();
 		this.id =ID;
 		this.idrsQuestionID = idrsQuestionID;
-		
 		this.question = question;
 		this.answer = answer;
 		this.diseaseQuestionType = diseaseQuestionType;
 		
 		
 	}
-	
+	public IDRSData(Long visitCode,Timestamp createdDate,String suspected)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.suspectedDisease=suspected;
+	}
+	public IDRSData(Long visitCode,Timestamp createdDate,String question,String answer,Long idrsID,Integer idrsQuestionID,String diseaseQuestionType)
+	{
+		super();
+		this.visitCode=visitCode;
+		this.createdDate=createdDate;
+		this.question=question;
+		this.answer=answer;
+		this.id=idrsID;
+		this.idrsQuestionID=idrsQuestionID;
+		this.diseaseQuestionType=diseaseQuestionType;
+	}
 	public static IDRSData getIDRSData(ArrayList<Object[]> idrsHistory) {
 		IDRSData benIdrsHistory = null;
 		if (null != idrsHistory && idrsHistory.size() > 0) {
 			Object[] obj1 = idrsHistory.get(0);
 
-			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],
+			benIdrsHistory = new IDRSData((Long) obj1[1], (Long) obj1[2], (Integer) obj1[3],(Integer) obj1[5], (String) obj1[8],(String)obj1[11],
 					 (Long) obj1[9]);
 
 			List<Map<String, Object>> idrsDetails = new ArrayList<Map<String, Object>>();
@@ -361,8 +411,7 @@ public class IDRSData {
 
 				Map<String, Object> idrsData = new HashMap<String, Object>();
 				idrsData.put("ID", idDetails.getId());
-				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());
-				
+				idrsData.put("idrsQuestionId", idDetails.getIdrsQuestionID());		
 				
 				idrsData.put("question", idDetails.getQuestion());
 				idrsData.put("answer", idDetails.getAnswer());

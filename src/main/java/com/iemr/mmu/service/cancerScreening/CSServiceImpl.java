@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,8 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 
 @Service
 public class CSServiceImpl implements CSService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Value("${registrarQuickSearchByIdUrl}")
 	private String registrarQuickSearchByIdUrl;
@@ -847,7 +851,7 @@ public class CSServiceImpl implements CSService {
 						&& commonUtilityClass.getIsSpecialist() == true) {
 					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
-							tcSpecialistFlag);
+							tcSpecialistFlag, (short) 0);
 
 					if (tcSpecialistFlag == 9) {
 						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
@@ -856,7 +860,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
-							tcUserID, tcDate);
+							tcUserID, tcDate, (short) 0);
 				}
 
 				if (l1 > 0 || l2 > 0)
@@ -1141,7 +1145,7 @@ public class CSServiceImpl implements CSService {
 				visitCode = obj.getLong("visitCode");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 
 			caseSheetData = getBenDataForCaseSheet(benFlowID, benRegID, visitCode, Authorization);

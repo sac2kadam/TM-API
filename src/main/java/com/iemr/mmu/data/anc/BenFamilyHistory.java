@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_benFamilyHistory")
@@ -43,7 +44,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "FamilyMember")
-	private String familyMember;
+	private @SQLInjectionSafe String familyMember;
 
 	@Expose
 	@Column(name = "DiseaseTypeID")
@@ -51,7 +52,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "DiseaseType")
-	private String diseaseType;
+	private @SQLInjectionSafe String diseaseType;
 
 	@Expose
 	@Column(name = "OtherDiseaseType")
@@ -62,18 +63,18 @@ public class BenFamilyHistory {
 	private Boolean isGeneticDisorder;
 
 	@Transient
-	private String IsGeneticDisorder;
+	private @SQLInjectionSafe String IsGeneticDisorder;
 
 	@Expose
 	@Column(name = "GeneticDisorder")
-	private String geneticDisorder;
+	private @SQLInjectionSafe String geneticDisorder;
 
 	@Expose
 	@Column(name = "IsConsanguineousMarrige")
 	private Boolean isConsanguineousMarrige;
 
 	@Transient
-	private String IsConsanguineousMarrige;
+	private @SQLInjectionSafe String IsConsanguineousMarrige;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -81,11 +82,11 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -93,7 +94,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -105,7 +106,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -117,7 +118,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -125,7 +126,7 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	@Expose
@@ -133,12 +134,12 @@ public class BenFamilyHistory {
 
 	@Expose
 	@Column(name = "Sctcode")
-	private String snomedCode;
-	
+	private @SQLInjectionSafe String snomedCode;
+
 	@Expose
 	@Column(name = "SctTerm")
-	private String snomedTerm;
-	
+	private @SQLInjectionSafe String snomedTerm;
+
 	@Transient
 	private Date captureDate;
 
@@ -405,8 +406,8 @@ public class BenFamilyHistory {
 				benFamilyHistory.setProviderServiceMapID(providerServiceMapID);
 				benFamilyHistory.setVanID(vanID);
 				benFamilyHistory.setParkingPlaceID(parkingPlaceID);
-				benFamilyHistory.setCreatedBy(createdBy);				
-				
+				benFamilyHistory.setCreatedBy(createdBy);
+
 				benFamilyHistory.setGeneticDisorder(geneticDisorder);
 				benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
 				benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
@@ -428,7 +429,7 @@ public class BenFamilyHistory {
 				if (null != disease.get("snomedTerm")) {
 					benFamilyHistory.setSnomedTerm(disease.get("snomedTerm").toString());
 				}
-				
+
 				List<String> familyMemberList = (List<String>) disease.get("familyMembers");
 
 				String familyMembers = "";
@@ -454,15 +455,15 @@ public class BenFamilyHistory {
 		}
 		return benFamilyHistoryList;
 	}
-	
+
 	public ArrayList<BenFamilyHistory> getBenFamilyHist() {
 
 		ArrayList<BenFamilyHistory> benFamilyHistoryList = new ArrayList<BenFamilyHistory>();
 		if (null != familyDiseaseList) {
 			for (Map<String, Object> disease : familyDiseaseList) {
 				BenFamilyHistory benFamilyHistory = new BenFamilyHistory();
-				if(disease.get("ID") != null) {
-					benFamilyHistory.setID((new Double((Double) disease.get("ID"))).longValue());
+				if (disease.containsKey("ID") && disease.get("ID") != null) {					
+					benFamilyHistory.setID(((Double) disease.get("ID")).longValue());
 				}
 				benFamilyHistory.setBeneficiaryRegID(beneficiaryRegID);
 				benFamilyHistory.setBenVisitID(benVisitID);
@@ -471,16 +472,16 @@ public class BenFamilyHistory {
 				benFamilyHistory.setVanID(vanID);
 				benFamilyHistory.setParkingPlaceID(parkingPlaceID);
 				benFamilyHistory.setCreatedBy(createdBy);
-				if(benFamilyHistory.getID() != null) 
+				if (benFamilyHistory.getID() != null)
 					benFamilyHistory.setProcessed("U");
 				else
-					benFamilyHistory.setProcessed("N");	
-				
-				if(disease.get("deleted").toString().equalsIgnoreCase("false"))
+					benFamilyHistory.setProcessed("N");
+
+				if (disease.get("deleted").toString().equalsIgnoreCase("false"))
 					benFamilyHistory.setDeleted(false);
-				else if(disease.get("deleted").toString().equalsIgnoreCase("true"))					
+				else if (disease.get("deleted").toString().equalsIgnoreCase("true"))
 					benFamilyHistory.setDeleted(true);
-				
+
 				benFamilyHistory.setGeneticDisorder(geneticDisorder);
 				benFamilyHistory.setIsGeneticDisorder(isGeneticDisorder);
 				benFamilyHistory.setIsConsanguineousMarrige(isConsanguineousMarrige);
@@ -502,7 +503,7 @@ public class BenFamilyHistory {
 				if (null != disease.get("snomedTerm")) {
 					benFamilyHistory.setSnomedTerm(disease.get("snomedTerm").toString());
 				}
-				
+
 				List<String> familyMemberList = (List<String>) disease.get("familyMembers");
 
 				String familyMembers = "";
@@ -541,7 +542,7 @@ public class BenFamilyHistory {
 		this.visitCode = visitCode;
 	}
 
-	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType, 
+	public BenFamilyHistory(String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType,
 			String snomedCode, String snomedTerm) {
 		super();
 		this.familyMember = familyMember;
@@ -549,19 +550,19 @@ public class BenFamilyHistory {
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
 		this.snomedCode = snomedCode;
-		this.snomedTerm =snomedTerm;
+		this.snomedTerm = snomedTerm;
 	}
-	
-	public BenFamilyHistory(Long ID,String familyMember, Short diseaseTypeID, String diseaseType, String otherDiseaseType,
-			String snomedCode, String snomedTerm) {
+
+	public BenFamilyHistory(Long ID, String familyMember, Short diseaseTypeID, String diseaseType,
+			String otherDiseaseType, String snomedCode, String snomedTerm) {
 		super();
-		this.ID =ID;
+		this.ID = ID;
 		this.familyMember = familyMember;
 		this.diseaseTypeID = diseaseTypeID;
 		this.diseaseType = diseaseType;
 		this.otherDiseaseType = otherDiseaseType;
 		this.snomedCode = snomedCode;
-		this.snomedTerm =snomedTerm;
+		this.snomedTerm = snomedTerm;
 	}
 
 	public static BenFamilyHistory getBenFamilyHistory(ArrayList<Object[]> familyHistory) {
@@ -600,7 +601,7 @@ public class BenFamilyHistory {
 		}
 		return benfamilyHistory;
 	}
-	
+
 	public static BenFamilyHistory getBenFamilyHist(ArrayList<Object[]> familyHistory) {
 		BenFamilyHistory benfamilyHistory = null;
 		if (null != familyHistory && familyHistory.size() > 0) {
@@ -612,12 +613,12 @@ public class BenFamilyHistory {
 			List<Map<String, Object>> familyDiseaseList = new ArrayList<Map<String, Object>>();
 
 			for (Object[] obj : familyHistory) {
-				BenFamilyHistory familyDetails = new BenFamilyHistory((Long) obj[0],(String) obj[4], (Short) obj[5], (String) obj[6],
-						(String) obj[7], (String) obj[12], (String) obj[13]);
+				BenFamilyHistory familyDetails = new BenFamilyHistory((Long) obj[0], (String) obj[4], (Short) obj[5],
+						(String) obj[6], (String) obj[7], (String) obj[12], (String) obj[13]);
 
 				Map<String, Object> familyDisease = new HashMap<String, Object>();
 				familyDisease.put("ID", familyDetails.getID());
-				familyDisease.put("deleted",false);
+				familyDisease.put("deleted", false);
 				familyDisease.put("diseaseTypeID", familyDetails.getDiseaseTypeID());
 				familyDisease.put("diseaseType", familyDetails.getDiseaseType());
 				familyDisease.put("otherDiseaseType", familyDetails.getOtherDiseaseType());

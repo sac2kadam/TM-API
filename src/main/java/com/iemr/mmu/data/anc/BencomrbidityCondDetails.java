@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_bencomorbiditycondition")
@@ -21,7 +22,7 @@ public class BencomrbidityCondDetails {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -44,7 +45,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "ComorbidCondition")
-	private String comorbidCondition;
+	private @SQLInjectionSafe String comorbidCondition;
 
 	@Expose
 	@Column(name = "Year")
@@ -52,7 +53,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "OtherComorbidCondition")
-	private String otherComorbidCondition;
+	private @SQLInjectionSafe String otherComorbidCondition;
 
 	@Expose
 	@Column(name = "IsForHistory")
@@ -64,7 +65,7 @@ public class BencomrbidityCondDetails {
 
 	@Transient
 	@Expose
-	private String timePeriodUnit;
+	private @SQLInjectionSafe String timePeriodUnit;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -72,11 +73,11 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -84,7 +85,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -96,7 +97,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -108,7 +109,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -116,7 +117,7 @@ public class BencomrbidityCondDetails {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	private Date captureDate;

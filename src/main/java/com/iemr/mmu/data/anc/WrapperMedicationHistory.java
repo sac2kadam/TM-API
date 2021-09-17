@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.service.anc.Utility;
 
 public class WrapperMedicationHistory {
@@ -12,7 +13,7 @@ public class WrapperMedicationHistory {
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer providerServiceMapID;
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	private Integer vanID;
 	private Integer parkingPlaceID;
@@ -126,8 +127,13 @@ public class WrapperMedicationHistory {
 						&& timePeriod.get("timePeriodAgo") instanceof java.lang.Integer)
 					timePeriodAgo = (Integer) timePeriod.get("timePeriodAgo");
 
+				String timePeriodUnit = null;
+				if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+						&& timePeriod.get("timePeriodUnit") != null)
+					timePeriodUnit = timePeriod.get("timePeriodUnit").toString();
+
 				BenMedicationHistory medicationHistory = new BenMedicationHistory((String) obj[3], timePeriodAgo,
-						timePeriod.get("timePeriodUnit").toString(), (Long) obj[6]);
+						timePeriodUnit, (Long) obj[6]);
 
 				WMH.medicationHistoryList.add(medicationHistory);
 			}

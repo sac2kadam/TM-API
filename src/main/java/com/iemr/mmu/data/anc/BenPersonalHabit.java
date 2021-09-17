@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.mmu.service.anc.Utility;
 
 @Entity
@@ -45,7 +46,7 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "DietaryType")
-	private String dietaryType;
+	private @SQLInjectionSafe String dietaryType;
 
 	@Expose
 	@Column(name = "PhysicalActivityType")
@@ -53,19 +54,19 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "TobaccoUseStatus")
-	private String tobaccoUseStatus;
+	private @SQLInjectionSafe String tobaccoUseStatus;
 
 	@Expose
 	@Column(name = "TobaccoUseTypeID")
-	private String tobaccoUseTypeID;
+	private @SQLInjectionSafe String tobaccoUseTypeID;
 
 	@Expose
 	@Column(name = "TobaccoUseType")
-	private String tobaccoUseType;
+	private @SQLInjectionSafe String tobaccoUseType;
 
 	@Expose
 	@Column(name = "OtherTobaccoUseType")
-	private String otherTobaccoUseType;
+	private @SQLInjectionSafe String otherTobaccoUseType;
 
 	@Expose
 	@Column(name = "NumberperDay")
@@ -77,27 +78,27 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "AlcoholIntakeStatus")
-	private String alcoholIntakeStatus;
+	private @SQLInjectionSafe String alcoholIntakeStatus;
 
 	@Expose
 	@Column(name = "AlcoholTypeID")
-	private String alcoholTypeID;
+	private @SQLInjectionSafe String alcoholTypeID;
 
 	@Expose
 	@Column(name = "AlcoholType")
-	private String alcoholType;
+	private @SQLInjectionSafe String alcoholType;
 
 	@Expose
 	@Column(name = "OtherAlcoholType")
-	private String otherAlcoholType;
+	private @SQLInjectionSafe String otherAlcoholType;
 
 	@Expose
 	@Column(name = "AlcoholIntakeFrequency")
-	private String alcoholIntakeFrequency;
+	private @SQLInjectionSafe String alcoholIntakeFrequency;
 
 	@Expose
 	@Column(name = "AvgAlcoholConsumption")
-	private String avgAlcoholConsumption;
+	private @SQLInjectionSafe String avgAlcoholConsumption;
 
 	@Expose
 	@Column(name = "AlcoholDuration")
@@ -113,11 +114,11 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -125,7 +126,7 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -145,7 +146,7 @@ public class BenPersonalHabit {
 
 	@Transient
 	@Expose
-	private String allergyStatus;
+	private @SQLInjectionSafe String allergyStatus;
 
 	@Expose
 	@Column(name = "VanSerialNo")
@@ -165,7 +166,7 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -173,7 +174,7 @@ public class BenPersonalHabit {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	private Date captureDate;
@@ -185,7 +186,7 @@ public class BenPersonalHabit {
 	private Date alcohol_use_duration;
 
 	@Transient
-	private String riskySexualPracticeStatus;
+	private @SQLInjectionSafe String riskySexualPracticeStatus;
 
 	public Integer getVanID() {
 		return vanID;
@@ -745,7 +746,9 @@ public class BenPersonalHabit {
 						alcoholInfo.put("duration", null);
 
 					// alcoholInfo.put("duration", timePeriodAgo.toString());
-					alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
+					if (timePeriod != null && timePeriod.containsKey("timePeriodUnit")
+							&& timePeriod.get("timePeriodUnit") != null)
+						alcoholInfo.put("durationUnit", timePeriod.get("timePeriodUnit").toString());
 
 					alcoholList.add(alcoholInfo);
 				}

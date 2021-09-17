@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ import com.iemr.mmu.repo.masterrepo.nurse.FamilyMemberMasterRepo;
 
 @Service
 public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService {
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private NCDScreeningConditionRepo ncdScreeningConditionRepo;
 	private NCDScreeningReasonRepo ncdScreeningReasonRepo;
@@ -67,7 +70,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	public void setChiefComplaintMasterRepo(ChiefComplaintMasterRepo chiefComplaintMasterRepo) {
 		this.chiefComplaintMasterRepo = chiefComplaintMasterRepo;
 	}
-	
+
 	@Autowired
 	public void setProcedureRepo(ProcedureRepo procedureRepo) {
 		this.procedureRepo = procedureRepo;
@@ -79,7 +82,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ncdScreeningConditions = ncdScreeningConditionRepo.getNCDScreeningConditions();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ncdScreeningConditions;
 	}
@@ -90,7 +93,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ncdScreeningReasons = ncdScreeningReasonRepo.getNCDScreeningReasons();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ncdScreeningReasons;
 	}
@@ -101,7 +104,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			bpAndDiabeticStatus = bpAndDiabeticStatusRepo.getBPAndDiabeticStatus(isBPStatus);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return bpAndDiabeticStatus;
 	}
@@ -112,7 +115,7 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			labTests = labTestMasterRepo.getTestsBYVisitCategory("NCD Screening");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return labTests;
 	}
@@ -123,14 +126,13 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		try {
 			ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return ccList;
 	}
 
 	@Override
-	public String getNCDScreeningMasterData(Integer visitCategoryID, Integer providerServiceMapID,
-			String gender) {
+	public String getNCDScreeningMasterData(Integer visitCategoryID, Integer providerServiceMapID, String gender) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 
 //		resMap.put("ncdScreeningConditions",
@@ -162,5 +164,4 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		return new Gson().toJson(resMap);
 	}
 
-	
 }

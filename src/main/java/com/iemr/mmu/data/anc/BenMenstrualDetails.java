@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_BenMenstrualDetails")
@@ -23,7 +24,7 @@ public class BenMenstrualDetails {
 	@Expose
 	@Column(name = "BenMenstrualID")
 	private Integer benMenstrualID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -46,11 +47,11 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "MenstrualCycleStatus")
-	private String menstrualCycleStatus;
+	private @SQLInjectionSafe String menstrualCycleStatus;
 
 	@Expose
 	@Column(name = "Regularity")
-	private String regularity;
+	private @SQLInjectionSafe String regularity;
 
 	@Expose
 	@Column(name = "MenstrualCyclelengthID")
@@ -58,7 +59,7 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "CycleLength")
-	private String cycleLength;
+	private @SQLInjectionSafe String cycleLength;
 
 	@Expose
 	@Column(name = "MenstrualFlowDurationID")
@@ -66,15 +67,15 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "BloodFlowDuration")
-	private String bloodFlowDuration;
+	private @SQLInjectionSafe String bloodFlowDuration;
 
 	@Expose
 	@Column(name = "MenstrualProblemID")
-	private String menstrualProblemID;
+	private @SQLInjectionSafe String menstrualProblemID;
 
 	@Expose
 	@Column(name = "ProblemName")
-	private String problemName;
+	private @SQLInjectionSafe String problemName;
 
 	// CRs, 30-10-2018, multiple selection
 	@Expose
@@ -91,11 +92,11 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -103,7 +104,7 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "VanSerialNo")
@@ -111,7 +112,7 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -123,7 +124,7 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -131,7 +132,7 @@ public class BenMenstrualDetails {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)

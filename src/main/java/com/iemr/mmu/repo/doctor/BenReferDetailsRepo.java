@@ -15,10 +15,12 @@ import com.iemr.mmu.data.doctor.BenReferDetails;
 public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Long> {
 
 	@Query(" SELECT benReferID, beneficiaryRegID, benVisitID, providerServiceMapID, referredToInstituteID, "
-			+ "referredToInstituteName, serviceID, serviceName, visitCode, revisitDate , referralReason "
+			+ "referredToInstituteName, serviceID, serviceName, visitCode, revisitDate , referralReason, createdDate "
 			+ "from BenReferDetails ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
 	public ArrayList<Object[]> getBenReferDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
-
+	@Query(" SELECT ba "
+			+ "from BenReferDetails ba WHERE ba.beneficiaryRegID = :benRegID AND ba.visitCode = :visitCode AND ba.deleted = false")
+	public ArrayList<BenReferDetails> getBenReferDetails2(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 	/*
 	 * @Query("SELECT processed from BenReferDetails where beneficiaryRegID=:benRegID AND benVisitID = :benVisitID"
 	 * ) public String getBenReferDetailsStatus(@Param("benRegID") Long benRegID,
@@ -33,10 +35,10 @@ public interface BenReferDetailsRepo extends CrudRepository<BenReferDetails, Lon
 	@Modifying
 	@Transactional
 	@Query(" Update BenReferDetails  set referredToInstituteID=:referredToInstituteID, "
-			+ "referredToInstituteName=:referredToInstituteName,revisitDate=:revisitDate, processed=:processed "
+			+ "referredToInstituteName=:referredToInstituteName,revisitDate=:revisitDate,referralReason=:referralReason, processed=:processed "
 			+ "WHERE benReferID =:benReferID")
 	public int updateReferredInstituteName(@Param("referredToInstituteID") Integer referredToInstituteID,
 			@Param("referredToInstituteName") String referredToInstituteName,@Param("revisitDate") Timestamp revisitDate, 
-			@Param("benReferID") Long benReferID,
+			@Param("referralReason") String referralReason ,@Param("benReferID") Long benReferID,
 			@Param("processed") String processed);
 }

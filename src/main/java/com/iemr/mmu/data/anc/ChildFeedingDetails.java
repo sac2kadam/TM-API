@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_childfeedinghistory")
@@ -22,7 +23,7 @@ public class ChildFeedingDetails {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -49,23 +50,23 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "TypeOfFeed")
-	private String typeOfFeed;
+	private @SQLInjectionSafe String typeOfFeed;
 
 	@Expose
 	@Column(name = "CompFeedStartAge")
-	private String compFeedStartAge;
+	private @SQLInjectionSafe String compFeedStartAge;
 
 	@Expose
 	@Column(name = "NoOfCompFeedPerDay")
-	private String noOfCompFeedPerDay;
+	private @SQLInjectionSafe String noOfCompFeedPerDay;
 
 	@Expose
 	@Column(name = "FoodIntoleranceStatus")
-	private String foodIntoleranceStatus;
+	private @SQLInjectionSafe String foodIntoleranceStatus;
 
 	@Expose
 	@Column(name = "TypeofFoodIntolerance")
-	private String typeofFoodIntolerance;
+	private @SQLInjectionSafe String typeofFoodIntolerance;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -73,11 +74,11 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -85,7 +86,7 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -97,7 +98,7 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -109,7 +110,7 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -117,7 +118,7 @@ public class ChildFeedingDetails {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	private Date captureDate;

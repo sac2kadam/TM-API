@@ -32,7 +32,7 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long> {
 
 	@Query(" SELECT ID, beneficiaryRegID, benVisitID, providerServiceMapID, visitCode, visitNo, comolaintType, duration, description, "
 			+ " lastMenstrualPeriod_LMP, gestationalAgeOrPeriodofAmenorrhea_POA, trimesterNumber, expectedDateofDelivery, "
-			+ "primiGravida, gravida_G, termDeliveries_T, pretermDeliveries_P, abortions_A, livebirths_L, bloodGroup "
+			+ "primiGravida, gravida_G, termDeliveries_T, pretermDeliveries_P, abortions_A, livebirths_L, bloodGroup, stillBirth "
 			+ "from ANCCareDetails ba WHERE ba.beneficiaryRegID = :benRegID AND visitCode = :visitCode")
 	public ArrayList<Object[]> getANCCareDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
@@ -46,8 +46,8 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long> {
 			+ "gestationalAgeOrPeriodofAmenorrhea_POA=:gestationalAgeOrPeriodofAmenorrhea_POA,"
 			+ "trimesterNumber=:trimesterNumber,  expectedDateofDelivery=:expectedDateofDelivery, primiGravida=:primiGravida, "
 			+ "gravida_G=:gravida_G, termDeliveries_T=:termDeliveries_T, pretermDeliveries_P=:pretermDeliveries_P,"
-			+ "abortions_A=:abortions_A,livebirths_L=:livebirths_L, bloodGroup=:bloodGroup, modifiedBy=:modifiedBy, processed=:processed"
-			+ " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
+			+ "abortions_A=:abortions_A,livebirths_L=:livebirths_L, bloodGroup=:bloodGroup, modifiedBy=:modifiedBy, processed=:processed, "
+			+ " stillBirth =:stillBirth " + " where visitCode=:visitCode AND beneficiaryRegID=:beneficiaryRegID")
 	public int updateANCCareDetails(@Param("comolaintType") String comolaintType, @Param("duration") String duration,
 			@Param("description") String description, @Param("lastMenstrualPeriod_LMP") Date lastMenstrualPeriod_LMP,
 			@Param("gestationalAgeOrPeriodofAmenorrhea_POA") Short gestationalAgeOrPeriodofAmenorrhea_POA,
@@ -57,9 +57,16 @@ public interface ANCCareRepo extends CrudRepository<ANCCareDetails, Long> {
 			@Param("pretermDeliveries_P") Short pretermDeliveries_P, @Param("abortions_A") Short abortions_A,
 			@Param("livebirths_L") Short livebirths_L, @Param("bloodGroup") String bloodGroup,
 			@Param("modifiedBy") String modifiedBy, @Param("processed") String processed,
-			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
+			@Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode,
+			@Param("stillBirth") Integer stillBirth);
 
 	@Query(nativeQuery = true, value = " SELECT t.bloodGroup from t_anccare t "
 			+ " where t.beneficiaryRegID=:benRegID ORDER BY t.lastModDate DESC limit 1 ")
 	public String getBenANCCareDetailsStatus(@Param("benRegID") Long benRegID);
+
+	@Query(" SELECT a FROM ANCCareDetails a WHERE a.beneficiaryRegID = :benRegID "
+			+ " AND (a.gravida_G > 5  OR a.pretermDeliveries_P > 0 OR a.abortions_A > 0 OR a.stillBirth > 0 "
+			+ "  OR (a.bloodGroup = 'A-Ve' OR a.bloodGroup = 'B-Ve' OR a.bloodGroup = 'O-Ve' OR a.bloodGroup = 'AB-Ve'))"
+			+ " AND a.deleted is false ")
+	public ArrayList<ANCCareDetails> getANCCareDataForHRP(@Param("benRegID") Long benRegID);
 }

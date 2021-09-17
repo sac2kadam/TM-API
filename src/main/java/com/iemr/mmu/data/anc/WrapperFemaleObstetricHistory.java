@@ -2,6 +2,8 @@ package com.iemr.mmu.data.anc;
 
 import java.util.ArrayList;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+
 public class WrapperFemaleObstetricHistory {
 
 	private Long beneficiaryRegID;
@@ -10,7 +12,7 @@ public class WrapperFemaleObstetricHistory {
 	private Integer providerServiceMapID;
 	private Integer vanID;
 	private Integer parkingPlaceID;
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 	private Short totalNoOfPreg;
 
 	private ArrayList<FemaleObstetricHistory> femaleObstetricHistoryList;

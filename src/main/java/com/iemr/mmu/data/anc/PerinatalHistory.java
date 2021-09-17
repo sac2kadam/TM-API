@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
 
 @Entity
 @Table(name = "t_perinatalhistory")
@@ -21,7 +22,7 @@ public class PerinatalHistory {
 	@Expose
 	@Column(name = "ID")
 	private Long ID;
-
+	
 	@Expose
 	@Column(name = "BeneficiaryRegID")
 	private Long beneficiaryRegID;
@@ -44,11 +45,11 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "PlaceOfDelivery")
-	private String placeOfDelivery;
+	private @SQLInjectionSafe String placeOfDelivery;
 
 	@Expose
 	@Column(name = "OtherPlaceOfDelivery")
-	private String otherPlaceOfDelivery;
+	private @SQLInjectionSafe String otherPlaceOfDelivery;
 
 	@Expose
 	@Column(name = "DeliveryTypeID")
@@ -56,7 +57,7 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "TypeOfDelivery")
-	private String typeOfDelivery;
+	private @SQLInjectionSafe String typeOfDelivery;
 
 	@Expose
 	@Column(name = "ComplicationAtBirthID")
@@ -64,15 +65,15 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "ComplicationAtBirth")
-	private String complicationAtBirth;
+	private @SQLInjectionSafe String complicationAtBirth;
 
 	@Expose
 	@Column(name = "OtherComplicationAtBirth")
-	private String otherComplicationAtBirth;
+	private @SQLInjectionSafe String otherComplicationAtBirth;
 
 	@Expose
 	@Column(name = "Gestation")
-	private String gestation;
+	private @SQLInjectionSafe String gestation;
 
 	@Expose
 	@Column(name = "BirthWeight_kg")
@@ -84,11 +85,11 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "Processed", insertable = false, updatable = true)
-	private String processed;
+	private @SQLInjectionSafe String processed;
 
 	@Expose
 	@Column(name = "CreatedBy")
-	private String createdBy;
+	private @SQLInjectionSafe String createdBy;
 
 	@Expose
 	@Column(name = "CreatedDate", insertable = false, updatable = false)
@@ -96,7 +97,7 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "ModifiedBy")
-	private String modifiedBy;
+	private @SQLInjectionSafe String modifiedBy;
 
 	@Expose
 	@Column(name = "LastModDate", insertable = false, updatable = false)
@@ -108,7 +109,7 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "VehicalNo")
-	private String vehicalNo;
+	private @SQLInjectionSafe String vehicalNo;
 
 	@Expose
 	@Column(name = "vanID")
@@ -120,7 +121,7 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "SyncedBy")
-	private String syncedBy;
+	private @SQLInjectionSafe String syncedBy;
 
 	@Expose
 	@Column(name = "SyncedDate")
@@ -128,7 +129,7 @@ public class PerinatalHistory {
 
 	@Expose
 	@Column(name = "ReservedForChange")
-	private String reservedForChange;
+	private @SQLInjectionSafe String reservedForChange;
 
 	@Transient
 	private Date captureDate;

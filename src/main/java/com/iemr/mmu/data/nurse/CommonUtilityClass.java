@@ -1,21 +1,25 @@
 package com.iemr.mmu.data.nurse;
 
+import com.iemr.mmu.annotation.sqlInjectionSafe.SQLInjectionSafe;
+
 public class CommonUtilityClass {
 	private Long benFlowID;
 	private Long beneficiaryID;
 	private Integer sessionID;
 	private Integer parkingPlaceID;
+	
 	private Integer vanID;
 
 	private Long beneficiaryRegID;
+
 	private Integer providerServiceMapID;
 	private Long benVisitID;
 	private Long visitCode;
 	private Integer facilityID;
 	private Boolean isSpecialist;
 	private Short serviceID;
-
-	private String createdBy;
+	
+	private @SQLInjectionSafe String createdBy;
 
 	private Boolean isMobile;
 	private Boolean isCovidFlowDone;
