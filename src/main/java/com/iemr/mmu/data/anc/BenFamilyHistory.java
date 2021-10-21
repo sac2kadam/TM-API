@@ -3,6 +3,7 @@ package com.iemr.mmu.data.anc;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -593,8 +594,11 @@ public class BenFamilyHistory {
 					for (String familyMember : familyMembers) {
 						familyMembersList.add(familyMember);
 					}
+					
 					familyDisease.put("familyMembers", familyMembersList);
+					
 				}
+				
 				familyDiseaseList.add(familyDisease);
 			}
 			benfamilyHistory.setFamilyDiseaseList(familyDiseaseList);

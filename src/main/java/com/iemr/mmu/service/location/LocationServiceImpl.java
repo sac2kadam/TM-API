@@ -110,7 +110,7 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public String getCountryList() {
 
-		ArrayList<Country> stateMasterList = countryMasterRepo.findByDeleted(false);
+		ArrayList<Country> stateMasterList = countryMasterRepo.findAllCountries();
 
 		return new Gson().toJson(stateMasterList);
 	}
