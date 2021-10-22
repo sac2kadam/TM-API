@@ -1794,6 +1794,11 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Vaccine Name");
 		column.put("keyName", "vaccineName");
 		columns.add(column);
+		
+		column = new HashMap<String, Object>();
+		column.put("columnName", "Other Vaccine Name");
+		column.put("keyName", "otherVaccineName");
+		columns.add(column);
 
 		/** Later we will enable these two if needed **/
 		/*
@@ -1818,7 +1823,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
 				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (Timestamp) obj[4], (String) obj[5], (String) obj[6]);
+						(String) obj[2], (String) obj[3], (String) obj[4], (Timestamp) obj[5], (String) obj[6], (String) obj[7]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}

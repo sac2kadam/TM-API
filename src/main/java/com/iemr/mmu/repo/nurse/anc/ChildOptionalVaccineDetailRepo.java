@@ -16,13 +16,13 @@ import com.iemr.mmu.data.anc.ChildOptionalVaccineDetail;
 @Repository
 public interface ChildOptionalVaccineDetailRepo extends CrudRepository<ChildOptionalVaccineDetail, Long>{
 
-	@Query("select Date(createdDate), defaultReceivingAge, vaccineName, status, receivedDate, actualReceivingAge, receivedFacilityName "
+	@Query("select Date(createdDate), defaultReceivingAge, vaccineName, otherVaccineName, status, receivedDate, actualReceivingAge, receivedFacilityName "
 			+ "from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID AND vaccineName is not null "
 			+ "AND deleted = false ORDER BY createdDate DESC ")
 	public ArrayList<Object[]> getBenOptionalVaccineDetail(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 	
-	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, status, receivedDate, actualReceivingAge, "
+	@Query("select beneficiaryRegID, benVisitID, providerServiceMapID, defaultReceivingAge, vaccineName, otherVaccineName, status, receivedDate, actualReceivingAge, "
 			+ "receivedFacilityName, visitCode, sctCode, sctTerm from ChildOptionalVaccineDetail a where a.beneficiaryRegID = :beneficiaryRegID "
 			+ "AND deleted = false AND a.visitCode = :visitCode")
 	public ArrayList<Object[]> getBenOptionalVaccineDetail(@Param("beneficiaryRegID") Long beneficiaryRegID, 
