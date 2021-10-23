@@ -1113,6 +1113,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 		if (obj != null && obj.size() > 0) {
 			diagnosisMap.put("doctorDiagnonsis", obj.get(0).getDiagnosisProvided());
 			diagnosisMap.put("specialistDiagnosis", obj.get(0).getInstruction());
+			diagnosisMap.put("externalInvestigation", obj.get(0).getExternalInvestigation());
 			diagnosisMap.put("prescriptionID", obj.get(0).getPrescriptionID());
 			diagnosisMap.put("beneficiaryRegID", obj.get(0).getBeneficiaryRegID());
 			diagnosisMap.put("visitCode", obj.get(0).getVisitCode());
@@ -1123,6 +1124,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 		} else {
 			diagnosisMap.put("doctorDiagnonsis", null);
 			diagnosisMap.put("specialistDiagnosis", null);
+			diagnosisMap.put("externalInvestigation", null);
 			diagnosisMap.put("prescriptionID", null);
 			diagnosisMap.put("beneficiaryRegID", null);
 			diagnosisMap.put("visitCode", null);
