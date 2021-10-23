@@ -48,8 +48,8 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	public Integer getSMSTypeID(@Param("smsType") String smsType);
 
 	@Query(value = " SELECT SMSTemplateID FROM db_iemr.m_smstemplate "
-			+ " WHERE SMSTypeID = :smsTypeID ", nativeQuery = true)
-	public Integer getSMSTemplateID(@Param("smsTypeID") Integer smsTypeID);
+			+ " WHERE SMSTypeID = :smsTypeID AND deleted<>true ", nativeQuery = true)
+	public ArrayList<Integer> getSMSTemplateID(@Param("smsTypeID") Integer smsTypeID);
 
 	// @Query(value = " SELECT Specialization FROM db_iemr.m_specialization "
 	// + " WHERE SpecializationID = :specializationID ", nativeQuery = true)
