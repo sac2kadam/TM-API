@@ -49,6 +49,8 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 			Long tMRequestCancelID, String createdBy, String tcDate, String tcPreviousDate, String Authorization) {
 
 		int returnOBJ = 0;
+		try
+		{
 		String requestOBJ = createSMSRequest(smsType, benRegID, specializationID, tMRequestID, tMRequestCancelID,
 				createdBy, tcDate, tcPreviousDate);
 
@@ -64,7 +66,11 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 			}
 			// System.out.println("hello");
 		}
-
+		}
+		catch(Exception e)
+		{
+			logger.info("Exception during sending "+smsType+" SMS " + e.getMessage());
+		}
 		return returnOBJ;
 
 	}
