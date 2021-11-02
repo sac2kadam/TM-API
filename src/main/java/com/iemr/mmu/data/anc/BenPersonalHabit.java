@@ -626,7 +626,7 @@ public class BenPersonalHabit {
 		this.tobacco_use_duration = tobaccoUseDuration;
 		if (null != riskySexualPracticesStatus && riskySexualPracticesStatus == '0') {
 			this.riskySexualPracticeStatus = "No";
-		} else {
+		} else if(riskySexualPracticesStatus !=null && riskySexualPracticesStatus == '1') {
 			this.riskySexualPracticeStatus = "Yes";
 		}
 	}
