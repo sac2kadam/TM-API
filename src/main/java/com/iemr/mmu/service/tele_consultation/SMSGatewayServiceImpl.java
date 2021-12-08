@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -40,12 +42,15 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 	private TCRequestModelRepo tCRequestModelRepo;
 	@Autowired
 	RestTemplate restTemplate;
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Override
 	public int smsSenderGateway(String smsType, Long benRegID, Integer specializationID, Long tMRequestID,
 			Long tMRequestCancelID, String createdBy, String tcDate, String tcPreviousDate, String Authorization) {
 
 		int returnOBJ = 0;
+		try
+		{
 		String requestOBJ = createSMSRequest(smsType, benRegID, specializationID, tMRequestID, tMRequestCancelID,
 				createdBy, tcDate, tcPreviousDate);
 
@@ -61,33 +66,45 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 			}
 			// System.out.println("hello");
 		}
-
+		}
+		catch(Exception e)
+		{
+			logger.info("Exception during sending "+smsType+" SMS " + e.getMessage());
+		}
 		return returnOBJ;
 
 	}
-@Override
-	public int smsSenderGateway2(String smsType, List<PrescribedDrugDetail> object, String Authorization,Long benregID,String createdBy
-			,List<Object> diagnosis) {
+
+	@Override
+	public int smsSenderGateway2(String smsType, List<PrescribedDrugDetail> object, String Authorization, Long benregID,
+			String createdBy, List<Object> diagnosis) {
 
 		int returnOBJ = 0;
-//		String requestOBJ = createSMSRequest(smsType, benRegID, specializationID, tMRequestID, tMRequestCancelID,
-//				createdBy, tcDate, tcPreviousDate);
-		int smsTypeID=0;SmsRequestOBJ obj;
-		ArrayList<SmsRequestOBJ> objList = new ArrayList<>();
+		Integer smsTypeID = 0;
+		SmsRequestOBJ obj;
+		String requestOBJ = null;
+		ArrayList<SmsRequestOBJ> objList = null;
 		if (smsType.equalsIgnoreCase("prescription")) {
-			 smsTypeID = tCRequestModelRepo.getSMSTypeID(prescription);
+			smsTypeID = tCRequestModelRepo.getSMSTypeID(prescription);
 		}
-		if (smsTypeID != 0) {
+		if (smsTypeID != null && smsTypeID != 0) {
 			obj = new SmsRequestOBJ();
-			obj.setSmsTemplateID(tCRequestModelRepo.getSMSTemplateID(smsTypeID));
 			obj.setObj(object);
 			obj.setDiagnosis(diagnosis);
 			obj.setBeneficiaryRegID(benregID);
 			obj.setCreatedBy(createdBy);
-			objList.add(obj);
+			ArrayList<Integer> smsTemplateID = tCRequestModelRepo.getSMSTemplateID(smsTypeID);
+			if (smsTemplateID != null && smsTemplateID.size() == 1) {
+				obj.setSmsTemplateID(smsTemplateID.get(0));
+				objList = new ArrayList<SmsRequestOBJ>();
+				objList.add(obj);
+			} else {
+				objList = null;
+				logger.info("Multiple SMS template created for same sms type");
+			}
 		}
-
-		String requestOBJ=new  Gson().toJson(objList);
+		if (objList != null && objList.size() > 0)
+			requestOBJ = new Gson().toJson(objList);
 		if (requestOBJ != null) {
 			String smsStatus = sendSMS(requestOBJ, Authorization);
 			if (smsStatus != null) {
@@ -98,7 +115,6 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 				if (jsnOBJ != null && jsnOBJ.get("statusCode").getAsInt() == 200)
 					returnOBJ = 1;
 			}
-			// System.out.println("hello");
 		}
 
 		return returnOBJ;
@@ -109,7 +125,7 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 	public String createSMSRequest(String smsType, Long benRegID, Integer specializationID, Long tMRequestID,
 			Long tMRequestCancelID, String createdBy, String tcDate, String tcPreviousDate) {
 
-		SmsRequestOBJ obj;
+		SmsRequestOBJ obj = null;
 		ArrayList<SmsRequestOBJ> objList = new ArrayList<>();
 
 		int smsTypeID;
@@ -130,8 +146,13 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 
 		if (smsTypeID != 0) {
 			obj = new SmsRequestOBJ();
-
-			obj.setSmsTemplateID(tCRequestModelRepo.getSMSTemplateID(smsTypeID));
+			ArrayList<Integer> smsTemplateID = tCRequestModelRepo.getSMSTemplateID(smsTypeID);
+			if (smsTemplateID != null && smsTemplateID.size() == 1)
+				obj.setSmsTemplateID(smsTemplateID.get(0));
+			else {
+				obj.setSmsTemplateID(null);
+				logger.info("Multiple SMS template created for same sms type");
+			}
 			obj.setBeneficiaryRegID(benRegID);
 			obj.setSpecializationID(specializationID);
 			obj.setSmsType(smsType);
@@ -141,8 +162,10 @@ public class SMSGatewayServiceImpl implements SMSGatewayService {
 
 			objList.add(obj);
 		}
-
-		return new Gson().toJson(objList);
+		if (obj != null && obj.getSmsTemplateID() != null)
+			return new Gson().toJson(objList);
+		else
+			return null;
 	}
 
 	@Override
