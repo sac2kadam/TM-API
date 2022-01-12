@@ -4270,20 +4270,20 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				BmiCalculation calc=bmiCalculationRepo.getBMIDetails(totalMonths, bmiMap.getGender());
 				if(calc == null)
 					throw new IEMRException("No data found for this category");
-				if(calc!=null && bmiMap.getBmi() >= calc.getN1SD() && bmiMap.getBmi() < bmiMap.getP1SD())
+				if(calc!=null && bmiMap.getBmi() >= calc.getN1SD() && bmiMap.getBmi() < calc.getP1SD())
 					result="Normal";
 				else if(calc!=null && bmiMap.getBmi() >=calc.getN2SD() && bmiMap.getBmi() < calc.getN1SD())
 					result="Mild malnourished";
 				else if(calc!=null && bmiMap.getBmi() >= calc.getN3SD() && bmiMap.getBmi() < calc.getN2SD())
 					result ="Moderately Malnourished";
 				else if(calc!=null && bmiMap.getBmi() < calc.getN3SD())
-					result="Severly Malnourished";
+					result="Severely Malnourished";
 				else if(calc!=null && bmiMap.getBmi() >= calc.getP1SD() && bmiMap.getBmi() < calc.getP2SD())
 					result="Overweight";
 				else if(calc!=null && bmiMap.getBmi() >= calc.getP2SD() && bmiMap.getBmi() < calc.getP3SD())
 					result="Obese";
 				else if(calc!=null && bmiMap.getBmi() >= calc.getP3SD())
-					result="Severly Obese";
+					result="Severely Obese";
 			}
 		}
 		}catch(Exception e)
