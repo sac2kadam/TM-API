@@ -995,5 +995,28 @@ public class FetchCommonController {
 		}
 		return response.toString();
 	}
+	
+	/**
+	 * Author SH20094090
+	 * @param comingRequest
+	 * @return ProviderSpecificMasterData
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Calculate Beneficiary BMI Status", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/calculateBMIStatus" }, method = { RequestMethod.POST })
+	public String calculateBMIStatus(@ApiParam(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("calculateBMIStatus request:" + comingRequest);
+		try {
+				String s = commonNurseServiceImpl.calculateBMIStatus(comingRequest);
+				response.setResponse(s);
+			logger.info("calculateBMIStatus response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, e.getMessage());
+			logger.error("Error in calculateBMIStatus:" +  e.getMessage());
+		}
+		return response.toString();
+	}
 
 }
