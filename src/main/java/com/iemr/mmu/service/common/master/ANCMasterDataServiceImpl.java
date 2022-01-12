@@ -639,7 +639,8 @@ public class ANCMasterDataServiceImpl {
 		// edlist.get()
 		// foreach()
 		for (int i = 0; i < NonedlList.size(); i++) {
-			NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
+			if(NonedlList.get(i).getUom() != null)
+			      NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
 		}
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
 		if (facilityID == null || facilityID <= 0) {
