@@ -170,6 +170,10 @@ public class ItemMaster {
 	@Column(name = "SctTerm")
 	private String sctTerm;
 	
+	@Expose
+	@Column(name = "isEaushadi")
+	private Boolean isEaushadi;
+	
 //	@Transient
 //	private OutputMapper outputMapper = new OutputMapper();
 //

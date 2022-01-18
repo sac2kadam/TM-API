@@ -12,6 +12,6 @@ import com.iemr.mmu.data.masterdata.doctor.V_DrugPrescription;
 
 @Repository
 public interface ItemMasterRepo extends CrudRepository<ItemMaster, Long> {
-	@Query("SELECT t FROM ItemMaster t WHERE t.providerServiceMapID= :psmID and t.isEDL = false and t.deleted = false ")
+	@Query("SELECT t FROM ItemMaster t WHERE t.providerServiceMapID= :psmID and t.isEDL = false and ( isEaushadi = null or isEaushadi = false ) and t.deleted = false ")
 	public ArrayList<ItemMaster> searchEdl(@Param("psmID") Integer psmID);
 }

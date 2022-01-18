@@ -46,6 +46,10 @@ public class V_DrugPrescription {
 	@Expose
 	@Column(name = "SctTerm")
 	private String sctTerm;
+	
+	@Expose
+	@Column(name="isedl")
+	private Boolean isEDL;
 
 	public V_DrugPrescription() {
 	}
@@ -151,5 +155,15 @@ public class V_DrugPrescription {
 	public void setSctTerm(String sctTerm) {
 		this.sctTerm = sctTerm;
 	}
+
+	public Boolean getIsEDL() {
+		return isEDL;
+	}
+
+	public void setIsEDL(Boolean isEDL) {
+		this.isEDL = isEDL;
+	}
+	
+	
 
 }
