@@ -329,6 +329,11 @@ public class LabTestOrderDetail {
 		this.procedureID = procedureID;
 		this.procedureName = procedureName;
 	}
+	
+	public LabTestOrderDetail(String procedureName) {
+		super();
+		this.procedureName = procedureName;
+	}
 
 	public static WrapperBenInvestigationANC getLabTestOrderDetails(ArrayList<Object[]> resList) {
 		ArrayList<LabTestOrderDetail> resArray = new ArrayList<LabTestOrderDetail>();

@@ -116,6 +116,19 @@ public class BenPhysicalVitalDetail {
 	@Expose
 	@Column(name = "CapillaryRefillTime")
 	private @SQLInjectionSafe String capillaryRefillTime;
+	
+
+	@Expose
+	@Column(name = "rbs")
+	private String rbsTestResult;
+
+	@Expose
+	@Column(name = "rbs_remarks")
+	private String rbsTestRemarks;
+
+	@Expose
+	@Column(name = "spo2")
+	private String sPO2;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -476,5 +489,32 @@ public class BenPhysicalVitalDetail {
 	public void setReservedForChange(String reservedForChange) {
 		this.reservedForChange = reservedForChange;
 	}
+
+	public String getRbsTestResult() {
+		return rbsTestResult;
+	}
+
+	public void setRbsTestResult(String rbsTestResult) {
+		this.rbsTestResult = rbsTestResult;
+	}
+
+	public String getRbsTestRemarks() {
+		return rbsTestRemarks;
+	}
+
+	public void setRbsTestRemarks(String rbsTestRemarks) {
+		this.rbsTestRemarks = rbsTestRemarks;
+	}
+
+	public String getsPO2() {
+		return sPO2;
+	}
+
+	public void setsPO2(String sPO2) {
+		this.sPO2 = sPO2;
+	}
+
+	
+	
 
 }

@@ -137,6 +137,18 @@ public class BenCancerVitalDetail {
 	@Expose
 	@Column(name = "ReservedForChange")
 	private String reservedForChange;
+	
+	@Expose
+	@Column(name = "rbs")
+	private String rbsTestResult;
+
+	@Expose
+	@Column(name = "rbs_remarks")
+	private String rbsTestRemarks;
+
+	@Expose
+	@Column(name = "spo2")
+	private String sPO2;
 
 	public BenCancerVitalDetail() {
 		super();
@@ -430,6 +442,30 @@ public class BenCancerVitalDetail {
 
 	public void setVisitCode(Long visitCode) {
 		this.visitCode = visitCode;
+	}
+
+	public String getRbsTestResult() {
+		return rbsTestResult;
+	}
+
+	public void setRbsTestResult(String rbsTestResult) {
+		this.rbsTestResult = rbsTestResult;
+	}
+
+	public String getRbsTestRemarks() {
+		return rbsTestRemarks;
+	}
+
+	public void setRbsTestRemarks(String rbsTestRemarks) {
+		this.rbsTestRemarks = rbsTestRemarks;
+	}
+
+	public String getsPO2() {
+		return sPO2;
+	}
+
+	public void setsPO2(String sPO2) {
+		this.sPO2 = sPO2;
 	}
 
 }
