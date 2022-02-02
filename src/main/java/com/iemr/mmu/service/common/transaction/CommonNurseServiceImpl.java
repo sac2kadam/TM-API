@@ -6,9 +6,11 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,7 @@ import com.iemr.mmu.data.anc.WrapperMedicationHistory;
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.mmu.data.bmi.BmiCalculation;
 import com.iemr.mmu.data.doctor.BenReferDetails;
+import com.iemr.mmu.data.doctor.CancerLymphNodeDetails;
 import com.iemr.mmu.data.doctor.ProviderSpecificRequest;
 import com.iemr.mmu.data.ncdScreening.IDRSData;
 import com.iemr.mmu.data.ncdScreening.PhysicalActivityType;
@@ -4246,6 +4249,32 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(),
 					request.getVisitCode());
 			WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
+			
+			//Checking RBS Test is already performed or not
+			int rbsStatus=0;
+			for (LabTestOrderDetail objTestDetails : labTestOrdersList.getLaboratoryList()) {
+				if (objTestDetails.getProcedureName().equalsIgnoreCase("RBS Test")) {
+					
+					rbsStatus=1;
+					break;
+				} 
+				
+			}
+			if(rbsStatus == 0) {
+			// Fetching RBS Test Result from Vitals
+			BenPhysicalVitalDetail benVitalDetailList = benPhysicalVitalRepo.getBenPhysicalVitalDetail(request.getBenRegID(),
+					request.getVisitCode());
+			
+			if(benVitalDetailList != null && !Objects.equals(benVitalDetailList.getRbsTestResult(), null))
+			{
+
+				
+				LabTestOrderDetail rbsTestDetails = new LabTestOrderDetail("RBS Test");
+				labTestOrdersList.getLaboratoryList().add(rbsTestDetails);
+			}
+			
+			}
+			
 			response.put("data", labTestOrdersList);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Investigation data");
