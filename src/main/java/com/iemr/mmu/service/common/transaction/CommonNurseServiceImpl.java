@@ -354,6 +354,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	@Autowired
 	private BMICalculationRepo bmiCalculationRepo;
+
 	public Integer updateBeneficiaryStatus(Character c, Long benRegID) {
 		Integer i = registrarRepoBenData.updateBenFlowStatus(c, benRegID);
 		return i;
@@ -1801,7 +1802,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		column.put("columnName", "Vaccine Name");
 		column.put("keyName", "vaccineName");
 		columns.add(column);
-		
+
 		column = new HashMap<String, Object>();
 		column.put("columnName", "Other Vaccine Name");
 		column.put("keyName", "otherVaccineName");
@@ -1830,7 +1831,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (null != childOptionalVaccineDetail) {
 			for (Object[] obj : childOptionalVaccineDetail) {
 				ChildOptionalVaccineDetail history = new ChildOptionalVaccineDetail((Date) obj[0], (String) obj[1],
-						(String) obj[2], (String) obj[3], (String) obj[4], (Timestamp) obj[5], (String) obj[6], (String) obj[7]);
+						(String) obj[2], (String) obj[3], (String) obj[4], (Timestamp) obj[5], (String) obj[6],
+						(String) obj[7]);
 				childOptionalVaccineDetails.add(history);
 			}
 		}
@@ -4249,82 +4251,87 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			ArrayList<Object[]> labTestOrders = labTestOrderDetailRepo.getLabTestOrderDetails(request.getBenRegID(),
 					request.getVisitCode());
 			WrapperBenInvestigationANC labTestOrdersList = LabTestOrderDetail.getLabTestOrderDetails(labTestOrders);
-			
-			//Checking RBS Test is already performed or not
-			int rbsStatus=0;
-			for (LabTestOrderDetail objTestDetails : labTestOrdersList.getLaboratoryList()) {
-				if (objTestDetails.getProcedureName().equalsIgnoreCase("RBS Test")) {
-					
-					rbsStatus=1;
-					break;
-				} 
-				
-			}
-			if(rbsStatus == 0) {
-			// Fetching RBS Test Result from Vitals
-			BenPhysicalVitalDetail benVitalDetailList = benPhysicalVitalRepo.getBenPhysicalVitalDetail(request.getBenRegID(),
-					request.getVisitCode());
-			
-			if(benVitalDetailList != null && !Objects.equals(benVitalDetailList.getRbsTestResult(), null))
-			{
 
-				
-				LabTestOrderDetail rbsTestDetails = new LabTestOrderDetail("RBS Test");
-				labTestOrdersList.getLaboratoryList().add(rbsTestDetails);
+			// Checking RBS Test is already performed or not
+			int rbsStatus = 0;
+			if (labTestOrders.size() > 0) {
+
+				for (LabTestOrderDetail objTestDetails : labTestOrdersList.getLaboratoryList()) {
+					if (objTestDetails.getProcedureName().equalsIgnoreCase("RBS Test")) {
+
+						rbsStatus = 1;
+						break;
+					}
+
+				}
+
 			}
-			
+
+			BenPhysicalVitalDetail benVitalDetailList = new BenPhysicalVitalDetail();
+			if (rbsStatus == 0) {
+				// Fetching RBS Test Result from Vitals
+				benVitalDetailList = benPhysicalVitalRepo.getBenPhysicalVitalDetail(request.getBenRegID(),
+						request.getVisitCode());
+				if (benVitalDetailList != null && !Objects.equals(benVitalDetailList.getRbsTestResult(), null)) {
+					if (labTestOrders.size() > 0) {
+
+						LabTestOrderDetail rbsTestDetails = new LabTestOrderDetail("RBS Test");
+						labTestOrdersList.getLaboratoryList().add(rbsTestDetails);
+					} else {
+
+						labTestOrdersList = LabTestOrderDetail.getRBSTestOrderDetailsFromVitals(benVitalDetailList);
+
+					}
+				}
+
 			}
-			
+
 			response.put("data", labTestOrdersList);
 		} catch (Exception e) {
 			throw new IEMRException("Error while fetching Investigation data");
 		}
 		return new Gson().toJson(response);
 	}
+
 	@Override
 	public String calculateBMIStatus(String request) throws IEMRException {
-		String result="";
-		Map<String,String> map=new HashMap<String,String>();
-		try
-		{
-		BmiCalculation bmiMap = InputMapper.gson().fromJson(request, BmiCalculation.class);
-		if(bmiMap !=null && bmiMap.getYearMonth() !=null && bmiMap.getGender() !=null && bmiMap.getBmi() != 0.0d)
-		{
-			String[] ar=bmiMap.getYearMonth().split(" ");
-			if(ar !=null && ar.length>0)
-			{
-				Integer years=Integer.valueOf(ar[0]);
-				Integer months=Integer.valueOf(ar[3]);
-				Integer totalMonths=(years * 12) + months;
-				BmiCalculation calc=bmiCalculationRepo.getBMIDetails(totalMonths, bmiMap.getGender());
-				if(calc == null)
-					throw new IEMRException("No data found for this category");
-				if(calc!=null && bmiMap.getBmi() >= calc.getN1SD() && bmiMap.getBmi() < calc.getP1SD())
-					result="Normal";
-				else if(calc!=null && bmiMap.getBmi() >=calc.getN2SD() && bmiMap.getBmi() < calc.getN1SD())
-					result="Mild malnourished";
-				else if(calc!=null && bmiMap.getBmi() >= calc.getN3SD() && bmiMap.getBmi() < calc.getN2SD())
-					result ="Moderately Malnourished";
-				else if(calc!=null && bmiMap.getBmi() < calc.getN3SD())
-					result="Severely Malnourished";
-				else if(calc!=null && bmiMap.getBmi() >= calc.getP1SD() && bmiMap.getBmi() < calc.getP2SD())
-					result="Overweight";
-				else if(calc!=null && bmiMap.getBmi() >= calc.getP2SD() && bmiMap.getBmi() < calc.getP3SD())
-					result="Obese";
-				else if(calc!=null && bmiMap.getBmi() >= calc.getP3SD())
-					result="Severely Obese";
+		String result = "";
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			BmiCalculation bmiMap = InputMapper.gson().fromJson(request, BmiCalculation.class);
+			if (bmiMap != null && bmiMap.getYearMonth() != null && bmiMap.getGender() != null
+					&& bmiMap.getBmi() != 0.0d) {
+				String[] ar = bmiMap.getYearMonth().split(" ");
+				if (ar != null && ar.length > 0) {
+					Integer years = Integer.valueOf(ar[0]);
+					Integer months = Integer.valueOf(ar[3]);
+					Integer totalMonths = (years * 12) + months;
+					BmiCalculation calc = bmiCalculationRepo.getBMIDetails(totalMonths, bmiMap.getGender());
+					if (calc == null)
+						throw new IEMRException("No data found for this category");
+					if (calc != null && bmiMap.getBmi() >= calc.getN1SD() && bmiMap.getBmi() < calc.getP1SD())
+						result = "Normal";
+					else if (calc != null && bmiMap.getBmi() >= calc.getN2SD() && bmiMap.getBmi() < calc.getN1SD())
+						result = "Mild malnourished";
+					else if (calc != null && bmiMap.getBmi() >= calc.getN3SD() && bmiMap.getBmi() < calc.getN2SD())
+						result = "Moderately Malnourished";
+					else if (calc != null && bmiMap.getBmi() < calc.getN3SD())
+						result = "Severely Malnourished";
+					else if (calc != null && bmiMap.getBmi() >= calc.getP1SD() && bmiMap.getBmi() < calc.getP2SD())
+						result = "Overweight";
+					else if (calc != null && bmiMap.getBmi() >= calc.getP2SD() && bmiMap.getBmi() < calc.getP3SD())
+						result = "Obese";
+					else if (calc != null && bmiMap.getBmi() >= calc.getP3SD())
+						result = "Severely Obese";
+				}
 			}
+		} catch (Exception e) {
+			throw new IEMRException("Error while calculating BMI status:" + e.getMessage());
 		}
-		}catch(Exception e)
-		{
-			throw new IEMRException("Error while calculating BMI status:"+e.getMessage());
-		}
-		if(result != null)
-		{
-			map.put("bmiStatus",result);
-			 return new Gson().toJson(map);
-		}
-		else
+		if (result != null) {
+			map.put("bmiStatus", result);
+			return new Gson().toJson(map);
+		} else
 			throw new IEMRException("Error while calculating BMI status");
 	}
 }
