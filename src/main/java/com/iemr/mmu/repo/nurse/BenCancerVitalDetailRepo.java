@@ -22,7 +22,7 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			+ " bloodGlucose_Random=:bloodGlucose_Random, bloodGlucose_2HrPostPrandial=:bloodGlucose_2HrPostPrandial, systolicBP_1stReading=:systolicBP_1stReading, "
 			+ "diastolicBP_1stReading=:diastolicBP_1stReading, systolicBP_2ndReading=:systolicBP_2ndReading, diastolicBP_2ndReading=:diastolicBP_2ndReading,"
 			+ " systolicBP_3rdReading=:systolicBP_3rdReading, diastolicBP_3rdReading=:diastolicBP_3rdReading, hbA1C=:hbA1C, hemoglobin=:hemoglobin, "
-			+ " modifiedBy=:modifiedBy, processed=:processed where  "
+			+ " modifiedBy=:modifiedBy, processed=:processed, rbsTestResult=:rbsTestResult, rbsTestRemarks=:rbsTestRemarks, sPO2=:sPO2 where  "
 			+ "  beneficiaryRegID=:benRegID AND visitCode = :visitCode")
 	public int updateBenCancerVitalDetail(@Param("providerServiceMapID") Integer providerServiceMapID,
 			@Param("weight_Kg") Double weight_Kg, @Param("height_cm") Double height_cm,
@@ -37,7 +37,9 @@ public interface BenCancerVitalDetailRepo extends CrudRepository<BenCancerVitalD
 			@Param("systolicBP_3rdReading") Short systolicBP_3rdReading,
 			@Param("diastolicBP_3rdReading") Short diastolicBP_3rdReading, @Param("hbA1C") Short hbA1C,
 			@Param("hemoglobin") Double hemoglobin, @Param("modifiedBy") String modifiedBy,
-			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode, @Param("processed") String processed);
+			@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode, @Param("processed") String processed,
+			@Param("rbsTestResult") String rbsTestResult,
+			@Param("rbsTestRemarks") String rbsTestRemarks,@Param("sPO2") String sPO2);
 
 	@Query(" SELECT bvd from BenCancerVitalDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.deleted = false AND bvd.visitCode = :visitCode")
 	public BenCancerVitalDetail getBenCancerVitalDetail(@Param("benRegID") Long benRegID,

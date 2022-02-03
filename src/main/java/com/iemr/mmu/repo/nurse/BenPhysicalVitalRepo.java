@@ -27,7 +27,8 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 	@Query("update BenPhysicalVitalDetail set temperature=:temperature, pulseRate=:pulseRate, respiratoryRate=:respiratoryRate, diastolicBP_1stReading=:diastolicBP_1stReading, diastolicBP_2ndReading=:diastolicBP_2ndReading, diastolicBP_3rdReading=:diastolicBP_3rdReading, "
 			+ " systolicBP_1stReading=:systolicBP_1stReading, systolicBP_2ndReading=:systolicBP_2ndReading, systolicBP_3rdReading=:systolicBP_3rdReading, averageSystolicBP=:averageSystolicBP, averageDiastolicBP=:averageDiastolicBP, capillaryRefillTime=:capillaryRefillTime, "
 			+ " bloodPressureStatusID=:bloodPressureStatusID, bloodPressureStatus=:bloodPressureStatus, bloodGlucose_Fasting=:bloodGlucose_Fasting, bloodGlucose_Random=:bloodGlucose_Random, bloodGlucose_2hr_PP=:bloodGlucose_2hr_PP, bloodGlucose_NotSpecified=:bloodGlucose_NotSpecified, diabeticStatusID=:diabeticStatusID, diabeticStatus=:diabeticStatus, "
-			+ " modifiedBy=:modifiedBy, processed=:processed where beneficiaryRegID=:beneficiaryRegID AND visitCode=:visitCode")
+			+ " modifiedBy=:modifiedBy, processed=:processed , rbsTestResult=:rbsTestResult, rbsTestRemarks=:rbsTestRemarks, sPO2=:sPO2 "
+			+ " where beneficiaryRegID=:beneficiaryRegID AND visitCode=:visitCode")
 	public int updatePhysicalVitalDetails(@Param("temperature") Double temperature, @Param("pulseRate") Short pulseRate,
 			@Param("respiratoryRate") Short respiratoryRate,
 			@Param("systolicBP_1stReading") Short systolicBP_1stReading,
@@ -49,7 +50,9 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 			@Param("diabeticStatusID") Short diabeticStatusID, @Param("diabeticStatus") String diabeticStatus,
 
 			@Param("capillaryRefillTime") String capillaryRefillTime, @Param("modifiedBy") String modifiedBy,
-			@Param("processed") String processed, @Param("beneficiaryRegID") Long beneficiaryRegID,
+			@Param("processed") String processed,
+			@Param("rbsTestResult") String rbsTestResult,
+			@Param("rbsTestRemarks") String rbsTestRemarks,@Param("sPO2") String sPO2, @Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 
 	/**

@@ -283,7 +283,8 @@ public class TestCSServices
 		
 		when(benCancerVitalDetailRepoMock.updateBenCancerVitalDetail(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
 				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), 
-				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
+				Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any()
+				, Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(1);
 		
 		
 		
