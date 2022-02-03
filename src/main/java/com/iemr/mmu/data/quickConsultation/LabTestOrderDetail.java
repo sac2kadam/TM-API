@@ -2,6 +2,7 @@ package com.iemr.mmu.data.quickConsultation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.iemr.mmu.data.anc.WrapperBenInvestigationANC;
+import com.iemr.mmu.data.nurse.BenPhysicalVitalDetail;
 
 @Entity
 @Table(name = "t_lab_testorder")
@@ -356,6 +358,30 @@ public class LabTestOrderDetail {
 		}
 		return testOrders;
 	}
+	
+	public static WrapperBenInvestigationANC getRBSTestOrderDetailsFromVitals(BenPhysicalVitalDetail resList) {
+	
+
+		WrapperBenInvestigationANC testOrders = new WrapperBenInvestigationANC();
+		if (resList != null) {
+			testOrders.setBeneficiaryRegID(resList.getBeneficiaryRegID());
+			testOrders.setBenVisitID(resList.getBenVisitID());
+			testOrders.setVisitCode(resList.getVisitCode());
+			testOrders.setProviderServiceMapID(resList.getProviderServiceMapID());
+			ArrayList<LabTestOrderDetail> laboratoryList = new ArrayList<LabTestOrderDetail>();
+			
+                 if(!Objects.equals(resList.getRbsTestResult(), null))
+                 {
+				   LabTestOrderDetail cOBJ = new LabTestOrderDetail("RBS Test");
+				  laboratoryList.add(cOBJ);
+                 }
+				// resArray.add(cOBJ);
+			
+			testOrders.setLaboratoryList(laboratoryList);
+		}
+		return testOrders;
+	}
+
 
 	public Long getVisitCode() {
 		return visitCode;

@@ -468,7 +468,8 @@ public class CSNurseServiceImpl implements CSNurseService {
 					benCancerVitalDetail.getSystolicBP_3rdReading(), benCancerVitalDetail.getDiastolicBP_3rdReading(),
 					benCancerVitalDetail.getHbA1C(), benCancerVitalDetail.getHemoglobin(),
 					benCancerVitalDetail.getModifiedBy(), benCancerVitalDetail.getBeneficiaryRegID(),
-					benCancerVitalDetail.getVisitCode(), processed);
+					benCancerVitalDetail.getVisitCode(), processed,
+					benCancerVitalDetail.getRbsTestResult(),benCancerVitalDetail.getRbsTestRemarks(),benCancerVitalDetail.getsPO2());
 		} else {
 			benCancerVitalDetail.setCreatedBy(benCancerVitalDetail.getModifiedBy());
 			BenCancerVitalDetail benCancerVitalDetailRS = benCancerVitalDetailRepo.save(benCancerVitalDetail);
