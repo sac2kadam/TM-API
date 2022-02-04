@@ -63,5 +63,12 @@ public interface BenPhysicalVitalRepo extends CrudRepository<BenPhysicalVitalDet
 			+ " v.bloodGlucose_2hr_PP, Date(v.createdDate) from BenPhysicalVitalDetail v where v.visitCode IN :visitCodeList")
 	public ArrayList<Object[]> getBenPhysicalVitalDetailForGraphTrends(
 			@Param("visitCodeList") ArrayList<Long> visitCodeList);
+	
+	
+	@Transactional
+	@Modifying
+	@Query("update BenPhysicalVitalDetail set rbsTestResult=:rbsTestResult, rbsTestRemarks=:rbsTestRemarks "
+			+ " where beneficiaryRegID = :beneficiaryRegID AND visitCode = :visitCode")
+	public int updatePhysicalVitalDetailsQCDoctor(@Param("rbsTestResult") String rbsTestResult, @Param("rbsTestRemarks") String rbsTestRemarks, @Param("beneficiaryRegID") Long beneficiaryRegID, @Param("visitCode") Long visitCode);
 
 }
