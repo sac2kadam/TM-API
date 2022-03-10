@@ -755,7 +755,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
-		if (obj.has("beneficiaryID") && !obj.isNull("beneficiaryID")) {
+		if ((obj.has("beneficiaryID") && !obj.isNull("beneficiaryID"))
+				|| (obj.has("HealthID") && !obj.isNull("HealthID"))
+				|| (obj.has("HealthIDNumber") && !obj.isNull("HealthIDNumber"))) {
 			HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
 			ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST,
 					request, String.class);
