@@ -6,12 +6,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.doctor.CancerAbdominalExamination;
 
 @Repository
+@RestResource(exported = false)
 public interface CancerAbdominalExaminationRepo extends CrudRepository<CancerAbdominalExamination, Long> {
 
 	@Query(" SELECT c from CancerAbdominalExamination c WHERE c.beneficiaryRegID = :benRegID AND c.deleted = false AND c.visitCode = :visitCode")

@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.mmu.data.anc.BenMenstrualDetails;
 
 @Repository
+@RestResource(exported = false)
 public interface BenMenstrualDetailsRepo extends CrudRepository<BenMenstrualDetails, Integer>{
 	
 	@Query("select Date(createdDate), regularity, cycleLength, bloodFlowDuration, problemName, Date(lMPDate) "
