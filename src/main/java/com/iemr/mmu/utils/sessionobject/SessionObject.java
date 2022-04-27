@@ -79,7 +79,7 @@ public class SessionObject {
 			JsonElement jsnElmnt = jsnParser.parse(value);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 			if (jsnOBJ.has("userName") && jsnOBJ.get("userName") != null) {
-				objectStore.updateObject(jsnOBJ.get("userName").getAsString().trim().toLowerCase(), value,
+				objectStore.updateObject(jsnOBJ.get("userName").getAsString().trim().toLowerCase(), key,
 						extendExpirationTime, sessionExpiryTime);
 			}
 		} catch (Exception e) {
