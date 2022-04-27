@@ -70,6 +70,7 @@ public class SessionObject {
 		// RedisStorage objectStore = new RedisStorage();
 		updateConcurrentSessionObject(key, value, extendExpirationTime, sessionExpiryTime);
 		return objectStore.updateObject(key, value, extendExpirationTime, sessionExpiryTime);
+		
 	}
 	private void updateConcurrentSessionObject(String key, String value, Boolean extendExpirationTime,
 			Integer sessionExpiryTime) {
