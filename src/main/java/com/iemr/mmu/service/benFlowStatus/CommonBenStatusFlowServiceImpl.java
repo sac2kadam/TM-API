@@ -9,6 +9,7 @@ import java.util.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.iemr.mmu.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -27,6 +28,9 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 	private BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo;
 	private BenVisitDetailRepo benVisitDetailRepo;
+	
+	@Value("${nurseWL}")
+	private Integer nurseWL;
 
 	@Autowired
 	public void setBenVisitDetailRepo(BenVisitDetailRepo benVisitDetailRepo) {
@@ -51,8 +55,14 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 				else
 					returnOBJ = 0;
 			} else {
+				Calendar cal = Calendar.getInstance();
+				if (nurseWL != null && nurseWL > 0 && nurseWL <= 30)
+					cal.add(Calendar.DAY_OF_YEAR, -nurseWL);
+				else
+					cal.add(Calendar.DAY_OF_YEAR, -7);
+				long sevenDaysAgo = cal.getTimeInMillis();
 				ArrayList<Long> benFlowIDList = beneficiaryFlowStatusRepo.checkBenAlreadyInNurseWorkList(
-						obj.getBeneficiaryRegID(), obj.getProviderServiceMapID(), obj.getVanID());
+						obj.getBeneficiaryRegID(), obj.getProviderServiceMapID(), obj.getVanID(),new Timestamp(sevenDaysAgo));
 				if (benFlowIDList != null && benFlowIDList.size() > 0) {
 					// update i_ben_flow table for updated beneficiary id
 					returnOBJ = 3;
