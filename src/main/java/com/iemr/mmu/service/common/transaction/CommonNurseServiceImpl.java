@@ -111,6 +111,8 @@ import com.iemr.mmu.utils.mapper.InputMapper;
 public class CommonNurseServiceImpl implements CommonNurseService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
+	@Value("${nurseWL}")
+	private Integer nurseWL;
 	@Value("${nurseTCWL}")
 	private Integer nurseTCWL;
 	@Value("${pharmaWL}")
@@ -3230,8 +3232,15 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 
 	// New Nurse worklist.... 26-03-2018
 	public String getNurseWorkListNew(Integer providerServiceMapId, Integer vanID) {
+		Calendar cal = Calendar.getInstance();
+		if (nurseWL != null && nurseWL > 0 && nurseWL <= 30)
+			cal.add(Calendar.DAY_OF_YEAR, -nurseWL);
+		else
+			cal.add(Calendar.DAY_OF_YEAR, -7);
+		long sevenDaysAgo = cal.getTimeInMillis();
+
 		ArrayList<BeneficiaryFlowStatus> obj = beneficiaryFlowStatusRepo.getNurseWorklistNew(providerServiceMapId,
-				vanID);
+				vanID,new Timestamp(sevenDaysAgo));
 
 		return new Gson().toJson(obj);
 	}
