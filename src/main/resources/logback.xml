@@ -1,114 +1,32 @@
+
 <configuration>
 
-	<property name="LOG_PATTERN"
-		value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%thread]  %-5level %logger{36} - %msg%n" />
-	<property name="APP_LOG_ROOT" value="C:/ApplicationLogs" />
+    <property name="HOME_LOG" value="logs/app.log"/>
 
-	<appender name="console"
-		class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-	</appender>
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
 
-	<appender name="applicationLogs"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${APP_LOG_ROOT}/ApplicationLogs.log</file>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
-		</filter>
-		<encoder>
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-		<rollingPolicy
-			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${APP_LOG_ROOT}/ApplicationLogs-%i.log
-			</fileNamePattern>
-			<minIndex>1</minIndex>
-			<maxIndex>100</maxIndex>
-		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<maxFileSize>100MB</maxFileSize>
-		</triggeringPolicy>
-	</appender>
-	
-	<appender name="fetosenseLog"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${APP_LOG_ROOT}/FetosenseLogs.log</file>
-		<encoder>
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-		<rollingPolicy
-			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${APP_LOG_ROOT}/FetosenseLogs-%i.log
-			</fileNamePattern>
-			<minIndex>1</minIndex>
-			<maxIndex>100</maxIndex>
-		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<maxFileSize>10MB</maxFileSize>
-		</triggeringPolicy>
-	</appender>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>1MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
 
-<!-- 	<appender name="applicationLogInfo" -->
-<!-- 		class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
-<!-- 		<file>${APP_LOG_ROOT}/serveInfoLogs.log</file> -->
-<!-- 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter"> -->
-<!-- 			<level>INFO</level> -->
-<!-- 		</filter> -->
-<!-- 		<encoder> -->
-<!-- 			<pattern>${LOG_PATTERN}</pattern> -->
-<!-- 		</encoder> -->
-<!-- 		<rollingPolicy -->
-<!-- 			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> -->
-<!-- 			<fileNamePattern>${APP_LOG_ROOT}/serveInfoLogs-%i.log -->
-<!-- 			</fileNamePattern> -->
-<!-- 			<minIndex>1</minIndex> -->
-<!-- 			<maxIndex>100</maxIndex> -->
-<!-- 		</rollingPolicy> -->
-<!-- 		<triggeringPolicy -->
-<!-- 			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> -->
-<!-- 			<maxFileSize>10MB</maxFileSize> -->
-<!-- 		</triggeringPolicy> -->
-<!-- 	</appender> -->
+        <encoder>
+            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
 
-	<appender name="applicationLogError"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${APP_LOG_ROOT}/serveErrorLogs.log</file>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>ERROR</level>
-		</filter>
-		<encoder>
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-		<rollingPolicy
-			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${APP_LOG_ROOT}/serveErrorLogs-%i.log
-			</fileNamePattern>
-			<minIndex>1</minIndex>
-			<maxIndex>100</maxIndex>
-		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<maxFileSize>10MB</maxFileSize>
-		</triggeringPolicy>
-	</appender>
+    <logger name="com.iemr" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
 
-	<logger name="com.iemr.mmu.controller.fetosense" level="TRACE">
-		<appender-ref ref="fetosenseLog" />
-	</logger>
-
-	<logger name="com.iemr.mmu" level="TRACE">
-<!-- 		<appender-ref ref="applicationLogInfo" /> -->
-		<appender-ref ref="applicationLogError" />
-	</logger>
-
-
-	<root level="INFO">
-		<appender-ref ref="console" />
-		<appender-ref ref="applicationLogs" />
-	</root>
+    <root level="error">
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
 
 </configuration>
