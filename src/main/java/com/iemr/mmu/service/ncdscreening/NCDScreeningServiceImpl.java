@@ -1276,6 +1276,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			
 			HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
 			HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
+			HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
 			
 
 			return new Gson().toJson(HistoryDetailsMap);
