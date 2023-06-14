@@ -1276,7 +1276,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			
 			HistoryDetailsMap.put("FamilyHistory", commonNurseServiceImpl.getFamilyHistoryDetail(benRegID, visitCode));
 			HistoryDetailsMap.put("PhysicalActivityHistory", commonNurseServiceImpl.getPhysicalActivityType(benRegID, visitCode));
-			
+			HistoryDetailsMap.put("PersonalHistory", commonNurseServiceImpl.getPersonalHistory(benRegID, visitCode));
 
 			return new Gson().toJson(HistoryDetailsMap);
 		}
@@ -1332,6 +1332,21 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			if(familyHistorySuccessFlag > 0 && physicalActivitySuccessFlag > 0) {
 				historyUpdatedSuccessfully = 1;
+			}
+			// Update Personal History
+			if (historyOBJ != null && historyOBJ.has("personalHistory")
+					&& !historyOBJ.get("personalHistory").isJsonNull()) {
+				// Update Ben Personal Habits..
+				BenPersonalHabit personalHabit = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+						BenPersonalHabit.class);
+
+				commonNurseServiceImpl.updateBenPersonalHistory(personalHabit);
+
+				// Update Ben Allergy History..
+				BenAllergyHistory benAllergyHistory = InputMapper.gson().fromJson(historyOBJ.get("personalHistory"),
+						BenAllergyHistory.class);
+				commonNurseServiceImpl.updateBenAllergicHistory(benAllergyHistory);
+
 			}
 			return historyUpdatedSuccessfully;
 		}
