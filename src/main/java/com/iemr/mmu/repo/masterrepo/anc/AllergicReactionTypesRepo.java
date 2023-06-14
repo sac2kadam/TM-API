@@ -1,6 +1,7 @@
 package com.iemr.mmu.repo.masterrepo.anc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +15,6 @@ public interface AllergicReactionTypesRepo extends CrudRepository<AllergicReacti
 	
 	@Query("select allergicReactionTypeID, name, allergicReactionTypeDesc from AllergicReactionTypes where deleted = false order by name")
 	public ArrayList<Object[]> getAllergicReactionTypes();
+	
+	List<AllergicReactionTypes> findByDeleted(Boolean deleted);
 }

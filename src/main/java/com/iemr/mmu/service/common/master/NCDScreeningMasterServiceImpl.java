@@ -14,11 +14,14 @@ import com.google.gson.Gson;
 import com.iemr.mmu.data.doctor.ChiefComplaintMaster;
 import com.iemr.mmu.data.labModule.ProcedureData;
 import com.iemr.mmu.data.masterdata.anc.DiseaseType;
+import com.iemr.mmu.data.masterdata.anc.PersonalHabitType;
 import com.iemr.mmu.data.masterdata.nurse.FamilyMemberType;
 import com.iemr.mmu.repo.doctor.ChiefComplaintMasterRepo;
 import com.iemr.mmu.repo.doctor.LabTestMasterRepo;
 import com.iemr.mmu.repo.labModule.ProcedureRepo;
+import com.iemr.mmu.repo.masterrepo.anc.AllergicReactionTypesRepo;
 import com.iemr.mmu.repo.masterrepo.anc.DiseaseTypeRepo;
+import com.iemr.mmu.repo.masterrepo.anc.PersonalHabitTypeRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.BPAndDiabeticStatusRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.IDRS_ScreenQuestionsRepo;
 import com.iemr.mmu.repo.masterrepo.ncdScreening.NCDScreeningConditionRepo;
@@ -45,6 +48,11 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 	private DiseaseTypeRepo diseaseTypeRepo;
 	@Autowired
 	private FamilyMemberMasterRepo familyMemberMasterRepo;
+	@Autowired
+	private PersonalHabitTypeRepo personalHabitTypeRepo;
+	@Autowired
+	private AllergicReactionTypesRepo allergicReactionTypesRepo;
+
 
 	@Autowired
 	public void setNcdScreeningConditionRepo(NCDScreeningConditionRepo ncdScreeningConditionRepo) {
@@ -160,6 +168,29 @@ public class NCDScreeningMasterServiceImpl implements NCDScreeningMasterService 
 		resMap.put("physicalActivity", physicalActivityRepo.findByDeleted(false));
 		ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(providerServiceMapID, gender);
 		resMap.put("procedures", ProcedureData.getProcedures(procedures));
+		
+		ArrayList<Object[]> tobaccoUseStatus = personalHabitTypeRepo.getPersonalHabitTypeMaster("Tobacco Use Status");
+		ArrayList<Object[]> typeOfTobaccoProducts = personalHabitTypeRepo
+				.getPersonalHabitTypeMaster("Type of Tobacco Use");
+		ArrayList<Object[]> alcoholUseStatus = personalHabitTypeRepo
+				.getPersonalHabitTypeMaster("Alcohol Intake Status");
+		ArrayList<Object[]> typeOfAlcoholProducts = personalHabitTypeRepo.getPersonalHabitTypeMaster("Type of Alcohol");
+		ArrayList<Object[]> frequencyOfAlcoholIntake = personalHabitTypeRepo
+				.getPersonalHabitTypeMaster("Frequency of Alcohol Intake");
+		ArrayList<Object[]> quantityOfAlcoholIntake = personalHabitTypeRepo
+				.getPersonalHabitTypeMaster("Average Quantity of Alcohol consumption");
+		
+		resMap.put("tobaccoUseStatus", PersonalHabitType.getPersonalHabitTypeMasterData(tobaccoUseStatus));
+		resMap.put("typeOfTobaccoProducts", PersonalHabitType.getPersonalHabitTypeMasterData(typeOfTobaccoProducts));
+		resMap.put("alcoholUseStatus", PersonalHabitType.getPersonalHabitTypeMasterData(alcoholUseStatus));
+		resMap.put("typeOfAlcoholProducts", PersonalHabitType.getPersonalHabitTypeMasterData(typeOfAlcoholProducts));
+		resMap.put("frequencyOfAlcoholIntake",
+				PersonalHabitType.getPersonalHabitTypeMasterData(frequencyOfAlcoholIntake));
+		resMap.put("quantityOfAlcoholIntake",
+				PersonalHabitType.getPersonalHabitTypeMasterData(quantityOfAlcoholIntake));
+		resMap.put("AllergicReactionTypes", allergicReactionTypesRepo.findByDeleted(false));
+		
+		
 
 		return new Gson().toJson(resMap);
 	}
