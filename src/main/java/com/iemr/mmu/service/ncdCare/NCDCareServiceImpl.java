@@ -1,6 +1,7 @@
 package com.iemr.mmu.service.ncdCare;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iemr.mmu.data.anc.BenAdherence;
 import com.iemr.mmu.data.anc.BenAllergyHistory;
@@ -36,6 +38,7 @@ import com.iemr.mmu.data.nurse.BeneficiaryVisitDetail;
 import com.iemr.mmu.data.nurse.CommonUtilityClass;
 import com.iemr.mmu.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.mmu.data.quickConsultation.PrescriptionDetail;
+import com.iemr.mmu.data.snomedct.SCTDescription;
 import com.iemr.mmu.data.tele_consultation.TeleconsultationRequestOBJ;
 import com.iemr.mmu.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.mmu.service.common.transaction.CommonDoctorServiceImpl;
@@ -168,16 +171,15 @@ public class NCDCareServiceImpl implements NCDCareService {
 			throw new Exception("Invalid input");
 		}
 		Map<String, String> responseMap = new HashMap<String, String>();
-		if(benVisitCode!=null)
-		{
-			responseMap.put("visitCode",benVisitCode.toString());
+		if (benVisitCode != null) {
+			responseMap.put("visitCode", benVisitCode.toString());
 		}
 		if (null != saveSuccessFlag && saveSuccessFlag > 0) {
 			responseMap.put("response", "Data saved successfully");
 		} else {
 			responseMap.put("response", "Unable to save data");
 		}
-		return new  Gson().toJson(responseMap);		
+		return new Gson().toJson(responseMap);
 	}
 
 	// method for updating ben flow status flag for nurse
@@ -745,6 +747,34 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& !requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").isJsonNull()) {
 				instruction = requestOBJ.get("diagnosis").getAsJsonObject().get("specialistDiagnosis").getAsString();
 			}
+			// creating prescription object
+			PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+
+			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
+				JsonObject diagnosisObj = requestOBJ.getAsJsonObject("diagnosis");
+
+				prescriptionDetail = InputMapper.gson().fromJson(diagnosisObj, PrescriptionDetail.class);
+
+				if (diagnosisObj.has("provisionalDiagnosisList")
+						&& !diagnosisObj.get("provisionalDiagnosisList").isJsonNull()) {
+					JsonArray provisionalDiagnosisArray = diagnosisObj.getAsJsonArray("provisionalDiagnosisList");
+
+					ArrayList<SCTDescription> provisionalDiagnosisList = new ArrayList<>();
+
+					// Populate the provisionalDiagnosisList from the JSON array
+
+					for (JsonElement element : provisionalDiagnosisArray) {
+
+						SCTDescription sctDescription = InputMapper.gson().fromJson(element, SCTDescription.class);
+
+						provisionalDiagnosisList.add(sctDescription);
+
+					}
+					prescriptionDetail.setProvisionalDiagnosisList(provisionalDiagnosisList);
+				}
+
+			} else {
+			}
 
 			// generate prescription
 			WrapperBenInvestigationANC wrapperBenInvestigationANC = InputMapper.gson()
@@ -753,7 +783,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 					wrapperBenInvestigationANC.getBeneficiaryRegID(), wrapperBenInvestigationANC.getBenVisitID(),
 					wrapperBenInvestigationANC.getProviderServiceMapID(), wrapperBenInvestigationANC.getCreatedBy(),
 					wrapperBenInvestigationANC.getExternalInvestigations(), wrapperBenInvestigationANC.getVisitCode(),
-					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID(), instruction);
+					wrapperBenInvestigationANC.getVanID(), wrapperBenInvestigationANC.getParkingPlaceID(), instruction,
+					prescriptionDetail.getProvisionalDiagnosisList());
 
 			// save diagnosis
 			if (requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
@@ -812,12 +843,11 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				if(prescriptionID!=null)
-				{
+				if (prescriptionID != null) {
 					commonUtilityClass.setPrescriptionID(prescriptionID);
 					commonUtilityClass.setVisitCategoryID(3);
 					commonUtilityClass.setAuthorization(Authorization);
-					
+
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
 						isMedicinePrescribed, tcRequestOBJ);
@@ -1158,6 +1188,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 				if (ncdCareDiagnosis != null && ncdCareDiagnosis.getSpecialistDiagnosis() != null)
 					prescriptionDetail.setInstruction(ncdCareDiagnosis.getSpecialistDiagnosis());
+
 			}
 
 			// update prescription
@@ -1217,12 +1248,11 @@ public class NCDCareServiceImpl implements NCDCareService {
 					&& (referSaveSuccessFlag != null && referSaveSuccessFlag > 0)) {
 
 				// call method to update beneficiary flow table
-				if(prescriptionID!=null)
-				{
+				if (prescriptionID != null) {
 					commonUtilityClass.setPrescriptionID(prescriptionID);
 					commonUtilityClass.setVisitCategoryID(3);
 					commonUtilityClass.setAuthorization(Authorization);
-					
+
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
 						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
