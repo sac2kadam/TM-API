@@ -42,3 +42,17 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#other
+hs_err_pid8684.log
+debug.log
+.factorypath
+hs_err_pid15072.log
+mvnw
+mvnw.cmd
+replay_pid8684.log
+replay_pid15072.log
+/.sts4-cache
+/logs
+
+
