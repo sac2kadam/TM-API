@@ -154,6 +154,10 @@ public class ANCServiceImpl implements ANCService {
 
 				nurseUtilityClass.setVisitCode(benVisitCode);
 				nurseUtilityClass.setBenVisitID(benVisitID);
+			}else {
+				Map<String, String> responseMap = new HashMap<String, String>();
+				responseMap.put("response", "Data already saved");
+				return new Gson().toJson(responseMap);
 			}
 
 			Long ancSaveSuccessFlag = null;
@@ -466,7 +470,8 @@ public class ANCServiceImpl implements ANCService {
 
 			// benVisitDetailsOBJ.setVanID(commonUtilityClass.getVanID());
 			// benVisitDetailsOBJ.setParkingPlaceID(commonUtilityClass.getParkingPlaceID());
-
+			int i=commonNurseServiceImpl.getMaxCurrentdate(benVisitDetailsOBJ.getBeneficiaryRegID(),benVisitDetailsOBJ.getVisitReason(),benVisitDetailsOBJ.getVisitCategory());
+			if(i<1) {
 			benVisitID = commonNurseServiceImpl.saveBeneficiaryVisitDetails(benVisitDetailsOBJ);
 
 			// 07-06-2018 visit code
@@ -529,7 +534,7 @@ public class ANCServiceImpl implements ANCService {
 			visitIdAndCodeMap.put("visitID", benVisitID);
 			visitIdAndCodeMap.put("visitCode", benVisitCode);
 		}
-
+		}
 		return visitIdAndCodeMap;
 	}
 
