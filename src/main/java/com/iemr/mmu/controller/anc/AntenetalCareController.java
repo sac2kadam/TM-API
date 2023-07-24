@@ -28,10 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iemr.mmu.service.anc.ANCServiceImpl;
 import com.iemr.mmu.utils.response.OutputResponse;
 
@@ -39,17 +43,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 
- * @author NA874500
- * @Objective Fetch ANC Nurse data.
- * @Date 19-01-2018
- *
+ * @Objective Saving ANC data for Nurse and Doctor.
  */
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/ANC", headers = "Authorization")
-public class ANCFetchController {
-
+public class AntenetalCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private ANCServiceImpl ancServiceImpl;
@@ -60,13 +60,75 @@ public class ANCFetchController {
 	}
 
 	/**
-	 * @Objective Fetching beneficiary visit details enterted by nurse.
-	 * @param benRegID and benVisitID
-	 * @return visit details in JSON format
+	 * @Objective Save ANC data for nurse.
+	 * @param JSON requestObj
+	 * @return success or failure response
 	 */
 
+	@CrossOrigin
+	@ApiOperation(value = "Save ANC nurse data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
+	public String saveBenANCNurseData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+
+			logger.info("Request object for ANC nurse data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null) {
+				String ancRes = ancServiceImpl.saveANCNurseData(jsnOBJ, Authorization);
+				response.setResponse(ancRes);
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error while saving nurse data:" + e);
+			response.setError(5000, "Unable to save data");
+		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Save ANC doctor data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
+	public String saveBenANCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for ANC doctor data saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+			if (jsnOBJ != null) {
+				Long r = ancServiceImpl.saveANCDoctorData(jsnOBJ, Authorization);
+				if (r != null && r > 0) {
+					response.setResponse("Data saved successfully");
+				} else {
+					// something went wrong
+					response.setError(5000, "Unable to save data");
+				}
+			} else {
+				// data is null
+				response.setError(5000, "Invalid request");
+			}
+
+		} catch (Exception e) {
+			logger.error("Error while saving doctor data:" + e);
+			response.setError(5000, "Unable to save data. " + e.getMessage());
+		}
+		return response.toString();
+	}
+
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Visit details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary visit details from nurse at the ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseANC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseANC(
@@ -93,13 +155,8 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
-	/**
-	 * @Objective Fetching beneficiary anc care details enterted by nurse.
-	 * @param benRegID and benVisitID
-	 * @return anc care details in JSON format
-	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC Care details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary ANC care details from nurse at the ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCDetailsFrmNurseANC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenANCDetailsFrmNurseANC(
@@ -127,13 +184,8 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
-	/**
-	 * @Objective Fetching beneficiary history details enterted by nurse.
-	 * @param benRegID and benVisitID
-	 * @return history details in JSON format
-	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC History details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary visit details from nurse to doctor", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenANCHistoryDetails(
@@ -160,13 +212,8 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
-	/**
-	 * @Objective Fetching beneficiary vital details enterted by nurse.
-	 * @param benRegID and benVisitID
-	 * @return vital details in JSON format
-	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC vital details from Nurse ANC", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary ANC vital details from nurse at the ANC", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenANCVitalDetailsFrmNurseANC" }, method = { RequestMethod.POST })
 	public String getBenANCVitalDetailsFrmNurseANC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -193,13 +240,8 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
-	/**
-	 * @Objective Fetching beneficiary examination details enterted by nurse.
-	 * @param benRegID and benVisitID
-	 * @return examination details in JSON format
-	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary ANC Examination details from Nurse to Doctor ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary ANC examination details from nurse to doctor", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenExaminationDetailsANC" }, method = { RequestMethod.POST })
 
 	public String getBenExaminationDetailsANC(
@@ -226,13 +268,8 @@ public class ANCFetchController {
 		return response.toString();
 	}
 
-	/**
-	 * @Objective Fetching beneficiary details enterted by doctor.
-	 * @param benRegID and benVisitID
-	 * @return doctor entered details in JSON format
-	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary Doctor Entered Details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary doctor entered details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenCaseRecordFromDoctorANC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorANC(
@@ -261,7 +298,7 @@ public class ANCFetchController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Check HRP- (High Risk Pregnancy) status for ANC beneficiary", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "check High Risk Pregnancy status for ANC beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getHRPStatus" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
 	public String getHRPStatus(
@@ -288,6 +325,152 @@ public class ANCFetchController {
 			response.setError(5000, "error in getting HRP status");
 			logger.error("error in getting HRP status : " + e);
 		}
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Update ANC care data in doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/ANCScreen" }, method = { RequestMethod.POST })
+	public String updateANCCareNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for ANC Care data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ancServiceImpl.updateBenANCDetails(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("ANC Care data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary ANC care data :" + e);
+		}
+
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "update ANC history data in doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
+	public String updateANCHistoryNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for ANC history data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ancServiceImpl.updateBenANCHistoryDetails(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("ANC history data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary history data :" + e);
+		}
+
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Update ANC vital data in doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
+	public String updateANCVitalNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for ANC Vital data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ancServiceImpl.updateBenANCVitalDetails(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("ANC vital data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary vital data :" + e);
+		}
+
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Update ANC examination data in doctor screen", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
+	public String updateANCExaminationNurse(@RequestBody String requestObj) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for ANC examination data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			int result = ancServiceImpl.updateBenANCExaminationDetails(jsnOBJ);
+			if (result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("ANC examination data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data");
+			logger.error("Error while updating beneficiary examination data :" + e);
+		}
+
+		return response.toString();
+	}
+
+	@CrossOrigin
+	@ApiOperation(value = "Update ANC doctor data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
+	public String updateANCDoctorData(@RequestBody String requestObj,
+			@RequestHeader(value = "Authorization") String Authorization) {
+
+		OutputResponse response = new OutputResponse();
+		logger.info("Request object for ANC doctor data updating :" + requestObj);
+
+		JsonObject jsnOBJ = new JsonObject();
+		JsonParser jsnParser = new JsonParser();
+		JsonElement jsnElmnt = jsnParser.parse(requestObj);
+		jsnOBJ = jsnElmnt.getAsJsonObject();
+
+		try {
+			Long result = ancServiceImpl.updateANCDoctorData(jsnOBJ, Authorization);
+			if (null != result && result > 0) {
+				response.setResponse("Data updated successfully");
+			} else {
+				response.setError(500, "Unable to modify data");
+			}
+			logger.info("ANC doctor data update Response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Unable to modify data. " + e.getMessage());
+			logger.error("Error while updating beneficiary doctor data :" + e);
+		}
+
 		return response.toString();
 	}
 
