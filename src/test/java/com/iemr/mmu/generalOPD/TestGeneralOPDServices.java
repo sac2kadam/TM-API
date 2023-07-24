@@ -35,16 +35,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 
 import com.iemr.mmu.common.TestCommonServices;
-import com.iemr.mmu.data.anc.BenChildDevelopmentHistory;
-import com.iemr.mmu.data.anc.ChildFeedingDetails;
-import com.iemr.mmu.data.anc.PerinatalHistory;
-import com.iemr.mmu.data.anc.SysGastrointestinalExamination;
-import com.iemr.mmu.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
-import com.iemr.mmu.repo.nurse.anc.ChildFeedingDetailsRepo;
-import com.iemr.mmu.repo.nurse.anc.PerinatalHistoryRepo;
-import com.iemr.mmu.repo.nurse.anc.SysGastrointestinalExaminationRepo;
-import com.iemr.mmu.service.generalOPD.GeneralOPDNurseServiceImpl;
-import com.iemr.mmu.service.generalOPD.GeneralOPDServiceImpl;
+import com.iemr.tm.data.anc.BenChildDevelopmentHistory;
+import com.iemr.tm.data.anc.ChildFeedingDetails;
+import com.iemr.tm.data.anc.PerinatalHistory;
+import com.iemr.tm.data.anc.SysGastrointestinalExamination;
+import com.iemr.tm.repo.nurse.anc.BenChildDevelopmentHistoryRepo;
+import com.iemr.tm.repo.nurse.anc.ChildFeedingDetailsRepo;
+import com.iemr.tm.repo.nurse.anc.PerinatalHistoryRepo;
+import com.iemr.tm.repo.nurse.anc.SysGastrointestinalExaminationRepo;
+import com.iemr.tm.service.generalOPD.GeneralOPDNurseServiceImpl;
+import com.iemr.tm.service.generalOPD.GeneralOPDServiceImpl;
 
 public class TestGeneralOPDServices {
 

@@ -27,7 +27,7 @@ import java.sql.Timestamp;
 
 import org.junit.Test;
 
-import com.iemr.mmu.service.report.CRMReportServiceImpl;
+import com.iemr.tm.service.report.CRMReportServiceImpl;
 
 public class TestReport {
 

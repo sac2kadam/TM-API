@@ -38,20 +38,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.mmu.common.TestCommonServices;
-import com.iemr.mmu.data.anc.ANCCareDetails;
-import com.iemr.mmu.data.anc.ANCDiagnosis;
-import com.iemr.mmu.data.anc.ANCWomenVaccineDetail;
-import com.iemr.mmu.data.anc.BenAdherence;
-import com.iemr.mmu.data.anc.SysObstetricExamination;
-import com.iemr.mmu.repo.nurse.anc.ANCCareRepo;
-import com.iemr.mmu.repo.nurse.anc.ANCDiagnosisRepo;
-import com.iemr.mmu.repo.nurse.anc.ANCWomenVaccineRepo;
-import com.iemr.mmu.repo.nurse.anc.BenAdherenceRepo;
-import com.iemr.mmu.repo.nurse.anc.SysObstetricExaminationRepo;
-import com.iemr.mmu.repo.quickConsultation.LabTestOrderDetailRepo;
-//import com.iemr.mmu.service.anc.ANCDoctorServiceImpl;
-import com.iemr.mmu.service.anc.ANCNurseServiceImpl;
-import com.iemr.mmu.service.anc.ANCServiceImpl;
+import com.iemr.tm.data.anc.ANCCareDetails;
+import com.iemr.tm.data.anc.ANCDiagnosis;
+import com.iemr.tm.data.anc.ANCWomenVaccineDetail;
+import com.iemr.tm.data.anc.BenAdherence;
+import com.iemr.tm.data.anc.SysObstetricExamination;
+import com.iemr.tm.repo.nurse.anc.ANCCareRepo;
+import com.iemr.tm.repo.nurse.anc.ANCDiagnosisRepo;
+import com.iemr.tm.repo.nurse.anc.ANCWomenVaccineRepo;
+import com.iemr.tm.repo.nurse.anc.BenAdherenceRepo;
+import com.iemr.tm.repo.nurse.anc.SysObstetricExaminationRepo;
+import com.iemr.tm.repo.quickConsultation.LabTestOrderDetailRepo;
+import com.iemr.tm.service.anc.ANCNurseServiceImpl;
+import com.iemr.tm.service.anc.ANCServiceImpl;
 
 public class TestANCServices
 {

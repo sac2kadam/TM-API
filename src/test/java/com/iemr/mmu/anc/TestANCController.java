@@ -32,15 +32,15 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 
 import com.google.gson.JsonObject;
-import com.iemr.mmu.controller.anc.AntenetalCareController;
-import com.iemr.mmu.controller.anc.ANCFetchController;
-import com.iemr.mmu.service.anc.ANCServiceImpl;
+import com.iemr.tm.controller.anc.ANCFetchController;
+import com.iemr.tm.controller.anc.AntenatalCareController;
+import com.iemr.tm.service.anc.ANCServiceImpl;
 
 public class TestANCController
 {
 	
 	@InjectMocks
-	private static AntenetalCareController createControllerSpy = spy(AntenetalCareController.class);
+	private static AntenatalCareController createControllerSpy = spy(AntenatalCareController.class);
 	private static ANCFetchController fetchControllerSpy = spy(ANCFetchController.class);
 	private static ANCServiceImpl ancServiceImplMock = mock(ANCServiceImpl.class);
 	
