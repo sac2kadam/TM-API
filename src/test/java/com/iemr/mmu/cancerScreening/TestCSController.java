@@ -31,7 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
-import com.iemr.tm.controller.cancerscreening.CancerScreeningCreateController;
+import com.iemr.tm.controller.cancerscreening.CancerScreeningController;
 import com.iemr.tm.controller.cancerscreening.CancerScreeningFetchController;
 import com.iemr.tm.controller.cancerscreening.CancerScreeningUpdateController;
 import com.iemr.tm.data.doctor.CancerDiagnosis;
@@ -40,7 +40,7 @@ import com.iemr.tm.service.cancerScreening.CSServiceImpl;
 
 public class TestCSController {
 
-	private static CancerScreeningCreateController createController = spy(CancerScreeningCreateController.class);
+	private static CancerScreeningController createController = spy(CancerScreeningController.class);
 	private static CancerScreeningFetchController fetchController = spy(CancerScreeningFetchController.class);
 	private static CancerScreeningUpdateController updateController = spy(CancerScreeningUpdateController.class);
 
