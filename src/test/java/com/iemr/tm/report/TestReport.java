@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.mmu.report;
+package com.iemr.tm.report;
 
 import static org.junit.Assert.assertEquals;
 

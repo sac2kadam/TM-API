@@ -56,7 +56,7 @@ public class CommonMasterController {
 	 * @Objective provides list of visit reasons and visit categories
 	 * @return list of visit reasons and visit categories
 	 */
-	@ApiOperation(value = "Master Data for Visit Reasons & Categories", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get visit reasons and categories", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/get/visitReasonAndCategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String getVisitReasonAndCategories() {
 		logger.info("getVisitReasonAndCategories ...");
@@ -71,7 +71,7 @@ public class CommonMasterController {
 	 * @param visitCategoryID
 	 * @return nurse master data for the provided visitCategoryID
 	 */
-	@ApiOperation(value = "Master Data API for Nurse", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get master data for selected beneficiary for nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/nurse/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String NurseMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
@@ -90,7 +90,7 @@ public class CommonMasterController {
 	 * @param visitCategoryID
 	 * @return doctor master data for the provided visitCategoryID
 	 */
-	@ApiOperation(value = "Master Data API for Doctor", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get master data for selected beneficiary for doctor", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/doctor/masterData/{visitCategoryID}/{providerServiceMapID}/{gender}/{facilityID}/{vanID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public String DoctorMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender,

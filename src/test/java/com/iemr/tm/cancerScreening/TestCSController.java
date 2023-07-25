@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.mmu.cancerScreening;
+package com.iemr.tm.cancerScreening;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;

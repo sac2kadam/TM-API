@@ -40,11 +40,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 
 /***
- * 
- * @author NE298657
- * @date 16-08-2018
- * @purpose Class used for data sync from van-to-server & server-to-van
- *
+ * * @purpose Class used for data sync from van-to-server & server-to-van
  */
 @CrossOrigin
 @RestController
@@ -58,7 +54,7 @@ public class StartSyncActivity {
 	private DownloadDataFromServerImpl downloadDataFromServerImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "start data sync from Van to Server", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Initiate data sync from van to server", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
@@ -87,7 +83,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "get data sync group details", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get data sync group details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getSyncGroupDetails" }, method = { RequestMethod.GET })
 	public String getSyncGroupDetails() {
 		OutputResponse response = new OutputResponse();
@@ -109,7 +105,7 @@ public class StartSyncActivity {
 	 * @return Masters download in van from central server
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Data sync master download", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Data synced master data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/startMasterDownload" }, method = { RequestMethod.POST })
 	public String startMasterDownload(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization,
@@ -142,7 +138,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Data sync master download progress check", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Master data sync download progress check", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/checkMastersDownloadProgress" }, method = { RequestMethod.GET })
 	public String checkMastersDownloadProgress() {
 		OutputResponse response = new OutputResponse();
@@ -156,7 +152,7 @@ public class StartSyncActivity {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "getVanDetailsForMasterDownload", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get van details for master sync data download", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getVanDetailsForMasterDownload" }, method = { RequestMethod.GET })
 	public String getVanDetailsForMasterDownload() {
 		OutputResponse response = new OutputResponse();

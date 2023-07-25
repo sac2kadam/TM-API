@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.mmu.generalOPD;
+package com.iemr.tm.generalOPD;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.isA;
@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 
-import com.iemr.mmu.common.TestCommonServices;
+import com.iemr.tm.common.TestCommonServices;
 import com.iemr.tm.data.anc.BenChildDevelopmentHistory;
 import com.iemr.tm.data.anc.ChildFeedingDetails;
 import com.iemr.tm.data.anc.PerinatalHistory;

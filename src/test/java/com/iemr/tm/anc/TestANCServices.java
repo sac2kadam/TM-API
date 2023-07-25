@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.mmu.anc;
+package com.iemr.tm.anc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.isA;
@@ -37,7 +37,7 @@ import org.mockito.Matchers;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.mmu.common.TestCommonServices;
+import com.iemr.tm.common.TestCommonServices;
 import com.iemr.tm.data.anc.ANCCareDetails;
 import com.iemr.tm.data.anc.ANCDiagnosis;
 import com.iemr.tm.data.anc.ANCWomenVaccineDetail;
