@@ -32,8 +32,7 @@ import org.junit.Test;
 
 import com.google.gson.JsonObject;
 import com.iemr.tm.controller.cancerscreening.CancerScreeningController;
-import com.iemr.tm.controller.cancerscreening.CancerScreeningFetchController;
-import com.iemr.tm.controller.cancerscreening.CancerScreeningUpdateController;
+
 import com.iemr.tm.data.doctor.CancerDiagnosis;
 import com.iemr.tm.data.nurse.BenCancerVitalDetail;
 import com.iemr.tm.service.cancerScreening.CSServiceImpl;
@@ -41,9 +40,7 @@ import com.iemr.tm.service.cancerScreening.CSServiceImpl;
 public class TestCSController {
 
 	private static CancerScreeningController createController = spy(CancerScreeningController.class);
-	private static CancerScreeningFetchController fetchController = spy(CancerScreeningFetchController.class);
-	private static CancerScreeningUpdateController updateController = spy(CancerScreeningUpdateController.class);
-
+	
 	private static CSServiceImpl cSServiceImplMock = mock(CSServiceImpl.class);
 
 	static String nurseObjPve = "";
@@ -71,8 +68,8 @@ public class TestCSController {
 		updateVitalObjPve = "{ \"vitalsDetails\": { \"beneficiaryRegID\": \"7506\", \"benVisitID\": null, \"providerServiceMapID\": \"1320\", \"weight_Kg\": \"64\", \"height_cm\": \"166\", \"waistCircumference_cm\": \"56\", \"systolicBP_1stReading\": \"120\", \"diastolicBP_1stReading\": \"65\", \"systolicBP_2ndReading\": \"113\", \"diastolicBP_2ndReading\": \"73\", \"systolicBP_3rdReading\": \"123\", \"diastolicBP_3rdReading\": \"66\", \"hbA1C\": \"4\", \"hemoglobin\": \"14\", \"bloodGlucose_Fasting\": \"123\", \"bloodGlucose_Random\": \"143\", \"bloodGlucose_2HrPostPrandial\": \"145\", \"createdBy\": \"888\" } }";
 
 		createController.setCancerScreeningServiceImpl(cSServiceImplMock);
-		fetchController.setCancerScreeningServiceImpl(cSServiceImplMock);
-		updateController.setCancerScreeningServiceImpl(cSServiceImplMock);
+		createController.setCancerScreeningServiceImpl(cSServiceImplMock);
+		createController.setCancerScreeningServiceImpl(cSServiceImplMock);
 		try {
 			// when(cSServiceImplMock.saveCancerScreeningNurseData(isA(JsonObject.class))).thenReturn(1L);
 
@@ -116,7 +113,7 @@ public class TestCSController {
 
 		// String response =
 		// createController.saveBenCancerScreeningNurseData(nurseObjPve);
-		// temp code by neeraj due to carestream integration
+	
 		String response = "{\'data\':{\'response\':\'Nurse data saved successfully.\'},\'statusCode\':200,\'errorMessage\':\'Success\',\'status\':\'Success\'}";
 
 		assertTrue("", response.equals(
@@ -135,7 +132,7 @@ public class TestCSController {
 	@Test
 	public void getBenDataFrmNurseScrnToDocScrnVisitDetailsPveTest() {
 
-		String response = fetchController.getBenDataFrmNurseScrnToDocScrnVisitDetails(fetchObjPve);
+		String response = createController.getBenDataFrmNurseScrnToDocScrnVisitDetails(fetchObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -144,7 +141,7 @@ public class TestCSController {
 	@Test
 	public void getBenDataFrmNurseScrnToDocScrnHistoryPveTest() {
 
-		String response = fetchController.getBenDataFrmNurseScrnToDocScrnHistory(fetchObjPve);
+		String response = createController.getBenDataFrmNurseScrnToDocScrnHistory(fetchObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -153,7 +150,7 @@ public class TestCSController {
 	@Test
 	public void getBenDataFrmNurseScrnToDocScrnVitalPveTest() {
 
-		String response = fetchController.getBenDataFrmNurseScrnToDocScrnVital(fetchObjPve);
+		String response = createController.getBenDataFrmNurseScrnToDocScrnVital(fetchObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -162,7 +159,7 @@ public class TestCSController {
 	@Test
 	public void getBenDataFrmNurseScrnToDocScrnExaminationPveTest() {
 
-		String response = fetchController.getBenDataFrmNurseScrnToDocScrnExamination(fetchObjPve);
+		String response = createController.getBenDataFrmNurseScrnToDocScrnExamination(fetchObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -180,7 +177,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerFamilyHistoryPveTest() {
 
-		String response = fetchController.getBenCancerFamilyHistory(fetchHstryObjPve);
+		String response = createController.getBenCancerFamilyHistory(fetchHstryObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -189,7 +186,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerFamilyHistoryNveTest() {
 
-		String response = fetchController.getBenCancerFamilyHistory(fetchHstryObjNve);
+		String response = createController.getBenCancerFamilyHistory(fetchHstryObjNve);
 
 		assertTrue("", response.equals(
 				"{\"statusCode\":5000,\"errorMessage\":\"Invalid Request Data !!!\",\"status\":\"Invalid Request Data !!!\"}"));
@@ -198,7 +195,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerPersonalHistoryPveTest() {
 
-		String response = fetchController.getBenCancerPersonalHistory(fetchHstryObjPve);
+		String response = createController.getBenCancerPersonalHistory(fetchHstryObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -207,7 +204,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerPersonalHistoryNveTest() {
 
-		String response = fetchController.getBenCancerPersonalHistory(fetchHstryObjNve);
+		String response = createController.getBenCancerPersonalHistory(fetchHstryObjNve);
 
 		assertTrue("", response.equals(
 				"{\"statusCode\":5000,\"errorMessage\":\"Invalid Request Data !!!\",\"status\":\"Invalid Request Data !!!\"}"));
@@ -216,7 +213,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerPersonalDietHistoryPveTest() {
 
-		String response = fetchController.getBenCancerPersonalDietHistory(fetchHstryObjPve);
+		String response = createController.getBenCancerPersonalDietHistory(fetchHstryObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -225,7 +222,7 @@ public class TestCSController {
 	@Test
 	public void getBenCancerObstetricHistoryPveTest() {
 
-		String response = fetchController.getBenCancerObstetricHistory(fetchHstryObjPve);
+		String response = createController.getBenCancerObstetricHistory(fetchHstryObjPve);
 
 		assertTrue("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
@@ -234,7 +231,7 @@ public class TestCSController {
 	@Test
 	public void updateCSHistoryNursePveTest() {
 
-		String response = updateController.updateCSHistoryNurse(updateHstryObjPve);
+		String response = createController.updateCSHistoryNurse(updateHstryObjPve);
 
 		System.out.println(response);
 		assertTrue("", response.equals(
@@ -244,7 +241,7 @@ public class TestCSController {
 	@Test
 	public void upodateBenVitalDetailPveTest() {
 
-		String response = updateController.upodateBenVitalDetail(updateVitalObjPve);
+		String response = createController.upodateBenVitalDetail(updateVitalObjPve);
 
 		System.out.println(response);
 		assertTrue("", response.equals(
@@ -254,7 +251,7 @@ public class TestCSController {
 	@Test
 	public void upodateBenExaminationDetailPveTest() {
 
-		String response = updateController.upodateBenExaminationDetail(updateVitalObjPve);
+		String response = createController.upodateBenExaminationDetail(updateVitalObjPve);
 
 		System.out.println(response);
 		assertTrue("", response.equals(
@@ -264,7 +261,7 @@ public class TestCSController {
 	@Test
 	public void updateCancerDiagnosisDetailsByOncologistPveTest() {
 
-		String response = updateController.updateCancerDiagnosisDetailsByOncologist(updateVitalObjPve);
+		String response = createController.updateCancerDiagnosisDetailsByOncologist(updateVitalObjPve);
 
 		System.out.println(response);
 		assertTrue("", response.equals(
