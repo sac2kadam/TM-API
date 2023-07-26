@@ -48,7 +48,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/dataSync", headers = "Authorization")
-public class MMU_DataSync_VanToServer {
+public class MMUDataSyncVanToServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
@@ -57,7 +57,7 @@ public class MMU_DataSync_VanToServer {
 	private GetMasterDataFromCentralForVanImpl getMasterDataFromCentralForVanImpl;
 
 	@CrossOrigin()
-	@ApiOperation(value = "sync data from van-to-server", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Download data from van-to-server (Mobile Medical Unit)", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/van-to-server" }, method = { RequestMethod.POST })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -76,7 +76,7 @@ public class MMU_DataSync_VanToServer {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "download data from server-to-van", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Download data from server to van (Mobile Medical Unit)", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/server-to-van" }, method = { RequestMethod.POST })
 	public String dataDownloadFromServer(@RequestBody SyncDownloadMaster syncDownloadMaster,
 			@RequestHeader(value = "Authorization") String Authorization) {

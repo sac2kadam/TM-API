@@ -37,8 +37,11 @@ import com.iemr.tm.service.login.IemrMmuLoginServiceImpl;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
 
-@RequestMapping(value = "/user", headers = "Authorization")
+import io.swagger.annotations.ApiOperation;
+
+@CrossOrigin
 @RestController
+@RequestMapping(value = "/user", headers = "Authorization")
 public class IemrMmuLoginController {
 
 	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
@@ -52,6 +55,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get user service point van details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserServicePointVanDetails", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getUserServicePointVanDetails(@RequestBody String comingRequest) {
@@ -73,6 +77,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get service point villages", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getServicepointVillages", method = { RequestMethod.POST }, produces = {
 			"application/json" })
 	public String getServicepointVillages(@RequestBody String comingRequest) {
@@ -94,6 +99,7 @@ public class IemrMmuLoginController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Get user service point van details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserVanSpDetails", method = { RequestMethod.POST }, produces = { "application/json" })
 	public String getUserVanSpDetails(@RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -118,9 +124,10 @@ public class IemrMmuLoginController {
 		return response.toString();
 	}
 	
-	/* created by = DU20091017 */
+
 	
 	@CrossOrigin()
+	@ApiOperation(value = "Get user spoke details", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/getUserSpokeDetails/{psmId}", method = { RequestMethod.GET }, produces = { "application/json" })
 	public String getUserSpokeDetails(@PathVariable ("psmId") Integer psmId) {
 		OutputResponse response = new OutputResponse();

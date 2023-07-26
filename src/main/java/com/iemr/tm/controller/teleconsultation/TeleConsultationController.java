@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.controller.tele_consultation;
+package com.iemr.tm.controller.teleconsultation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +48,7 @@ public class TeleConsultationController {
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
 
 	@CrossOrigin
-	@ApiOperation(value = "update beneficiary arrival status based on request", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update beneficiary arrival status based on request", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/benArrivalStatus" }, method = { RequestMethod.POST })
 	public String benArrivalStatusUpdater(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
@@ -69,7 +69,7 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "update beneficiary status based on request", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update beneficiary status based on request", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/cancel/benTCRequest" }, method = { RequestMethod.POST })
 	public String updateBeneficiaryStatusToCancelTCRequest(@RequestBody String requestOBJ,
 			@RequestHeader String Authorization) {
@@ -113,7 +113,7 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "create TC request from worklist whose visit is created", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Create teleconsultation request from worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/create/benTCRequestWithVisitCode" }, method = { RequestMethod.POST })
 	public String createTCRequestForBeneficiary(@RequestBody String requestOBJ, @RequestHeader String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -140,7 +140,7 @@ public class TeleConsultationController {
 
 	// TC request List
 	@CrossOrigin
-	@ApiOperation(value = "get tc request list for a specialist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get teleconsultation request list for a specialist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getTCRequestList" }, method = { RequestMethod.POST })
 	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
@@ -170,7 +170,7 @@ public class TeleConsultationController {
 	}
 
 	@CrossOrigin
-	@ApiOperation(value = "update first consultation start time", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update first consultation start time", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/startconsultation" }, method = { RequestMethod.POST })
 	public String startconsultation(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
