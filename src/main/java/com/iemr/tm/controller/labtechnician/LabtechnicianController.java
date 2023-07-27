@@ -40,31 +40,61 @@ import io.swagger.annotations.ApiOperation;
 
 /***
  * 
- * @author NE298657
- * @Objective Fetching lab tests prescribed by doctor
- *
+ * @Objective Saving lab test results given by LabTechnician
  */
 
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/labTechnician", headers = "Authorization")
-public class LabtechnicianFetchController {
+public class LabtechnicianController {
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
-
+	
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
-
+	
 	/**
-	 * @Objective Fetching beneficiary lab tests prescribed by doctor.
-	 * @param requestOBJ
-	 * @return lab tests prescribed by doctor
+	 * @Objective Save lab test results given by LabTechnician
+	 * @param JSON requestObj 
+	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "getBeneficiaryPrescribedProcedure..", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save lab test result", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/save/LabTestResult" }, method = { RequestMethod.POST })
+	public String saveLabTestResult(@RequestBody String requestObj) {
+		OutputResponse response = new OutputResponse();
+		try {
+			logger.info("Request object for Lab Test Result saving :" + requestObj);
+
+			JsonObject jsnOBJ = new JsonObject();
+			JsonParser jsnParser = new JsonParser();
+			JsonElement jsnElmnt = jsnParser.parse(requestObj);
+			jsnOBJ = jsnElmnt.getAsJsonObject();
+
+			if (jsnOBJ != null) {
+				Integer labResultSaveRes = labTechnicianServiceImpl.saveLabTestResult(jsnOBJ);
+				if (null != labResultSaveRes && labResultSaveRes > 0) {
+					response.setResponse("Data saved successfully");
+				} else {
+					response.setResponse("Unable to save data");
+				}
+
+			} else {
+				response.setResponse("Invalid request");
+			}
+		} catch (Exception e) {
+			logger.error("Error while saving lab test results  :" + e);
+			response.setError(5000, "Unable to save data");
+		}
+		return response.toString();
+	}
+	
+	@CrossOrigin
+	@ApiOperation(value = "Get beneficiary lab test prescription", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/prescribedProceduresList" }, method = { RequestMethod.POST })
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
@@ -94,9 +124,8 @@ public class LabtechnicianFetchController {
 	}
 
 	// API for getting lab result based on beneficiaryRegID and visitCode
-	// 11-07-2018
 	@CrossOrigin()
-	@ApiOperation(value = "get lab test result for a visitcode.", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get lab test result for a beneficiary visit", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/labResultForVisitcode" }, method = { RequestMethod.POST })
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
@@ -122,4 +151,5 @@ public class LabtechnicianFetchController {
 		}
 		return response.toString();
 	}
+	
 }
