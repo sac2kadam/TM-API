@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iemr.tm.service.swymed.SwymedService;
 import com.iemr.tm.utils.response.OutputResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/swymed", headers = "Authorization")
 public class SwymedController {
@@ -43,6 +45,7 @@ public class SwymedController {
 	private SwymedService swymedService;
 
 	@CrossOrigin()
+	@ApiOperation(value = "Login to swymed service", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/login/{userID}", headers = "Authorization", method = { RequestMethod.GET }, produces = {
 			"application/json" })
 	public String login(@PathVariable("userID") Long userID) {
@@ -68,6 +71,7 @@ public class SwymedController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Call user for swymed service", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/call/{fromuserID}/{touserID}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String call(@PathVariable("fromuserID") Long fromuserID, @PathVariable("touserID") Long touserID) {
@@ -93,6 +97,7 @@ public class SwymedController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Swymed service for users by passing type", consumes = "application/json", produces = "application/json")	
 	@RequestMapping(value = "/call/{fromuserID}/{touserID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String CallSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
@@ -123,6 +128,7 @@ public class SwymedController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Call van through Swymed", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String callvan(@PathVariable("fromuserID") Long fromuserID, @PathVariable("vanID") Integer vanID) {
@@ -148,6 +154,7 @@ public class SwymedController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Call van through Swymed by passing type", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String CallVanSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
@@ -179,6 +186,7 @@ public class SwymedController {
 	}
 
 	@CrossOrigin()
+	@ApiOperation(value = "Logout of swymed service", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/logout", headers = "Authorization", method = { RequestMethod.GET }, produces = {
 			"application/json" })
 	public String logout() {

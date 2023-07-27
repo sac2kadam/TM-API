@@ -43,4 +43,24 @@ public interface GeneralOPDService {
 	Long saveBenExaminationDetails(JsonObject examinationDetailsOBJ, Long benVisitID, Long benVisitCode)
 			throws Exception;
 
+	String getBenVisitDetailsFrmNurseGOPD(Long benRegID, Long visitCode);
+
+	String getBenHistoryDetails(Long benRegID, Long visitCode);
+
+	String getBeneficiaryVitalDetails(Long benRegID, Long visitCode);
+
+	String getExaminationDetailsData(Long benRegID, Long visitCode);
+
+	String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long visitCode);
+
+	int UpdateVisitDetails(JsonObject jsnOBJ) throws Exception;
+
+	int updateBenHistoryDetails(JsonObject jsnOBJ)throws Exception;
+
+	int updateBenVitalDetails(JsonObject jsnOBJ ) throws Exception;
+
+	int updateBenExaminationDetails(JsonObject jsnOBJ) throws Exception;
+
+	Long updateGeneralOPDDoctorData(JsonObject jsnOBJ, String authorization) throws Exception;
+
 }

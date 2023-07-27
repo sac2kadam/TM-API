@@ -49,7 +49,7 @@ public class QuickbloxController {
 	@Autowired
 	private QuickbloxService quickbloxService;
 	@CrossOrigin
-	@ApiOperation(value = "Get Quickblox Ids", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get quickblox id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getquickbloxIds" }, method = { RequestMethod.POST })
 	public String getquickbloxIds(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -59,22 +59,7 @@ public class QuickbloxController {
 			response.setResponse(
 					quickbloxService.getQuickbloxIds(requestObj));
 			return response.toString();
-//			JsonObject jsnOBJ = new JsonObject();
-//			JsonParser jsnParser = new JsonParser();
-//			JsonElement jsnElmnt = jsnParser.parse(requestObj);
-//			jsnOBJ = jsnElmnt.getAsJsonObject();
-//
-//			if (jsnOBJ != null) {
-//				Long ncdCareRes = quickbloxService.getQuickbloxIds(requestObj);
-//				if (null != ncdCareRes && ncdCareRes > 0) {
-//					response.setResponse("Data saved successfully");
-//				} else {
-//					response.setResponse("Unable to save data");
-//				}
-//
-//			} else {
-//				response.setError(5000, "Invalid Request !!!");
-//			}
+
 
 		} catch (Exception e) {
 			logger.error("Error while getting quickblox Ids :" + e);
