@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.tm.controller.registrar.master.RegistrarController;
+import com.iemr.tm.controller.registrar.main.RegistrarController;
 import com.iemr.tm.service.login.IemrMmuLoginServiceImpl;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
@@ -123,13 +123,12 @@ public class IemrMmuLoginController {
 		logger.info("getUserVanSpDetails response " + response.toString());
 		return response.toString();
 	}
-	
 
-	
 	@CrossOrigin()
 	@ApiOperation(value = "Get user spoke details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = "/getUserSpokeDetails/{psmId}", method = { RequestMethod.GET }, produces = { "application/json" })
-	public String getUserSpokeDetails(@PathVariable ("psmId") Integer psmId) {
+	@RequestMapping(value = "/getUserSpokeDetails/{psmId}", method = { RequestMethod.GET }, produces = {
+			"application/json" })
+	public String getUserSpokeDetails(@PathVariable("psmId") Integer psmId) {
 		OutputResponse response = new OutputResponse();
 		try {
 			if (psmId != null)
