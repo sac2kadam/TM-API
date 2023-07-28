@@ -328,7 +328,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary tobacco consumption", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary tobacco consumption history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenTobaccoHistory" }, method = { RequestMethod.POST })
 	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -354,7 +354,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary alcohol consumption", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary alcohol consumption history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAlcoholHistory" }, method = { RequestMethod.POST })
 	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
