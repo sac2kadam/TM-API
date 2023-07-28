@@ -533,4 +533,32 @@ public class RegistrarController {
 		return response.toString();
 	}
 	
+	@CrossOrigin()
+	@ApiOperation(value = "Get master data for registrar", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/registrarMasterData" }, method = { RequestMethod.POST })
+	public String masterDataForRegistration(
+			@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+		logger.info("masterDataForRegistration request :" + comingRequest);
+		try {
+
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("spID")) {
+				if (obj.getInt("spID") > 0) {
+					response.setResponse(registrarServiceMasterDataImpl.getRegMasterData());
+				} else {
+					response.setError(5000, "Invalid service point");
+				}
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("masterDataForRegistration response :" + response);
+
+		} catch (Exception e) {
+			logger.error("Error in masterDataForRegistration :" + e);
+			response.setError(5000, "Error while getting master data for registration");
+		}
+		return response.toString();
+	}
+	
 }
