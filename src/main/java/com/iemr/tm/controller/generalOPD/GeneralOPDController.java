@@ -322,7 +322,6 @@ public class GeneralOPDController {
 	}
 
 	/**
-	 * 
 	 * @param requestObj
 	 * @return success or failure response
 	 * @objective Replace General OPD History Data entered by Nurse with the details

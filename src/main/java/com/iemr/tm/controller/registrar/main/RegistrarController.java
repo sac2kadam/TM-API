@@ -83,7 +83,7 @@ public class RegistrarController {
 
 	// Registrar Work List API .....
 	@CrossOrigin()
-	@ApiOperation(value = "Get Registrar workList Data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get registrar worklist data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/registrarWorkListData" }, method = { RequestMethod.POST })
 	public String getRegistrarWorkList(@ApiParam(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
@@ -106,7 +106,7 @@ public class RegistrarController {
 
 	// Registrar Quick search .....
 	@CrossOrigin()
-	@ApiOperation(value = "Search for the Beneficiary based on beneficiary id", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Search for the beneficiary based on beneficiary id", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/quickSearch" }, method = { RequestMethod.POST })
 	public String quickSearchBeneficiary(
 			@ApiParam(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
