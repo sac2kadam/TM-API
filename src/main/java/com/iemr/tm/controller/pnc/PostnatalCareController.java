@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.controller.generalOPD;
+package com.iemr.tm.controller.pnc;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -36,43 +36,42 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.tm.service.generalOPD.GeneralOPDService;
-import com.iemr.tm.service.generalOPD.GeneralOPDServiceImpl;
+import com.iemr.tm.service.pnc.PNCServiceImpl;
 import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-/***
- * @Objective Saving General OPD data for Nurse and Doctor.
+/**
+ * @Objective Saving PNC nurse and doctor data
+ *
  */
-
-@RestController
 @CrossOrigin
-@RequestMapping(value = "/generalOPD", headers = "Authorization")
-public class GeneralOPDController {
+@RestController
+@RequestMapping(value = "/PNC", headers = "Authorization")
+public class PostnatalCareController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
-	private GeneralOPDService generalOPDService;
+	private PNCServiceImpl pncServiceImpl;
 
 	@Autowired
-	public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl generalOPDServiceImpl) {
-		this.generalOPDService = generalOPDService;
+	public void setPncServiceImpl(PNCServiceImpl pncServiceImpl) {
+		this.pncServiceImpl = pncServiceImpl;
 	}
 
 	/**
-	 * @Objective Save General OPD data for nurse.
+	 * @Objective Saving PNC nurse data
 	 * @param requestObj
 	 * @return success or failure response
 	 */
+
 	@CrossOrigin
-	@ApiOperation(value = "Save general OPD data collected by nurse", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save PNC nurse data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
-	public String saveBenGenOPDNurseData(@RequestBody String requestObj,
+	public String saveBenPNCNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for GeneralOPD nurse data saving :" + requestObj);
+			logger.info("Request object for PNC nurse data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
@@ -80,225 +79,262 @@ public class GeneralOPDController {
 			jsnOBJ = jsnElmnt.getAsJsonObject();
 
 			if (jsnOBJ != null) {
-				String genOPDRes = generalOPDService.saveNurseData(jsnOBJ, Authorization);
-				response.setResponse(genOPDRes);
+				String ancRes = pncServiceImpl.savePNCNurseData(jsnOBJ, Authorization);
+				response.setResponse(ancRes);
 
 			} else {
-				response.setResponse("Invalid request");
+				response.setError(5000, "Invalid request");
 			}
+
 		} catch (Exception e) {
-			logger.error("Error in nurse data saving :" + e);
+			logger.error("Error while saving nurse data :" + e);
 			response.setError(5000, "Unable to save data");
 		}
 		return response.toString();
 	}
 
 	/**
-	 * @Objective Save General OPD data for doctor.
+	 * @Objective Saving PNC doctor data
 	 * @param requestObj
 	 * @return success or failure response
 	 */
+
 	@CrossOrigin
-	@ApiOperation(value = "Save general OPD data collected by doctor", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save PNC doctor data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
-	public String saveBenGenOPDDoctorData(@RequestBody String requestObj,
+	public String saveBenPNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
-			logger.info("Request object for GeneralOPD doctor data saving :" + requestObj);
+			logger.info("Request object for PNC doctor data saving :" + requestObj);
 
 			JsonObject jsnOBJ = new JsonObject();
 			JsonParser jsnParser = new JsonParser();
 			JsonElement jsnElmnt = jsnParser.parse(requestObj);
 			jsnOBJ = jsnElmnt.getAsJsonObject();
-
 			if (jsnOBJ != null) {
-				Long genOPDRes = generalOPDService.saveDoctorData(jsnOBJ, Authorization);
-				if (null != genOPDRes && genOPDRes > 0) {
+				Long r = pncServiceImpl.savePNCDoctorData(jsnOBJ, Authorization);
+				if (r != null && r > 0) {
 					response.setResponse("Data saved successfully");
 				} else {
-					response.setResponse("Unable to save data");
+					// something went wrong
+					response.setError(5000, "Unable to save data");
 				}
-
 			} else {
-				response.setResponse("Invalid request");
+				// data is null
+				response.setError(5000, "Invalid request");
 			}
+
 		} catch (Exception e) {
-			logger.error("Error in doctor data saving :" + e);
+			logger.error("Error while saving doctor data :" + e);
 			response.setError(5000, "Unable to save data. " + e.getMessage());
 		}
 		return response.toString();
 	}
 	
 	@CrossOrigin()
-	@ApiOperation(value = "Get general OPD beneficiary visit details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" }, method = { RequestMethod.POST })
+	@ApiOperation(value = "Get PNC beneficiary visit details from nurse", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenVisitDetailsFrmNursePNC" }, method = { RequestMethod.POST })
 	@Transactional(rollbackFor = Exception.class)
-	public String getBenVisitDetailsFrmNurseGOPD(
+	public String getBenVisitDetailsFrmNursePNC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("Request obj to fetch General OPD visit details :" + comingRequest);
+		logger.info("PNC visit data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.length() > 1) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
-				String res = generalOPDService.getBenVisitDetailsFrmNurseGOPD(benRegID, visitCode);
+				String res = pncServiceImpl.getBenVisitDetailsFrmNursePNC(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
+				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenDataFrmNurseScrnToDocScrnVisitDetails response:" + response);
+			logger.info("PNC visit data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary visit data");
-			logger.error("Error in getBenDataFrmNurseScrnToDocScrnVisitDetails:" + e);
+			logger.error("Error while getting beneficiary visit data :" + e);
 		}
 		return response.toString();
 	}
-
+	
 	/**
-	 * @Objective Fetching beneficiary history details enterted by nurse.
+	 * @Objective Fetching Beneficiary PNC Care data entered by nurse
 	 * @param comingRequest
-	 * @return history details in JSON format
+	 * @return PNC Care data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get general OPD beneficiary history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary details from nurse", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenPNCDetailsFrmNursePNC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenPNCDetailsFrmNursePNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("PNC Care data fetch request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String res = pncServiceImpl.getBenPNCDetailsFrmNursePNC(benRegID, visitCode);
+				response.setResponse(res);
+			} else {
+				logger.info("Invalid request");
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("PNC Care data fetch response:" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary PNC Care data");
+			logger.error("Error while getting beneficiary PNC Care data :" + e);
+		}
+		return response.toString();
+	}
+	
+	/**
+	 * @Objective Fetching Beneficiary history data entered by nurse
+	 * @param comingRequest
+	 * @return history data in JSON format
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get PNC beneficiary history nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenHistoryDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenHistoryDetails request:" + comingRequest);
+		logger.info("History data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
-				String s = generalOPDService.getBenHistoryDetails(benRegID, visitCode);
+				String s = pncServiceImpl.getBenHistoryDetails(benRegID, visitCode);
 				response.setResponse(s);
 			} else {
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenHistoryDetails response:" + response);
+			logger.info("History data fetch response :" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary history data");
-			logger.error("Error in getBenHistoryDetails:" + e);
+			logger.error("Error while getting beneficiary history data :" + e);
 		}
 		return response.toString();
 	}
-	
+
 	/**
-	 * @Objective Fetching beneficiary vital details enterted by nurse.
+	 * @Objective Fetching Beneficiary vital data entered by nurse
 	 * @param comingRequest
-	 * @return vital details in JSON format
+	 * @return vital data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get general OPD beneficiary vitals", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get PNC beneficiary vital details from nurse", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurse" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurse(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenVitalDetailsFrmNurse request:" + comingRequest);
+		logger.info("vital data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
-				String res = generalOPDService.getBeneficiaryVitalDetails(benRegID, visitCode);
+				String res = pncServiceImpl.getBeneficiaryVitalDetails(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
+				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenVitalDetailsFrmNurse response:" + response);
+			logger.info("Vital data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary vital data");
-			logger.error("Error in getBenVitalDetailsFrmNurse:" + e);
-		}
-		return response.toString();
-	}
-
-	/**
-	 * @Objective Fetching beneficiary examination details enterted by nurse.
-	 * @param comingRequest
-	 * @return examination details in JSON format
-	 */
-	@CrossOrigin()
-	@ApiOperation(value = "Get general OPD beneficiary examination details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenExaminationDetails" }, method = { RequestMethod.POST })
-
-	public String getBenExaminationDetails(
-			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
-		OutputResponse response = new OutputResponse();
-
-		logger.info("getBenExaminationDetails request:" + comingRequest);
-		try {
-			JSONObject obj = new JSONObject(comingRequest);
-			if (obj.has("benRegID") && obj.has("visitCode")) {
-				Long benRegID = obj.getLong("benRegID");
-				Long visitCode = obj.getLong("visitCode");
-
-				String s = generalOPDService.getExaminationDetailsData(benRegID, visitCode);
-				response.setResponse(s);
-			} else {
-				response.setError(5000, "Invalid request");
-			}
-			logger.info("getBenExaminationDetails response:" + response);
-		} catch (Exception e) {
-			response.setError(5000, "Error while getting beneficiary examination data");
-			logger.error("Error in getBenExaminationDetails:" + e);
+			logger.error("Error while getting beneficiary vital data :" + e);
 		}
 		return response.toString();
 	}
 	
 	/**
-	 * @Objective Fetching beneficiary doctor details.
+	 * @Objective Fetching Beneficiary examination data entered by nurse
 	 * @param comingRequest
-	 * @return doctor details in JSON format
+	 * @return examination data in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get general OPD beneficiary case record and referral", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" }, method = { RequestMethod.POST })
-	@Transactional(rollbackFor = Exception.class)
-	public String getBenCaseRecordFromDoctorGeneralOPD(
+	@ApiOperation(value = "Get PNC beneficiary examination details from nurse", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenExaminationDetailsPNC" }, method = { RequestMethod.POST })
+
+	public String getBenExaminationDetailsPNC(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
-		logger.info("getBenCaseRecordFromDoctorGeneralOPD request:" + comingRequest);
+		logger.info("PNC examination data fetch request:" + comingRequest);
+		try {
+			JSONObject obj = new JSONObject(comingRequest);
+			if (obj.has("benRegID") && obj.has("visitCode")) {
+				Long benRegID = obj.getLong("benRegID");
+				Long visitCode = obj.getLong("visitCode");
+
+				String s = pncServiceImpl.getPNCExaminationDetailsData(benRegID, visitCode);
+				response.setResponse(s);
+			} else {
+				response.setError(5000, "Invalid request");
+			}
+			logger.info("Examination data fetch response :" + response);
+		} catch (Exception e) {
+			response.setError(5000, "Error while getting beneficiary examination data");
+			logger.error("Error while getting beneficiary examination data :" + e);
+		}
+		return response.toString();
+	}
+
+	/**
+	 * @Objective Fetching Beneficiary doctor data
+	 * @param comingRequest
+	 * @return doctor data in JSON format
+	 */
+	@CrossOrigin()
+	@ApiOperation(value = "Get PNC beneficiary case record", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/getBenCaseRecordFromDoctorPNC" }, method = { RequestMethod.POST })
+	@Transactional(rollbackFor = Exception.class)
+	public String getBenCaseRecordFromDoctorPNC(
+			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
+		OutputResponse response = new OutputResponse();
+
+		logger.info("PNC doctor data fetch request:" + comingRequest);
 		try {
 			JSONObject obj = new JSONObject(comingRequest);
 			if (null != obj && obj.length() > 1 && obj.has("benRegID") && obj.has("visitCode")) {
 				Long benRegID = obj.getLong("benRegID");
 				Long visitCode = obj.getLong("visitCode");
 
-				String res = generalOPDService.getBenCaseRecordFromDoctorGeneralOPD(benRegID, visitCode);
+				String res = pncServiceImpl.getBenCaseRecordFromDoctorPNC(benRegID, visitCode);
 				response.setResponse(res);
 			} else {
-				logger.info("Invalid Request Data.");
+				logger.info("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
-			logger.info("getBenCaseRecordFromDoctorGeneralOPD response:" + response);
+			logger.info("Doctor data fetch response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Error while getting beneficiary doctor data");
-			logger.error("Error in getBenCaseRecordFromDoctorGeneralOPD:" + e);
+			logger.error("Error while getting beneficiary doctor data:" + e);
 		}
 		return response.toString();
 	}
 	
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary's general OPD visit details", consumes = "application/json", produces = "application/json")
-	@RequestMapping(value = { "/update/visitDetailsScreen" }, method = { RequestMethod.POST })
-	public String updateVisitNurse(@RequestBody String requestObj) {
+	@ApiOperation(value = "Update PNC doctor data", consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = { "/update/PNCScreen" }, method = { RequestMethod.POST })
+	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for visit data updating :" + requestObj);
+		logger.info("PNC Care data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -306,35 +342,36 @@ public class GeneralOPDController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			int result = generalOPDService.UpdateVisitDetails(jsnOBJ);
+			int result = pncServiceImpl.updateBenPNCDetails(jsnOBJ);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
 				response.setError(500, "Unable to modify data");
 			}
-			logger.info("Visit data update response:" + response);
+			logger.info("PNC Care data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data");
-			logger.error("Error while updating visit data :" + e);
+			logger.error("Error while updating PNC Care :" + e);
 		}
 
 		return response.toString();
 	}
 
 	/**
+	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD History Data entered by Nurse with the details
-	 *            entered by Doctor
+	 * @objective Replace PNC History Data entered by Nurse with the details entered
+	 *            by Doctor
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update beneficiary history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC beneficiary history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/historyScreen" }, method = { RequestMethod.POST })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for history data updating :" + requestObj);
+		logger.info("History data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -342,7 +379,7 @@ public class GeneralOPDController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			int result = generalOPDService.updateBenHistoryDetails(jsnOBJ);
+			int result = pncServiceImpl.updateBenHistoryDetails(jsnOBJ);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -358,18 +395,20 @@ public class GeneralOPDController {
 	}
 
 	/**
+	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD Vital Data entered by Nurse with the details  entered by Doctor       
+	 * @objective Replace PNC Vital Data entered by Nurse with the details entered
+	 *            by Doctor
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update general OPD beneficiary vitals", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC beneficiary vitals", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/vitalScreen" }, method = { RequestMethod.POST })
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for vital data updating :" + requestObj);
+		logger.info("Vital data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -377,7 +416,7 @@ public class GeneralOPDController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			int result = generalOPDService.updateBenVitalDetails(jsnOBJ);
+			int result = pncServiceImpl.updateBenVitalDetails(jsnOBJ);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -393,18 +432,20 @@ public class GeneralOPDController {
 	}
 
 	/**
+	 * 
 	 * @param requestObj
 	 * @return success or failure response
-	 * @objective Replace General OPD Examination Data entered by Nurse with the details entered by Doctor           
+	 * @objective Replace PNC Examination Data entered by Nurse with the details
+	 *            entered by Doctor
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update general OPD beneficiary examination data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC examination data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen" }, method = { RequestMethod.POST })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for examination data updating :" + requestObj);
+		logger.info("Examination data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -412,7 +453,7 @@ public class GeneralOPDController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			int result = generalOPDService.updateBenExaminationDetails(jsnOBJ);
+			int result = pncServiceImpl.updateBenExaminationDetails(jsnOBJ);
 			if (result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -427,19 +468,14 @@ public class GeneralOPDController {
 		return response.toString();
 	}
 
-	/**
-	 * @param requestObj
-	 * @return success or failure response
-	 * @objective Replace General OPD doctor data for the doctor next visit
-	 */
 	@CrossOrigin
-	@ApiOperation(value = "Update general OPD beneficiary case record and referral", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update PNC doctor data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/doctorData" }, method = { RequestMethod.POST })
-	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,
+	public String updatePNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
 		OutputResponse response = new OutputResponse();
-		logger.info("Request object for doctor data updating :" + requestObj);
+		logger.info("Doctor data update request:" + requestObj);
 
 		JsonObject jsnOBJ = new JsonObject();
 		JsonParser jsnParser = new JsonParser();
@@ -447,7 +483,7 @@ public class GeneralOPDController {
 		jsnOBJ = jsnElmnt.getAsJsonObject();
 
 		try {
-			Long result = generalOPDService.updateGeneralOPDDoctorData(jsnOBJ, Authorization);
+			Long result = pncServiceImpl.updatePNCDoctorData(jsnOBJ, Authorization);
 			if (null != result && result > 0) {
 				response.setResponse("Data updated successfully");
 			} else {
@@ -456,11 +492,10 @@ public class GeneralOPDController {
 			logger.info("Doctor data update response:" + response);
 		} catch (Exception e) {
 			response.setError(5000, "Unable to modify data. " + e.getMessage());
-			logger.error("Error while updating General OPD doctor data:" + e);
+			logger.error("Error while updating doctor data :" + e);
 		}
 
 		return response.toString();
 	}
-	
 	
 }

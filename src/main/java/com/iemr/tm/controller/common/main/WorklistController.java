@@ -102,7 +102,7 @@ public class WorklistController {
 
 	// nurse worklist new
 	@CrossOrigin()
-	@ApiOperation(value = "Get Nurse worklist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get nurse worklist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" }, method = {
 			RequestMethod.GET })
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -281,7 +281,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Print case sheet of beneficiary.", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Print case sheet of beneficiary", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/get/Case-sheet/printData" }, method = { RequestMethod.POST })
 	public String getCasesheetPrintData(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -302,7 +302,7 @@ public class WorklistController {
 
 	// Start of Fetch Previous Medical History...
 	@CrossOrigin()
-	@ApiOperation(value = "Get Beneficiary History", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPastHistory" }, method = { RequestMethod.POST })
 	public String getBenPastHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -328,7 +328,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary tobacco consumption", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary tobacco consumption history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenTobaccoHistory" }, method = { RequestMethod.POST })
 	public String getBenTobaccoHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -354,7 +354,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary alcohol consumption", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary alcohol consumption history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenAlcoholHistory" }, method = { RequestMethod.POST })
 	public String getBenAlcoholHistory(@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -595,7 +595,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary perinatal history ", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary perinatal history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPerinatalHistory" }, method = { RequestMethod.POST })
 	public String getBenPerinatalHistory(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -787,7 +787,7 @@ public class WorklistController {
 
 	// openkm file download
 	@CrossOrigin
-	@ApiOperation(value = "Add file as string to openKM.")
+	@ApiOperation(value = "Add file as string to openKM")
 	@RequestMapping(value = "/getKMFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
 	public String getKMFile(@ApiParam(value = "{}") @RequestBody String request,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -911,7 +911,7 @@ public class WorklistController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Get beneficiary previous Referral history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get beneficiary previous referral history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenPreviousReferralHistoryDetails" }, method = { RequestMethod.POST })
 	public String getBenPreviousReferralHistoryDetails(
 			@ApiParam(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {

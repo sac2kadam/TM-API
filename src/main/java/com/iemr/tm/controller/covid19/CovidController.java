@@ -60,7 +60,7 @@ public class CovidController {
 	private Covid19ServiceImpl covid19ServiceImpl;
 
 	@CrossOrigin
-	@ApiOperation(value = "Save Covid nurse data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save COVID nurse data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/nurseData" }, method = { RequestMethod.POST })
 	public String saveBenNCDCareNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -94,7 +94,7 @@ public class CovidController {
 	 * @return success or failure response
 	 */
 	@CrossOrigin
-	@ApiOperation(value = "Save Covid doctor data", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Save COVID doctor data", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/save/doctorData" }, method = { RequestMethod.POST })
 	public String saveBenCovidDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {

@@ -577,7 +577,7 @@ public class CancerScreeningController {
 	 */
 
 	@CrossOrigin
-	@ApiOperation(value = "Update cancer diagnosis details by Oncologist", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update cancer diagnosis details by oncologist", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/update/examinationScreen/diagnosis" }, method = { RequestMethod.POST })
 	public String updateCancerDiagnosisDetailsByOncologist(
 			@ApiParam(value = "{\"beneficiaryRegID\":\"Long\", \"benVisitID\":\"Long\", \"visitCode\":\"Long\", "

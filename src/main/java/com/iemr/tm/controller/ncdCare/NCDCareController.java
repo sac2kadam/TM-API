@@ -168,7 +168,7 @@ public class NCDCareController {
 	 * @return visit details in JSON format
 	 */
 	@CrossOrigin()
-	@ApiOperation(value = "Get NCD Care beneficiary history", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get NCD care beneficiary history", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenNCDCareHistoryDetails" }, method = { RequestMethod.POST })
 
 	public String getBenNCDCareHistoryDetails(
@@ -202,7 +202,7 @@ public class NCDCareController {
 	 */
 	
 	@CrossOrigin()
-	@ApiOperation(value = "Get NCD Care beneficiary vitals", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Get NCD care beneficiary vitals", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = { "/getBenVitalDetailsFrmNurseNCDCare" }, method = { RequestMethod.POST })
 	public String getBenVitalDetailsFrmNurseNCDCare(
 			@ApiParam(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
