@@ -81,17 +81,39 @@ public class DataSyncRepository {
 		return syncUtilityClassList;
 	}
 
+	/*
+	 * public int updateProcessedFlagInVan(String schemaName, String tableName,
+	 * StringBuilder vanSerialNos,
+	 * String autoIncreamentColumn, String user) throws Exception {
+	 * jdbcTemplate = getJdbcTemplate();
+	 * String query = " UPDATE " + schemaName + "." + tableName
+	 * + " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user +
+	 * "' WHERE " + autoIncreamentColumn
+	 * + " IN (" + vanSerialNos + ")";
+	 * System.out.println("hello");
+	 * 
+	 * int i = jdbcTemplate.update(query);
+	 * 
+	 * return i;
+	 * 
+	 * }
+	 */
+	// optimization of above code here
+
 	public int updateProcessedFlagInVan(String schemaName, String tableName, StringBuilder vanSerialNos,
 			String autoIncreamentColumn, String user) throws Exception {
 		jdbcTemplate = getJdbcTemplate();
 		String query = " UPDATE " + schemaName + "." + tableName
-				+ " SET processed = 'P' , SyncedDate = now(), Syncedby = '" + user + "' WHERE " + autoIncreamentColumn
+				+ " SET processed = 'P' , SyncedDate = ?, Syncedby = ? WHERE " + autoIncreamentColumn
 				+ " IN (" + vanSerialNos + ")";
-		System.out.println("hello");
+		// System.out.println("hello");
 
-		int i = jdbcTemplate.update(query);
+		// int i = jdbcTemplate.update(query);
 
-		return i;
+		Timestamp syncedDate = new Timestamp(System.currentTimeMillis());
+		int updatedRows = jdbcTemplate.update(query, syncedDate, user);
+
+		return updatedRows;
 
 	}
 
