@@ -19,28 +19,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.utils.exception;
+package com.iemr.tm.repo.videoconsultation;
 
-public class SwymedException extends Exception {
-	private static final long serialVersionUID = 1L;
-	private String message = null;
+import java.util.ArrayList;
 
-	public SwymedException(String message, Throwable cause) {
-		super(message);
-		this.message = message;
-		super.setStackTrace(cause.getStackTrace());
-	}
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.stereotype.Repository;
 
-	public SwymedException(String message) {
-		super(message);
-		this.message = message;
-	}
+import com.iemr.tm.data.videoconsultation.UserJitsi;
 
-	public String toString() {
-		return this.message;
-	}
+@Repository
+@RestResource(exported = false)
+public interface UserJitsiRepo extends CrudRepository<UserJitsi, Integer> {
+	
+	
 
-	public String getMessage() {
-		return this.message;
-	}
+	@Query("select new UserJitsi(us.jitsiUserName,us.jitsiPassword) from UserJitsi us where us.userID=:userID")
+	UserJitsi findOneJitsiMap(@Param("userID") Long fromuserid);
+	
+	@Query("select us from UserJitsi us where us.vanID=:vanID")
+	UserJitsi findOneJitsiMapVan(@Param("vanID") Integer vanid);
+
 }

@@ -19,24 +19,24 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.service.swymed;
+package com.iemr.tm.service.videoconsultation;
 
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iemr.tm.data.swymed.UserJitsi;
-import com.iemr.tm.data.swymed.UserSwymed;
+import com.iemr.tm.data.videoconsultation.UserJitsi;
+import com.iemr.tm.data.videoconsultation.UserSwymed;
 import com.iemr.tm.repo.login.MasterVanRepo;
-import com.iemr.tm.repo.swymed.UserJitsiRepo;
-import com.iemr.tm.repo.swymed.UserRepo;
-import com.iemr.tm.repo.swymed.UserSwymedRepo;
+import com.iemr.tm.repo.videoconsultation.UserJitsiRepo;
+import com.iemr.tm.repo.videoconsultation.UserRepo;
+import com.iemr.tm.repo.videoconsultation.UserSwymedRepo;
 import com.iemr.tm.utils.config.ConfigProperties;
-import com.iemr.tm.utils.exception.SwymedException;
+import com.iemr.tm.utils.exception.VideoConsultationException;
 
 @Service
-public class SwymedServiceImpl implements SwymedService {
+public class VideoConsultationServiceImpl implements VideoConsultationService {
 
 	// swymed://dnsname?l=mylogin&p=mypassword&d=mydomain&c=callnumber&m=1
 	private String swymed_dnsname = ConfigProperties.getPropertyByName("swymed_dnsname");
@@ -56,12 +56,12 @@ public class SwymedServiceImpl implements SwymedService {
 	private MasterVanRepo masterVanRepo;
 
 	@Override
-	public String login(Long userid) throws SwymedException {
+	public String login(Long userid) throws VideoConsultationException {
 		// TODO Auto-generated method stub
 		UserSwymed user = userSwymedRepo.findOneMap(userid);
 
 		if (user == null) {
-			throw new SwymedException("User doesnt have access to Swymed");
+			throw new VideoConsultationException("User doesnt have access to Swymed");
 		}
 		//
 		StringBuilder data = new StringBuilder();
@@ -78,16 +78,16 @@ public class SwymedServiceImpl implements SwymedService {
 	}
 
 	@Override
-	public String callUser(Long fromuserid, Long touserid) throws SwymedException {
+	public String callUser(Long fromuserid, Long touserid) throws VideoConsultationException {
 		// TODO Auto-generated method stub
 		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
 		UserSwymed touser = userSwymedRepo.findOneMap(touserid);
 
 		if (user == null) {
-			throw new SwymedException("User doesnt have access to Swymed");
+			throw new VideoConsultationException("User doesnt have access to Swymed");
 		}
 		if (touser == null) {
-			throw new SwymedException("Callee  couldnt be found. Please call manually");
+			throw new VideoConsultationException("Callee  couldnt be found. Please call manually");
 		}
 
 		StringBuilder data = new StringBuilder();
@@ -106,16 +106,16 @@ public class SwymedServiceImpl implements SwymedService {
 	}
 	
 	@Override
-	public String callUserjitsi(Long fromuserid, Long touserid) throws SwymedException {
+	public String callUserjitsi(Long fromuserid, Long touserid) throws VideoConsultationException {
 		// TODO Auto-generated method stub
 		UserJitsi user = userJitsiRepo.findOneJitsiMap(fromuserid);
 		UserJitsi touser = userJitsiRepo.findOneJitsiMap(touserid);
 
 		if (user == null) {
-			throw new SwymedException("User doesnt have access to Swymed");
+			throw new VideoConsultationException("User doesnt have access to Swymed");
 		}
 		if (touser == null) {
-			throw new SwymedException("Callee  couldnt be found. Please call manually");
+			throw new VideoConsultationException("Callee  couldnt be found. Please call manually");
 		}	
 		
 
@@ -133,7 +133,7 @@ public class SwymedServiceImpl implements SwymedService {
 	}
 
 	@Override
-	public String callVan(Long fromuserid, Integer vanID) throws SwymedException {
+	public String callVan(Long fromuserid, Integer vanID) throws VideoConsultationException {
 		// TODO Auto-generated method stubUserSwymed user =
 		// userSwymedRepo.findOneMap(fromuserid);
 		UserSwymed user = userSwymedRepo.findOneMap(fromuserid);
@@ -141,10 +141,10 @@ public class SwymedServiceImpl implements SwymedService {
 		// MasterVan van = masterVanRepo.findOne(vanid);
 
 		if (user == null) {
-			throw new SwymedException("User doesnt have access to Swymed");
+			throw new VideoConsultationException("User doesnt have access to Swymed");
 		}
 		if (vanSwymesEmail == null) {
-			throw new SwymedException("Callee  couldnt be found. Please call manually");
+			throw new VideoConsultationException("Callee  couldnt be found. Please call manually");
 		}
 
 		StringBuilder data = new StringBuilder();
@@ -163,7 +163,7 @@ public class SwymedServiceImpl implements SwymedService {
 	}
 	
 	@Override
-	public String callVanJitsi(Long fromuserid, Integer vanID) throws SwymedException {
+	public String callVanJitsi(Long fromuserid, Integer vanID) throws VideoConsultationException {
 		// TODO Auto-generated method stubUserSwymed user =
 		// userSwymedRepo.findOneMap(fromuserid);
 		UserJitsi user = userJitsiRepo.findOneJitsiMap(fromuserid);
@@ -171,10 +171,10 @@ public class SwymedServiceImpl implements SwymedService {
 		// MasterVan van = masterVanRepo.findOne(vanid);
 
 		if (user == null) {
-			throw new SwymedException("User doesnt have access to Swymed");
+			throw new VideoConsultationException("User doesnt have access to Swymed");
 		}
 		if (userVan == null) {
-			throw new SwymedException("Callee  couldnt be found. Please call manually");
+			throw new VideoConsultationException("Callee  couldnt be found. Please call manually");
 		}
 		
 

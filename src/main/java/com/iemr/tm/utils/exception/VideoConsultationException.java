@@ -19,23 +19,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.repo.swymed;
+package com.iemr.tm.utils.exception;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.stereotype.Repository;
+public class VideoConsultationException extends Exception {
+	private static final long serialVersionUID = 1L;
+	private String message = null;
 
-import com.iemr.tm.data.swymed.UserSwymed;
+	public VideoConsultationException(String message, Throwable cause) {
+		super(message);
+		this.message = message;
+		super.setStackTrace(cause.getStackTrace());
+	}
 
-@Repository
-@RestResource(exported = false)
-public interface UserSwymedRepo extends CrudRepository<UserSwymed, Long> {
+	public VideoConsultationException(String message) {
+		super(message);
+		this.message = message;
+	}
 
-	@Query("select new UserSwymed(us,user.UserName) from UserSwymed us join us.user user where  us.userID=:userID")
-	UserSwymed findOneMap(@Param("userID")Long userid);
-	
-	
+	public String toString() {
+		return this.message;
+	}
 
+	public String getMessage() {
+		return this.message;
+	}
 }
