@@ -33,7 +33,7 @@ import com.iemr.tm.data.videoconsultation.M_UserTemp;
 @RestResource(exported = false)
 public interface UserRepo extends CrudRepository<M_UserTemp, Long> {
 
-	@Query(value="select u from M_UserTemp u left join  u.userSwymed user where u.userID=:userID and user.userID=:userID")
+	@Query(value="select u from M_UserTemp u left join  u.userVideoConsultation user where u.userID=:userID and user.userID=:userID")
 	M_UserTemp findOneMap(@Param("userID")Long userid);
 
 }

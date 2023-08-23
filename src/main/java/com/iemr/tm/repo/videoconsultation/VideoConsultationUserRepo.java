@@ -27,14 +27,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.tm.data.videoconsultation.UserSwymed;
+import com.iemr.tm.data.videoconsultation.UserVideoConsultation;
 
 @Repository
 @RestResource(exported = false)
-public interface UserSwymedRepo extends CrudRepository<UserSwymed, Long> {
+public interface VideoConsultationUserRepo extends CrudRepository<UserVideoConsultation, Long> {
 
-	@Query("select new UserSwymed(us,user.UserName) from UserSwymed us join us.user user where  us.userID=:userID")
-	UserSwymed findOneMap(@Param("userID")Long userid);
+	@Query("select new UserVideoConsultation(us,user.UserName) from UserVideoConsultation us join us.user user where  us.userID=:userID")
+	UserVideoConsultation findOneMap(@Param("userID")Long userid);
 	
 	
 

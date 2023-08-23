@@ -70,7 +70,7 @@ public class MasterVan {
 
 	@Expose
 	@Column(name = "SwymedEmailID")
-	private String swymedEmailID;
+	private String videoConsultationEmailID;
 	
 	@Expose
 	@Column(name = "vanfetosenseIDmapped")
@@ -161,20 +161,13 @@ public class MasterVan {
 		this.deleted = deleted;
 	}
 
-//	public UserParkingplaceMapping getUserParkingplaceMapping() {
-//		return userParkingplaceMapping;
-//	}
-//
-//	public void setUserParkingplaceMapping(UserParkingplaceMapping userParkingplaceMapping) {
-//		this.userParkingplaceMapping = userParkingplaceMapping;
-//	}
 
-	public String getSwymedEmailID() {
-		return swymedEmailID;
+	public String getVideoConsultationEmailID() {
+		return videoConsultationEmailID;
 	}
 
-	public void setSwymedEmailID(String swymedEmailID) {
-		this.swymedEmailID = swymedEmailID;
+	public void setVideoConsultationEmailID(String videoConsultationEmailID) {
+		this.videoConsultationEmailID = videoConsultationEmailID;
 	}
 
 	public String getVanName() {

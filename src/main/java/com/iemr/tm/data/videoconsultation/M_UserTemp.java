@@ -89,7 +89,7 @@ public class M_UserTemp {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "UserID", insertable = false, updatable = false)
 	@Expose
-	private UserSwymed userSwymed;
+	private UserVideoConsultation userVideoConsultation;
 
 	@Transient
 	private OutputMapper outputMapper = new OutputMapper();
@@ -299,12 +299,12 @@ public class M_UserTemp {
 		LastModDate = lastModDate;
 	}
 
-	public UserSwymed getUserSwymed() {
-		return userSwymed;
+	public UserVideoConsultation getUserVideoConsultation() {
+		return userVideoConsultation;
 	}
 
-	public void setUserSwymed(UserSwymed userSwymed) {
-		this.userSwymed = userSwymed;
+	public void setUserVideoConsultation(UserVideoConsultation userVideoConsultation) {
+		this.userVideoConsultation = userVideoConsultation;
 	}
 
 	public OutputMapper getOutputMapper() {

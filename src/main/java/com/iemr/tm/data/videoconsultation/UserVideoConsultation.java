@@ -40,31 +40,31 @@ import com.iemr.tm.utils.mapper.OutputMapper;
 
 @Entity
 @Table(name = "m_userswymedmapping")
-public class UserSwymed {
+public class UserVideoConsultation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Expose
 	@Column(name = "UserSwymedMapID")
-	private Long userSwymedMapID;
+	private Long userVideoConsultationMapID;
 
 	@Expose
 	@Column(name = "userID")
 	private Long userID;
 	@Expose
 	@Column(name = "SwymedID")
-	private Long swymedID;
+	private Long videoConsultationID;
 	@Expose
 	@Column(name = "SwymedPassword")
-	private String swymedPassword;
+	private String videoConsultationPassword;
 	
 	@Expose
 	@Column(name = "SwymedEmailID")
-	private String swymedEmailID;
+	private String videoConsultationEmailID;
 	
 	@Expose
 	@Column(name = "SwymedDomain")
-	private String swymedDomain;
+	private String videoConsultationDomain;
 
 	@Expose
 	@Column(name = "Deleted", insertable = false, updatable = true)
@@ -94,14 +94,14 @@ public class UserSwymed {
 	}
 
 	
-	public UserSwymed(){
+	public UserVideoConsultation(){
 		
 	}
 	
-	public UserSwymed(UserSwymed sw,String username){
-		this.swymedDomain=sw.getSwymedDomain();
-		this.swymedPassword=sw.getSwymedPassword();
-		this.swymedEmailID=sw.getSwymedEmailID();
+	public UserVideoConsultation(UserVideoConsultation sw,String username){
+		this.videoConsultationDomain=sw.getVideoConsultationDomain();
+		this.videoConsultationPassword=sw.getVideoConsultationPassword();
+		this.videoConsultationEmailID=sw.getVideoConsultationEmailID();
 		this.username=username;
 		
 	}
@@ -117,12 +117,12 @@ public class UserSwymed {
 	}
 
 
-	public Long getUserSwymedMapID() {
-		return userSwymedMapID;
+	public Long getUserVideoConsultationMapID() {
+		return userVideoConsultationMapID;
 	}
 
-	public void setUserSwymedMapID(Long userSwymedMapID) {
-		this.userSwymedMapID = userSwymedMapID;
+	public void setUserVideoConsultationMapID(Long userVideoConsultationMapID) {
+		this.userVideoConsultationMapID = userVideoConsultationMapID;
 	}
 
 	public Long getUserID() {
@@ -133,36 +133,36 @@ public class UserSwymed {
 		this.userID = userID;
 	}
 
-	public Long getSwymedID() {
-		return swymedID;
+	public Long getVideoConsultationID() {
+		return videoConsultationID;
 	}
 
-	public void setSwymedID(Long swymedID) {
-		this.swymedID = swymedID;
+	public void setVideoConsultationID(Long videoConsultationID) {
+		this.videoConsultationID = videoConsultationID;
 	}
 
-	public String getSwymedPassword() {
-		return swymedPassword;
+	public String getVideoConsultationPassword() {
+		return videoConsultationPassword;
 	}
 
-	public void setSwymedPassword(String swymedPassword) {
-		this.swymedPassword = swymedPassword;
+	public void setVideoConsultationPassword(String videoConsultationPassword) {
+		this.videoConsultationPassword = videoConsultationPassword;
 	}
 
-	public String getSwymedEmailID() {
-		return swymedEmailID;
+	public String getVideoConsultationEmailID() {
+		return videoConsultationEmailID;
 	}
 
-	public void setSwymedEmailID(String swymedEmailID) {
-		this.swymedEmailID = swymedEmailID;
+	public void setVideoConsultationEmailID(String videoConsultationEmailID) {
+		this.videoConsultationEmailID = videoConsultationEmailID;
 	}
 
-	public String getSwymedDomain() {
-		return swymedDomain;
+	public String getVideoConsultationDomain() {
+		return videoConsultationDomain;
 	}
 
-	public void setSwymedDomain(String swymedDomain) {
-		this.swymedDomain = swymedDomain;
+	public void setVideoConsultationDomain(String videoConsultationDomain) {
+		this.videoConsultationDomain = videoConsultationDomain;
 	}
 
 	public Boolean getDeleted() {

@@ -36,7 +36,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/swymed", headers = "Authorization")
+@RequestMapping(value = "/videoConsultation", headers = "Authorization")
 public class VideoConsultationController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -100,14 +100,14 @@ public class VideoConsultationController {
 	@ApiOperation(value = "Video consultation service for users by passing type", consumes = "application/json", produces = "application/json")	
 	@RequestMapping(value = "/call/{fromuserID}/{touserID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+	public String CallVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
 			@PathVariable("touserID") Long touserID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
 
 		try {
 			String createdData = null;
-			if (Type.equalsIgnoreCase("Swymed")) {
+			if (Type.equalsIgnoreCase("VideoConsultation")) {
 				createdData = videoConsultationService.callUser(fromuserID, touserID);
 			} else {
 				createdData = videoConsultationService.callUserjitsi(fromuserID, touserID);
@@ -128,7 +128,7 @@ public class VideoConsultationController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Call van through Swymed", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Call van through video consultation", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
 	public String callvan(@PathVariable("fromuserID") Long fromuserID, @PathVariable("vanID") Integer vanID) {
@@ -154,10 +154,10 @@ public class VideoConsultationController {
 	}
 
 	@CrossOrigin()
-	@ApiOperation(value = "Call van through Swymed by passing type", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Call van through video consultation by passing type", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallVanSwymedAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+	public String CallVanVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
 			@PathVariable("vanID") Integer vanID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
@@ -165,7 +165,7 @@ public class VideoConsultationController {
 		try {
 
 			String createdData = null;
-			if (Type.equalsIgnoreCase("Swymed")) {
+			if (Type.equalsIgnoreCase("VideoConsultation")) {
 				createdData = videoConsultationService.callVan(fromuserID, vanID);
 			} else {
 				createdData = videoConsultationService.callVanJitsi(fromuserID, vanID);
