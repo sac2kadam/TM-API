@@ -19,21 +19,22 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.repo.swymed;
+package com.iemr.tm.service.videoconsultation;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.stereotype.Repository;
+import com.iemr.tm.utils.exception.VideoConsultationException;
 
-import com.iemr.tm.data.swymed.M_UserTemp;
+public interface VideoConsultationService {
+	
+	 String login(Long userid) throws VideoConsultationException;
+	 
+	 String callUser(Long fromuserid,Long touserid) throws VideoConsultationException;
+	 
+	 String callUserjitsi(Long fromuserid,Long touserid) throws VideoConsultationException;
 
-@Repository
-@RestResource(exported = false)
-public interface UserRepo extends CrudRepository<M_UserTemp, Long> {
+	String callVan(Long fromuserid, Integer vanid) throws VideoConsultationException;
 
-	@Query(value="select u from M_UserTemp u left join  u.userSwymed user where u.userID=:userID and user.userID=:userID")
-	M_UserTemp findOneMap(@Param("userID")Long userid);
+	String logout();
+
+	String callVanJitsi(Long fromuserid, Integer vanid) throws VideoConsultationException;
 
 }

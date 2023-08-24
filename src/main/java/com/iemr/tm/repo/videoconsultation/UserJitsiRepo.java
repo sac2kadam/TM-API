@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.repo.swymed;
+package com.iemr.tm.repo.videoconsultation;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
-import com.iemr.tm.data.swymed.UserJitsi;
+import com.iemr.tm.data.videoconsultation.UserJitsi;
 
 @Repository
 @RestResource(exported = false)

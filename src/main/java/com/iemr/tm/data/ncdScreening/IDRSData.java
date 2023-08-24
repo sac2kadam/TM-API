@@ -41,7 +41,7 @@ import javax.persistence.Transient;
 import com.google.gson.annotations.Expose;
 import com.iemr.tm.annotation.sqlInjectionSafe.SQLInjectionSafe;
 import com.iemr.tm.data.benFlowStatus.BeneficiaryFlowStatus;
-import com.iemr.tm.data.swymed.UserSwymed;
+import com.iemr.tm.data.videoconsultation.UserVideoConsultation;
 @Entity
 @Table(name = "t_idrsDetails")
 public class IDRSData {

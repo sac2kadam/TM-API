@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.data.swymed;
+package com.iemr.tm.data.videoconsultation;
 
 import java.sql.Timestamp;
 
@@ -89,7 +89,7 @@ public class M_UserTemp {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "UserID", insertable = false, updatable = false)
 	@Expose
-	private UserSwymed userSwymed;
+	private UserVideoConsultation userVideoConsultation;
 
 	@Transient
 	private OutputMapper outputMapper = new OutputMapper();
@@ -299,12 +299,12 @@ public class M_UserTemp {
 		LastModDate = lastModDate;
 	}
 
-	public UserSwymed getUserSwymed() {
-		return userSwymed;
+	public UserVideoConsultation getUserVideoConsultation() {
+		return userVideoConsultation;
 	}
 
-	public void setUserSwymed(UserSwymed userSwymed) {
-		this.userSwymed = userSwymed;
+	public void setUserVideoConsultation(UserVideoConsultation userVideoConsultation) {
+		this.userVideoConsultation = userVideoConsultation;
 	}
 
 	public OutputMapper getOutputMapper() {

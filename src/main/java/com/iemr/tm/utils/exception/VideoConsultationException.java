@@ -19,22 +19,28 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.service.swymed;
+package com.iemr.tm.utils.exception;
 
-import com.iemr.tm.utils.exception.SwymedException;
+public class VideoConsultationException extends Exception {
+	private static final long serialVersionUID = 1L;
+	private String message = null;
 
-public interface SwymedService {
-	
-	 String login(Long userid) throws SwymedException;
-	 
-	 String callUser(Long fromuserid,Long touserid) throws SwymedException;
-	 
-	 String callUserjitsi(Long fromuserid,Long touserid) throws SwymedException;
+	public VideoConsultationException(String message, Throwable cause) {
+		super(message);
+		this.message = message;
+		super.setStackTrace(cause.getStackTrace());
+	}
 
-	String callVan(Long fromuserid, Integer vanid) throws SwymedException;
+	public VideoConsultationException(String message) {
+		super(message);
+		this.message = message;
+	}
 
-	String logout();
+	public String toString() {
+		return this.message;
+	}
 
-	String callVanJitsi(Long fromuserid, Integer vanid) throws SwymedException;
-
+	public String getMessage() {
+		return this.message;
+	}
 }
