@@ -38,7 +38,7 @@ import com.iemr.tm.utils.exception.VideoConsultationException;
 @Service
 public class VideoConsultationServiceImpl implements VideoConsultationService {
 
-	private String videoConsultationDNSName = ConfigProperties.getPropertyByName("videoConsultationDNSName");
+	private String swymed_dnsname = ConfigProperties.getPropertyByName("swymed_dnsname");
 	
 	private String jitsi_dnsname = ConfigProperties.getPropertyByName("jitsi_dnsname");
 
@@ -63,7 +63,7 @@ public class VideoConsultationServiceImpl implements VideoConsultationService {
 		}
 		StringBuilder data = new StringBuilder();
 
-		data.append(videoConsultationDNSName);
+		data.append(swymed_dnsname);
 		data.append("?l=");
 		data.append(user.getVideoConsultationEmailID());
 		data.append("&p=");
@@ -88,7 +88,7 @@ public class VideoConsultationServiceImpl implements VideoConsultationService {
 
 		StringBuilder data = new StringBuilder();
 
-		data.append(videoConsultationDNSName);
+		data.append(swymed_dnsname);
 		data.append("?l=");
 		data.append(user.getVideoConsultationEmailID());
 		data.append("&p=");
@@ -142,7 +142,7 @@ public class VideoConsultationServiceImpl implements VideoConsultationService {
 
 		StringBuilder data = new StringBuilder();
 
-		data.append(videoConsultationDNSName);
+		data.append(swymed_dnsname);
 		data.append("?l=");
 		data.append(user.getVideoConsultationEmailID());
 		data.append("&p=");
@@ -185,7 +185,7 @@ public class VideoConsultationServiceImpl implements VideoConsultationService {
 	public String logout() {
 
 		StringBuilder data = new StringBuilder();
-		data.append(videoConsultationDNSName);
+		data.append(swymed_dnsname);
 		data.append("?logout");
 		return data.toString();
 	}
