@@ -165,7 +165,7 @@ public class VideoConsultationController {
 		try {
 
 			String createdData = null;
-			if (Type.equalsIgnoreCase("VideoConsultation")) {
+			if (Type.equalsIgnoreCase("Swymed")) {
 				createdData = videoConsultationService.callVan(fromuserID, vanID);
 			} else {
 				createdData = videoConsultationService.callVanJitsi(fromuserID, vanID);
