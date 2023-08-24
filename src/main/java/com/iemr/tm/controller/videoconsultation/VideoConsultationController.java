@@ -100,7 +100,7 @@ public class VideoConsultationController {
 	@ApiOperation(value = "Video consultation service for users by passing type", consumes = "application/json", produces = "application/json")	
 	@RequestMapping(value = "/call/{fromuserID}/{touserID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+	public String callVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
 			@PathVariable("touserID") Long touserID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
@@ -157,7 +157,7 @@ public class VideoConsultationController {
 	@ApiOperation(value = "Call van through video consultation by passing type", consumes = "application/json", produces = "application/json")
 	@RequestMapping(value = "/callvan/{fromuserID}/{vanID}/{type}", headers = "Authorization", method = {
 			RequestMethod.GET }, produces = { "application/json" })
-	public String CallVanVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
+	public String callVanVideoConsultationAndJitsi(@PathVariable("fromuserID") Long fromuserID,
 			@PathVariable("vanID") Integer vanID, @PathVariable("type") String Type) {
 
 		OutputResponse response = new OutputResponse();
