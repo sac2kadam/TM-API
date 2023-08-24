@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.controller.videoconsultation;
+package com.iemr.tm.controller.videoconsultationcontroller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
