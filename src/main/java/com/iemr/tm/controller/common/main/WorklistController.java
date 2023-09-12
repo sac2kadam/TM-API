@@ -115,7 +115,6 @@ public class WorklistController {
 			else
 				response.setError(5000, "Error while getting nurse worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(5000, "Error while getting nurse worklist");
 		}
@@ -251,7 +250,6 @@ public class WorklistController {
 			else
 				response.setError(5000, "Error while getting oncologist worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getLabWorklist:" + e);
 			response.setError(5000, "Error while getting oncologist worklist");
 		}
@@ -903,7 +901,6 @@ public class WorklistController {
 			else
 				response.setError(5000, "Error while getting MMU Nurse Worklist");
 		} catch (Exception e) {
-			// e.printStackTrace();
 			logger.error("Error in getNurseWorklist:" + e);
 			response.setError(5000, "Error while getting MMU Nurse Worklist");
 		}

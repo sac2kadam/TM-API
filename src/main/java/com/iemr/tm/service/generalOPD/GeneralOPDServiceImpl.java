@@ -57,7 +57,6 @@ import com.iemr.tm.data.anc.WrapperComorbidCondDetails;
 import com.iemr.tm.data.anc.WrapperFemaleObstetricHistory;
 import com.iemr.tm.data.anc.WrapperImmunizationHistory;
 import com.iemr.tm.data.anc.WrapperMedicationHistory;
-import com.iemr.tm.data.foetalmonitor.FoetalMonitor;
 import com.iemr.tm.data.nurse.BenAnthropometryDetail;
 import com.iemr.tm.data.nurse.BenPhysicalVitalDetail;
 import com.iemr.tm.data.nurse.BeneficiaryVisitDetail;
@@ -66,7 +65,6 @@ import com.iemr.tm.data.quickConsultation.BenChiefComplaint;
 import com.iemr.tm.data.quickConsultation.PrescribedDrugDetail;
 import com.iemr.tm.data.quickConsultation.PrescriptionDetail;
 import com.iemr.tm.data.tele_consultation.TeleconsultationRequestOBJ;
-import com.iemr.tm.repo.foetalmonitor.FoetalMonitorRepo;
 import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.tm.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.tm.service.common.transaction.CommonNurseServiceImpl;
@@ -75,11 +73,6 @@ import com.iemr.tm.service.labtechnician.LabTechnicianServiceImpl;
 import com.iemr.tm.service.tele_consultation.SMSGatewayServiceImpl;
 import com.iemr.tm.utils.mapper.InputMapper;
 
-/***
- * 
- * @author NE298657
- *
- */
 @Service
 public class GeneralOPDServiceImpl implements GeneralOPDService {
 	@Autowired
@@ -168,10 +161,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				int i = updateBenStatusFlagAfterNurseSaveSuccess(tmpOBJ, benVisitID, benFlowID, benVisitCode,
 						nurseUtilityClass.getVanID(), tcRequestOBJ);
 
-				//if (i > 0)
 					saveSuccessFlag = historySaveSuccessFlag;
-//				else
-//					throw new RuntimeException("Error occurred while saving data. Beneficiary status update failed");
 
 				if (i > 0 && tcRequestOBJ != null && tcRequestOBJ.getWalkIn() == false) {
 					int k = sMSGatewayServiceImpl.smsSenderGateway("schedule", nurseUtilityClass.getBeneficiaryRegID(),
@@ -707,7 +697,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	/**
 	 * @param JsonObject
 	 * @return saveSuccessFlag
-	 * 
 	 */
 	/// --------------- start of saving doctor data ------------------------
 	@Override
@@ -959,7 +948,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	/**
-	 * 
 	 * @param requestOBJ
 	 * @return success or failure flag for General OPD History updating by Doctor
 	 */
@@ -1142,7 +1130,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	/**
-	 * 
 	 * @param requestOBJ
 	 * @return success or failure flag for vitals data updating
 	 */
@@ -1172,7 +1159,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	}
 
 	/**
-	 * 
 	 * @param requestOBJ
 	 * @return success or failure flag for Examinationm data updating
 	 */
@@ -1330,7 +1316,6 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Integer diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		// Integer tcRequestStatusFlag = null;
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
