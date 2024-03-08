@@ -26,20 +26,19 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.iemr.tm.common.TestCommonServices;
 import com.iemr.tm.data.anc.ANCCareDetails;
 import com.iemr.tm.data.anc.ANCDiagnosis;
 import com.iemr.tm.data.anc.ANCWomenVaccineDetail;
@@ -50,10 +49,9 @@ import com.iemr.tm.repo.nurse.anc.ANCDiagnosisRepo;
 import com.iemr.tm.repo.nurse.anc.ANCWomenVaccineRepo;
 import com.iemr.tm.repo.nurse.anc.BenAdherenceRepo;
 import com.iemr.tm.repo.nurse.anc.SysObstetricExaminationRepo;
-import com.iemr.tm.repo.quickConsultation.LabTestOrderDetailRepo;
 import com.iemr.tm.service.anc.ANCNurseServiceImpl;
 import com.iemr.tm.service.anc.ANCServiceImpl;
-
+@ExtendWith(MockitoExtension.class)
 public class TestANCServices
 {
 
@@ -80,21 +78,13 @@ public class TestANCServices
 	static Long beneficiaryRegID = 7506L;
 	static Long benVisitID = 131L;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void initializeParams()
 	{
-
-		TestCommonServices.initializeParams();
-		ancServiceImpl.setCommonNurseServiceImpl(TestCommonServices.commonNurseServiceImpl);
-		ancServiceImpl.setAncNurseServiceImpl(ancNurseServiceImpl);
-		ancServiceImpl.setCommonDoctorServiceImpl(TestCommonServices.commonDoctorServiceImpl);
-		//ancServiceImpl.setANCDoctorServiceImpl(ancDoctorServiceImpl);
-		
-		ancNurseServiceImpl.setBenAdherenceRepo(benAdherenceRepoMock);
+	ancNurseServiceImpl.setBenAdherenceRepo(benAdherenceRepoMock);
 		ancNurseServiceImpl.setAncCareRepo(ancCareRepoMock);
 		ancNurseServiceImpl.setAncWomenVaccineRepo(ancWomenVaccineRepoMock);
 		ancNurseServiceImpl.setSysObstetricExaminationRepo(sysObstetricExaminationRepoMock);
-		ancNurseServiceImpl.setLabTestOrderDetailRepo(TestCommonServices.labTestOrderDetailRepoMock);
 		
 		//ancDoctorServiceImpl.setAncDiagnosisRepo(ancDiagnosisRepoMock);
 		
@@ -130,7 +120,6 @@ public class TestANCServices
 		ANCWomenVaccineDetail ancWomenVaccine = spy(ANCWomenVaccineDetail.class);
 		ancWomenVaccine.setID(1L);
 		ancWomenVaccines.add(ancWomenVaccine);
-		when(ancWomenVaccineRepoMock.save(Matchers.anyListOf(ANCWomenVaccineDetail.class))).thenReturn(ancWomenVaccines);
 		
 		SysObstetricExamination obsExmn = spy(SysObstetricExamination.class);
 		obsExmn.setID(1L);
@@ -143,7 +132,6 @@ public class TestANCServices
 		ArrayList<Object[]> resList = new ArrayList<Object[]>();
 		when(benAdherenceRepoMock.getBenAdherence(beneficiaryRegID, benVisitID)).thenReturn(resList);
 
-		when(TestCommonServices.labTestOrderDetailRepoMock.getLabTestOrderDetails(beneficiaryRegID, benVisitID)).thenReturn(resList);
 		
 	}
 	

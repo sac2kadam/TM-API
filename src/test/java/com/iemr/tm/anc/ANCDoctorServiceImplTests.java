@@ -1,10 +1,10 @@
 package com.iemr.tm.anc;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.google.gson.JsonObject;
 import com.iemr.tm.repo.nurse.anc.ANCDiagnosisRepo;
@@ -12,7 +12,7 @@ import com.iemr.tm.repo.quickConsultation.PrescriptionDetailRepo;
 import com.iemr.tm.service.anc.ANCDoctorServiceImpl;
 import com.iemr.tm.utils.exception.IEMRException;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class ANCDoctorServiceImplTests {
 	

@@ -21,20 +21,23 @@
 */
 package com.iemr.tm.anc;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.isA;
+
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.gson.JsonObject;
 import com.iemr.tm.controller.anc.AntenatalCareController;
 import com.iemr.tm.service.anc.ANCServiceImpl;
-
+@ExtendWith(MockitoExtension.class)
 public class TestANCController {
 
 	@InjectMocks
@@ -48,7 +51,7 @@ public class TestANCController {
 	static Long beneficiaryRegID = 7506L;
 	static Long benVisitID = 131L;
 
-	@BeforeClass
+	@BeforeAll
 	public static void initializeParams() {
 		createControllerSpy.setAncServiceImpl(ancServiceImplMock);
 		
@@ -83,8 +86,7 @@ public class TestANCController {
 	public void saveBenANCNurseDataPveTest() {
 
 		String response = null;
-
-		assertTrue("", response.equals(
+Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"ANC Nurse Entered Details stored successfully.\"},\"statusCode\":200,"
 						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
@@ -93,7 +95,7 @@ public class TestANCController {
 	public void saveBenANCDoctorDataPveTest() {
 		String response = createControllerSpy.saveBenANCDoctorData(nurseSaveObjPve, "");
 
-		assertTrue("",
+		Assertions.assertEquals("",
 				response.equals("{\"data\":{\"response\":\"ANC Doc data saved successfully.\"},\"statusCode\":200,"
 						+ "\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
@@ -105,7 +107,7 @@ public class TestANCController {
 		System.out.println("response " + response);
 
 		
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
@@ -113,7 +115,7 @@ public class TestANCController {
 	public void getBenVisitDetailsFrmNurseANCNveTest() {
 		String response = createControllerSpy.getBenVisitDetailsFrmNurseANC(nurseSaveObjPve);
 
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"statusCode\":5001,\"errorMessage\":\"Invalid object conversion\",\"status\":\"Invalid object conversion\"}"));
 	}
 
@@ -124,7 +126,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
@@ -135,7 +137,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
@@ -145,7 +147,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 
@@ -155,7 +157,7 @@ public class TestANCController {
 
 		System.out.println("response " + response);
 
-		assertTrue("", response.equals(
+		Assertions.assertEquals("", response.equals(
 				"{\"data\":{\"response\":\"\"},\"statusCode\":200,\"errorMessage\":\"Success\",\"status\":\"Success\"}"));
 	}
 

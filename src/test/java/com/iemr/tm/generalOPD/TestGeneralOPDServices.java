@@ -22,17 +22,17 @@
 package com.iemr.tm.generalOPD;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isA;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 
 import com.iemr.tm.common.TestCommonServices;
 import com.iemr.tm.data.anc.BenChildDevelopmentHistory;
@@ -63,7 +63,7 @@ public class TestGeneralOPDServices {
 	public static String perinatalHistoryDataPveRes = "";
 	public static String developmentHistoryDataPveRes = "";
 
-	@BeforeClass
+	@BeforeAll
 	public static void initializeParams() {
 
 		TestCommonServices.initializeParams();
@@ -117,26 +117,6 @@ public class TestGeneralOPDServices {
 					TestCommonServices.beneficiaryRegID, TestCommonServices.benVisitID))
 							.thenReturn(new SysGastrointestinalExamination());
 
-			when(childFeedingDetailsRepoMock.updateFeedingDetails(Matchers.anyLong(), Matchers.anyLong(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(),
-					Matchers.anyLong())).thenReturn(1);
-
-			when(perinatalHistoryRepoMock.updatePerinatalDetails(Matchers.anyShort(), Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyShort(), Matchers.anyString(), Matchers.anyShort(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyDouble(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
-
-			when(benChildDevelopmentHistoryRepoMock.updatePerinatalDetails(Matchers.anyString(), Matchers.anyBoolean(),
-					Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyString(), Matchers.anyBoolean(),
-					Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyString(), Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyLong(), Matchers.anyLong())).thenReturn(1);
-
-			when(sysGastrointestinalExaminationRepoMock.updateSysGastrointestinalExamination(Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-					Matchers.anyString(), Matchers.anyString(), Matchers.anyString(), Matchers.anyLong(),
-					Matchers.anyLong())).thenReturn(1);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

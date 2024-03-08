@@ -23,7 +23,9 @@ package com.iemr.tm.controller.nurse.main.anc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
@@ -35,6 +37,7 @@ import com.iemr.tm.repo.nurse.anc.BenMedHistoryRepo;
 @Transactional
 @SpringBootTest(classes = Application.class)
 @Configuration*/
+@ExtendWith(MockitoExtension.class)
 public class TestUpdateNurseANCController {
 
 	@Autowired
@@ -78,7 +81,7 @@ public class TestUpdateNurseANCController {
 		System.out.println(History);
 		assertThat(History).isEqualTo(medHistory);
 		
-		BenMedHistory result = benMedHistoryRepo.findOne(History.getBenMedHistoryID());
+		BenMedHistory result = benMedHistoryRepo.findById(History.getBenMedHistoryID()).get();
 		System.out.println(result.getIllnessType());
 		
 	}
