@@ -24,13 +24,13 @@ package com.iemr.tm.repo.videoconsultation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 
 import com.iemr.tm.data.videoconsultation.UserVideoConsultation;
 
 @Repository
-@RestResource(exported = false)
+
 public interface VideoConsultationUserRepo extends CrudRepository<UserVideoConsultation, Long> {
 
 	@Query("select new UserVideoConsultation(us,user.UserName) from UserVideoConsultation us join us.user user where  us.userID=:userID")

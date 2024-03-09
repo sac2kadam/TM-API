@@ -29,14 +29,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.tm.data.registrar.BeneficiaryData;
 
 @Repository
-@RestResource(exported = false)
+
 public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Long> {
 	// @Query(" SELECT bd.beneficiaryRegID, bd.beneficiaryID, "
 	// + " concat(IFNULL(bd.firstName, ''), ' ', IFNULL(bd.middleName, ''), ' ',
@@ -68,11 +68,22 @@ public interface RegistrarRepoBenData extends CrudRepository<BeneficiaryData, Lo
 			+ " from BeneficiaryData i WHERE i.beneficiaryRegID =:beneficiaryRegID")
 	public List<Object[]> getBenDetailsByRegID(@Param("beneficiaryRegID") Long beneficiaryRegID);
 
+	/*
+	 * @Transactional
+	 * 
+	 * @Modifying
+	 * 
+	 * @Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag, lastModDate = curdate() where beneficiaryRegID = :benRegID "
+	 * ) public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character
+	 * flowStatusFlag,
+	 * 
+	 * @Param("benRegID") Long benRegID);
+	 */
+	
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryData set flowStatusFlag = :flowStatusFlag, lastModDate = curdate() where beneficiaryRegID = :benRegID ")
-	public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character flowStatusFlag,
-			@Param("benRegID") Long benRegID);
+	@Query("UPDATE BeneficiaryData SET flowStatusFlag = :flowStatusFlag, lastModDate = current_timestamp() WHERE beneficiaryRegID = :benRegID")
+	public Integer updateBenFlowStatus(@Param("flowStatusFlag") Character flowStatusFlag, @Param("benRegID") Long benRegID);
 
 	@Transactional
 	@Modifying

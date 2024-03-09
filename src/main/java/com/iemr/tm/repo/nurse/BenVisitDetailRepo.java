@@ -29,14 +29,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.tm.data.nurse.BeneficiaryVisitDetail;
 
 @Repository
-@RestResource(exported = false)
+
 public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetail, Long> {
 
 	@Transactional
@@ -56,14 +56,14 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID AND bvd.visitCode = :visitCode")
 	public BeneficiaryVisitDetail getVisitDetails(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
-	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID and DATE(CreatedDate)<curdate()")
+	@Query(" SELECT bvd from BeneficiaryVisitDetail bvd WHERE bvd.beneficiaryRegID = :benRegID and DATE(createdDate)<curdate()")
 	public List<BeneficiaryVisitDetail> getBeneficiaryVisitHistory(@Param("benRegID") Long benRegID);
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE BeneficiaryVisitDetail set visitFlowStatusFlag = :visitFlowStatusFlag, lastModDate = curdate() where benVisitID = :benVisitID ")
+	@Query("UPDATE BeneficiaryVisitDetail SET visitFlowStatusFlag = :visitFlowStatusFlag, lastModDate = CAST(curdate() AS java.sql.Timestamp) WHERE benVisitID = :benVisitID")
 	public Integer updateBenFlowStatus(@Param("visitFlowStatusFlag") String visitFlowStatusFlag,
-			@Param("benVisitID") Long benVisitID);
+	        @Param("benVisitID") Long benVisitID);
 
 	@Query(" SELECT bvd.benVisitID, bvd.beneficiaryRegID, bvd.providerServiceMapID, bvd.visitDateTime, bvd.visitNo, bvd.visitReasonID, bvd.visitReason, "
 			+ "bvd.visitCategoryID, bvd.visitCategory, bvd.pregnancyStatus, bvd.rCHID, bvd.healthFacilityType, bvd.healthFacilityLocation, "

@@ -26,15 +26,15 @@ import java.util.ArrayList;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 
 import com.iemr.tm.data.location.Districts;
 
 @Repository
-@RestResource(exported = false)
+
 public interface DistrictMasterRepo extends CrudRepository<Districts, Integer> {
-	@Query(" SELECT d.districtID, d.districtName FROM Districts d " + " WHERE d.stateID = :stateID AND d.deleted != 1 ")
+	@Query(" SELECT d.districtID, d.districtName FROM Districts d " + " WHERE d.stateID = :stateID AND d.deleted != true ")
 	public ArrayList<Object[]> getDistrictMaster(@Param("stateID") Integer stateID);
 
 }

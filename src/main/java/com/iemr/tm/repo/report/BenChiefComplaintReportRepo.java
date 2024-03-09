@@ -27,13 +27,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 
 import com.iemr.tm.data.report.BenChiefComplaintReport;
 
 @Repository
-@RestResource(exported = false)
+
 public interface BenChiefComplaintReportRepo extends CrudRepository<BenChiefComplaintReport, Long> {
 
 	@Query(value = "call db_reporting.SP_ChiefComplaintReport(:startDate, :toDate,:ppID)", nativeQuery = true)

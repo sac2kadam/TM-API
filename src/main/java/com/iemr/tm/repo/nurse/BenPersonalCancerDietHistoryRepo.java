@@ -27,14 +27,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iemr.tm.data.nurse.BenPersonalCancerDietHistory;
 
 @Repository
-@RestResource(exported = false)
+
 public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPersonalCancerDietHistory, Long> {
 	@Query("SELECT bpdh from BenPersonalCancerDietHistory bpdh  WHERE bpdh.beneficiaryRegID = :benRegID AND bpdh.deleted = false "
 			+ "AND bpdh.visitCode = :visitCode")
@@ -63,10 +63,10 @@ public interface BenPersonalCancerDietHistoryRepo extends CrudRepository<BenPers
 			@Param("processed") String processed);
 
 	@Query(" SELECT dietType, fruitConsumptionDays, fruitQuantityPerDay, vegetableConsumptionDays, vegetableQuantityPerDay, "
-			+ "intakeOfOutsidePreparedMeal, typeOfOilConsumed, physicalActivityType, ssRadiationExposure, isThyroidDisorder, Date(createdDate) "
+			+ "intakeOfOutsidePreparedMeal, typeOfOilConsumed, physicalActivityType, ssRadiationExposure, isThyroidDisorder, Date(CreatedDate) "
 			+ "from BenPersonalCancerDietHistory bph WHERE bph.beneficiaryRegID = :benRegID and (dietType is not null or fruitConsumptionDays is not null "
 			+ "or fruitQuantityPerDay is not null or vegetableConsumptionDays is not null or vegetableQuantityPerDay is not null or intakeOfOutsidePreparedMeal is not null "
-			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null) order by createdDate desc")
+			+ "or typeOfOilConsumed <> '' or physicalActivityType is not null or ssRadiationExposure is not null or isThyroidDisorder is not null) order by CreatedDate desc")
 	public ArrayList<Object[]> getBenPersonaDietHistory(@Param("benRegID") Long benRegID);
 
 	@Query("SELECT processed from BenPersonalCancerDietHistory where beneficiaryRegID=:benRegID AND visitCode = :visitCode")

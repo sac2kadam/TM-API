@@ -27,14 +27,14 @@ import java.util.ArrayList;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 
 import com.iemr.tm.data.foetalmonitor.FoetalMonitorTestMaster;
 
 
 @Repository
-@RestResource(exported = false)
+
 public interface FoetalMonitorTestsRepo extends CrudRepository<FoetalMonitorTestMaster, Integer> {
 	
 	@Query("SELECT f.foetalMonitorTestId, f.testName FROM FoetalMonitorTestMaster f WHERE f.providerServiceMapID = :providerServiceMapID AND f.deleted = false")

@@ -27,13 +27,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
+
 import org.springframework.stereotype.Repository;
 
 import com.iemr.tm.data.registrar.V_BenAdvanceSearch;
 
 @Repository
-@RestResource(exported = false)
+
 public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch, Long> {
 
 /*	Search with BeneficiaryID replaced with beneficiaryRegID as of now **
@@ -51,22 +51,27 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 			+ " (Isnull(cast(districtID as string)) LIKE :districtID OR cast(districtID as string) like :districtID)")*/
 	
 	@Query("SELECT DISTINCT(beneficiaryRegID), beneficiaryID, "
-			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
-			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
-			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
-			+ " WHERE (Isnull(cast(beneficiaryRegID as string)) LIKE :beneficiaryRegID OR cast(beneficiaryRegID as string) like :beneficiaryRegID) AND"
-			+ " (firstName like %:firstName% ) AND"
-			+ " (Isnull(lastName) LIKE %:lastName%  OR lastName like %:lastName% ) AND"
-			+ " (Isnull(phoneNo) LIKE :phoneNo OR phoneNo like :phoneNo ) AND"
-			+ " (Isnull(aadharNo) LIKE :aadharNo OR aadharNo like :aadharNo ) AND"
-			+ " (Isnull(govtIdentityNo) LIKE :govtIdentityNo OR govtIdentityNo like :govtIdentityNo ) AND"
-			+ " (Isnull(cast(stateID as string)) LIKE :stateID OR cast(stateID as string) like :stateID) AND"
-			+ " (Isnull(cast(districtID as string)) LIKE :districtID OR cast(districtID as string) like :districtID)")
-
-	public ArrayList<Object[]> getAdvanceBenSearchList(@Param("beneficiaryRegID") String beneficiaryRegID,
-			@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("phoneNo") String phoneNo,
-			@Param("aadharNo") String aadharNo, @Param("govtIdentityNo") String govtIdentityNo,
-			@Param("stateID") String stateID, @Param("districtID") String districtID);
+		    + " UPPER( CONCAT(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
+		    + " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
+		    + " districtID, districtName, districtBranchID, villageName, phoneNo "
+		    + " FROM  V_BenAdvanceSearch "
+		    + " WHERE (CAST(:beneficiaryRegID AS string) IS NULL OR CAST(beneficiaryRegID AS string) LIKE CONCAT('%', CAST(:beneficiaryRegID AS string), '%')) AND"
+		    + " (firstName LIKE CONCAT('%', COALESCE(:firstName, ''), '%') OR :firstName IS NULL) AND"
+		    + " (lastName LIKE CONCAT('%', COALESCE(:lastName, ''), '%') OR :lastName IS NULL) AND"
+		    + " (phoneNo LIKE CONCAT('%', COALESCE(:phoneNo, ''), '%') OR :phoneNo IS NULL) AND"
+		    + " (aadharNo LIKE CONCAT('%', COALESCE(:aadharNo, ''), '%') OR :aadharNo IS NULL) AND"
+		    + " (govtIdentityNo LIKE CONCAT('%', COALESCE(:govtIdentityNo, ''), '%') OR :govtIdentityNo IS NULL) AND"
+		    + " (CAST(:stateID AS string) LIKE CONCAT('%', COALESCE(:stateID, ''), '%') OR :stateID IS NULL) AND"
+		    + " (CAST(:districtID AS string) LIKE CONCAT('%', COALESCE(:districtID, ''), '%') OR :districtID IS NULL)")
+		public ArrayList<Object[]> getAdvanceBenSearchList(
+		    @Param("beneficiaryRegID") Object beneficiaryRegID,
+		    @Param("firstName") String firstName,
+		    @Param("lastName") Object lastName,
+		    @Param("phoneNo") Object phoneNo,
+		    @Param("aadharNo") Object aadharNo,
+		    @Param("govtIdentityNo") Object govtIdentityNo,
+		    @Param("stateID") Object stateID,
+		    @Param("districtID") Object districtID);
 
 	@Query(" SELECT Distinct beneficiaryRegID, beneficiaryID, concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,'')) as benName, "
 			+ " Date(dob), genderID, regCreatedDate, districtName, villageName "
@@ -82,13 +87,13 @@ public interface ReistrarRepoBenSearch extends CrudRepository<V_BenAdvanceSearch
 //			+ " OR phoneNO = :searchKeyword ")
 	
 	@Query("SELECT DISTINCT beneficiaryRegID, beneficiaryID, "
-			+ " UPPER( concat(IFNULL(firstName, ''), ' ',IFNULL(lastName,''))) as benName, "
-			+ " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
-			+ " districtID, districtName, districtBranchID, villageName, phoneNo " + " FROM  V_BenAdvanceSearch "
-			+ " WHERE (Isnull(cast(beneficiaryRegID as string)) LIKE :searchKeyword OR cast(beneficiaryRegID as string) like :searchKeyword)  OR  "
-			+ " CONCAT(IFNULL(firstName, ''), ' ', IFNULL(lastName, '')) like '%' ||:searchKeyword || '%' "
-			+ " OR phoneNO = :searchKeyword ")
-
+	        + " UPPER( CONCAT(IFNULL(firstName, ''), ' ', IFNULL(lastName, ''))) as benName, "
+	        + " Date(dob), genderID, genderName, UPPER(fatherName) as fatherName, "
+	        + " districtID, districtName, districtBranchID, villageName, phoneNo "
+	        + " FROM V_BenAdvanceSearch "
+	        + " WHERE (COALESCE(CAST(beneficiaryRegID AS string), '') LIKE CONCAT('%', :searchKeyword, '%') OR "
+	        + " CONCAT(IFNULL(firstName, ''), ' ', IFNULL(lastName, '')) LIKE CONCAT('%', :searchKeyword, '%') OR "
+	        + " phoneNo = :searchKeyword)")
 	public List<Object[]> getQuickSearch(@Param("searchKeyword") String searchKeyword);
 
 	@Query("Select DISTINCT beneficiaryRegID, beneficiaryID, "

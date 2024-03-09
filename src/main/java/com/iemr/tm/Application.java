@@ -29,7 +29,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.iemr.tm.utils.IEMRApplBeans;
 
-@ComponentScan("com.iemr.tm.repo.tc_consultation")
 @SpringBootApplication
 public class Application {
 
