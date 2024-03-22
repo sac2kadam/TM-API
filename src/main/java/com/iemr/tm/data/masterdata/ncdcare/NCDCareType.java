@@ -38,7 +38,7 @@ import com.google.gson.annotations.Expose;
 public class NCDCareType
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "NCDCareTypeID")
 	private Integer ncdCareTypeID;

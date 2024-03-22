@@ -43,7 +43,7 @@ import com.iemr.tm.repo.location.ZoneDistrictMapping;
 @Table(name = "m_district")
 public class Districts {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "DistrictID")
 	@Expose
 	private Integer districtID;

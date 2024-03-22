@@ -43,7 +43,7 @@ import com.iemr.tm.utils.mapper.OutputMapper;
 public class UserVideoConsultation {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "UserSwymedMapID")
 	private Long userVideoConsultationMapID;

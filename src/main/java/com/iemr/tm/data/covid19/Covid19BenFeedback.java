@@ -39,7 +39,7 @@ import com.google.gson.annotations.Expose;
 public class Covid19BenFeedback {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "COVID19ID", insertable = false, updatable = false)
 	private Long cOVID19ID;

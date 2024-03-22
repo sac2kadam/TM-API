@@ -41,7 +41,7 @@ import com.iemr.tm.data.anc.FemaleObstetricHistory;
 public class ComplicationTypes {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "ComplicationID")
 	private Short complicationID;

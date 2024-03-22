@@ -38,7 +38,7 @@ import com.google.gson.annotations.Expose;
 public class M_Route {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "RouteID")
 	private Integer routeID;

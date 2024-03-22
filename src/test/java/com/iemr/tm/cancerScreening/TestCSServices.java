@@ -302,7 +302,7 @@ public class TestCSServices
 		List<CancerExaminationImageAnnotation> imgAntnsList = new ArrayList<CancerExaminationImageAnnotation>();
 		when(cancerExaminationImageAnnotationRepoMock.getCancerExaminationImageAnnotationList(beneficiaryRegID, benVisitID)).thenReturn(imgAntnsList);
 		
-		List<Objects[]> benDemoData = new ArrayList<Objects[]>();
+		List<Object[]> benDemoData = new ArrayList<Object[]>();
 		when(registrarRepoBenDemoDataMock.getBeneficiaryDemographicData(beneficiaryRegID)).thenReturn(benDemoData);
 		
 		List<Object[]> benData = new ArrayList<Object[]>();

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -40,7 +41,7 @@ import com.iemr.tm.data.masterdata.anc.ServiceMaster;
 public class BenReferDetails {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "benReferID")
 	private Long benReferID;

@@ -616,7 +616,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	}
 
 	public BeneficiaryData getBeneficiaryPersonalDetails(Long benRegID) {
-		List<Objects[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
+		List<Object[]> beneficiaryDemographicData = registrarRepoBenDemoData.getBeneficiaryDemographicData(benRegID);
 
 		List<Object[]> benDetailsList = registrarRepoBenData.getBenDetailsByRegID(benRegID);
 		BeneficiaryData benDetails = null;

@@ -40,7 +40,7 @@ import com.iemr.tm.utils.mapper.OutputMapper;
 public class M_ItemForm {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
 	@Column(name = "ItemFormID")
 	private Integer itemFormID;

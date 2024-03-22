@@ -61,7 +61,7 @@ public interface RegistrarRepoBenDemoData extends CrudRepository<BeneficiaryDemo
 	@Query(" SELECT bd.beneficiaryRegID,bd.servicePointID,s.servicePointName from BeneficiaryDemographicData bd "
 			+ "INNER JOIN bd.servicePoint s "
 			+ "WHERE bd.beneficiaryRegID = :beneficiaryRegID")
-	public List<Objects[]> getBeneficiaryDemographicData(@Param("beneficiaryRegID") Long beneficiaryRegID);
+	public List<Object[]> getBeneficiaryDemographicData(@Param("beneficiaryRegID") Long beneficiaryRegID);
 	
 //	countryID
 //	stateID
