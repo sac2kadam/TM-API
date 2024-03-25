@@ -34,7 +34,7 @@ import com.iemr.tm.data.masterdata.doctor.ItemFormMaster;
 
 public interface ItemFormMasterRepo extends CrudRepository<ItemFormMaster, Integer> {
 	
-	@Query("SELECT itemFormID, itemFormName FROM ItemFormMaster WHERE deleted is false")
+	@Query("SELECT itemFormID, itemFormName FROM ItemFormMaster WHERE deleted = false")
 	public ArrayList<Object[]> getItemFormMaster();
 
 }

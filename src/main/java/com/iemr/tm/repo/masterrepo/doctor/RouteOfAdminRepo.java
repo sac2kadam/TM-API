@@ -33,7 +33,7 @@ import com.iemr.tm.data.masterdata.doctor.RouteOfAdmin;
 @Repository
 
 public interface RouteOfAdminRepo extends CrudRepository<RouteOfAdmin, Long> {
-	@Query("SELECT routeID, routeName FROM RouteOfAdmin WHERE deleted is false ORDER BY routeName ")
+	@Query("SELECT routeID, routeName FROM RouteOfAdmin WHERE deleted = false ORDER BY routeName ")
 	public ArrayList<Object[]> getRouteOfAdminList();
 
 }
