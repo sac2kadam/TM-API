@@ -67,7 +67,7 @@ public interface FoetalMonitorRepo extends CrudRepository<FoetalMonitor, Long> {
 	 */
 
 	@Query("SELECT f FROM FoetalMonitor f WHERE f.beneficiaryRegID = :beneficiaryRegID "
-			+ " AND f.visitCode = :visitCode AND f.deleted is false ")
+			+ " AND f.visitCode = :visitCode AND f.deleted = false ")
 	public ArrayList<FoetalMonitor> getFoetalMonitorDetailsForCaseRecord(@Param("beneficiaryRegID") Long beneficiaryRegID,
 			@Param("visitCode") Long visitCode);
 

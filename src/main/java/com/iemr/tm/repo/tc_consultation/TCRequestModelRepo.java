@@ -51,18 +51,18 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	@Modifying
 	@Query(" UPDATE TCRequestModel t SET t.status = :statusFlag, t.modifiedBy = :modifiedBy, t.deleted = :deleted "
 			+ " WHERE t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode "
-			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
+			+ " AND t.deleted = false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
 	public int updateBeneficiaryStatusCancel(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("statusFlag") String statusFlag, @Param("modifiedBy") String modifiedBy,
 			@Param("userID") Integer userID, @Param("deleted") Boolean deleted);
 
 	@Query(" SELECT t from TCRequestModel t WHERE t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode "
-			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('A', 'O', 'D') ")
+			+ " AND t.deleted = false AND t.userID = :userID AND t.status IN ('A', 'O', 'D') ")
 	public ArrayList<TCRequestModel> checkBenTcStatus(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode, @Param("userID") Integer userID);
 
 	@Query(" SELECT a FROM TCRequestModel a WHERE a.beneficiaryRegID = :benRegID AND a.visitCode = :visitCode "
-			+ " AND a.userID = :userID AND a.deleted is false AND a.status IN :statusSet ")
+			+ " AND a.userID = :userID AND a.deleted = false AND a.status IN :statusSet ")
 	public ArrayList<TCRequestModel> getTcDetailsList(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode, @Param("userID") Integer userID,
 			@Param("statusSet") Set<String> statusSet);
@@ -75,14 +75,14 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	public ArrayList<Integer> getSMSTemplateID(@Param("smsTypeID") Integer smsTypeID);
 
 	@Query(" SELECT t FROM TCRequestModel t WHERE t.beneficiaryRegID = :benRegID AND t.visitCode = :visitCode "
-			+ " AND t.deleted is false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
+			+ " AND t.deleted = false AND t.userID = :userID AND t.status IN ('N', 'A', 'O') ")
 	public TCRequestModel getSpecializationID(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("userID") Integer userID);
 
 	@Transactional
 	@Modifying
 	@Query("UPDATE TCRequestModel t SET t.status = :status WHERE t.beneficiaryRegID = :benRegID "
-			+ " AND t.visitCode = :visitCode AND t.deleted is false ")
+			+ " AND t.visitCode = :visitCode AND t.deleted = false ")
 	public int updateStatusIfConsultationCompleted(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode,
 			@Param("status") String status);
 
@@ -90,7 +90,7 @@ public interface TCRequestModelRepo extends CrudRepository<TCRequestModel, Long>
 	@Modifying
 	@Query("UPDATE TCRequestModel t SET t.consultation_FirstStart = IFNULL(t.consultation_FirstStart, now())"
 			+ " WHERE t.beneficiaryRegID = :benRegID "
-			+ " AND t.visitCode = :visitCode AND t.deleted is false ")
+			+ " AND t.visitCode = :visitCode AND t.deleted = false ")
 	public Integer updateStartConsultationTime(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 }

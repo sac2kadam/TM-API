@@ -83,7 +83,7 @@ public interface PrescriptionDetailRepo extends CrudRepository<PrescriptionDetai
 			@Param("diagnosisProvided_SCTCode") String diagnosisProvided_SCTCode,
 			@Param("diagnosisProvided_SCTTerm") String diagnosisProvided_SCTTerm);
 
-	@Query("SELECT diagnosisProvided from PrescriptionDetail t where t.visitCode = :visitCode AND t.prescriptionID = :prescriptionID AND (t.deleted IS FALSE OR t.deleted IS NULL) ")
+	@Query("SELECT diagnosisProvided from PrescriptionDetail t where t.visitCode = :visitCode AND t.prescriptionID = :prescriptionID AND (t.deleted = FALSE OR t.deleted IS NULL) ")
 	
 	public List<Object> getProvisionalDiagnosis(@Param("visitCode") Long visitCode,@Param("prescriptionID") Long prescriptionID);
 
