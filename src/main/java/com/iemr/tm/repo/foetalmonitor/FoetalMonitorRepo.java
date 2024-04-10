@@ -48,7 +48,7 @@ public interface FoetalMonitorRepo extends CrudRepository<FoetalMonitor, Long> {
 	/***
 	 * @author DU20091017 get the feto sense details while lab flag update.
 	 */
-	@Query("SELECT f FROM FoetalMonitor f WHERE f.benFlowID = :benFlowID AND f.deleted is false ")
+	@Query("SELECT f FROM FoetalMonitor f WHERE f.benFlowID = :benFlowID AND f.deleted = false ")
 	public ArrayList<FoetalMonitor> getFoetalMonitorDetailsByFlowId(@Param("benFlowID") Long benFlowID);
 
 	/***

@@ -41,9 +41,14 @@ public interface LabResultEntryRepo extends CrudRepository<LabResultEntry, Long>
 
 	ArrayList<LabResultEntry> findByBeneficiaryRegIDAndVisitCodeOrderByProcedureIDAsc(Long benRegID, Long visitCode);
 
-	@Query(nativeQuery = true, value = "SELECT DISTINCT visitCode, Date(createdDate) FROM t_lab_testresult "
-			+ " WHERE beneficiaryRegID = :benRegID AND visitCode != :visitCode AND visitCode IS NOT NULL "
-			+ " GROUP BY visitCode " + " ORDER BY createdDate DESC LIMIT 3 ")
+	@Query("SELECT lre.visitCode, MAX(lre.createdDate) " +
+		       "FROM LabResultEntry lre " +
+		       "WHERE lre.beneficiaryRegID = :benRegID " +
+		       "AND lre.visitCode != :visitCode " +
+		       "AND lre.visitCode IS NOT NULL " +
+		       "GROUP BY lre.visitCode " +
+		       "ORDER BY MAX(lre.createdDate) DESC " +
+		       "LIMIT 3")
 	ArrayList<Object[]> getLast_3_visitForLabTestDone(@Param("benRegID") Long benRegID,
 			@Param("visitCode") Long visitCode);
 

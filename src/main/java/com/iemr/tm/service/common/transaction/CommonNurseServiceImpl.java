@@ -3643,16 +3643,16 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		ArrayList<Long> benVisitCodeListCancer = new ArrayList<>();
 		ArrayList<Long> benVisitCodeListOther = new ArrayList<>();
 
-		BigInteger a;
+		Long a;
 		String vc;
 		if (benLastSixVisitDetails != null && benLastSixVisitDetails.size() > 0) {
 			for (Object[] objArr : benLastSixVisitDetails) {
 				vc = (String) objArr[1];
 				if (vc != null && vc.equalsIgnoreCase("Cancer Screening")) {
-					a = (BigInteger) objArr[2];
+					a = Long.valueOf(objArr[2].toString());
 					benVisitCodeListCancer.add(a.longValue());
 				} else {
-					a = (BigInteger) objArr[2];
+					a = Long.valueOf(objArr[2].toString());
 					benVisitCodeListOther.add(a.longValue());
 				}
 			}
