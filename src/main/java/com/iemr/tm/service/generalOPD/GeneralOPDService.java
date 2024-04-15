@@ -21,8 +21,10 @@
 */
 package com.iemr.tm.service.generalOPD;
 
+import java.text.ParseException;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonObject;
 import com.iemr.tm.data.nurse.CommonUtilityClass;
 
@@ -53,7 +55,7 @@ public interface GeneralOPDService {
 
 	String getExaminationDetailsData(Long benRegID, Long visitCode);
 
-	String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long visitCode);
+	String getBenCaseRecordFromDoctorGeneralOPD(Long benRegID, Long visitCode) throws JsonProcessingException, ParseException;
 
 	int UpdateVisitDetails(JsonObject jsnOBJ) throws Exception;
 

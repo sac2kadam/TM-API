@@ -21,6 +21,7 @@
 */
 package com.iemr.tm.service.labtechnician;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.tm.data.labModule.LabResultEntry;
@@ -489,10 +492,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 		return labResultSaveFlag;
 	}
 
-	public String getLast_3_ArchivedTestVisitList(Long benRegID, Long visitCode) {
+	public String getLast_3_ArchivedTestVisitList(Long benRegID, Long visitCode) throws JsonProcessingException, ParseException {
+		ObjectMapper objectMapper = new ObjectMapper();
 		ArrayList<Object[]> visitCodeList = labResultEntryRepo.getLast_3_visitForLabTestDone(benRegID, visitCode);
-
-		return new Gson().toJson(LabResultEntry.getVisitCodeAndDate(visitCodeList));
+		return objectMapper.writeValueAsString(LabResultEntry.getVisitCodeAndDate(visitCodeList));
 	}
 
 	public String getLabResultForVisitcode(Long benRegID, Long visitCode) {

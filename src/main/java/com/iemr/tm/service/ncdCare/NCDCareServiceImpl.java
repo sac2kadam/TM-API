@@ -22,6 +22,7 @@
 package com.iemr.tm.service.ncdCare;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -1153,7 +1155,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		return resMap.toString();
 	}
 
-	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorNCDCare(Long benRegID, Long visitCode) throws JsonProcessingException, ParseException {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

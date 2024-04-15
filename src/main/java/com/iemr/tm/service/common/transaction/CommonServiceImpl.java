@@ -21,6 +21,7 @@
 */
 package com.iemr.tm.service.common.transaction;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iemr.tm.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -143,7 +145,7 @@ public class CommonServiceImpl implements CommonService {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 
-	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) {
+	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) throws JsonProcessingException, ParseException {
 		String visitCategory = benFlowOBJ.getVisitCategory();
 		String caseSheetData = null;
 
@@ -189,7 +191,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData;
 	}
 
-	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getANC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -226,7 +228,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", generalOPDServiceImpl.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -243,7 +245,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdCareServiceImpl.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -260,7 +262,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getPNC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData",
@@ -277,7 +279,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getQC_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", quickConsultationServiceImpl
@@ -294,7 +296,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -311,7 +313,7 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 	
-	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) {
+	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdScreeningServiceImpl.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(),

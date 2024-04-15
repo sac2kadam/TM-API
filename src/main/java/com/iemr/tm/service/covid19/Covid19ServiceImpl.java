@@ -22,6 +22,7 @@
 package com.iemr.tm.service.covid19;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -1109,7 +1111,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 	}
 	/// --------------- END of saving doctor data ------------------------
 
-	public String getBenCaseRecordFromDoctorCovid19(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorCovid19(Long benRegID, Long visitCode) throws JsonProcessingException, ParseException {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));

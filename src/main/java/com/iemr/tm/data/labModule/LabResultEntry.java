@@ -24,6 +24,8 @@ package com.iemr.tm.data.labModule;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -209,13 +211,23 @@ public class LabResultEntry {
 		this.date = createdDate;
 	}
 
-	public static ArrayList<LabResultEntry> getVisitCodeAndDate(ArrayList<Object[]> resultSetArr) {
+	public static ArrayList<LabResultEntry> getVisitCodeAndDate(ArrayList<Object[]> resultSetArr){
 		LabResultEntry obj;
 		ArrayList<LabResultEntry> returnArr = new ArrayList<>();
+		java.sql.Date sqlDate = null;
 		if (resultSetArr.size() > 0) {
 			for (Object[] arr : resultSetArr) {
-				BigInteger vCode = (BigInteger) arr[0];
-				obj = new LabResultEntry(vCode.longValue(), (Date) arr[1]);
+				BigInteger vCode = BigInteger.valueOf((long) arr[0]);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date utilDate;
+				try {
+					utilDate = sdf.parse(arr[1].toString());
+					sqlDate = new java.sql.Date(utilDate.getTime());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+	            
+				obj = new LabResultEntry(vCode.longValue(), sqlDate);
 				returnArr.add(obj);
 			}
 		}

@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -1439,7 +1440,7 @@ public class ANCServiceImpl implements ANCService {
 	}
 
 	// get ANC doctor data for update
-	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode) {
+	public String getBenCaseRecordFromDoctorANC(Long benRegID, Long visitCode) throws JsonProcessingException, ParseException {
 		Map<String, Object> resMap = new HashMap<>();
 
 		resMap.put("findings", commonDoctorServiceImpl.getFindingsDetails(benRegID, visitCode));
