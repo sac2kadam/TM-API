@@ -576,8 +576,8 @@ public class BenPersonalHabit {
 					benPersonalHabit.setTobaccoUseType(tobaccoInfo.get("tobaccoUseType"));
 					benPersonalHabit.setOtherTobaccoUseType(tobaccoInfo.get("OtherTobaccoUseType"));
 
-					if (null != tobaccoInfo.get("numberperDay")) {
-						benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("numberperDay")));
+					if (null != tobaccoInfo.get("number")) {
+						benPersonalHabit.setNumberperDay(new Short(tobaccoInfo.get("number")));
 					}
 					timePeriodUnit = (String) tobaccoInfo.get("durationUnit");
 

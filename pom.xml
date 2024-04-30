@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -22,7 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<java.version>17</java.version>
 
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
@@ -32,6 +33,11 @@
 		<environment>${ENV_VAR}</environment>
 		<target-properties>target/classes/application.properties</target-properties>
 		<source-properties>target/classes/common_${environment}.properties</source-properties>
+		<jacoco.version>0.8.11</jacoco.version>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
 		<hostname-test>10.208.122.38</hostname-test>
 		<port-test>9990</port-test>
 		<hostname-dev>10.208.122.32</hostname-dev>
@@ -42,10 +48,11 @@
 		<server-hostname>{hostname-${environment}}</server-hostname>
 		<server-port>{port-${environment}}</server-port>
 	</properties>
-	
+
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -72,7 +79,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -116,19 +123,19 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-   			<groupId>com.mysql</groupId>
-    		<artifactId>mysql-connector-j</artifactId>
-    		<version>8.2.0</version>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.2.0</version>
 		</dependency>
 		<dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.19.4</version>
-        </dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.19.4</version>
+		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -197,7 +204,8 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.3</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
@@ -242,24 +250,47 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis -->
-<dependency>
-    <groupId>org.springframework.session</groupId>
-    <artifactId>spring-session-data-redis</artifactId>
-    <version>3.2.1</version>
-</dependency>
-<!-- Actuator -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<!-- Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-	</dependencies>		
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.11</version>
+		</dependency>
+	</dependencies>
 
 
 	<build>
 		<finalName>tmapi-v1.0</finalName>
-		
+
 		<plugins>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>9.0.8</version>
+				<configuration>
+					<format>HTML</format>
+					<nvdApiServerId>nvd</nvdApiServerId>
+					<nvdApiKey>79597933-f3cc-4601-949b-12513434ade3</nvdApiKey>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -278,7 +309,8 @@
 									<directory>src/main/environment</directory>
 									<filtering>true</filtering>
 									<includes>
-										<include>common_${environment}.properties</include>
+										<include>
+											common_${environment}.properties</include>
 									</includes>
 								</resource>
 							</resources>
@@ -330,10 +362,12 @@
 						<configuration>
 							<target>
 								<echo>
-									concatenating properties file ${target-properties} and
+									concatenating properties file
+									${target-properties} and
 									${source-properties}
 								</echo>
-								<concat destfile="${target-properties}" append="yes"
+								<concat destfile="${target-properties}"
+									append="yes"
 									force="yes">
 									<fileset file="${source-properties}">
 									</fileset>
@@ -350,7 +384,7 @@
 						<configuration>
 							<tasks>
 								<delete>
-									<file file="${source-properties}"/>
+									<file file="${source-properties}" />
 								</delete>
 							</tasks>
 						</configuration>
@@ -365,20 +399,38 @@
 				</configuration>
 			</plugin>
 			<plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <filtering>true</filtering>
-                            <directory>src/packaging/</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/packaging/</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
 		</plugins>
-	</build>	
+	</build>
 
-	
-    
-	
+
 </project>
