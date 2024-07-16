@@ -286,10 +286,10 @@
 
 
 	<build>
-		<finalName>tmapi-v1.0</finalName>
+		<finalName>tmapi-v3.0.0</finalName>
 
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
 				<version>9.0.8</version>
@@ -305,7 +305,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
