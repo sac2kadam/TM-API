@@ -15,7 +15,7 @@ public class SwaggerConfig {
 	@Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new 
-             Info().title("TM API").version("version").description("A microservice for the creation and management of beneficiaries."))
+             Info().title("TeleMedicine(TM) API").version("version").description("A microservice for the creation and management of beneficiaries."))
                 .addSecurityItem(new SecurityRequirement().addList("my security"))
                 .components(new Components().addSecuritySchemes("my security",
                         new SecurityScheme().name("my security").type(SecurityScheme.Type.HTTP).scheme("bearer")));
