@@ -39,9 +39,4 @@ public class InterceptorConfig implements WebMvcConfigurer{
 		registry.addInterceptor(requestInterceptor);
 	}
 	
-	/*
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * registry.addInterceptor(new BlockingHttpMethodInterceptor())
-	 * .addPathPatterns("/**"); }
-	 */
 }
