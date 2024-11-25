@@ -50,11 +50,10 @@ import io.swagger.v3.oas.annotations.Operation;
 public class PatientAppCommonMasterController {
 
 	private Logger logger = LoggerFactory.getLogger(PatientAppCommonMasterController.class);
-	//@Autowired
 	private CommonPatientAppMasterService commonPatientAppMasterService;
 
 	@Autowired
-	public void setCommonBenStatusFlowServiceImpl(CommonPatientAppMasterService commonPatientAppMasterService) {
+	public void setCommonPatientAppMasterService(CommonPatientAppMasterService commonPatientAppMasterService) {
 		this.commonPatientAppMasterService = commonPatientAppMasterService;
 	}
 	/**
