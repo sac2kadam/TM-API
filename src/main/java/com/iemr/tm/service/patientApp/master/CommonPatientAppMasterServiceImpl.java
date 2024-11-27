@@ -127,21 +127,6 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		return new Gson().toJson(resMap);
 	}
 
-	@Override
-    public String getMaster(Integer stateID) {
-        Map<String, Object> resMap = new HashMap<String, Object>();
-        resMap.put("servicePointID", servicePointID);
-        resMap.put("parkingPlaceID", parkingPlaceID);
-        resMap.put("vanID", vanID);
-        resMap.put("providerServiceMapID", providerServiceMapID);
-        resMap.put("serviceID", serviceID);
-        resMap.put("providerID", providerID);
-        resMap.put("appId",appId);
-        resMap.put("authKey",authKey);
-        resMap.put("authSecret",authSecret);
-        resMap.put("schedulingSlotSize", schedulingSlotSize);
-        return new Gson().toJson(resMap);
-    }
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
