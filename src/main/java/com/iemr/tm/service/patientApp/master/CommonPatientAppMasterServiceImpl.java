@@ -67,24 +67,6 @@ import com.iemr.tm.utils.mapper.InputMapper;
 @PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
 
-	@Value("${servicePointID}")
-	private Integer servicePointID;
-	@Value("${parkingPlaceID}")
-	private Integer parkingPlaceID;
-	@Value("${providerServiceMapID}")
-	private Integer providerServiceMapID;
-	@Value("${vanID}")
-	private Integer vanID;
-	@Value("${serviceID}")
-	private Integer serviceID;
-	@Value("${providerID}")
-	private Integer providerID;
-	@Value("${appId}")
-    private Integer appId;
-    @Value("${authKey}")
-    private String authKey;
-    @Value("${authSecret}")
-    private String authSecret;
     @Value("${scheduling-slotsize}")
     private Integer schedulingSlotSize;
 	@Autowired
