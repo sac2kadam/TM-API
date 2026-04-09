@@ -30,22 +30,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.iemr.tm.utils.redis.RedisStorage;
 import com.iemr.tm.utils.response.OutputResponse;
 import com.iemr.tm.utils.sessionobject.SessionObject;
-import com.iemr.tm.utils.validator.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class HTTPRequestInterceptor implements HandlerInterceptor {
-	private Validator validator;
 	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	@Autowired
-	public void setValidator(Validator validator) {
-		this.validator = validator;
-	}
+	
 	private SessionObject sessionObject;
 
 	@Autowired
@@ -63,7 +57,10 @@ public class HTTPRequestInterceptor implements HandlerInterceptor {
 			authorization=preAuth.replace("Bearer ", "");
 		else
 			authorization = preAuth;
-			
+		if (authorization == null || authorization.isEmpty()) {
+	        logger.info("Authorization header is null or empty. Skipping HTTPRequestInterceptor.");
+	        return true; // Allow the request to proceed without validation
+	    }	
 		logger.debug("RequestURI::" + request.getRequestURI() + " || Authorization ::" + authorization
 				+ " || method :: " + request.getMethod());
 		if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -90,11 +87,6 @@ public class HTTPRequestInterceptor implements HandlerInterceptor {
 					status = false;
 					break;
 				default:
-					String remoteAddress = request.getHeader("X-FORWARDED-FOR");
-					if (remoteAddress == null || remoteAddress.trim().length() == 0) {
-						remoteAddress = request.getRemoteAddr();
-					}
-					validator.checkKeyExists(authorization, remoteAddress);
 					break;
 				}
 			} catch (Exception e) {

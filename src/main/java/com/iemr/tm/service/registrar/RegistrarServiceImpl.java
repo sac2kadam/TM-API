@@ -47,6 +47,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,8 +72,13 @@ import com.iemr.tm.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.tm.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.tm.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
+import com.iemr.tm.utils.UserAgentContext;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -102,6 +109,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails;
 	private BeneficiaryImageRepo beneficiaryImageRepo;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	@Autowired
+	private CookieUtil cookieUtil;
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -233,7 +242,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 			cal.add(Calendar.YEAR, -(currentAge - ageAtMarriage));
 			cal.set(Calendar.MONTH, 1);
 			cal.set(Calendar.DAY_OF_YEAR, 1);
-
 
 			Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
 			benDemoAd.setMarrigeDate(timestamp);
@@ -446,7 +454,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Gson gson = gsonBuilder.create();
 		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
 
-
 		if (resList != null && resList.size() > 0) {
 
 			ArrayList<Map<String, Object>> govIdList = new ArrayList<>();
@@ -650,13 +657,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 		OutputResponse response1 = new OutputResponse();
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
-
+		Map<String, Object> responseMap = new HashMap<>();
+        
 		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
-		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
-		headers.add("AUTHORIZATION", Authorization);
-		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
+		logger.info("Before Calling Common-API registration : "+request.getHeaders());
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
 				String.class);
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
@@ -664,23 +669,24 @@ public class RegistrarServiceImpl implements RegistrarService {
 			JSONObject responseOBJ = new JSONObject(responseStr);
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
-			// System.out.println("hello");
+			responseMap.put("benGenId", beneficiaryID);
+			responseMap.put("benRegId", beneficiaryRegID);
 
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
-				response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+				responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
+		        response1.setResponse(new Gson().toJson(responseMap));
+
 			} else {
 				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
 						beneficiaryID);
 
 				if (i > 0) {
-					if (i == 1)
-						response1.setResponse(
-								"Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
+					response1.setResponse(new Gson().toJson(responseMap));
+
 				} else {
 					response1.setError(5000, "Error in registration; please contact administrator");
-					// log error that beneficiaryID generated but flow part is not
-					// done successfully.
 				}
 			}
 		} else {
@@ -693,11 +699,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public Integer updateBeneficiary(String comingRequest, String Authorization) throws Exception {
 		Integer returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		// headers.add("Content-Type", "application/json");
-		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
-		headers.add("AUTHORIZATION", Authorization);
-		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
+		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
 				String.class);
 
@@ -716,21 +718,17 @@ public class RegistrarServiceImpl implements RegistrarService {
 		String returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
 		JSONObject obj = new JSONObject(requestObj);
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", Authorization);
+		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestObj, Authorization);
+		
 		if ((obj.has("beneficiaryID") && !obj.isNull("beneficiaryID"))
 				|| (obj.has("HealthID") && !obj.isNull("HealthID"))
 				|| (obj.has("HealthIDNumber") && !obj.isNull("HealthIDNumber"))) {
-			HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
 			ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByIdUrl, HttpMethod.POST,
 					request, String.class);
 			if (response.hasBody())
 				returnOBJ = response.getBody();
-
 		} else {
 			if (obj.has("phoneNo") && !obj.isNull("phoneNo")) {
-				HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
 				ResponseEntity<String> response = restTemplate.exchange(registrarQuickSearchByPhoneNoUrl,
 						HttpMethod.POST, request, String.class);
 				if (response.hasBody())
@@ -745,11 +743,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public String beneficiaryAdvanceSearch(String requestObj, String Authorization) throws JSONException {
 		String returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
-		JSONObject obj = new JSONObject(requestObj);
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", Authorization);
-		HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
+		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestObj, Authorization);
 		ResponseEntity<String> response = restTemplate.exchange(registrarAdvanceSearchUrl, HttpMethod.POST, request,
 				String.class);
 

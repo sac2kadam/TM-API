@@ -39,6 +39,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
@@ -62,8 +64,12 @@ import com.iemr.tm.service.ncdscreening.NCDScreeningServiceImpl;
 import com.iemr.tm.service.pnc.PNCServiceImpl;
 import com.iemr.tm.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.tm.service.tele_consultation.TeleConsultationServiceImpl;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
 import com.iemr.tm.utils.exception.IEMRException;
 import com.iemr.tm.utils.mapper.InputMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -94,6 +100,8 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired
 	private BenVisitDetailRepo benVisitDetailRepo;
+	@Autowired
+	private CookieUtil cookieUtil;
 
 	@Autowired
 	public void setCsServiceImpl(CSServiceImpl csServiceImpl) {
@@ -139,13 +147,14 @@ public class CommonServiceImpl implements CommonService {
 	public void setBeneficiaryFlowStatusRepo(BeneficiaryFlowStatusRepo beneficiaryFlowStatusRepo) {
 		this.beneficiaryFlowStatusRepo = beneficiaryFlowStatusRepo;
 	}
-	
+
 	@Autowired
 	public void setNcdScreeningServiceImpl(NCDScreeningServiceImpl ncdScreeningServiceImpl) {
 		this.ncdScreeningServiceImpl = ncdScreeningServiceImpl;
 	}
 
-	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization) throws JsonProcessingException, ParseException {
+	public String getCaseSheetPrintDataForBeneficiary(BeneficiaryFlowStatus benFlowOBJ, String Authorization)
+			throws JsonProcessingException, ParseException {
 		String visitCategory = benFlowOBJ.getVisitCategory();
 		String caseSheetData = null;
 
@@ -182,7 +191,7 @@ public class CommonServiceImpl implements CommonService {
 			case "NCD screening": {
 				caseSheetData = getNCDScreening_PrintData(benFlowOBJ);
 			}
-				break;		
+				break;
 			default: {
 				caseSheetData = "Invalid VisitCategory";
 			}
@@ -228,7 +237,8 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
+	private String getGenOPD_PrintData(BeneficiaryFlowStatus benFlowOBJ)
+			throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", generalOPDServiceImpl.getBenGeneralOPDNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -245,7 +255,8 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
+	private String getNCDcare_PrintData(BeneficiaryFlowStatus benFlowOBJ)
+			throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", ncdCareServiceImpl.getBenNCDCareNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -296,7 +307,8 @@ public class CommonServiceImpl implements CommonService {
 		return caseSheetData.toString();
 	}
 
-	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
+	private String getCovid19_PrintData(BeneficiaryFlowStatus benFlowOBJ)
+			throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
 		caseSheetData.put("nurseData", covid19ServiceImpl.getBenCovidNurseData(benFlowOBJ.getBeneficiaryRegID(),
@@ -312,15 +324,16 @@ public class CommonServiceImpl implements CommonService {
 
 		return caseSheetData.toString();
 	}
-	
-	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ) throws JsonProcessingException, ParseException {
+
+	private String getNCDScreening_PrintData(BeneficiaryFlowStatus benFlowOBJ)
+			throws JsonProcessingException, ParseException {
 		Map<String, Object> caseSheetData = new HashMap<>();
 
-		caseSheetData.put("nurseData", ncdScreeningServiceImpl.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(),
-				benFlowOBJ.getBenVisitCode()));
+		caseSheetData.put("nurseData", ncdScreeningServiceImpl
+				.getBenNCDScreeningNurseData(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
-		caseSheetData.put("doctorData", ncdScreeningServiceImpl
-				.getBenCaseRecordFromDoctorNCDScreening(benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
+		caseSheetData.put("doctorData", ncdScreeningServiceImpl.getBenCaseRecordFromDoctorNCDScreening(
+				benFlowOBJ.getBeneficiaryRegID(), benFlowOBJ.getBenVisitCode()));
 
 		caseSheetData.put("BeneficiaryData",
 				getBenDetails(benFlowOBJ.getBenFlowID(), benFlowOBJ.getBeneficiaryRegID()));
@@ -387,17 +400,16 @@ public class CommonServiceImpl implements CommonService {
 		return commonNurseServiceImpl.fetchBenPersonalFamilyHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Family history data ------
-	
+
 	public String getProviderSpecificData(String request) throws IEMRException {
 		return commonNurseServiceImpl.fetchProviderSpecificdata(request);
 	}
+
 	// ------- Fetch beneficiary all Physical history data ---------------
-		public String getBenPhysicalHistory(Long beneficiaryRegID) {
-			return commonNurseServiceImpl.fetchBenPhysicalHistory(beneficiaryRegID);
+	public String getBenPhysicalHistory(Long beneficiaryRegID) {
+		return commonNurseServiceImpl.fetchBenPhysicalHistory(beneficiaryRegID);
 	}
 	/// ------- End of Fetch beneficiary all Physical history data ------
-		
-		
 
 	// ------- Fetch beneficiary all Menstrual history data -----------
 	public String getMenstrualHistoryData(Long beneficiaryRegID) {
@@ -499,8 +511,8 @@ public class CommonServiceImpl implements CommonService {
 				tRequestModel.setBeneficiaryRegID(commonUtilityClass.getBeneficiaryRegID());
 				tRequestModel.setProviderServiceMapID(commonUtilityClass.getProviderServiceMapID());
 				tRequestModel.setVisitCode(commonUtilityClass.getVisitCode());
-				if(commonUtilityClass.getBenVisitID() != null)
-				tRequestModel.setBenVisitID(commonUtilityClass.getBenVisitID());
+				if (commonUtilityClass.getBenVisitID() != null)
+					tRequestModel.setBenVisitID(commonUtilityClass.getBenVisitID());
 
 				tRequestModel.setUserID(tcRequestOBJ.getUserID());
 				tRequestModel.setSpecializationID(tcRequestOBJ.getSpecializationID());
@@ -540,6 +552,8 @@ public class CommonServiceImpl implements CommonService {
 
 	public String getOpenKMDocURL(String requestOBJ, String Authorization) throws JSONException {
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
 		String fileUUID = null;
 		JSONObject obj = new JSONObject(requestOBJ);
 		if (obj.has("fileID")) {
@@ -549,10 +563,7 @@ public class CommonServiceImpl implements CommonService {
 				Map<String, Object> requestBody = new HashMap<>();
 				requestBody.put("fileUID", fileUUID);
 
-				MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-				headers.add("Content-Type", "application/json");
-				headers.add("AUTHORIZATION", Authorization);
-				HttpEntity<Object> request = new HttpEntity<Object>(requestBody, headers);
+				HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestBody, Authorization);
 				ResponseEntity<String> response = restTemplate.exchange(openkmDocUrl, HttpMethod.POST, request,
 						String.class);
 				return response.getBody();
@@ -562,25 +573,23 @@ public class CommonServiceImpl implements CommonService {
 			return null;
 
 	}
-	
+
 	@Override
 	public String getBenSymptomaticQuestionnaireDetailsData(Long beneficiaryRegID) throws Exception {
 		return commonNurseServiceImpl.getBenSymptomaticData(beneficiaryRegID);
 
 	}
-	
+
 	@Override
 	public String getBenPreviousDiabetesData(Long beneficiaryRegID) throws Exception {
 		return commonNurseServiceImpl.getBenPreviousDiabetesData(beneficiaryRegID);
 
 	}
-	
+
 	@Override
 	public String getBenPreviousReferralData(Long beneficiaryRegID) throws Exception {
 		return commonNurseServiceImpl.getBenPreviousReferralData(beneficiaryRegID);
 
 	}
-	
-	
 
 }

@@ -42,6 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -57,8 +59,12 @@ import com.iemr.tm.repo.benFlowStatus.BeneficiaryFlowStatusRepo;
 import com.iemr.tm.repo.tc_consultation.TCRequestModelRepo;
 import com.iemr.tm.repo.tc_consultation.TeleconsultationStatsRepo;
 import com.iemr.tm.service.common.transaction.CommonServiceImpl;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.mapper.OutputMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -76,6 +82,8 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 	private SMSGatewayServiceImpl sMSGatewayServiceImpl;
 	@Autowired
 	private TeleconsultationStatsRepo teleconsultationStatsRepo;
+	@Autowired
+	private CookieUtil cookieUtil;
 
 	public Long createTCRequest(TCRequestModel tCRequestModel) {
 		TCRequestModel tCRequestModelRS = tCRequestModelRepo.save(tCRequestModel);
@@ -211,10 +219,7 @@ public class TeleConsultationServiceImpl implements TeleConsultationService {
 			String requestOBJ = OutputMapper.gson().toJson(obj);
 
 			RestTemplate restTemplate = new RestTemplate();
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Content-Type", "application/json");
-			headers.add("AUTHORIZATION", Authorization);
-			HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+			HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestOBJ, Authorization);
 			ResponseEntity<String> response = restTemplate.exchange(tcSpecialistSlotCancel, HttpMethod.POST, request,
 					String.class);
 
